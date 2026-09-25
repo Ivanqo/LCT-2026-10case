@@ -18,6 +18,7 @@ from fastapi import HTTPException
 from pypdf import PdfReader, PdfWriter
 from sqlalchemy.orm import Session
 
+from ..clients import require_external_service
 from ..config import settings
 from ..db.models import ProjectDocument
 
@@ -312,6 +313,7 @@ def document_to_item(doc: ProjectDocument) -> dict[str, Any]:
 
 
 async def _proxy_upload_bytes(filename: str, content: bytes, content_type: str) -> dict[str, Any]:
+    require_external_service("Qwen-прокси")
     timeout_seconds = max(float(settings.QWEN_TIMEOUT), 300.0)
     timeout = httpx.Timeout(connect=15.0, read=timeout_seconds, write=timeout_seconds, pool=15.0)
     url = f"{settings.QWEN_PROXY_BASE_URL}/files/upload"
@@ -551,6 +553,7 @@ def _extract_proxy_error(data: Any) -> str | None:
 
 
 async def _proxy_chat(messages: list[dict[str, Any]], *, chat_id: str | None = None, use_chat_endpoint: bool = False) -> tuple[str, str | None]:
+    require_external_service("Qwen-прокси")
     # ВАЖНО: /api/chat в старых версиях Qwen-proxy игнорировал files.
     # Поэтому любой запрос с файлами отправляем строго в /api/chat/completions.
     has_files = _messages_have_files(messages)
@@ -639,6 +642,7 @@ async def _proxy_chat(messages: list[dict[str, Any]], *, chat_id: str | None = N
 
 
 async def _create_proxy_chat(name: str) -> str | None:
+    require_external_service("Qwen-прокси")
     timeout_seconds = max(float(settings.QWEN_TIMEOUT), 300.0)
     timeout = httpx.Timeout(connect=15.0, read=timeout_seconds, write=timeout_seconds, pool=15.0)
     try:

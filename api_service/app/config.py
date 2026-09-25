@@ -136,6 +136,22 @@ class Settings(BaseModel):
     IAIS_RIN_RETRY_DELAYS_SECONDS: tuple[int, ...] = (60, 300, 900)
     IAIS_RIN_PENDING_SYNC_RETRY_SECONDS: int = int(os.getenv("IAIS_RIN_PENDING_SYNC_RETRY_SECONDS", str(60 * 60)))
 
+    # Offline delivery profile (Phase 12, S6; expert session §10): project documents never leave the closed
+    # circuit. 1 = the CASE10 delivery image: the legacy DocuRAG modules (chat through the external Qwen proxy,
+    # RAG assets) are not mounted, and the RAG/IFC service clients refuse to open a connection (HTTP 503) instead
+    # of calling services the delivery does not ship. The Dockerfile sets 1; the dev compose (which still runs the
+    # rag/ifc containers) sets 0.
+    OFFLINE_DELIVERY: bool = os.getenv("CASE10_OFFLINE_DELIVERY", "0").strip().lower() in ("1", "true", "yes", "on")
+
+    # Server-side batch path (ТЗ 9.1 / expert session §9, Q14): the 50/200 MB caps above apply to interactive UI
+    # uploads only. `python -m app.cli run` and POST /api/case10/batch-runs read a package folder or ZIP from the
+    # server, with no per-file or per-package size cap. BATCH_PACKAGES_ROOT is the one directory the HTTP path may
+    # read packages/registries from (never an arbitrary server path); ZIPs are unpacked below it, so the unpacked
+    # files stay readable through CASE10_ORIGINALS_ROOT. BATCH_MAX_UNPACKED_BYTES guards the disk against a ZIP
+    # bomb (0 = no cap), it is not a package-size limit.
+    BATCH_PACKAGES_ROOT: Path = Path(os.getenv("CASE10_BATCH_PACKAGES_ROOT", str(DATA_DIR / "packages"))).resolve()
+    BATCH_MAX_UNPACKED_BYTES: int = int(os.getenv("CASE10_BATCH_MAX_UNPACKED_BYTES", str(256 * 1024**3)))
+
 
 settings = Settings()
 settings.DATA_DIR.mkdir(parents=True, exist_ok=True)

@@ -6,10 +6,12 @@ from typing import Any, Dict, List, Optional
 import httpx
 
 from ..config import settings
+from . import require_external_service
 
 
 class IfcClient:
     def __init__(self, base_url: Optional[str] = None, timeout: float = 120.0):
+        require_external_service("IFC-сервис")
         self.base_url = (base_url or settings.IFC_SERVICE_URL).rstrip("/")
         self.timeout = timeout
 

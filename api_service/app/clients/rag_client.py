@@ -8,12 +8,14 @@ from typing import Any, Dict, List, Optional, Tuple
 import httpx
 
 from ..config import settings
+from . import require_external_service
 
 logger = logging.getLogger(__name__)
 
 
 class RagClient:
     def __init__(self, base_url: Optional[str] = None, timeout: float = 120.0, retries: int = 4, retry_delay: float = 1.5):
+        require_external_service("RAG-сервис")
         self.base_url = (base_url or settings.RAG_SERVICE_URL).rstrip("/")
         self.timeout = timeout
         self.retries = max(1, retries)

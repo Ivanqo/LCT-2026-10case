@@ -11,14 +11,13 @@ from .request_context import RequestIDMiddleware
 from .db.session import init_db
 from .api.routes_projects import router as projects_router
 from .api.routes_upload import router as upload_router
-from .api.routes_chat import router as chat_router
 from .api.routes_history import router as history_router
 from .api.routes_documents import router as documents_router
 from .api.routes_admin import router as admin_router
 from .api.routes_me import router as me_router
 from .api.routes_auth import router as auth_router
-from .api.routes_rag_assets import router as rag_assets_router
 from .api.routes_case10 import router as case10_router
+from .api.routes_batch import router as batch_router
 
 
 setup_logging("api")
@@ -108,9 +107,18 @@ app.include_router(auth_router, prefix="/api")
 app.include_router(me_router, prefix="/api")
 app.include_router(projects_router, prefix="/api")
 app.include_router(upload_router, prefix="/api")
-app.include_router(chat_router, prefix="/api")
 app.include_router(history_router, prefix="/api")
 app.include_router(documents_router, prefix="/api")
-app.include_router(rag_assets_router, prefix="/api")
 app.include_router(case10_router, prefix="/api")
+app.include_router(batch_router, prefix="/api")
 app.include_router(admin_router, prefix="/api")
+
+# Legacy DocuRAG features that depend on services outside the closed circuit (chat through the external Qwen
+# proxy, RAG page/region assets). The offline CASE10 delivery (CASE10_OFFLINE_DELIVERY=1) neither imports nor
+# mounts them -- expert session §10: project documents must not leave the circuit.
+if not settings.OFFLINE_DELIVERY:
+    from .api.routes_chat import router as chat_router
+    from .api.routes_rag_assets import router as rag_assets_router
+
+    app.include_router(chat_router, prefix="/api")
+    app.include_router(rag_assets_router, prefix="/api")
