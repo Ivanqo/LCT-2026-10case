@@ -1,0 +1,7081 @@
+{
+ "reports": {
+  "A": {
+   "sample": {
+    "gold": 28,
+    "gold_positive": 19,
+    "gold_negative": 9,
+    "objects": 12,
+    "worlds": 12,
+    "objects_without_predictions": [
+     "OBJ-NEW-POL16",
+     "OBJ-NEW-SOSH25",
+     "OBJ-NEW-UNDMS"
+    ],
+    "predictions": 1196,
+    "predictions_positive": 6,
+    "prediction_labels": {
+     "COMPARISON_IMPOSSIBLE": 913,
+     "VIOLATION_PRESENT": 6,
+     "NO_VIOLATION": 16,
+     "MISSING_DOCUMENT": 261
+    }
+   },
+   "variants": {
+    "key_only": {
+     "variant": "key_only",
+     "n_gold_positive": 19,
+     "n_gold_positive_evaluable": 19,
+     "n_gold_negative": 9,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "tp": 6
+     },
+     "recall": {
+      "k": 6,
+      "n": 19,
+      "rate": 0.3158,
+      "wilson95": [
+       0.1536,
+       0.5399
+      ]
+     },
+     "precision_closed": {
+      "k": 6,
+      "n": 6,
+      "rate": 1.0,
+      "wilson95": [
+       0.6097,
+       1.0
+      ]
+     },
+     "precision_open": {
+      "k": 6,
+      "n": 6,
+      "rate": 1.0,
+      "wilson95": [
+       0.6097,
+       1.0
+      ]
+     },
+     "f1_closed": 0.48,
+     "f1_open": 0.48,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 5,
+      "n": 9,
+      "rate": 0.5556,
+      "wilson95": [
+       0.2666,
+       0.8112
+      ]
+     },
+     "critical_recall": {
+      "k": 6,
+      "n": 15,
+      "rate": 0.4,
+      "wilson95": [
+       0.1982,
+       0.6425
+      ]
+     },
+     "found": [
+      "TRAIN-0001",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010"
+     ],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "POL16-V01",
+      "SOSH25-V01",
+      "TEST-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "UNDMS-V01"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page": {
+     "variant": "evidence_page",
+     "n_gold_positive": 19,
+     "n_gold_positive_evaluable": 19,
+     "n_gold_negative": 9,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "tp": 5,
+      "fp_labelled_positive_key": 1
+     },
+     "recall": {
+      "k": 5,
+      "n": 19,
+      "rate": 0.2632,
+      "wilson95": [
+       0.1181,
+       0.4879
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "precision_open": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.4,
+     "f1_open": 0.4,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 5,
+      "n": 9,
+      "rate": 0.5556,
+      "wilson95": [
+       0.2666,
+       0.8112
+      ]
+     },
+     "critical_recall": {
+      "k": 5,
+      "n": 15,
+      "rate": 0.3333,
+      "wilson95": [
+       0.1518,
+       0.5829
+      ]
+     },
+     "found": [
+      "TRAIN-0001",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009"
+     ],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "POL16-V01",
+      "SOSH25-V01",
+      "TEST-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0010",
+      "UNDMS-V01"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page_loose_location": {
+     "variant": "evidence_page_loose_location",
+     "n_gold_positive": 19,
+     "n_gold_positive_evaluable": 19,
+     "n_gold_negative": 9,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "tp": 5,
+      "fp_labelled_positive_key": 1
+     },
+     "recall": {
+      "k": 5,
+      "n": 19,
+      "rate": 0.2632,
+      "wilson95": [
+       0.1181,
+       0.4879
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "precision_open": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.4,
+     "f1_open": 0.4,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 5,
+      "n": 9,
+      "rate": 0.5556,
+      "wilson95": [
+       0.2666,
+       0.8112
+      ]
+     },
+     "critical_recall": {
+      "k": 5,
+      "n": 15,
+      "rate": 0.3333,
+      "wilson95": [
+       0.1518,
+       0.5829
+      ]
+     },
+     "found": [
+      "TRAIN-0001",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009"
+     ],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "POL16-V01",
+      "SOSH25-V01",
+      "TEST-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0010",
+      "UNDMS-V01"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_strict": {
+     "variant": "evidence_strict",
+     "n_gold_positive": 19,
+     "n_gold_positive_evaluable": 8,
+     "n_gold_negative": 9,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "not_evaluable": 6
+     },
+     "recall": {
+      "k": 0,
+      "n": 8,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3244
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 5,
+      "n": 9,
+      "rate": 0.5556,
+      "wilson95": [
+       0.2666,
+       0.8112
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 8,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3244
+      ]
+     },
+     "found": [],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "POL16-V01",
+      "SOSH25-V01",
+      "UNDMS-V01"
+     ],
+     "negatives_flagged": []
+    }
+   },
+   "localization_completeness": {
+    "n_found_at_key": 6,
+    "file_page": {
+     "k": 5,
+     "n": 6,
+     "rate": 0.8333,
+     "wilson95": [
+      0.4365,
+      0.9699
+     ]
+    },
+    "file_page_iou50": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "strict_not_evaluable": 6
+   },
+   "document_linkage": {
+    "available": true,
+    "n_cited_evidence": 144,
+    "object_stage_exact": {
+     "k": 144,
+     "n": 144,
+     "rate": 1.0,
+     "wilson95": [
+      0.974,
+      1.0
+     ]
+    },
+    "cites_excluded_file": 0,
+    "code_revision_verifiable": 0,
+    "code_revision_exact": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    }
+   },
+   "by_tier": {
+    "ARCHIVE_RECHNIKOV": {
+     "n_pos": 1,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "DOMAIN_1_1_CANDIDATE": {
+     "n_pos": 7,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 7,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3543
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DOMAIN_1_1_CONFIRMED": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DOMAIN_1_1_NEGATIVE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "TRAIN_PUBLIC": {
+     "n_pos": 10,
+     "n_neg": 5,
+     "recall": {
+      "k": 5,
+      "n": 10,
+      "rate": 0.5,
+      "wilson95": [
+       0.2366,
+       0.7634
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.625,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 5,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4345
+      ]
+     }
+    }
+   },
+   "by_section": {
+    "FREE_SEARCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "NO_CODE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "Раздел 1. ПЗ": {
+     "n_pos": 4,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "Раздел 10. ОДИ": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "Раздел 2. СПЗУ": {
+     "n_pos": 1,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "Раздел 3. АР": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "Раздел 4. КР": {
+     "n_pos": 2,
+     "n_neg": 4,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     }
+    },
+    "Раздел 5. ИОС4": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.8333,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   },
+   "by_type": {
+    "CONFIGURATION_MISMATCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 3,
+      "n": 4,
+      "rate": 0.75,
+      "wilson95": [
+       0.3006,
+       0.9544
+      ]
+     },
+     "precision_closed": {
+      "k": 3,
+      "n": 4,
+      "rate": 0.75,
+      "wilson95": [
+       0.3006,
+       0.9544
+      ]
+     },
+     "f1_closed": 0.75,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DRAINAGE_NOT_EXCLUDED": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_AFTER_DECIMAL_NORMALIZATION": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_ALL_AVAILABLE_STAGES": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_PD_RD": {
+     "n_pos": 0,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "EXPLICATION_APARTMENT_AREAS": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "EXPLICATION_ROOM_ADDED": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "EXPLICATION_ROOM_FUNCTIONS_AREAS": {
+     "n_pos": 2,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "ID_REPAIR_SCHEME": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "ID_TOLERANCE_EXCEEDED": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "LAYER_COMPOSITION_CHANGE_SHEET": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "LAYOUT_CHANGE_SHEET": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "MISSING_DESIGN_ELEMENT": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 2,
+      "n": 6,
+      "rate": 0.3333,
+      "wilson95": [
+       0.0968,
+       0.7
+      ]
+     },
+     "precision_closed": {
+      "k": 2,
+      "n": 2,
+      "rate": 1.0,
+      "wilson95": [
+       0.3424,
+       1.0
+      ]
+     },
+     "f1_closed": 0.5,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "NEGATIVE_PAIR": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "NON_TRIGGERING_DIFFERENCE_NO_DECREASE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "NO_POSITION_REDUCTION": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "VALUE_DECREASE": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  "A_objects_on_disk": {
+   "sample": {
+    "gold": 25,
+    "gold_positive": 16,
+    "gold_negative": 9,
+    "objects": 9,
+    "worlds": 9,
+    "objects_without_predictions": [],
+    "predictions": 1196,
+    "predictions_positive": 6,
+    "prediction_labels": {
+     "COMPARISON_IMPOSSIBLE": 913,
+     "VIOLATION_PRESENT": 6,
+     "NO_VIOLATION": 16,
+     "MISSING_DOCUMENT": 261
+    }
+   },
+   "variants": {
+    "key_only": {
+     "variant": "key_only",
+     "n_gold_positive": 16,
+     "n_gold_positive_evaluable": 16,
+     "n_gold_negative": 9,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "tp": 6
+     },
+     "recall": {
+      "k": 6,
+      "n": 16,
+      "rate": 0.375,
+      "wilson95": [
+       0.1848,
+       0.6136
+      ]
+     },
+     "precision_closed": {
+      "k": 6,
+      "n": 6,
+      "rate": 1.0,
+      "wilson95": [
+       0.6097,
+       1.0
+      ]
+     },
+     "precision_open": {
+      "k": 6,
+      "n": 6,
+      "rate": 1.0,
+      "wilson95": [
+       0.6097,
+       1.0
+      ]
+     },
+     "f1_closed": 0.5455,
+     "f1_open": 0.5455,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 5,
+      "n": 9,
+      "rate": 0.5556,
+      "wilson95": [
+       0.2666,
+       0.8112
+      ]
+     },
+     "critical_recall": {
+      "k": 6,
+      "n": 12,
+      "rate": 0.5,
+      "wilson95": [
+       0.2538,
+       0.7462
+      ]
+     },
+     "found": [
+      "TRAIN-0001",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010"
+     ],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "TEST-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page": {
+     "variant": "evidence_page",
+     "n_gold_positive": 16,
+     "n_gold_positive_evaluable": 16,
+     "n_gold_negative": 9,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "tp": 5,
+      "fp_labelled_positive_key": 1
+     },
+     "recall": {
+      "k": 5,
+      "n": 16,
+      "rate": 0.3125,
+      "wilson95": [
+       0.1416,
+       0.556
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "precision_open": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.4545,
+     "f1_open": 0.4545,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 5,
+      "n": 9,
+      "rate": 0.5556,
+      "wilson95": [
+       0.2666,
+       0.8112
+      ]
+     },
+     "critical_recall": {
+      "k": 5,
+      "n": 12,
+      "rate": 0.4167,
+      "wilson95": [
+       0.1933,
+       0.6805
+      ]
+     },
+     "found": [
+      "TRAIN-0001",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009"
+     ],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "TEST-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0010"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page_loose_location": {
+     "variant": "evidence_page_loose_location",
+     "n_gold_positive": 16,
+     "n_gold_positive_evaluable": 16,
+     "n_gold_negative": 9,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "tp": 5,
+      "fp_labelled_positive_key": 1
+     },
+     "recall": {
+      "k": 5,
+      "n": 16,
+      "rate": 0.3125,
+      "wilson95": [
+       0.1416,
+       0.556
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "precision_open": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.4545,
+     "f1_open": 0.4545,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 5,
+      "n": 9,
+      "rate": 0.5556,
+      "wilson95": [
+       0.2666,
+       0.8112
+      ]
+     },
+     "critical_recall": {
+      "k": 5,
+      "n": 12,
+      "rate": 0.4167,
+      "wilson95": [
+       0.1933,
+       0.6805
+      ]
+     },
+     "found": [
+      "TRAIN-0001",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009"
+     ],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "TEST-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0010"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_strict": {
+     "variant": "evidence_strict",
+     "n_gold_positive": 16,
+     "n_gold_positive_evaluable": 5,
+     "n_gold_negative": 9,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "not_evaluable": 6
+     },
+     "recall": {
+      "k": 0,
+      "n": 5,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 5,
+      "n": 9,
+      "rate": 0.5556,
+      "wilson95": [
+       0.2666,
+       0.8112
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 5,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "found": [],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01"
+     ],
+     "negatives_flagged": []
+    }
+   },
+   "localization_completeness": {
+    "n_found_at_key": 6,
+    "file_page": {
+     "k": 5,
+     "n": 6,
+     "rate": 0.8333,
+     "wilson95": [
+      0.4365,
+      0.9699
+     ]
+    },
+    "file_page_iou50": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "strict_not_evaluable": 6
+   },
+   "document_linkage": {
+    "available": true,
+    "n_cited_evidence": 144,
+    "object_stage_exact": {
+     "k": 144,
+     "n": 144,
+     "rate": 1.0,
+     "wilson95": [
+      0.974,
+      1.0
+     ]
+    },
+    "cites_excluded_file": 0,
+    "code_revision_verifiable": 0,
+    "code_revision_exact": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    }
+   },
+   "by_tier": {
+    "ARCHIVE_RECHNIKOV": {
+     "n_pos": 1,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "DOMAIN_1_1_CANDIDATE": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DOMAIN_1_1_CONFIRMED": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DOMAIN_1_1_NEGATIVE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "TRAIN_PUBLIC": {
+     "n_pos": 10,
+     "n_neg": 5,
+     "recall": {
+      "k": 5,
+      "n": 10,
+      "rate": 0.5,
+      "wilson95": [
+       0.2366,
+       0.7634
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.625,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 5,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4345
+      ]
+     }
+    }
+   },
+   "by_section": {
+    "FREE_SEARCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "NO_CODE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "Раздел 1. ПЗ": {
+     "n_pos": 2,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "Раздел 10. ОДИ": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "Раздел 2. СПЗУ": {
+     "n_pos": 1,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "Раздел 4. КР": {
+     "n_pos": 2,
+     "n_neg": 4,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     }
+    },
+    "Раздел 5. ИОС4": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.8333,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   },
+   "by_type": {
+    "CONFIGURATION_MISMATCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 3,
+      "n": 4,
+      "rate": 0.75,
+      "wilson95": [
+       0.3006,
+       0.9544
+      ]
+     },
+     "precision_closed": {
+      "k": 3,
+      "n": 4,
+      "rate": 0.75,
+      "wilson95": [
+       0.3006,
+       0.9544
+      ]
+     },
+     "f1_closed": 0.75,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DRAINAGE_NOT_EXCLUDED": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_AFTER_DECIMAL_NORMALIZATION": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_ALL_AVAILABLE_STAGES": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_PD_RD": {
+     "n_pos": 0,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "EXPLICATION_ROOM_FUNCTIONS_AREAS": {
+     "n_pos": 2,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "ID_REPAIR_SCHEME": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "ID_TOLERANCE_EXCEEDED": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "LAYOUT_CHANGE_SHEET": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "MISSING_DESIGN_ELEMENT": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 2,
+      "n": 6,
+      "rate": 0.3333,
+      "wilson95": [
+       0.0968,
+       0.7
+      ]
+     },
+     "precision_closed": {
+      "k": 2,
+      "n": 2,
+      "rate": 1.0,
+      "wilson95": [
+       0.3424,
+       1.0
+      ]
+     },
+     "f1_closed": 0.5,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "NEGATIVE_PAIR": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "NON_TRIGGERING_DIFFERENCE_NO_DECREASE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "NO_POSITION_REDUCTION": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "VALUE_DECREASE": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  "B": {
+   "sample": {
+    "gold": 28,
+    "gold_positive": 19,
+    "gold_negative": 9,
+    "objects": 12,
+    "worlds": 12,
+    "objects_without_predictions": [
+     "OBJ-NEW-POL16",
+     "OBJ-NEW-SOSH25",
+     "OBJ-NEW-UNDMS"
+    ],
+    "predictions": 1188,
+    "predictions_positive": 0,
+    "prediction_labels": {
+     "COMPARISON_IMPOSSIBLE": 949,
+     "NO_VIOLATION": 6,
+     "MISSING_DOCUMENT": 233
+    }
+   },
+   "variants": {
+    "key_only": {
+     "variant": "key_only",
+     "n_gold_positive": 19,
+     "n_gold_positive_evaluable": 19,
+     "n_gold_negative": 9,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 19,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1682
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 15,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "found": [],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "POL16-V01",
+      "SOSH25-V01",
+      "TEST-0001",
+      "TRAIN-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010",
+      "UNDMS-V01"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page": {
+     "variant": "evidence_page",
+     "n_gold_positive": 19,
+     "n_gold_positive_evaluable": 19,
+     "n_gold_negative": 9,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 19,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1682
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 15,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "found": [],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "POL16-V01",
+      "SOSH25-V01",
+      "TEST-0001",
+      "TRAIN-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010",
+      "UNDMS-V01"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page_loose_location": {
+     "variant": "evidence_page_loose_location",
+     "n_gold_positive": 19,
+     "n_gold_positive_evaluable": 19,
+     "n_gold_negative": 9,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 19,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1682
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 15,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "found": [],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "POL16-V01",
+      "SOSH25-V01",
+      "TEST-0001",
+      "TRAIN-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010",
+      "UNDMS-V01"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_strict": {
+     "variant": "evidence_strict",
+     "n_gold_positive": 19,
+     "n_gold_positive_evaluable": 8,
+     "n_gold_negative": 9,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 8,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3244
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 8,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3244
+      ]
+     },
+     "found": [],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "POL16-V01",
+      "SOSH25-V01",
+      "UNDMS-V01"
+     ],
+     "negatives_flagged": []
+    }
+   },
+   "localization_completeness": {
+    "n_found_at_key": 0,
+    "file_page": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "file_page_iou50": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "strict_not_evaluable": 0
+   },
+   "document_linkage": {
+    "available": true,
+    "n_cited_evidence": 12,
+    "object_stage_exact": {
+     "k": 12,
+     "n": 12,
+     "rate": 1.0,
+     "wilson95": [
+      0.7575,
+      1.0
+     ]
+    },
+    "cites_excluded_file": 0,
+    "code_revision_verifiable": 0,
+    "code_revision_exact": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    }
+   },
+   "by_tier": {
+    "ARCHIVE_RECHNIKOV": {
+     "n_pos": 1,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "DOMAIN_1_1_CANDIDATE": {
+     "n_pos": 7,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 7,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3543
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DOMAIN_1_1_CONFIRMED": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DOMAIN_1_1_NEGATIVE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "TRAIN_PUBLIC": {
+     "n_pos": 10,
+     "n_neg": 5,
+     "recall": {
+      "k": 0,
+      "n": 10,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2775
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 5,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4345
+      ]
+     }
+    }
+   },
+   "by_section": {
+    "FREE_SEARCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "NO_CODE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "Раздел 1. ПЗ": {
+     "n_pos": 4,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "Раздел 10. ОДИ": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "Раздел 2. СПЗУ": {
+     "n_pos": 1,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "Раздел 3. АР": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "Раздел 4. КР": {
+     "n_pos": 2,
+     "n_neg": 4,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     }
+    },
+    "Раздел 5. ИОС4": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 6,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3903
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   },
+   "by_type": {
+    "CONFIGURATION_MISMATCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DRAINAGE_NOT_EXCLUDED": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_AFTER_DECIMAL_NORMALIZATION": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_ALL_AVAILABLE_STAGES": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_PD_RD": {
+     "n_pos": 0,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "EXPLICATION_APARTMENT_AREAS": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "EXPLICATION_ROOM_ADDED": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "EXPLICATION_ROOM_FUNCTIONS_AREAS": {
+     "n_pos": 2,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "ID_REPAIR_SCHEME": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "ID_TOLERANCE_EXCEEDED": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "LAYER_COMPOSITION_CHANGE_SHEET": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "LAYOUT_CHANGE_SHEET": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "MISSING_DESIGN_ELEMENT": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 6,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3903
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "NEGATIVE_PAIR": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "NON_TRIGGERING_DIFFERENCE_NO_DECREASE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "NO_POSITION_REDUCTION": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "VALUE_DECREASE": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  "B_objects_on_disk": {
+   "sample": {
+    "gold": 25,
+    "gold_positive": 16,
+    "gold_negative": 9,
+    "objects": 9,
+    "worlds": 9,
+    "objects_without_predictions": [],
+    "predictions": 1188,
+    "predictions_positive": 0,
+    "prediction_labels": {
+     "COMPARISON_IMPOSSIBLE": 949,
+     "NO_VIOLATION": 6,
+     "MISSING_DOCUMENT": 233
+    }
+   },
+   "variants": {
+    "key_only": {
+     "variant": "key_only",
+     "n_gold_positive": 16,
+     "n_gold_positive_evaluable": 16,
+     "n_gold_negative": 9,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 16,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1936
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 12,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2425
+      ]
+     },
+     "found": [],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "TEST-0001",
+      "TRAIN-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page": {
+     "variant": "evidence_page",
+     "n_gold_positive": 16,
+     "n_gold_positive_evaluable": 16,
+     "n_gold_negative": 9,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 16,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1936
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 12,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2425
+      ]
+     },
+     "found": [],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "TEST-0001",
+      "TRAIN-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page_loose_location": {
+     "variant": "evidence_page_loose_location",
+     "n_gold_positive": 16,
+     "n_gold_positive_evaluable": 16,
+     "n_gold_negative": 9,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 16,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1936
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 12,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2425
+      ]
+     },
+     "found": [],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01",
+      "TEST-0001",
+      "TRAIN-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_strict": {
+     "variant": "evidence_strict",
+     "n_gold_positive": 16,
+     "n_gold_positive_evaluable": 5,
+     "n_gold_negative": 9,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 5,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2992
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 5,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "found": [],
+     "missed": [
+      "ALT79B-V01",
+      "DOO25-V01",
+      "IZM12-V01",
+      "LOS3A-V01",
+      "OKT103-V01"
+     ],
+     "negatives_flagged": []
+    }
+   },
+   "localization_completeness": {
+    "n_found_at_key": 0,
+    "file_page": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "file_page_iou50": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "strict_not_evaluable": 0
+   },
+   "document_linkage": {
+    "available": true,
+    "n_cited_evidence": 12,
+    "object_stage_exact": {
+     "k": 12,
+     "n": 12,
+     "rate": 1.0,
+     "wilson95": [
+      0.7575,
+      1.0
+     ]
+    },
+    "cites_excluded_file": 0,
+    "code_revision_verifiable": 0,
+    "code_revision_exact": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    }
+   },
+   "by_tier": {
+    "ARCHIVE_RECHNIKOV": {
+     "n_pos": 1,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "DOMAIN_1_1_CANDIDATE": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DOMAIN_1_1_CONFIRMED": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DOMAIN_1_1_NEGATIVE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "TRAIN_PUBLIC": {
+     "n_pos": 10,
+     "n_neg": 5,
+     "recall": {
+      "k": 0,
+      "n": 10,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2775
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 5,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4345
+      ]
+     }
+    }
+   },
+   "by_section": {
+    "FREE_SEARCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "NO_CODE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "Раздел 1. ПЗ": {
+     "n_pos": 2,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "Раздел 10. ОДИ": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "Раздел 2. СПЗУ": {
+     "n_pos": 1,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "Раздел 4. КР": {
+     "n_pos": 2,
+     "n_neg": 4,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     }
+    },
+    "Раздел 5. ИОС4": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 6,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3903
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   },
+   "by_type": {
+    "CONFIGURATION_MISMATCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "DRAINAGE_NOT_EXCLUDED": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_AFTER_DECIMAL_NORMALIZATION": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_ALL_AVAILABLE_STAGES": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "EQUAL_PD_RD": {
+     "n_pos": 0,
+     "n_neg": 3,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 3,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.5615
+      ]
+     }
+    },
+    "EXPLICATION_ROOM_FUNCTIONS_AREAS": {
+     "n_pos": 2,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "ID_REPAIR_SCHEME": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "ID_TOLERANCE_EXCEEDED": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "LAYOUT_CHANGE_SHEET": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "MISSING_DESIGN_ELEMENT": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 6,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3903
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "NEGATIVE_PAIR": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "NON_TRIGGERING_DIFFERENCE_NO_DECREASE": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "NO_POSITION_REDUCTION": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "VALUE_DECREASE": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  "TYU_with_organizer_annotations": {
+   "sample": {
+    "gold": 10,
+    "gold_positive": 10,
+    "gold_negative": 0,
+    "objects": 1,
+    "worlds": 1,
+    "objects_without_predictions": [],
+    "predictions": 137,
+    "predictions_positive": 6,
+    "prediction_labels": {
+     "COMPARISON_IMPOSSIBLE": 130,
+     "VIOLATION_PRESENT": 6,
+     "NO_VIOLATION": 1
+    }
+   },
+   "variants": {
+    "key_only": {
+     "variant": "key_only",
+     "n_gold_positive": 10,
+     "n_gold_positive_evaluable": 10,
+     "n_gold_negative": 0,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "tp": 6
+     },
+     "recall": {
+      "k": 6,
+      "n": 10,
+      "rate": 0.6,
+      "wilson95": [
+       0.3127,
+       0.8318
+      ]
+     },
+     "precision_closed": {
+      "k": 6,
+      "n": 6,
+      "rate": 1.0,
+      "wilson95": [
+       0.6097,
+       1.0
+      ]
+     },
+     "precision_open": {
+      "k": 6,
+      "n": 6,
+      "rate": 1.0,
+      "wilson95": [
+       0.6097,
+       1.0
+      ]
+     },
+     "f1_closed": 0.75,
+     "f1_open": 0.75,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "critical_recall": {
+      "k": 6,
+      "n": 6,
+      "rate": 1.0,
+      "wilson95": [
+       0.6097,
+       1.0
+      ]
+     },
+     "found": [
+      "TRAIN-0001",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010"
+     ],
+     "missed": [
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page": {
+     "variant": "evidence_page",
+     "n_gold_positive": 10,
+     "n_gold_positive_evaluable": 10,
+     "n_gold_negative": 0,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "tp": 5,
+      "fp_labelled_positive_key": 1
+     },
+     "recall": {
+      "k": 5,
+      "n": 10,
+      "rate": 0.5,
+      "wilson95": [
+       0.2366,
+       0.7634
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "precision_open": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.625,
+     "f1_open": 0.625,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "critical_recall": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "found": [
+      "TRAIN-0001",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009"
+     ],
+     "missed": [
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0010"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page_loose_location": {
+     "variant": "evidence_page_loose_location",
+     "n_gold_positive": 10,
+     "n_gold_positive_evaluable": 10,
+     "n_gold_negative": 0,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "tp": 5,
+      "fp_labelled_positive_key": 1
+     },
+     "recall": {
+      "k": 5,
+      "n": 10,
+      "rate": 0.5,
+      "wilson95": [
+       0.2366,
+       0.7634
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "precision_open": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.625,
+     "f1_open": 0.625,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "critical_recall": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "found": [
+      "TRAIN-0001",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009"
+     ],
+     "missed": [
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0010"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_strict": {
+     "variant": "evidence_strict",
+     "n_gold_positive": 10,
+     "n_gold_positive_evaluable": 0,
+     "n_gold_negative": 0,
+     "n_pred_positive": 6,
+     "outcomes": {
+      "not_evaluable": 6
+     },
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "found": [],
+     "missed": [],
+     "negatives_flagged": []
+    }
+   },
+   "localization_completeness": {
+    "n_found_at_key": 6,
+    "file_page": {
+     "k": 5,
+     "n": 6,
+     "rate": 0.8333,
+     "wilson95": [
+      0.4365,
+      0.9699
+     ]
+    },
+    "file_page_iou50": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "strict_not_evaluable": 6
+   },
+   "document_linkage": {
+    "available": true,
+    "n_cited_evidence": 14,
+    "object_stage_exact": {
+     "k": 14,
+     "n": 14,
+     "rate": 1.0,
+     "wilson95": [
+      0.7847,
+      1.0
+     ]
+    },
+    "cites_excluded_file": 0,
+    "code_revision_verifiable": 0,
+    "code_revision_exact": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    }
+   },
+   "by_tier": {
+    "TRAIN_PUBLIC": {
+     "n_pos": 10,
+     "n_neg": 0,
+     "recall": {
+      "k": 5,
+      "n": 10,
+      "rate": 0.5,
+      "wilson95": [
+       0.2366,
+       0.7634
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.625,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   },
+   "by_section": {
+    "FREE_SEARCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "Раздел 5. ИОС4": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 6,
+      "rate": 0.8333,
+      "wilson95": [
+       0.4365,
+       0.9699
+      ]
+     },
+     "f1_closed": 0.8333,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   },
+   "by_type": {
+    "CONFIGURATION_MISMATCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 3,
+      "n": 4,
+      "rate": 0.75,
+      "wilson95": [
+       0.3006,
+       0.9544
+      ]
+     },
+     "precision_closed": {
+      "k": 3,
+      "n": 4,
+      "rate": 0.75,
+      "wilson95": [
+       0.3006,
+       0.9544
+      ]
+     },
+     "f1_closed": 0.75,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "MISSING_DESIGN_ELEMENT": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 2,
+      "n": 6,
+      "rate": 0.3333,
+      "wilson95": [
+       0.0968,
+       0.7
+      ]
+     },
+     "precision_closed": {
+      "k": 2,
+      "n": 2,
+      "rate": 1.0,
+      "wilson95": [
+       0.3424,
+       1.0
+      ]
+     },
+     "f1_closed": 0.5,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  "TYU_live": {
+   "sample": {
+    "gold": 10,
+    "gold_positive": 10,
+    "gold_negative": 0,
+    "objects": 1,
+    "worlds": 1,
+    "objects_without_predictions": [],
+    "predictions": 132,
+    "predictions_positive": 0,
+    "prediction_labels": {
+     "COMPARISON_IMPOSSIBLE": 132
+    }
+   },
+   "variants": {
+    "key_only": {
+     "variant": "key_only",
+     "n_gold_positive": 10,
+     "n_gold_positive_evaluable": 10,
+     "n_gold_negative": 0,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 10,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2775
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 6,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3903
+      ]
+     },
+     "found": [],
+     "missed": [
+      "TRAIN-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page": {
+     "variant": "evidence_page",
+     "n_gold_positive": 10,
+     "n_gold_positive_evaluable": 10,
+     "n_gold_negative": 0,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 10,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2775
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 6,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3903
+      ]
+     },
+     "found": [],
+     "missed": [
+      "TRAIN-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page_loose_location": {
+     "variant": "evidence_page_loose_location",
+     "n_gold_positive": 10,
+     "n_gold_positive_evaluable": 10,
+     "n_gold_negative": 0,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 10,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2775
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 6,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3903
+      ]
+     },
+     "found": [],
+     "missed": [
+      "TRAIN-0001",
+      "TRAIN-0002",
+      "TRAIN-0003",
+      "TRAIN-0004",
+      "TRAIN-0005",
+      "TRAIN-0006",
+      "TRAIN-0007",
+      "TRAIN-0008",
+      "TRAIN-0009",
+      "TRAIN-0010"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_strict": {
+     "variant": "evidence_strict",
+     "n_gold_positive": 10,
+     "n_gold_positive_evaluable": 0,
+     "n_gold_negative": 0,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "negatives_confirmed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "found": [],
+     "missed": [],
+     "negatives_flagged": []
+    }
+   },
+   "localization_completeness": {
+    "n_found_at_key": 0,
+    "file_page": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "file_page_iou50": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "strict_not_evaluable": 0
+   },
+   "document_linkage": {
+    "available": true,
+    "n_cited_evidence": 0,
+    "object_stage_exact": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "cites_excluded_file": 0,
+    "code_revision_verifiable": 0,
+    "code_revision_exact": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    }
+   },
+   "by_tier": {
+    "TRAIN_PUBLIC": {
+     "n_pos": 10,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 10,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2775
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   },
+   "by_section": {
+    "FREE_SEARCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "Раздел 5. ИОС4": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 6,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3903
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   },
+   "by_type": {
+    "CONFIGURATION_MISMATCH": {
+     "n_pos": 4,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "MISSING_DESIGN_ELEMENT": {
+     "n_pos": 6,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 6,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.3903
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  "C": {
+   "sample": {
+    "gold": 35,
+    "gold_positive": 1,
+    "gold_negative": 34,
+    "objects": 8,
+    "worlds": 8,
+    "objects_without_predictions": [],
+    "predictions": 1056,
+    "predictions_positive": 0,
+    "prediction_labels": {
+     "COMPARISON_IMPOSSIBLE": 819,
+     "NO_VIOLATION": 4,
+     "MISSING_DOCUMENT": 233
+    }
+   },
+   "variants": {
+    "key_only": {
+     "variant": "key_only",
+     "n_gold_positive": 1,
+     "n_gold_positive_evaluable": 1,
+     "n_gold_negative": 34,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 34,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1015
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 4,
+      "n": 34,
+      "rate": 0.1176,
+      "wilson95": [
+       0.0467,
+       0.2662
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "found": [],
+     "missed": [
+      "OBJ-NEW-LOS3A::SPZU-024"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page": {
+     "variant": "evidence_page",
+     "n_gold_positive": 1,
+     "n_gold_positive_evaluable": 1,
+     "n_gold_negative": 34,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 34,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1015
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 4,
+      "n": 34,
+      "rate": 0.1176,
+      "wilson95": [
+       0.0467,
+       0.2662
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "found": [],
+     "missed": [
+      "OBJ-NEW-LOS3A::SPZU-024"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page_loose_location": {
+     "variant": "evidence_page_loose_location",
+     "n_gold_positive": 1,
+     "n_gold_positive_evaluable": 1,
+     "n_gold_negative": 34,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 34,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1015
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 4,
+      "n": 34,
+      "rate": 0.1176,
+      "wilson95": [
+       0.0467,
+       0.2662
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "found": [],
+     "missed": [
+      "OBJ-NEW-LOS3A::SPZU-024"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_strict": {
+     "variant": "evidence_strict",
+     "n_gold_positive": 1,
+     "n_gold_positive_evaluable": 0,
+     "n_gold_negative": 34,
+     "n_pred_positive": 0,
+     "outcomes": {},
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 34,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1015
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 4,
+      "n": 34,
+      "rate": 0.1176,
+      "wilson95": [
+       0.0467,
+       0.2662
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "found": [],
+     "missed": [],
+     "negatives_flagged": []
+    }
+   },
+   "localization_completeness": {
+    "n_found_at_key": 0,
+    "file_page": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "file_page_iou50": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "strict_not_evaluable": 0
+   },
+   "document_linkage": {
+    "available": true,
+    "n_cited_evidence": 8,
+    "object_stage_exact": {
+     "k": 8,
+     "n": 8,
+     "rate": 1.0,
+     "wilson95": [
+      0.6756,
+      1.0
+     ]
+    },
+    "cites_excluded_file": 0,
+    "code_revision_verifiable": 0,
+    "code_revision_exact": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    }
+   },
+   "by_tier": {
+    "SILVER_9_3": {
+     "n_pos": 1,
+     "n_neg": 17,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 17,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1843
+      ]
+     }
+    },
+    "SILVER_CORPUS_EQUAL": {
+     "n_pos": 0,
+     "n_neg": 17,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 17,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1843
+      ]
+     }
+    }
+   },
+   "by_section": {
+    "Раздел 1. ПЗ": {
+     "n_pos": 0,
+     "n_neg": 22,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 22,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1487
+      ]
+     }
+    },
+    "Раздел 2. СПЗУ": {
+     "n_pos": 1,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "Раздел 4. КР": {
+     "n_pos": 0,
+     "n_neg": 11,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 11,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2588
+      ]
+     }
+    }
+   },
+   "by_type": {
+    "SILVER_EQUAL_PAIR": {
+     "n_pos": 0,
+     "n_neg": 17,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 17,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1843
+      ]
+     }
+    },
+    "SILVER_NO_VIOLATION": {
+     "n_pos": 0,
+     "n_neg": 17,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 17,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1843
+      ]
+     }
+    },
+    "SILVER_VIOLATION_PRESENT": {
+     "n_pos": 1,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  "D": {
+   "sample": {
+    "gold": 73,
+    "gold_positive": 32,
+    "gold_negative": 41,
+    "objects": 4,
+    "worlds": 73,
+    "objects_without_predictions": [],
+    "predictions": 73,
+    "predictions_positive": 11,
+    "prediction_labels": {
+     "COMPARISON_IMPOSSIBLE": 32,
+     "MISSING_DOCUMENT": 9,
+     "VIOLATION_PRESENT": 11,
+     "NO_VIOLATION": 21
+    }
+   },
+   "variants": {
+    "key_only": {
+     "variant": "key_only",
+     "n_gold_positive": 32,
+     "n_gold_positive_evaluable": 32,
+     "n_gold_negative": 41,
+     "n_pred_positive": 11,
+     "outcomes": {
+      "tp": 11
+     },
+     "recall": {
+      "k": 11,
+      "n": 32,
+      "rate": 0.3438,
+      "wilson95": [
+       0.2041,
+       0.5169
+      ]
+     },
+     "precision_closed": {
+      "k": 11,
+      "n": 11,
+      "rate": 1.0,
+      "wilson95": [
+       0.7412,
+       1.0
+      ]
+     },
+     "precision_open": {
+      "k": 11,
+      "n": 11,
+      "rate": 1.0,
+      "wilson95": [
+       0.7412,
+       1.0
+      ]
+     },
+     "f1_closed": 0.5117,
+     "f1_open": 0.5117,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 41,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.0857
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 18,
+      "n": 41,
+      "rate": 0.439,
+      "wilson95": [
+       0.2989,
+       0.5896
+      ]
+     },
+     "critical_recall": {
+      "k": 11,
+      "n": 26,
+      "rate": 0.4231,
+      "wilson95": [
+       0.2554,
+       0.6105
+      ]
+     },
+     "found": [
+      "LOS3A::PZ-004::DEC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "LOS3A::PZ-004::DEC_ABOVE::TRUTH_PAIR::SINGLE",
+      "LOS3A::PZ-004::INC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "LOS3A::PZ-004::INC_ABOVE::TRUTH_PAIR::SINGLE",
+      "LOS3A::PZ-005::DEC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "LOS3A::PZ-005::INC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "LOS3A::PZ-006::DEC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "LOS3A::PZ-006::DEC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-006::INC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "POL17::PZ-022::DOWNGRADE::SYSTEM_PAIR::ALL_COPIES",
+      "POL17::PZ-022::DOWNGRADE::SYSTEM_PAIR::SINGLE"
+     ],
+     "missed": [
+      "ALT79B::KR-067::COMPONENT_DEC::SYSTEM_PAIR::ALL_COPIES",
+      "ALT79B::KR-067::COMPONENT_DEC::SYSTEM_PAIR::SINGLE",
+      "ALT79B::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "ALT79B::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+      "ALT79B::SPZU-024::DEC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "ALT79B::SPZU-024::DEC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "ALT79B::SPZU-024::INC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "ALT79B::SPZU-024::INC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "DOO25::PZ-001::DEC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "DOO25::PZ-001::DEC_ABOVE::TRUTH_PAIR::SINGLE",
+      "DOO25::PZ-001::INC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "DOO25::PZ-001::INC_ABOVE::TRUTH_PAIR::SINGLE",
+      "DOO25::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "DOO25::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+      "LOS3A::PZ-005::DEC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-005::INC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-006::INC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "LOS3A::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+      "POL17::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "POL17::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page": {
+     "variant": "evidence_page",
+     "n_gold_positive": 32,
+     "n_gold_positive_evaluable": 32,
+     "n_gold_negative": 41,
+     "n_pred_positive": 11,
+     "outcomes": {
+      "tp": 11
+     },
+     "recall": {
+      "k": 11,
+      "n": 32,
+      "rate": 0.3438,
+      "wilson95": [
+       0.2041,
+       0.5169
+      ]
+     },
+     "precision_closed": {
+      "k": 11,
+      "n": 11,
+      "rate": 1.0,
+      "wilson95": [
+       0.7412,
+       1.0
+      ]
+     },
+     "precision_open": {
+      "k": 11,
+      "n": 11,
+      "rate": 1.0,
+      "wilson95": [
+       0.7412,
+       1.0
+      ]
+     },
+     "f1_closed": 0.5117,
+     "f1_open": 0.5117,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 41,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.0857
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 18,
+      "n": 41,
+      "rate": 0.439,
+      "wilson95": [
+       0.2989,
+       0.5896
+      ]
+     },
+     "critical_recall": {
+      "k": 11,
+      "n": 26,
+      "rate": 0.4231,
+      "wilson95": [
+       0.2554,
+       0.6105
+      ]
+     },
+     "found": [
+      "LOS3A::PZ-004::DEC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "LOS3A::PZ-004::DEC_ABOVE::TRUTH_PAIR::SINGLE",
+      "LOS3A::PZ-004::INC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "LOS3A::PZ-004::INC_ABOVE::TRUTH_PAIR::SINGLE",
+      "LOS3A::PZ-005::DEC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "LOS3A::PZ-005::INC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "LOS3A::PZ-006::DEC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "LOS3A::PZ-006::DEC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-006::INC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "POL17::PZ-022::DOWNGRADE::SYSTEM_PAIR::ALL_COPIES",
+      "POL17::PZ-022::DOWNGRADE::SYSTEM_PAIR::SINGLE"
+     ],
+     "missed": [
+      "ALT79B::KR-067::COMPONENT_DEC::SYSTEM_PAIR::ALL_COPIES",
+      "ALT79B::KR-067::COMPONENT_DEC::SYSTEM_PAIR::SINGLE",
+      "ALT79B::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "ALT79B::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+      "ALT79B::SPZU-024::DEC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "ALT79B::SPZU-024::DEC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "ALT79B::SPZU-024::INC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "ALT79B::SPZU-024::INC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "DOO25::PZ-001::DEC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "DOO25::PZ-001::DEC_ABOVE::TRUTH_PAIR::SINGLE",
+      "DOO25::PZ-001::INC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "DOO25::PZ-001::INC_ABOVE::TRUTH_PAIR::SINGLE",
+      "DOO25::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "DOO25::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+      "LOS3A::PZ-005::DEC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-005::INC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-006::INC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "LOS3A::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+      "POL17::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "POL17::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_page_loose_location": {
+     "variant": "evidence_page_loose_location",
+     "n_gold_positive": 32,
+     "n_gold_positive_evaluable": 32,
+     "n_gold_negative": 41,
+     "n_pred_positive": 11,
+     "outcomes": {
+      "tp": 11
+     },
+     "recall": {
+      "k": 11,
+      "n": 32,
+      "rate": 0.3438,
+      "wilson95": [
+       0.2041,
+       0.5169
+      ]
+     },
+     "precision_closed": {
+      "k": 11,
+      "n": 11,
+      "rate": 1.0,
+      "wilson95": [
+       0.7412,
+       1.0
+      ]
+     },
+     "precision_open": {
+      "k": 11,
+      "n": 11,
+      "rate": 1.0,
+      "wilson95": [
+       0.7412,
+       1.0
+      ]
+     },
+     "f1_closed": 0.5117,
+     "f1_open": 0.5117,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 41,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.0857
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 18,
+      "n": 41,
+      "rate": 0.439,
+      "wilson95": [
+       0.2989,
+       0.5896
+      ]
+     },
+     "critical_recall": {
+      "k": 11,
+      "n": 26,
+      "rate": 0.4231,
+      "wilson95": [
+       0.2554,
+       0.6105
+      ]
+     },
+     "found": [
+      "LOS3A::PZ-004::DEC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "LOS3A::PZ-004::DEC_ABOVE::TRUTH_PAIR::SINGLE",
+      "LOS3A::PZ-004::INC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "LOS3A::PZ-004::INC_ABOVE::TRUTH_PAIR::SINGLE",
+      "LOS3A::PZ-005::DEC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "LOS3A::PZ-005::INC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "LOS3A::PZ-006::DEC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "LOS3A::PZ-006::DEC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-006::INC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "POL17::PZ-022::DOWNGRADE::SYSTEM_PAIR::ALL_COPIES",
+      "POL17::PZ-022::DOWNGRADE::SYSTEM_PAIR::SINGLE"
+     ],
+     "missed": [
+      "ALT79B::KR-067::COMPONENT_DEC::SYSTEM_PAIR::ALL_COPIES",
+      "ALT79B::KR-067::COMPONENT_DEC::SYSTEM_PAIR::SINGLE",
+      "ALT79B::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "ALT79B::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+      "ALT79B::SPZU-024::DEC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "ALT79B::SPZU-024::DEC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "ALT79B::SPZU-024::INC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+      "ALT79B::SPZU-024::INC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "DOO25::PZ-001::DEC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "DOO25::PZ-001::DEC_ABOVE::TRUTH_PAIR::SINGLE",
+      "DOO25::PZ-001::INC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+      "DOO25::PZ-001::INC_ABOVE::TRUTH_PAIR::SINGLE",
+      "DOO25::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "DOO25::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+      "LOS3A::PZ-005::DEC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-005::INC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-006::INC_ABOVE::SYSTEM_PAIR::SINGLE",
+      "LOS3A::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "LOS3A::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+      "POL17::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+      "POL17::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE"
+     ],
+     "negatives_flagged": []
+    },
+    "evidence_strict": {
+     "variant": "evidence_strict",
+     "n_gold_positive": 32,
+     "n_gold_positive_evaluable": 0,
+     "n_gold_negative": 41,
+     "n_pred_positive": 11,
+     "outcomes": {
+      "not_evaluable": 11
+     },
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_open": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "f1_open": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 41,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.0857
+      ]
+     },
+     "negatives_confirmed": {
+      "k": 18,
+      "n": 41,
+      "rate": 0.439,
+      "wilson95": [
+       0.2989,
+       0.5896
+      ]
+     },
+     "critical_recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "found": [],
+     "missed": [],
+     "negatives_flagged": []
+    }
+   },
+   "localization_completeness": {
+    "n_found_at_key": 11,
+    "file_page": {
+     "k": 11,
+     "n": 11,
+     "rate": 1.0,
+     "wilson95": [
+      0.7412,
+      1.0
+     ]
+    },
+    "file_page_iou50": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "wilson95": null
+    },
+    "strict_not_evaluable": 11
+   },
+   "document_linkage": {
+    "available": false
+   },
+   "by_tier": {
+    "SEED_L1_DEV": {
+     "n_pos": 14,
+     "n_neg": 18,
+     "recall": {
+      "k": 9,
+      "n": 14,
+      "rate": 0.6429,
+      "wilson95": [
+       0.3876,
+       0.8366
+      ]
+     },
+     "precision_closed": {
+      "k": 9,
+      "n": 9,
+      "rate": 1.0,
+      "wilson95": [
+       0.7008,
+       1.0
+      ]
+     },
+     "f1_closed": 0.7826,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 18,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1759
+      ]
+     }
+    },
+    "SEED_L1_HOLDOUT": {
+     "n_pos": 18,
+     "n_neg": 23,
+     "recall": {
+      "k": 2,
+      "n": 18,
+      "rate": 0.1111,
+      "wilson95": [
+       0.031,
+       0.328
+      ]
+     },
+     "precision_closed": {
+      "k": 2,
+      "n": 2,
+      "rate": 1.0,
+      "wilson95": [
+       0.3424,
+       1.0
+      ]
+     },
+     "f1_closed": 0.2,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 23,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.1431
+      ]
+     }
+    }
+   },
+   "by_section": {
+    "Раздел 1. ПЗ": {
+     "n_pos": 26,
+     "n_neg": 35,
+     "recall": {
+      "k": 11,
+      "n": 26,
+      "rate": 0.4231,
+      "wilson95": [
+       0.2554,
+       0.6105
+      ]
+     },
+     "precision_closed": {
+      "k": 11,
+      "n": 11,
+      "rate": 1.0,
+      "wilson95": [
+       0.7412,
+       1.0
+      ]
+     },
+     "f1_closed": 0.5946,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 35,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.0989
+      ]
+     }
+    },
+    "Раздел 2. СПЗУ": {
+     "n_pos": 4,
+     "n_neg": 5,
+     "recall": {
+      "k": 0,
+      "n": 4,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4899
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 5,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4345
+      ]
+     }
+    },
+    "Раздел 4. КР": {
+     "n_pos": 2,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    }
+   },
+   "by_type": {
+    "COMPOUND:COMPONENT_DEC": {
+     "n_pos": 2,
+     "n_neg": 0,
+     "recall": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "COMPOUND:IDENTITY": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 1,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "ENUM:DOWNGRADE": {
+     "n_pos": 10,
+     "n_neg": 0,
+     "recall": {
+      "k": 2,
+      "n": 10,
+      "rate": 0.2,
+      "wilson95": [
+       0.0567,
+       0.5098
+      ]
+     },
+     "precision_closed": {
+      "k": 2,
+      "n": 2,
+      "rate": 1.0,
+      "wilson95": [
+       0.3424,
+       1.0
+      ]
+     },
+     "f1_closed": 0.3333,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "ENUM:FORMAT_ONLY": {
+     "n_pos": 0,
+     "n_neg": 10,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 10,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2775
+      ]
+     }
+    },
+    "ENUM:IDENTITY": {
+     "n_pos": 0,
+     "n_neg": 5,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 5,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4345
+      ]
+     }
+    },
+    "NUMERIC_TABLE:DEC_ABOVE": {
+     "n_pos": 10,
+     "n_neg": 0,
+     "recall": {
+      "k": 5,
+      "n": 10,
+      "rate": 0.5,
+      "wilson95": [
+       0.2366,
+       0.7634
+      ]
+     },
+     "precision_closed": {
+      "k": 5,
+      "n": 5,
+      "rate": 1.0,
+      "wilson95": [
+       0.5655,
+       1.0
+      ]
+     },
+     "f1_closed": 0.6667,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "NUMERIC_TABLE:FORMAT_ONLY": {
+     "n_pos": 0,
+     "n_neg": 10,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 10,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2775
+      ]
+     }
+    },
+    "NUMERIC_TABLE:IDENTITY": {
+     "n_pos": 0,
+     "n_neg": 5,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 5,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.4345
+      ]
+     }
+    },
+    "NUMERIC_TABLE:INC_ABOVE": {
+     "n_pos": 10,
+     "n_neg": 0,
+     "recall": {
+      "k": 4,
+      "n": 10,
+      "rate": 0.4,
+      "wilson95": [
+       0.1682,
+       0.6873
+      ]
+     },
+     "precision_closed": {
+      "k": 4,
+      "n": 4,
+      "rate": 1.0,
+      "wilson95": [
+       0.5101,
+       1.0
+      ]
+     },
+     "f1_closed": 0.5714,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     }
+    },
+    "NUMERIC_TABLE:WITHIN_TOL": {
+     "n_pos": 0,
+     "n_neg": 10,
+     "recall": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "precision_closed": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "wilson95": null
+     },
+     "f1_closed": null,
+     "false_positive_rate": {
+      "k": 0,
+      "n": 10,
+      "rate": 0.0,
+      "wilson95": [
+       0.0,
+       0.2775
+      ]
+     }
+    }
+   }
+  }
+ },
+ "notes": {
+  "C_label_stats": {
+   "silver_93_skipped_needs_review": 6,
+   "corpus_pair_equal_negative": 17,
+   "corpus_pair_covered_by_9_3": 17,
+   "corpus_pair_unequal_not_a_label": 7
+  },
+  "D_stats": {
+   "cases": 73
+  }
+ },
+ "timings": [
+  {
+   "run": "A_organizer",
+   "object": "NOV",
+   "import_seconds": 5.0,
+   "run_process_seconds": 87.0,
+   "finding_status": {
+    "MISSING_EVIDENCE": 21,
+    "NOT_COMPARABLE": 108,
+    "NEGATIVE_VERIFIED": 5
+   },
+   "violation_label": {
+    "COMPARISON_IMPOSSIBLE": 129,
+    "NO_VIOLATION": 5
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 36 из 36 документов (только первые страницы у 1); RD: просканировано 10 из 10 документов; ID: просканировано 0 из 99 документов (ошибок чтения 99)"
+  },
+  {
+   "run": "A_organizer",
+   "object": "RECH",
+   "import_seconds": 14.3,
+   "run_process_seconds": 236.2,
+   "finding_status": {
+    "NOT_COMPARABLE": 97,
+    "MISSING_EVIDENCE": 30,
+    "NEGATIVE_VERIFIED": 6
+   },
+   "violation_label": {
+    "COMPARISON_IMPOSSIBLE": 99,
+    "MISSING_DOCUMENT": 28,
+    "NO_VIOLATION": 6
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 89 из 89 документов (только первые страницы у 7); RD: просканировано 44 из 44 документов (не PDF 49); ID: просканировано 31 из 31 документов (только первые страницы у 22; без текстового слоя 11)"
+  },
+  {
+   "run": "A_organizer",
+   "object": "TYU",
+   "import_seconds": 5.9,
+   "run_process_seconds": 191.4,
+   "finding_status": {
+    "CLARIFICATION_REQUIRED": 130,
+    "CANDIDATE": 6,
+    "NEGATIVE_VERIFIED": 1
+   },
+   "violation_label": {
+    "COMPARISON_IMPOSSIBLE": 130,
+    "VIOLATION_PRESENT": 6,
+    "NO_VIOLATION": 1
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 47 из 47 документов (только первые страницы у 5)"
+  },
+  {
+   "run": "B_live",
+   "object": "NOV",
+   "import_seconds": 1.9,
+   "run_process_seconds": 21.0,
+   "finding_status": {
+    "MISSING_EVIDENCE": 105,
+    "NOT_COMPARABLE": 27
+   },
+   "violation_label": {
+    "COMPARISON_IMPOSSIBLE": 132
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 36 из 36 документов (только первые страницы у 1); RD: просканировано 10 из 10 документов; ID: просканировано 0 из 99 документов (ошибок чтения 99)"
+  },
+  {
+   "run": "B_live",
+   "object": "RECH",
+   "import_seconds": 3.7,
+   "run_process_seconds": 40.7,
+   "finding_status": {
+    "MISSING_EVIDENCE": 99,
+    "NOT_COMPARABLE": 31,
+    "NEGATIVE_VERIFIED": 2
+   },
+   "violation_label": {
+    "COMPARISON_IMPOSSIBLE": 130,
+    "NO_VIOLATION": 2
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 89 из 89 документов (только первые страницы у 7); RD: просканировано 44 из 44 документов (не PDF 49); ID: просканировано 31 из 31 документов (только первые страницы у 22; без текстового слоя 11)"
+  },
+  {
+   "run": "B_live",
+   "object": "TYU",
+   "import_seconds": 1.7,
+   "run_process_seconds": 48.0,
+   "finding_status": {
+    "CLARIFICATION_REQUIRED": 132
+   },
+   "violation_label": {
+    "COMPARISON_IMPOSSIBLE": 132
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 47 из 47 документов (только первые страницы у 5)"
+  },
+  {
+   "run": "new",
+   "object": "ALT79B",
+   "import_seconds": 0.2,
+   "run_process_seconds": 64.4,
+   "finding_status": {
+    "MISSING_EVIDENCE": 130,
+    "NOT_COMPARABLE": 2
+   },
+   "violation_label": {
+    "MISSING_DOCUMENT": 130,
+    "COMPARISON_IMPOSSIBLE": 2
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 68 из 68 документов (только первые страницы у 1); RD: просканировано 10 из 10 документов (только первые страницы у 1)"
+  },
+  {
+   "run": "new",
+   "object": "DOO25",
+   "import_seconds": 5.0,
+   "run_process_seconds": 353.8,
+   "finding_status": {
+    "MISSING_EVIDENCE": 100,
+    "NOT_COMPARABLE": 32
+   },
+   "violation_label": {
+    "COMPARISON_IMPOSSIBLE": 132
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 85 из 85 документов (только первые страницы у 8; не PDF 3); RD: просканировано 656 из 656 документов (только первые страницы у 7; без текстового слоя 385; не PDF 227); ID: просканировано 553 из 553 документов (только первые страницы у 3; без текстового слоя 384; не PDF 226)"
+  },
+  {
+   "run": "new",
+   "object": "IZM12",
+   "import_seconds": 0.3,
+   "run_process_seconds": 153.4,
+   "finding_status": {
+    "MISSING_EVIDENCE": 126,
+    "NOT_COMPARABLE": 6
+   },
+   "violation_label": {
+    "MISSING_DOCUMENT": 103,
+    "COMPARISON_IMPOSSIBLE": 29
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 54 из 54 документов (только первые страницы у 2); RD: просканировано 9 из 9 документов; ID: просканировано 9 из 9 документов (только первые страницы у 2)"
+  },
+  {
+   "run": "new",
+   "object": "LOS3A",
+   "import_seconds": 0.4,
+   "run_process_seconds": 206.2,
+   "finding_status": {
+    "MISSING_EVIDENCE": 101,
+    "NOT_COMPARABLE": 28,
+    "NEGATIVE_VERIFIED": 3
+   },
+   "violation_label": {
+    "COMPARISON_IMPOSSIBLE": 129,
+    "NO_VIOLATION": 3
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 47 из 47 документов (только первые страницы у 3); RD: просканировано 103 из 103 документов; ID: просканировано 1 из 1 документов (только первые страницы у 1)"
+  },
+  {
+   "run": "new",
+   "object": "OKT103",
+   "import_seconds": 0.5,
+   "run_process_seconds": 65.2,
+   "finding_status": {
+    "MISSING_EVIDENCE": 101,
+    "NOT_COMPARABLE": 31
+   },
+   "violation_label": {
+    "COMPARISON_IMPOSSIBLE": 132
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 23 из 23 документов (только первые страницы у 5); RD: просканировано 15 из 15 документов (не PDF 1); ID: просканировано 67 из 67 документов (без текстового слоя 45; не PDF 69)"
+  },
+  {
+   "run": "new",
+   "object": "POL17",
+   "import_seconds": 0.3,
+   "run_process_seconds": 196.7,
+   "finding_status": {
+    "MISSING_EVIDENCE": 97,
+    "NOT_COMPARABLE": 34,
+    "NEGATIVE_VERIFIED": 1
+   },
+   "violation_label": {
+    "COMPARISON_IMPOSSIBLE": 131,
+    "NO_VIOLATION": 1
+   },
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 65 из 65 документов (только первые страницы у 4); RD: просканировано 51 из 51 документов; ID: просканировано 26 из 26 документов (только первые страницы у 4)"
+  }
+ ],
+ "assumed_domain_codes": {
+  "ALT79B-V01": {
+   "codes": [
+    "PZ-002",
+    "PZ-003"
+   ],
+   "type": "EXPLICATION_ROOM_FUNCTIONS_AREAS"
+  },
+  "UNDMS-V01": {
+   "codes": [
+    "AR-044",
+    "KR-059"
+   ],
+   "type": "LAYER_COMPOSITION_CHANGE_SHEET"
+  },
+  "IZM12-V01": {
+   "codes": [
+    "KR-058",
+    "KR-055"
+   ],
+   "type": "ID_REPAIR_SCHEME"
+  },
+  "LOS3A-V01": {
+   "codes": [
+    "ODI-119"
+   ],
+   "type": "LAYOUT_CHANGE_SHEET"
+  },
+  "OKT103-V01": {
+   "codes": [
+    "KR-054",
+    "KR-060",
+    "KR-061"
+   ],
+   "type": "ID_TOLERANCE_EXCEEDED"
+  },
+  "POL16-V01": {
+   "codes": [
+    "PZ-002",
+    "PZ-003",
+    "PZ-011"
+   ],
+   "type": "EXPLICATION_APARTMENT_AREAS"
+  },
+  "DOO25-V01": {
+   "codes": [
+    "PZ-002",
+    "PZ-003",
+    "PZ-013"
+   ],
+   "type": "EXPLICATION_ROOM_FUNCTIONS_AREAS"
+  },
+  "SOSH25-V01": {
+   "codes": [
+    "PZ-002",
+    "PZ-003"
+   ],
+   "type": "EXPLICATION_ROOM_ADDED"
+  },
+  "POL17-N01": {
+   "codes": [],
+   "type": "NEGATIVE_PAIR"
+  }
+ }
+}

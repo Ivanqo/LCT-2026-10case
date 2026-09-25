@@ -1,0 +1,46 @@
+{
+ "object": "TYU",
+ "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+ "mode": "live",
+ "import_seconds": 1.7,
+ "run_process_seconds": 48.0,
+ "import": {
+  "organizer_annotations": "DISABLED_LIVE_MODE",
+  "files_index": {
+   "created": 0,
+   "skipped": 145,
+   "updated": 58
+  },
+  "page_index": {
+   "created": 5867,
+   "skipped": 4279,
+   "updated": 0
+  },
+  "annotations": {
+   "created": 0,
+   "skipped": 0,
+   "updated": 0
+  },
+  "document_manifest": {
+   "created": 58,
+   "updated": 0,
+   "skipped": 358
+  }
+ },
+ "finding_status": {
+  "CLARIFICATION_REQUIRED": 132
+ },
+ "violation_label": {
+  "COMPARISON_IMPOSSIBLE": 132
+ },
+ "checks": 132,
+ "submission_sha256": "9595fccbe4c92991084a2f8db13ab525909989d305c81bdcb72769a12b8f975d",
+ "scan_code_fingerprint": "7255fc3a5ce24ccb",
+ "live_tagger_coverage": "Живой тэггер кандидатов: PD: просканировано 47 из 47 документов (только первые страницы у 5)",
+ "env": {
+  "CASE10_DISABLE_ORGANIZER_ANNOTATIONS": "1",
+  "CASE10_LIVE_TAGGER_WORKERS": "3",
+  "CASE10_PARAMETER_CODE_STYLE": null,
+  "CASE10_LLM_VERIFIER_ENABLED": "0"
+ }
+}

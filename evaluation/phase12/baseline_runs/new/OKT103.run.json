@@ -1,0 +1,31 @@
+{
+ "object": "OKT103",
+ "object_id": "OBJ-NEW-OKT103",
+ "mode": "new",
+ "import_seconds": 0.5,
+ "run_process_seconds": 65.2,
+ "import": {
+  "document_manifest": {
+   "created": 175,
+   "updated": 0,
+   "skipped": 0
+  }
+ },
+ "finding_status": {
+  "MISSING_EVIDENCE": 101,
+  "NOT_COMPARABLE": 31
+ },
+ "violation_label": {
+  "COMPARISON_IMPOSSIBLE": 132
+ },
+ "checks": 132,
+ "submission_sha256": "06fdfd1fd82b9858c7ed5d207eaf51625ebce188e1ce089ac300973c10c22fca",
+ "scan_code_fingerprint": "7255fc3a5ce24ccb",
+ "live_tagger_coverage": "Живой тэггер кандидатов: PD: просканировано 23 из 23 документов (только первые страницы у 5); RD: просканировано 15 из 15 документов (не PDF 1); ID: просканировано 67 из 67 документов (без текстового слоя 45; не PDF 69)",
+ "env": {
+  "CASE10_DISABLE_ORGANIZER_ANNOTATIONS": "0",
+  "CASE10_LIVE_TAGGER_WORKERS": "3",
+  "CASE10_PARAMETER_CODE_STYLE": null,
+  "CASE10_LLM_VERIFIER_ENABLED": "0"
+ }
+}

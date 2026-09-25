@@ -276,6 +276,8 @@ def score_variant(golds: list[dict[str, Any]], preds: list[dict[str, Any]], vari
     precision_closed = wilson(outcome["tp"], outcome["tp"] + fp_closed)
     precision_open = wilson(outcome["tp"], outcome["tp"] + fp_closed + outcome["fp_unlabelled"])
     flagged = [g for g in negatives if any(p["positive"] and touches(p, g) for p in preds)]
+    # FPR = 0 is also what blanket abstention gives: how many negatives did the system actually verify (NO_VIOLATION)?
+    confirmed = [g for g in negatives if g not in flagged and any(p["label"] == "NO_VIOLATION" and touches(p, g) for p in preds)]
     critical = [g for g in evaluable if g["critical"]]
     return {
         "variant": variant,
@@ -284,6 +286,7 @@ def score_variant(golds: list[dict[str, Any]], preds: list[dict[str, Any]], vari
         "recall": recall, "precision_closed": precision_closed, "precision_open": precision_open,
         "f1_closed": _f1(precision_closed["rate"], recall["rate"]), "f1_open": _f1(precision_open["rate"], recall["rate"]),
         "false_positive_rate": wilson(len(flagged), len(negatives)),
+        "negatives_confirmed": wilson(len(confirmed), len(negatives)),
         "critical_recall": wilson(sum(g["gold_id"] in found for g in critical), len(critical)),
         "found": sorted(found), "missed": sorted(g["gold_id"] for g in evaluable if g["gold_id"] not in found),
         "negatives_flagged": sorted(g["gold_id"] for g in flagged),
@@ -374,7 +377,10 @@ def render_summary(report: dict[str, Any], title: str = "") -> str:
         lines.append(f"| {variant} | {_fmt(s['recall'])} | {_fmt(s['precision_closed'])} | {_fmt(s['precision_open'])} | "
                      f"{s['f1_closed'] if s['f1_closed'] is not None else '—'} / {s['f1_open'] if s['f1_open'] is not None else '—'} | {_fmt(s['false_positive_rate'])} |")
     loc = report["localization_completeness"]
-    lines += ["", f"Полнота локализации: file+page {_fmt(loc['file_page'])}; +IoU≥0,5 {_fmt(loc['file_page_iou50'])} (без прямоугольников в gold: {loc['strict_not_evaluable']})."]
+    primary = report["variants"][PRIMARY_VARIANT]
+    lines += ["", f"Отрицательные, подтверждённые вердиктом NO_VIOLATION (а не воздержанием): {_fmt(primary['negatives_confirmed'])}; "
+                  f"recall критических (HIGH): {_fmt(primary['critical_recall'])}."]
+    lines += [f"Полнота локализации: file+page {_fmt(loc['file_page'])}; +IoU≥0,5 {_fmt(loc['file_page_iou50'])} (без прямоугольников в gold: {loc['strict_not_evaluable']})."]
     link = report["document_linkage"]
     if link.get("available"):
         lines.append(f"Связка документов: объект+стадия {_fmt(link['object_stage_exact'])}; шифр+редакция проверяемы у {link['code_revision_verifiable']} из {link['n_cited_evidence']}; ссылок на исключённые файлы {link['cites_excluded_file']}.")

@@ -91,6 +91,12 @@ class GraderSimTest(unittest.TestCase):
         self.assertEqual(s["precision_closed"]["rate"], 0.5)                           # 1 TP / (1 + 1 on the negative)
         self.assertAlmostEqual(s["precision_open"]["rate"], 0.3333, places=4)          # + the unlabelled one
         self.assertEqual(s["outcomes"], {"tp": 1, "fp_labelled_negative_key": 1, "fp_unlabelled": 1})
+        self.assertEqual(s["negatives_confirmed"]["k"], 0)                             # flagged, so not confirmed
+        verified = gs.evaluate([NEG], preds(check("KR-055", "Фундаментная плита", label="NO_VIOLATION")))
+        self.assertEqual(verified["variants"][gs.PRIMARY_VARIANT]["negatives_confirmed"]["k"], 1)
+        abstained = gs.evaluate([NEG], preds(check("KR-055", "Фундаментная плита", label="COMPARISON_IMPOSSIBLE")))
+        s = abstained["variants"][gs.PRIMARY_VARIANT]
+        self.assertEqual((s["false_positive_rate"]["k"], s["negatives_confirmed"]["k"]), (0, 0))
 
     def test_page_pair_gold_matches_by_pages_and_assumed_code_separately(self):
         pair = gs.gold_item(gold_id="ALT-V01", object_id="OBJ-NEW-ALT", label=gs.POSITIVE, match_mode=gs.MATCH_PAGE_PAIR,

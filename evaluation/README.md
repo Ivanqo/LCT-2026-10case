@@ -77,3 +77,17 @@ its output is reproducible. Report, numbers and limitations:
 family, seeded violations L1/L2, real discrepancies) and the regenerable critical-recall matrix
 (`evaluation/reports/critical_recall_matrix.{json,md}`).  Run order and commands: `evaluation/measurement_bench/README.md`;
 findings: `evaluation/MEASUREMENT_BENCH_REPORT.md`.
+
+## Phase 12: ТЗ 1.1 conventions and the grader simulator (P0)
+
+- Export: `parameter_code` is the matrix 1.1 code (M-001…M-132) by default (`CASE10_PARAMETER_CODE_STYLE=matrix11|legacy`),
+  plus `parameter_id`, `parameter_code_legacy` and the GOLD 1.1 fields on every check and evidence item
+  (`evidence_group_id`, `finding_id`, `source_expected_*`/`source_actual_*`, `completeness_status`, `finding_status`,
+  `bbox_norm`, versions, `input_manifest_hash`). The organizer's `submission_schema.json` (copy in `phase12/`) stays valid;
+  example: `phase12/example_submission_gold11.json`. Code table: `api_service/app/domain/matrix_v11_codes.json`
+  (`python evaluation/phase12/build_matrix_v11_table.py --check`).
+- Live mode: `CASE10_DISABLE_ORGANIZER_ANNOTATIONS=1` imports an official object without `annotations.jsonl` and without
+  the organizer's stage/section/matrix_codes labels (stage from the package folder names).
+- `grader_sim.py`: metrics of §14.3 / sheet «МЕТРИКИ» by evidence group (see its docstring for the exact match rules);
+  label sets A–D: `phase12/gold_sets.py`; baseline runs: `phase12/run_baseline.py`; scoring: `phase12/score_baseline.py`;
+  results and method: [phase12/PHASE12_BASELINE.md](phase12/PHASE12_BASELINE.md).

@@ -1,0 +1,32 @@
+{
+ "object": "IZM12",
+ "object_id": "OBJ-NEW-IZM12",
+ "mode": "new",
+ "import_seconds": 0.3,
+ "run_process_seconds": 153.4,
+ "import": {
+  "document_manifest": {
+   "created": 72,
+   "updated": 0,
+   "skipped": 0
+  }
+ },
+ "finding_status": {
+  "MISSING_EVIDENCE": 126,
+  "NOT_COMPARABLE": 6
+ },
+ "violation_label": {
+  "MISSING_DOCUMENT": 103,
+  "COMPARISON_IMPOSSIBLE": 29
+ },
+ "checks": 132,
+ "submission_sha256": "6b626ac8c08d46b5f402aca63b472fe331269353cdeee9bf34bf9abfecd64aa5",
+ "scan_code_fingerprint": "7255fc3a5ce24ccb",
+ "live_tagger_coverage": "Живой тэггер кандидатов: PD: просканировано 54 из 54 документов (только первые страницы у 2); RD: просканировано 9 из 9 документов; ID: просканировано 9 из 9 документов (только первые страницы у 2)",
+ "env": {
+  "CASE10_DISABLE_ORGANIZER_ANNOTATIONS": "0",
+  "CASE10_LIVE_TAGGER_WORKERS": "3",
+  "CASE10_PARAMETER_CODE_STYLE": null,
+  "CASE10_LLM_VERIFIER_ENABLED": "0"
+ }
+}

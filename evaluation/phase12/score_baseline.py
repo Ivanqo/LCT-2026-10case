@@ -55,7 +55,7 @@ def main() -> int:
     parser.add_argument("--seeds", type=Path)
     parser.add_argument("--out-json", type=Path, default=HERE / "baseline_metrics.json")
     parser.add_argument("--out-md", type=Path, default=HERE / "baseline_tables.md")
-    parser.add_argument("--copy-runs", type=Path, default=HERE / "baseline_runs")
+    parser.add_argument("--copy-runs", default=str(HERE / "baseline_runs"), help="where to copy the scored run files; \"\" = do not copy")
     args = parser.parse_args()
 
     registry = gold_sets.registry()
@@ -107,7 +107,7 @@ def main() -> int:
 
     if args.copy_runs:
         for mode in ("A_organizer", "B_live", "new"):
-            target = args.copy_runs / mode
+            target = Path(args.copy_runs) / mode
             target.mkdir(parents=True, exist_ok=True)
             for path in (args.runs / mode).glob("*.json"):
                 shutil.copy2(path, target / path.name)

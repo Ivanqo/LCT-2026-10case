@@ -1,0 +1,33 @@
+{
+ "object": "LOS3A",
+ "object_id": "OBJ-NEW-LOS3A",
+ "mode": "new",
+ "import_seconds": 0.4,
+ "run_process_seconds": 206.2,
+ "import": {
+  "document_manifest": {
+   "created": 151,
+   "updated": 0,
+   "skipped": 0
+  }
+ },
+ "finding_status": {
+  "MISSING_EVIDENCE": 101,
+  "NOT_COMPARABLE": 28,
+  "NEGATIVE_VERIFIED": 3
+ },
+ "violation_label": {
+  "COMPARISON_IMPOSSIBLE": 129,
+  "NO_VIOLATION": 3
+ },
+ "checks": 132,
+ "submission_sha256": "8a7db746f2e95353808e231f7bc8de856013de323339d17b382e27de22ef76fa",
+ "scan_code_fingerprint": "7255fc3a5ce24ccb",
+ "live_tagger_coverage": "Живой тэггер кандидатов: PD: просканировано 47 из 47 документов (только первые страницы у 3); RD: просканировано 103 из 103 документов; ID: просканировано 1 из 1 документов (только первые страницы у 1)",
+ "env": {
+  "CASE10_DISABLE_ORGANIZER_ANNOTATIONS": "0",
+  "CASE10_LIVE_TAGGER_WORKERS": "3",
+  "CASE10_PARAMETER_CODE_STYLE": null,
+  "CASE10_LLM_VERIFIER_ENABLED": "0"
+ }
+}

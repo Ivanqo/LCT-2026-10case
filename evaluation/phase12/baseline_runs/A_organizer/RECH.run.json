@@ -1,0 +1,50 @@
+{
+ "object": "RECH",
+ "object_id": "OBJ-RECHNIKOV-7-7",
+ "mode": "organizer",
+ "import_seconds": 14.3,
+ "run_process_seconds": 236.2,
+ "import": {
+  "organizer_annotations": "ENABLED",
+  "files_index": {
+   "created": 0,
+   "skipped": 203,
+   "updated": 213
+  },
+  "page_index": {
+   "created": 16078,
+   "skipped": 10146,
+   "updated": 0
+  },
+  "annotations": {
+   "created": 40960,
+   "skipped": 30318,
+   "updated": 0
+  },
+  "document_manifest": {
+   "created": 213,
+   "updated": 0,
+   "skipped": 203
+  }
+ },
+ "finding_status": {
+  "NOT_COMPARABLE": 97,
+  "MISSING_EVIDENCE": 30,
+  "NEGATIVE_VERIFIED": 6
+ },
+ "violation_label": {
+  "COMPARISON_IMPOSSIBLE": 99,
+  "MISSING_DOCUMENT": 28,
+  "NO_VIOLATION": 6
+ },
+ "checks": 133,
+ "submission_sha256": "c48542ef1ba395e0d3ea51b444dd29f017d474e4fa07b93f5b82a4e054e14167",
+ "scan_code_fingerprint": "7255fc3a5ce24ccb",
+ "live_tagger_coverage": "Живой тэггер кандидатов: PD: просканировано 89 из 89 документов (только первые страницы у 7); RD: просканировано 44 из 44 документов (не PDF 49); ID: просканировано 31 из 31 документов (только первые страницы у 22; без текстового слоя 11)",
+ "env": {
+  "CASE10_DISABLE_ORGANIZER_ANNOTATIONS": "0",
+  "CASE10_LIVE_TAGGER_WORKERS": "3",
+  "CASE10_PARAMETER_CODE_STYLE": null,
+  "CASE10_LLM_VERIFIER_ENABLED": "0"
+ }
+}

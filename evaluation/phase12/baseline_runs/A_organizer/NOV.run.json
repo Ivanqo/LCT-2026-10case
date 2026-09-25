@@ -1,0 +1,49 @@
+{
+ "object": "NOV",
+ "object_id": "OBJ-NOVOSLOBODSKAYA",
+ "mode": "organizer",
+ "import_seconds": 5.0,
+ "run_process_seconds": 87.0,
+ "import": {
+  "organizer_annotations": "ENABLED",
+  "files_index": {
+   "created": 0,
+   "skipped": 58,
+   "updated": 145
+  },
+  "page_index": {
+   "created": 4279,
+   "skipped": 5867,
+   "updated": 0
+  },
+  "annotations": {
+   "created": 13395,
+   "skipped": 16923,
+   "updated": 0
+  },
+  "document_manifest": {
+   "created": 145,
+   "updated": 0,
+   "skipped": 271
+  }
+ },
+ "finding_status": {
+  "MISSING_EVIDENCE": 21,
+  "NOT_COMPARABLE": 108,
+  "NEGATIVE_VERIFIED": 5
+ },
+ "violation_label": {
+  "COMPARISON_IMPOSSIBLE": 129,
+  "NO_VIOLATION": 5
+ },
+ "checks": 134,
+ "submission_sha256": "049fb21283349337060e0172873521e9ce400027d5958c930ff068d33f81be33",
+ "scan_code_fingerprint": "7255fc3a5ce24ccb",
+ "live_tagger_coverage": "Живой тэггер кандидатов: PD: просканировано 36 из 36 документов (только первые страницы у 1); RD: просканировано 10 из 10 документов; ID: просканировано 0 из 99 документов (ошибок чтения 99)",
+ "env": {
+  "CASE10_DISABLE_ORGANIZER_ANNOTATIONS": "0",
+  "CASE10_LIVE_TAGGER_WORKERS": "3",
+  "CASE10_PARAMETER_CODE_STYLE": null,
+  "CASE10_LLM_VERIFIER_ENABLED": "0"
+ }
+}

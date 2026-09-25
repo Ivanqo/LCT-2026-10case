@@ -1,0 +1,31 @@
+{
+ "object": "DOO25",
+ "object_id": "OBJ-NEW-DOO25",
+ "mode": "new",
+ "import_seconds": 5.0,
+ "run_process_seconds": 353.8,
+ "import": {
+  "document_manifest": {
+   "created": 1750,
+   "updated": 0,
+   "skipped": 0
+  }
+ },
+ "finding_status": {
+  "MISSING_EVIDENCE": 100,
+  "NOT_COMPARABLE": 32
+ },
+ "violation_label": {
+  "COMPARISON_IMPOSSIBLE": 132
+ },
+ "checks": 132,
+ "submission_sha256": "328174160e157e157114b0e36ea3977e2b5ff9e60176fd01363f4e26cde020ff",
+ "scan_code_fingerprint": "7255fc3a5ce24ccb",
+ "live_tagger_coverage": "Живой тэггер кандидатов: PD: просканировано 85 из 85 документов (только первые страницы у 8; не PDF 3); RD: просканировано 656 из 656 документов (только первые страницы у 7; без текстового слоя 385; не PDF 227); ID: просканировано 553 из 553 документов (только первые страницы у 3; без текстового слоя 384; не PDF 226)",
+ "env": {
+  "CASE10_DISABLE_ORGANIZER_ANNOTATIONS": "0",
+  "CASE10_LIVE_TAGGER_WORKERS": "3",
+  "CASE10_PARAMETER_CODE_STYLE": null,
+  "CASE10_LLM_VERIFIER_ENABLED": "0"
+ }
+}

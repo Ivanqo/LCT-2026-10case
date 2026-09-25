@@ -1,0 +1,33 @@
+{
+ "object": "POL17",
+ "object_id": "OBJ-NEW-POL17",
+ "mode": "new",
+ "import_seconds": 0.3,
+ "run_process_seconds": 196.7,
+ "import": {
+  "document_manifest": {
+   "created": 142,
+   "updated": 0,
+   "skipped": 0
+  }
+ },
+ "finding_status": {
+  "MISSING_EVIDENCE": 97,
+  "NOT_COMPARABLE": 34,
+  "NEGATIVE_VERIFIED": 1
+ },
+ "violation_label": {
+  "COMPARISON_IMPOSSIBLE": 131,
+  "NO_VIOLATION": 1
+ },
+ "checks": 132,
+ "submission_sha256": "f8cf527511cdacc0b4dbf9c663c4bf10c0804f5ec28b630a941bcc11f03b6177",
+ "scan_code_fingerprint": "7255fc3a5ce24ccb",
+ "live_tagger_coverage": "Живой тэггер кандидатов: PD: просканировано 65 из 65 документов (только первые страницы у 4); RD: просканировано 51 из 51 документов; ID: просканировано 26 из 26 документов (только первые страницы у 4)",
+ "env": {
+  "CASE10_DISABLE_ORGANIZER_ANNOTATIONS": "0",
+  "CASE10_LIVE_TAGGER_WORKERS": "3",
+  "CASE10_PARAMETER_CODE_STYLE": null,
+  "CASE10_LLM_VERIFIER_ENABLED": "0"
+ }
+}
