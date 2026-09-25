@@ -36,6 +36,53 @@ INTERNAL_TO_DATASET_STAGE = {
     "as_built": "ID",
 }
 
+# Live mode (Phase 12, set B): the organizer's index files may be unavailable on the hidden test (expert session §34),
+# so `CASE10_DISABLE_ORGANIZER_ANNOTATIONS=1` imports an official object as a raw package would arrive: no
+# `annotations.jsonl` (source_system="learning_annotation"), and the organizer-made labels below are withheld from
+# files_index / document_manifest / page_index rows. The stage then comes from the package's own folder names
+# (`stage_from_package_path`), the section from the file name (document_facts). Identity, path, SHA-256, size and
+# page geometry are properties of the files themselves and are kept.
+ORGANIZER_ANNOTATIONS_ENV = "CASE10_DISABLE_ORGANIZER_ANNOTATIONS"
+ORGANIZER_INDEX_LABEL_FIELDS = frozenset({
+    "stage", "section", "matrix_codes",
+    "annotation_count", "annotation_types", "annotation_status", "limitation",
+    "dataset_role", "distribution_status", "exclusion_reason", "duplicate_group",
+})
+STAGE_SOURCE_PACKAGE_PATH = "PACKAGE_PATH"
+_PATH_WORD_RE = re.compile(r"[0-9a-zа-яё]+")
+
+
+def organizer_annotations_disabled() -> bool:
+    return os.getenv(ORGANIZER_ANNOTATIONS_ENV, "0").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def stage_from_package_path(relative_path: object) -> str:
+    """PD / RD / ID / RD_ID_MIXED / UNKNOWN from the folder names of a package path, the first (outermost) folder
+    that names a stage winning: «ПД», «Стадия П», «Проектная документация» -> PD; «РД», «Стадия РД», «Рабочая …» ->
+    RD; «ИД», «Исполнительная …» -> ID; a folder naming both working and as-built documentation -> RD_ID_MIXED.
+    A file with no stage folder is UNKNOWN (never guessed from its content here)."""
+    parts = PurePosixPath(str(relative_path or "").replace("\\", "/")).parts[:-1]
+    for folder in parts:
+        words = _PATH_WORD_RE.findall(folder.casefold())
+        rd = "рд" in words or "рабочая" in words
+        as_built = "ид" in words or any(word.startswith("исполнител") for word in words)
+        pd = "пд" in words or "проектная" in words or ("стадия" in words and "п" in words)
+        if rd and as_built:
+            return "RD_ID_MIXED"
+        found = [stage for stage, hit in (("PD", pd), ("RD", rd), ("ID", as_built)) if hit]
+        if len(found) == 1:
+            return found[0]
+    return "UNKNOWN"
+
+
+def _live_index_row(row: dict[str, Any], *, with_stage: bool = True) -> dict[str, Any]:
+    """An organizer index row reduced to what the raw package itself carries (see ORGANIZER_INDEX_LABEL_FIELDS)."""
+    out = {key: value for key, value in row.items() if key not in ORGANIZER_INDEX_LABEL_FIELDS}
+    if with_stage:
+        out["stage"] = stage_from_package_path(row.get("relative_path") or row.get("source_relative_path"))
+        out["stage_source"] = STAGE_SOURCE_PACKAGE_PATH
+    return out
+
 
 def ensure_official_matrix(
     db: Session,
@@ -121,6 +168,9 @@ def import_official_dataset(
 ) -> dict[str, Any]:
     paths = find_dataset_paths(dataset_root)
     matrix = ensure_official_matrix(db, organization_id=organization_id, project_id=project_id, dataset_root=dataset_root)
+    live_mode = organizer_annotations_disabled()
+    if live_mode:
+        include_annotations = False
     selected = {str(value).strip() for value in (object_ids or PUBLIC_OBJECT_IDS) if str(value).strip()}
     if include_hidden and not object_ids:
         selected.update(HIDDEN_OBJECT_IDS)
@@ -132,6 +182,7 @@ def import_official_dataset(
         "matrix_version": matrix.version,
         "matrix_params": db.query(Param).filter(Param.matrix_version_id == int(matrix.id), Param.is_active == True).count(),  # noqa: E712
         "objects": sorted(selected),
+        "organizer_annotations": "DISABLED_LIVE_MODE" if live_mode else "ENABLED",
         "document_manifest": {"created": 0, "updated": 0, "skipped": 0},
         "files_index": {"created": 0, "updated": 0, "skipped": 0},
         "page_index": {"created": 0, "updated": 0, "skipped": 0},
@@ -147,6 +198,7 @@ def import_official_dataset(
             project_id=project_id,
             organization_id=organization_id,
             object_ids=selected,
+            live_mode=live_mode,
         )
 
     train_dir = paths.get("train_public_data_dir")
@@ -159,6 +211,7 @@ def import_official_dataset(
             object_ids=selected,
             include_pages=include_pages,
             include_annotations=include_annotations,
+            live_mode=live_mode,
         )
         summary["files_index"] = _merge_counts(summary["files_index"], result["files_index"])
         summary["page_index"] = _merge_counts(summary["page_index"], result["page_index"])
@@ -175,6 +228,7 @@ def import_official_dataset(
                 object_ids=selected,
                 include_pages=include_pages,
                 include_annotations=include_annotations,
+                live_mode=live_mode,
             )
             summary["files_index"] = _merge_counts(summary["files_index"], result["files_index"])
             summary["page_index"] = _merge_counts(summary["page_index"], result["page_index"])
@@ -248,12 +302,15 @@ def _import_document_manifest(
     project_id: int,
     organization_id: int,
     object_ids: set[str],
+    live_mode: bool = False,
 ) -> dict[str, int]:
     counts = Counter({"created": 0, "updated": 0, "skipped": 0})
     for row in _read_jsonl(path):
         if row.get("object_id") not in object_ids:
             counts["skipped"] += 1
             continue
+        if live_mode:
+            row = _live_index_row(row)
         _ensure_object(db, row, project_id=project_id, organization_id=organization_id)
         created = _upsert_document_version(db, row, project_id=project_id, organization_id=organization_id, metadata_source="document_manifest")
         counts["created" if created else "updated"] += 1
@@ -270,6 +327,7 @@ def _import_learning_split(
     object_ids: set[str],
     include_pages: bool,
     include_annotations: bool,
+    live_mode: bool = False,
 ) -> dict[str, dict[str, int]]:
     files_counts = Counter({"created": 0, "updated": 0, "skipped": 0})
     files_path = data_dir / "files_index.jsonl"
@@ -278,6 +336,8 @@ def _import_learning_split(
             if row.get("object_id") not in object_ids:
                 files_counts["skipped"] += 1
                 continue
+            if live_mode:
+                row = _live_index_row(row)
             _ensure_object(db, row, project_id=project_id, organization_id=organization_id)
             created = _upsert_document_version(db, row, project_id=project_id, organization_id=organization_id, metadata_source="files_index")
             files_counts["created" if created else "updated"] += 1
@@ -298,6 +358,8 @@ def _import_learning_split(
                 if not doc:
                     page_counts["skipped"] += 1
                     continue
+                if live_mode:
+                    row = _live_index_row(row, with_stage=False)
                 external_id = f"PAGE:{row.get('split') or ''}:{row.get('file_id')}:{row.get('source_page_number') or row.get('output_page_number')}"
                 created = _upsert_source_fragment(db, existing_fragments, doc, row, source_system="learning_page_index", external_id=external_id)
                 page_counts["created" if created else "updated"] += 1
@@ -846,10 +908,30 @@ def _load_matrix_v11(path: Path) -> dict[int, dict[str, Any]]:
 
 
 def _generated_matrix_v11(catalog_rows: list[dict[str, Any]]) -> dict[int, dict[str, Any]]:
+    """Matrix 1.1 rows when the xlsx is not on disk (e.g. the delivery image): codes and priorities come from the
+    committed, drift-checked table (`matrix_v11_codes.json`); content fields from the catalog (identical by test)."""
+    from .matrix_v11 import matrix_rows
+
+    committed = {int(row["parameter_id"]): row for row in matrix_rows()}
     generated: dict[int, dict[str, Any]] = {}
     for row in catalog_rows:
         parameter_id = _optional_int(row.get("parameter_id"))
         if not parameter_id:
+            continue
+        table_row = committed.get(parameter_id)
+        if table_row is not None:
+            generated[parameter_id] = {
+                "parameter_id": parameter_id,
+                "matrix_code": table_row["matrix_code"],
+                "pd_section": row.get("pd_section"),
+                "parameter_name": row.get("parameter_name"),
+                "unit": row.get("unit"),
+                "source_pd": row.get("source_pd"),
+                "source_rd": row.get("source_rd"),
+                "source_id": row.get("source_id"),
+                "trigger": row.get("trigger"),
+                "review_priority": table_row["review_priority"],
+            }
             continue
         generated[parameter_id] = {
             "parameter_id": parameter_id,
