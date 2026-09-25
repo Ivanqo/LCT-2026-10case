@@ -91,6 +91,7 @@ from ..config import settings
 from ..db.models import DocumentVersion, Param, SourceFragment
 from . import dataset_sources
 from .anchor_search import build_semantic_query, source_hints
+from .anchor_vocab import anchor_phrases
 from .dataset_sources import document_original_ref, document_page_count_hint, extract_original_pages
 from .live_tagger_scan import (
     available_cpu_count,
@@ -207,19 +208,27 @@ def _build_param_anchors(params: list[Param]) -> dict[str, list[_ParamAnchor]]:
     by_stage: dict[str, list[_ParamAnchor]] = {stage: [] for stage in _STAGES}
     for param in sorted(params, key=lambda p: str(p.code)):
         name = str(param.parameter_name or "").strip()
-        if len(normalize_anchor_text(name)) < _MIN_ANCHOR_CHARS:
-            continue
-        hints = source_hints(param)
+        hints = None
         for stage in _STAGES:
             if not getattr(param, _STAGE_SOURCE_FIELD[stage], False):
                 continue
-            by_stage[stage].append(_ParamAnchor(
-                param=param,
-                code=str(param.code),
-                anchor_phrase=name,
-                query_text=build_semantic_query(param, stage),
-                hint_disciplines=frozenset(parse_discipline_hints(hints.get(stage))),
-            ))
+            # The catalog name first, then the anchor vocabulary's wordings for this stage (Phase 12, P0 hook): with
+            # empty vocabulary files this is exactly [name], so anchors, scan-cache keys and output are unchanged.
+            phrases = [phrase for phrase in anchor_phrases(str(param.code), name, stage)
+                       if len(normalize_anchor_text(phrase)) >= _MIN_ANCHOR_CHARS]
+            if not phrases:
+                continue
+            hints = hints if hints is not None else source_hints(param)
+            query_text = build_semantic_query(param, stage)
+            hint_disciplines = frozenset(parse_discipline_hints(hints.get(stage)))
+            for phrase in phrases:
+                by_stage[stage].append(_ParamAnchor(
+                    param=param,
+                    code=str(param.code),
+                    anchor_phrase=phrase,
+                    query_text=query_text,
+                    hint_disciplines=hint_disciplines,
+                ))
     return by_stage
 
 
