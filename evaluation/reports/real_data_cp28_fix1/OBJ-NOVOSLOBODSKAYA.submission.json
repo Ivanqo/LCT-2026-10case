@@ -1,0 +1,2539 @@
+{
+  "submission": {
+    "object_id": "OBJ-NOVOSLOBODSKAYA",
+    "checks": [
+      {
+        "parameter_code": "AR-040",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "AR-041",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-042",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 11
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-043",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "AR-044",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "AR-045",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 14
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-046",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 17
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-047",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "AR-048",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-049",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-050",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS1-068",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "IOS1-069",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "IOS1-070",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "IOS2-071",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "IOS2-073",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "IOS3-074",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "IOS4-076",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "IOS4-077",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "IOS4-078",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "IOS4-079",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "IOS5-080",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "KR-054",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0106",
+            "pdf_page_number": 17
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0139",
+            "pdf_page_number": 4
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-055",
+        "location": "Вертикальные конструкции подземной части",
+        "pd_value": "B60",
+        "rd_value": "B60",
+        "id_value": null,
+        "violation_label": "NO_VIOLATION",
+        "protocol_status": "OK",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0140",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0141",
+            "pdf_page_number": 4
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0143",
+            "pdf_page_number": 4
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0106",
+            "pdf_page_number": 49
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0106",
+            "pdf_page_number": 50
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-055",
+        "location": "Фундаментная плита",
+        "pd_value": "B40",
+        "rd_value": "B40",
+        "id_value": null,
+        "violation_label": "NO_VIOLATION",
+        "protocol_status": "OK",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0140",
+            "pdf_page_number": 7
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0140",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0140",
+            "pdf_page_number": 27
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0142",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0144",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0106",
+            "pdf_page_number": 49
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0106",
+            "pdf_page_number": 50
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-056",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0105",
+            "pdf_page_number": 4
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-057",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0107",
+            "pdf_page_number": 71
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0139",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-058",
+        "location": "Фундаментная плита",
+        "pd_value": "1000/1200 мм",
+        "rd_value": "1200/1500 мм",
+        "id_value": null,
+        "violation_label": "NO_VIOLATION",
+        "protocol_status": "OK",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0140",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0106",
+            "pdf_page_number": 53
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-059",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0105",
+            "pdf_page_number": 13
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0139",
+            "pdf_page_number": 3
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-060",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0106",
+            "pdf_page_number": 17
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0139",
+            "pdf_page_number": 4
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-061",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0105",
+            "pdf_page_number": 13
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0136",
+            "pdf_page_number": 3
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-062",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0105",
+            "pdf_page_number": 23
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0136",
+            "pdf_page_number": 3
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-063",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0105",
+            "pdf_page_number": 16
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0136",
+            "pdf_page_number": 3
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-064",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0105",
+            "pdf_page_number": 23
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0139",
+            "pdf_page_number": 4
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-065",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0105",
+            "pdf_page_number": 6
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0136",
+            "pdf_page_number": 3
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-066",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0139",
+            "pdf_page_number": 4
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-115",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 11
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-116",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-117",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-119",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 13
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-120",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 185
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-121",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-123",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 23
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 19
+          }
+        ]
+      },
+      {
+        "parameter_code": "OOS-098",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0129",
+            "pdf_page_number": 17
+          }
+        ]
+      },
+      {
+        "parameter_code": "OOS-099",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 6
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 13
+          }
+        ]
+      },
+      {
+        "parameter_code": "OOS-100",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 12
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 92
+          }
+        ]
+      },
+      {
+        "parameter_code": "OOS-101",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0114",
+            "pdf_page_number": 78
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-090",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 5
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 12
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-091",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0001",
+            "pdf_page_number": 1
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 55
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-092",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 8
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 20
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-096",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 59
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-097",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 7
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 9
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-081",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0112",
+            "pdf_page_number": 14
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-083",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0112",
+            "pdf_page_number": 5
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-085",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0112",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-087",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0112",
+            "pdf_page_number": 5
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-102",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-103",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 11
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-104",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-105",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-106",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "PPM-107",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 9
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-108",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "PPM-109",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 9
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-110",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "PPM-111",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-112",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 11
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-113",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "PPM-114",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 13
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-001",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 9
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-002",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 9
+          },
+          {
+            "stage": "ID",
+            "file_id": "F0002",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-004",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 9
+          },
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 5
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 2
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-005",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 9
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0145",
+            "pdf_page_number": 4
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-006",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 83
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-007",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-008",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 53
+          },
+          {
+            "stage": "ID",
+            "file_id": "F0002",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-009",
+        "location": "Отметка 0.000",
+        "pd_value": "159.95",
+        "rd_value": "159.95",
+        "id_value": null,
+        "violation_label": "NO_VIOLATION",
+        "protocol_status": "OK",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0145",
+            "pdf_page_number": 4
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 13
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 9
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0122",
+            "pdf_page_number": 8
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0128",
+            "pdf_page_number": 8
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0131",
+            "pdf_page_number": 8
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0133",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-010",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-011",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 9
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-012",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 13
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-013",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 47
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-014",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0122",
+            "pdf_page_number": 35
+          },
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 6
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0138",
+            "pdf_page_number": 19
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-015",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0081",
+            "pdf_page_number": 16
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 21
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0138",
+            "pdf_page_number": 20
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-016",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0081",
+            "pdf_page_number": 1
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 52
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-017",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 182
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-018",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 131
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-019",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0114",
+            "pdf_page_number": 73
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-020",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0002",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0100",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-021",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0100",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-022",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-023",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 7
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0100",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-027",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-028",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 7
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 9
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-030",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0002",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-031",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0108",
+            "pdf_page_number": 7
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-032",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 83
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-034",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 15
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-035",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 8
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 17
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-037",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0011",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 8
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-038",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0013",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 10
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-039",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0100",
+            "pdf_page_number": 8
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0138",
+            "pdf_page_number": 16
+          },
+          {
+            "stage": "ID",
+            "file_id": "F0001",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-124",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 194
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-125",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 14
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0145",
+            "pdf_page_number": 4
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-126",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 14
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-127",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 199
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-128",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 14
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-131",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0099",
+            "pdf_page_number": 13
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0100",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-051",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-052",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 14
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-053",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0104",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS2-072",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "IOS3-075",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "KR-067",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0105",
+            "pdf_page_number": 24
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0139",
+            "pdf_page_number": 3
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-118",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-122",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 11
+          },
+          {
+            "stage": "ID",
+            "file_id": "F0001",
+            "pdf_page_number": 1
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-093",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0002",
+            "pdf_page_number": 2
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0100",
+            "pdf_page_number": 7
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0145",
+            "pdf_page_number": 4
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-094",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 5
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 14
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-095",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0114",
+            "pdf_page_number": 53
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-082",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0112",
+            "pdf_page_number": 5
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-084",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0112",
+            "pdf_page_number": 9
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-086",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0112",
+            "pdf_page_number": 5
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-088",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0112",
+            "pdf_page_number": 22
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-089",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0112",
+            "pdf_page_number": 15
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-003",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 35
+          }
+        ]
+      },
+      {
+        "parameter_code": "SM-132",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 187
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-024",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0071",
+            "pdf_page_number": 6
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0114",
+            "pdf_page_number": 17
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 2
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-025",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 70
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-026",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 70
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-029",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 10
+          },
+          {
+            "stage": "ID",
+            "file_id": "F0001",
+            "pdf_page_number": 1
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-033",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0109",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-036",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0002",
+            "pdf_page_number": 3
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0102",
+            "pdf_page_number": 13
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0137",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-129",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0081",
+            "pdf_page_number": 6
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0100",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-130",
+        "location": "OBJ-NOVOSLOBODSKAYA",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "ID",
+            "file_id": "F0086",
+            "pdf_page_number": 10
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0101",
+            "pdf_page_number": 8
+          }
+        ]
+      }
+    ]
+  },
+  "schema": "submission_schema.json",
+  "validation_errors": []
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "line_id": "F0201-P00007-L0008",
+    "rotation": 270,
+    "gold_len": 4,
+    "cer": 1.5,
+    "gold": "ЩИК:",
+    "predicted": "ровщик"
+  },
+  {
+    "line_id": "F0222-P00051-L0124",
+    "rotation": 270,
+    "gold_len": 5,
+    "cer": 1.2,
+    "gold": "2022;",
+    "predicted": "07.06.2022;"
+  },
+  {
+    "line_id": "F0206-P00081-L0003",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 1,
+    "gold": "",
+    "predicted": "TPF <<"
+  },
+  {
+    "line_id": "F0226-P00036-L0071",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 1,
+    "gold": "",
+    "predicted": "АЕ"
+  },
+  {
+    "line_id": "F0201-P00007-L0016",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 1,
+    "gold": "",
+    "predicted": "“Y"
+  },
+  {
+    "line_id": "F0231-P00023-L0048",
+    "rotation": 270,
+    "gold_len": 5,
+    "cer": 1.0,
+    "gold": "(фами",
+    "predicted": "‘фамилия,"
+  },
+  {
+    "line_id": "F0050-P00007-L0002",
+    "rotation": 270,
+    "gold_len": 7,
+    "cer": 1.0,
+    "gold": "015 082",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0208-P00038-L0013",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 1,
+    "gold": "",
+    "predicted": ">\\"
+  }
+]

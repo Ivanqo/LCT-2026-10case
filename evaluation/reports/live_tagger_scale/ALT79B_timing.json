@@ -1,0 +1,38 @@
+{
+ "object": "ALT79B",
+ "runs": [
+  {
+   "workers": 1,
+   "wall_seconds": 121.77,
+   "plan_s": 0.0,
+   "scan_s": 100.78,
+   "merge_s": 20.97,
+   "documents_scanned": 78,
+   "pages_scanned": 4105,
+   "fragments": 381,
+   "failed": 0,
+   "pages_per_second": 40.7,
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 68 из 68 документов (только первые страницы у 1); RD: просканировано 10 из 10 документов (только первые страницы у 1)"
+  },
+  {
+   "workers": 4,
+   "wall_seconds": 52.92,
+   "plan_s": 0.0,
+   "scan_s": 35.22,
+   "merge_s": 17.69,
+   "documents_scanned": 78,
+   "pages_scanned": 4105,
+   "fragments": 381,
+   "failed": 0,
+   "pages_per_second": 116.6,
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 68 из 68 документов (только первые страницы у 1); RD: просканировано 10 из 10 документов (только первые страницы у 1)"
+  }
+ ],
+ "cache": {
+  "cold_wall_seconds": 53.17,
+  "warm_wall_seconds": 18.61,
+  "warm_cache_hits": 78,
+  "warm_workers": 0,
+  "warm_scan_seconds": 0.01
+ }
+}

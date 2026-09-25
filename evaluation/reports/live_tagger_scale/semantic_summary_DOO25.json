@@ -1,0 +1,10 @@
+{
+ "object": "DOO25",
+ "threshold": 0.45,
+ "n_scored": 600,
+ "rejected": 31,
+ "min_margin": 0.0076824307441711315,
+ "margins_below_1e-3": 0,
+ "margins_below_1e-2": 2,
+ "fragments": 569
+}

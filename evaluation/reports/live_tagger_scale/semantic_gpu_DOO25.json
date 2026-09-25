@@ -1,0 +1,1 @@
+{"object": "DOO25", "n": 600, "torch": "2.5.1+cu124", "cpu": {"max_abs_diff_vs_project_cpu": 4.76837158203125e-07, "mean_abs_diff": 7.368624210357666e-08, "decision_flips": 0}, "cuda": {"max_abs_diff_vs_project_cpu": 5.960464477539062e-07, "mean_abs_diff": 9.464720884958903e-08, "decision_flips": 0}}

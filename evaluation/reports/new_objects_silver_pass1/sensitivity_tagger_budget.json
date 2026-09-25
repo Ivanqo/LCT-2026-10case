@@ -1,0 +1,286 @@
+{
+ "run1_600s_contended": {
+  "objects": [
+   "ALT79B",
+   "LOS3A",
+   "POL17"
+  ],
+  "tagger_coverage": {
+   "ALT79B": null,
+   "LOS3A": null,
+   "POL17": null
+  },
+  "run_seconds": {
+   "ALT79B": 314.9,
+   "LOS3A": 642.8,
+   "POL17": 634.5
+  },
+  "committed_groups": 14,
+  "crosstab": {
+   "NO_VIOLATION|ABSTAIN": 6,
+   "NO_VIOLATION|CANDIDATE": 5,
+   "NO_VIOLATION|NEGATIVE_VERIFIED": 4,
+   "VIOLATION_PRESENT|CANDIDATE": 1
+  },
+  "precision_of_CANDIDATE": {
+   "k": 1,
+   "n": 6,
+   "value": 0.167,
+   "wilson95": [
+    0.03,
+    0.564
+   ]
+  },
+  "npv_of_NEGATIVE_VERIFIED": {
+   "k": 4,
+   "n": 4,
+   "value": 1.0,
+   "wilson95": [
+    0.51,
+    1.0
+   ]
+  },
+  "coverage_of_determinate_checks": {
+   "k": 10,
+   "n": 16,
+   "value": 0.625,
+   "wilson95": [
+    0.386,
+    0.815
+   ]
+  },
+  "committed_check_outcomes": {
+   "LOS3A::PZ-002": "CANDIDATE",
+   "LOS3A::PZ-004": "CANDIDATE",
+   "LOS3A::PZ-005": "CANDIDATE",
+   "LOS3A::PZ-006": "CANDIDATE",
+   "LOS3A::PZ-008": "CANDIDATE",
+   "LOS3A::SPZU-024": "CANDIDATE",
+   "LOS3A::KR-067": "CANDIDATE",
+   "ALT79B::PZ-023": "NEGATIVE_VERIFIED",
+   "ALT79B::SPZU-024": "NEGATIVE_VERIFIED",
+   "ALT79B::KR-067": "NEGATIVE_VERIFIED",
+   "POL17::PZ-023": "NEGATIVE_VERIFIED",
+   "POL17::PZ-022": "NEGATIVE_VERIFIED",
+   "POL17::PZ-005": "CANDIDATE",
+   "POL17::PZ-006": "CANDIDATE"
+  }
+ },
+ "run2_600s_idle": {
+  "objects": [
+   "LOS3A"
+  ],
+  "tagger_coverage": {
+   "LOS3A": {
+    "ID": {
+     "documents": 1,
+     "tagger_scanned": 1
+    },
+    "PD": {
+     "documents": 47,
+     "tagger_scanned": 45
+    },
+    "RD": {
+     "documents": 103,
+     "tagger_scanned": 65
+    }
+   }
+  },
+  "run_seconds": {
+   "LOS3A": 616.1
+  },
+  "committed_groups": 6,
+  "crosstab": {
+   "NO_VIOLATION|ABSTAIN": 7,
+   "NO_VIOLATION|CANDIDATE": 4,
+   "VIOLATION_PRESENT|CANDIDATE": 1
+  },
+  "precision_of_CANDIDATE": {
+   "k": 1,
+   "n": 5,
+   "value": 0.2,
+   "wilson95": [
+    0.036,
+    0.624
+   ]
+  },
+  "npv_of_NEGATIVE_VERIFIED": {
+   "k": 0,
+   "n": 0,
+   "value": null,
+   "wilson95": null
+  },
+  "coverage_of_determinate_checks": {
+   "k": 5,
+   "n": 12,
+   "value": 0.417,
+   "wilson95": [
+    0.193,
+    0.68
+   ]
+  },
+  "committed_check_outcomes": {
+   "LOS3A::PZ-004": "CANDIDATE",
+   "LOS3A::PZ-005": "CANDIDATE",
+   "LOS3A::PZ-006": "CANDIDATE",
+   "LOS3A::PZ-008": "CANDIDATE",
+   "LOS3A::SPZU-024": "CANDIDATE",
+   "LOS3A::KR-067": "CANDIDATE"
+  }
+ },
+ "run3_7200s_uncapped": {
+  "objects": [
+   "ALT79B",
+   "DOO25",
+   "IZM12",
+   "LOS3A",
+   "OKT103",
+   "POL17"
+  ],
+  "tagger_coverage": {
+   "ALT79B": {
+    "PD": {
+     "documents": 68,
+     "tagger_scanned": 68
+    },
+    "RD": {
+     "documents": 10,
+     "tagger_scanned": 10
+    }
+   },
+   "DOO25": {
+    "ID": {
+     "documents": 779,
+     "tagger_scanned": 0
+    },
+    "PD": {
+     "documents": 88,
+     "tagger_scanned": 7
+    },
+    "RD": {
+     "documents": 883,
+     "tagger_scanned": 493
+    }
+   },
+   "IZM12": {
+    "ID": {
+     "documents": 9,
+     "tagger_scanned": 9
+    },
+    "PD": {
+     "documents": 54,
+     "tagger_scanned": 54
+    },
+    "RD": {
+     "documents": 9,
+     "tagger_scanned": 9
+    }
+   },
+   "LOS3A": {
+    "ID": {
+     "documents": 1,
+     "tagger_scanned": 1
+    },
+    "PD": {
+     "documents": 47,
+     "tagger_scanned": 47
+    },
+    "RD": {
+     "documents": 103,
+     "tagger_scanned": 103
+    }
+   },
+   "OKT103": {
+    "ID": {
+     "documents": 136,
+     "tagger_scanned": 136
+    },
+    "PD": {
+     "documents": 23,
+     "tagger_scanned": 23
+    },
+    "RD": {
+     "documents": 16,
+     "tagger_scanned": 16
+    }
+   },
+   "POL17": {
+    "ID": {
+     "documents": 26,
+     "tagger_scanned": 26
+    },
+    "PD": {
+     "documents": 65,
+     "tagger_scanned": 64
+    },
+    "RD": {
+     "documents": 51,
+     "tagger_scanned": 27
+    }
+   }
+  },
+  "run_seconds": {
+   "ALT79B": 238.4,
+   "DOO25": 143.4,
+   "IZM12": 291.5,
+   "LOS3A": 878.0,
+   "OKT103": 113.6,
+   "POL17": 400.8
+  },
+  "committed_groups": 19,
+  "crosstab": {
+   "NO_VIOLATION|ABSTAIN": 5,
+   "NO_VIOLATION|CANDIDATE": 3,
+   "NO_VIOLATION|NEGATIVE_VERIFIED": 9,
+   "VIOLATION_PRESENT|CANDIDATE": 1
+  },
+  "precision_of_CANDIDATE": {
+   "k": 1,
+   "n": 4,
+   "value": 0.25,
+   "wilson95": [
+    0.046,
+    0.699
+   ]
+  },
+  "npv_of_NEGATIVE_VERIFIED": {
+   "k": 9,
+   "n": 9,
+   "value": 1.0,
+   "wilson95": [
+    0.701,
+    1.0
+   ]
+  },
+  "coverage_of_determinate_checks": {
+   "k": 13,
+   "n": 18,
+   "value": 0.722,
+   "wilson95": [
+    0.491,
+    0.875
+   ]
+  },
+  "committed_check_outcomes": {
+   "LOS3A::PZ-002": "CANDIDATE",
+   "LOS3A::PZ-004": "NEGATIVE_VERIFIED",
+   "LOS3A::PZ-005": "NEGATIVE_VERIFIED",
+   "LOS3A::PZ-006": "NEGATIVE_VERIFIED",
+   "LOS3A::PZ-008": "CANDIDATE",
+   "LOS3A::PZ-022": "CANDIDATE",
+   "LOS3A::PZ-023": "NEGATIVE_VERIFIED",
+   "LOS3A::SPZU-024": "CANDIDATE",
+   "LOS3A::AR-041": "CANDIDATE",
+   "LOS3A::KR-067": "CANDIDATE",
+   "ALT79B::PZ-023": "NEGATIVE_VERIFIED",
+   "ALT79B::SPZU-024": "NEGATIVE_VERIFIED",
+   "ALT79B::KR-067": "NEGATIVE_VERIFIED",
+   "POL17::PZ-023": "NEGATIVE_VERIFIED",
+   "POL17::PZ-022": "NEGATIVE_VERIFIED",
+   "POL17::PZ-005": "CANDIDATE",
+   "POL17::PZ-006": "CANDIDATE",
+   "POL17::AR-041": "CANDIDATE",
+   "DOO25::PZ-023": "NEGATIVE_VERIFIED"
+  }
+ }
+}

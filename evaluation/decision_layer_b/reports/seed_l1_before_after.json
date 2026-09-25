@@ -1,0 +1,243 @@
+{
+ "cases_compared": 73,
+ "stand_A_scoring": {
+  "before": {
+   "must_catch": 32,
+   "recall": {
+    "k": 26,
+    "n": 32,
+    "rate": 0.8125
+   },
+   "recall_with_evidence": {
+    "k": 25,
+    "n": 32,
+    "rate": 0.7812
+   },
+   "must_not_catch": 41,
+   "fp": {
+    "k": 1,
+    "n": 41,
+    "rate": 0.0244
+   },
+   "fp_cases": [
+    "ALT79B::SPZU-024::WITHIN_TOL::SYSTEM_PAIR::ALL_COPIES"
+   ]
+  },
+  "after": {
+   "must_catch": 32,
+   "recall": {
+    "k": 11,
+    "n": 32,
+    "rate": 0.3438
+   },
+   "recall_with_evidence": {
+    "k": 11,
+    "n": 32,
+    "rate": 0.3438
+   },
+   "must_not_catch": 41,
+   "fp": {
+    "k": 0,
+    "n": 41,
+    "rate": 0.0
+   },
+   "fp_cases": []
+  }
+ },
+ "trigger_aware_scoring": {
+  "before": {
+   "must_catch": 32,
+   "recall": {
+    "k": 26,
+    "n": 32,
+    "rate": 0.8125
+   },
+   "recall_with_evidence": {
+    "k": 25,
+    "n": 32,
+    "rate": 0.7812
+   },
+   "must_not_catch": 41,
+   "fp": {
+    "k": 1,
+    "n": 41,
+    "rate": 0.0244
+   },
+   "fp_cases": [
+    "ALT79B::SPZU-024::WITHIN_TOL::SYSTEM_PAIR::ALL_COPIES"
+   ]
+  },
+  "after": {
+   "must_catch": 32,
+   "recall": {
+    "k": 11,
+    "n": 32,
+    "rate": 0.3438
+   },
+   "recall_with_evidence": {
+    "k": 11,
+    "n": 32,
+    "rate": 0.3438
+   },
+   "must_not_catch": 41,
+   "fp": {
+    "k": 0,
+    "n": 41,
+    "rate": 0.0
+   },
+   "fp_cases": []
+  }
+ },
+ "trigger_aware_on_pairs_the_gate_keeps": {
+  "cases": 32,
+  "before": {
+   "must_catch": 14,
+   "recall": {
+    "k": 11,
+    "n": 14,
+    "rate": 0.7857
+   },
+   "recall_with_evidence": {
+    "k": 11,
+    "n": 14,
+    "rate": 0.7857
+   },
+   "must_not_catch": 18,
+   "fp": {
+    "k": 0,
+    "n": 18,
+    "rate": 0.0
+   },
+   "fp_cases": []
+  },
+  "after": {
+   "must_catch": 14,
+   "recall": {
+    "k": 11,
+    "n": 14,
+    "rate": 0.7857
+   },
+   "recall_with_evidence": {
+    "k": 11,
+    "n": 14,
+    "rate": 0.7857
+   },
+   "must_not_catch": 18,
+   "fp": {
+    "k": 0,
+    "n": 18,
+    "rate": 0.0
+   },
+   "fp_cases": []
+  }
+ },
+ "recall_losses": [
+  {
+   "case_id": "ALT79B::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "revision_conflict"
+  },
+  {
+   "case_id": "ALT79B::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "revision_conflict"
+  },
+  {
+   "case_id": "ALT79B::SPZU-024::DEC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+   "kind": "GATED",
+   "after_label": "MISSING_DOCUMENT",
+   "reason": "missing_discipline_document"
+  },
+  {
+   "case_id": "ALT79B::SPZU-024::DEC_ABOVE::SYSTEM_PAIR::SINGLE",
+   "kind": "GATED",
+   "after_label": "MISSING_DOCUMENT",
+   "reason": "missing_discipline_document"
+  },
+  {
+   "case_id": "ALT79B::SPZU-024::INC_ABOVE::SYSTEM_PAIR::ALL_COPIES",
+   "kind": "GATED",
+   "after_label": "MISSING_DOCUMENT",
+   "reason": "missing_discipline_document"
+  },
+  {
+   "case_id": "DOO25::PZ-001::DEC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "revision_conflict"
+  },
+  {
+   "case_id": "DOO25::PZ-001::DEC_ABOVE::TRUTH_PAIR::SINGLE",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "revision_conflict"
+  },
+  {
+   "case_id": "DOO25::PZ-001::INC_ABOVE::TRUTH_PAIR::ALL_COPIES",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "revision_conflict"
+  },
+  {
+   "case_id": "DOO25::PZ-001::INC_ABOVE::TRUTH_PAIR::SINGLE",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "revision_conflict"
+  },
+  {
+   "case_id": "DOO25::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "revision_conflict"
+  },
+  {
+   "case_id": "DOO25::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "revision_conflict"
+  },
+  {
+   "case_id": "LOS3A::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "evidence_discipline_mismatch"
+  },
+  {
+   "case_id": "LOS3A::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "evidence_discipline_mismatch"
+  },
+  {
+   "case_id": "POL17::PZ-023::DOWNGRADE::TRUTH_PAIR::ALL_COPIES",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "revision_conflict"
+  },
+  {
+   "case_id": "POL17::PZ-023::DOWNGRADE::TRUTH_PAIR::SINGLE",
+   "kind": "GATED",
+   "after_label": "COMPARISON_IMPOSSIBLE",
+   "reason": "revision_conflict"
+  }
+ ],
+ "recall_losses_by_kind": {
+  "GATED": 15
+ },
+ "gated_reasons": {
+  "revision_conflict": 10,
+  "missing_discipline_document": 3,
+  "evidence_discipline_mismatch": 2
+ },
+ "false_positives_removed": [
+  "ALT79B::SPZU-024::WITHIN_TOL::SYSTEM_PAIR::ALL_COPIES"
+ ],
+ "after_labels": {
+  "COMPARISON_IMPOSSIBLE": 32,
+  "MISSING_DOCUMENT": 9,
+  "VIOLATION_PRESENT": 11,
+  "NO_VIOLATION": 21
+ }
+}

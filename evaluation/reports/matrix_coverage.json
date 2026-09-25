@@ -1,0 +1,4634 @@
+{
+  "generated_at": "2026-09-23T19:02:13.944944+00:00",
+  "summary": {
+    "total_parameters": 132,
+    "by_readiness_class": {
+      "PARTIAL": 80,
+      "CONFIG_ONLY": 47,
+      "PRODUCTION_READY": 5
+    },
+    "by_readiness_class_rate": {
+      "PARTIAL": 0.6061,
+      "CONFIG_ONLY": 0.3561,
+      "PRODUCTION_READY": 0.0379
+    },
+    "by_extractor_mechanism": {
+      "GENERIC_ANCHOR_TABLE": 48,
+      "NONE": 47,
+      "OFFICIAL_RULE_PACK": 5,
+      "GENERIC_TABLE_ROW_COUNT": 8,
+      "GENERIC_ANCHOR_ENUM": 9,
+      "GENERIC_ANCHOR_COMPOUND": 15
+    },
+    "by_section": {
+      "Раздел 1. ПЗ": {
+        "PARTIAL": 16,
+        "CONFIG_ONLY": 6,
+        "PRODUCTION_READY": 1
+      },
+      "Раздел 2. СПЗУ": {
+        "PARTIAL": 12,
+        "CONFIG_ONLY": 4
+      },
+      "Раздел 3. АР": {
+        "PARTIAL": 10,
+        "CONFIG_ONLY": 4
+      },
+      "Раздел 4. КР": {
+        "PARTIAL": 10,
+        "PRODUCTION_READY": 2,
+        "CONFIG_ONLY": 2
+      },
+      "Раздел 5. ИОС1": {
+        "CONFIG_ONLY": 1,
+        "PARTIAL": 2
+      },
+      "Раздел 5. ИОС2": {
+        "PARTIAL": 2,
+        "CONFIG_ONLY": 1
+      },
+      "Раздел 5. ИОС3": {
+        "PARTIAL": 1,
+        "CONFIG_ONLY": 1
+      },
+      "Раздел 5. ИОС4": {
+        "PARTIAL": 2,
+        "PRODUCTION_READY": 2
+      },
+      "Раздел 5. ИОС5": {
+        "PARTIAL": 1
+      },
+      "Раздел 6. ПОС": {
+        "PARTIAL": 4,
+        "CONFIG_ONLY": 5
+      },
+      "Раздел 7. ПОД": {
+        "PARTIAL": 3,
+        "CONFIG_ONLY": 5
+      },
+      "Раздел 8. ООС": {
+        "CONFIG_ONLY": 4
+      },
+      "Раздел 9. ППМ": {
+        "CONFIG_ONLY": 6,
+        "PARTIAL": 7
+      },
+      "Раздел 10. ОДИ": {
+        "CONFIG_ONLY": 3,
+        "PARTIAL": 6
+      },
+      "Раздел 11. ЗУ": {
+        "PARTIAL": 4,
+        "CONFIG_ONLY": 4
+      },
+      "Раздел 12. СМ": {
+        "CONFIG_ONLY": 1
+      }
+    },
+    "by_required_stage_combination": {
+      "PD,RD,ID": 132
+    },
+    "by_data_type_class": {
+      "NUMERIC_SIMPLE": 51,
+      "NUMERIC_COUNT": 13,
+      "OTHER": 7,
+      "ENUM_CLASS": 17,
+      "NUMERIC_COMPOUND": 26,
+      "NONE": 18
+    },
+    "test_coverage": {
+      "parameters_with_tests": 20,
+      "parameters_with_tests_rate": 0.1515,
+      "codes_with_tests": [
+        "AR-052",
+        "IOS2-072",
+        "IOS4-078",
+        "IOS4-079",
+        "KR-055",
+        "KR-056",
+        "KR-058",
+        "KR-064",
+        "KR-066",
+        "POS-086",
+        "PZ-001",
+        "PZ-002",
+        "PZ-004",
+        "PZ-007",
+        "PZ-009",
+        "PZ-010",
+        "PZ-012",
+        "PZ-016",
+        "SPZU-027",
+        "SPZU-029"
+      ]
+    },
+    "real_fixture_coverage": {
+      "parameters_with_gold_examples": 9,
+      "parameters_with_gold_examples_rate": 0.0682,
+      "codes_with_gold_examples": [
+        "IOS4-078",
+        "IOS4-079",
+        "KR-055",
+        "KR-058",
+        "PZ-009",
+        "SPZU-027",
+        "SPZU-029",
+        "SPZU-036",
+        "SPZU-039"
+      ],
+      "gold_backed_but_no_extractor_yet": [
+        "SPZU-039"
+      ]
+    },
+    "production_ready": {
+      "count": 5,
+      "rate": 0.0379,
+      "codes": [
+        "IOS4-078",
+        "IOS4-079",
+        "KR-055",
+        "KR-058",
+        "PZ-009"
+      ],
+      "count_with_real_fixture": 5
+    },
+    "partial": {
+      "count": 80,
+      "rate": 0.6061,
+      "codes": [
+        "AR-040",
+        "AR-041",
+        "AR-042",
+        "AR-045",
+        "AR-046",
+        "AR-047",
+        "AR-048",
+        "AR-049",
+        "AR-050",
+        "AR-051",
+        "IOS1-069",
+        "IOS1-070",
+        "IOS2-071",
+        "IOS2-073",
+        "IOS3-074",
+        "IOS4-076",
+        "IOS4-077",
+        "IOS5-080",
+        "KR-054",
+        "KR-056",
+        "KR-057",
+        "KR-059",
+        "KR-060",
+        "KR-061",
+        "KR-062",
+        "KR-064",
+        "KR-065",
+        "KR-067",
+        "ODI-116",
+        "ODI-117",
+        "ODI-118",
+        "ODI-119",
+        "ODI-120",
+        "ODI-121",
+        "POD-090",
+        "POD-093",
+        "POD-097",
+        "POS-081",
+        "POS-083",
+        "POS-084",
+        "POS-088",
+        "PPM-104",
+        "PPM-105",
+        "PPM-107",
+        "PPM-108",
+        "PPM-110",
+        "PPM-112",
+        "PPM-113",
+        "PZ-001",
+        "PZ-002",
+        "PZ-003",
+        "PZ-004",
+        "PZ-005",
+        "PZ-006",
+        "PZ-008",
+        "PZ-010",
+        "PZ-011",
+        "PZ-012",
+        "PZ-015",
+        "PZ-019",
+        "PZ-020",
+        "PZ-021",
+        "PZ-022",
+        "PZ-023",
+        "SPZU-024",
+        "SPZU-025",
+        "SPZU-026",
+        "SPZU-027",
+        "SPZU-028",
+        "SPZU-029",
+        "SPZU-030",
+        "SPZU-031",
+        "SPZU-033",
+        "SPZU-036",
+        "SPZU-037",
+        "SPZU-038",
+        "ZU-124",
+        "ZU-125",
+        "ZU-128",
+        "ZU-129"
+      ]
+    },
+    "config_only": {
+      "count": 47,
+      "rate": 0.3561
+    },
+    "abstain_by_design": {
+      "count": 0,
+      "note": "Not used at the matrix-definition level -- see methodology."
+    },
+    "not_applicable": {
+      "count": 0,
+      "note": "Not used at the matrix-definition level -- see methodology."
+    },
+    "abstention_rate_on_real_public_dataset": {
+      "OBJ-TYUMENSKAYA-5-GOLD-SEED": {
+        "abstained": 130,
+        "total": 137,
+        "rate": 0.9489
+      },
+      "OBJ-NOVOSLOBODSKAYA": {
+        "abstained": 129,
+        "total": 134,
+        "rate": 0.9627
+      }
+    },
+    "real_data_run": {
+      "measured_at": "2026-09-19 (local venv, throwaway sqlite, no Docker)",
+      "objects": {
+        "OBJ-TYUMENSKAYA-5-GOLD-SEED": {
+          "total_evidence_groups": 137,
+          "by_finding_status": {
+            "CLARIFICATION_REQUIRED": 130,
+            "CANDIDATE": 6,
+            "NEGATIVE_VERIFIED": 1
+          },
+          "by_model_version": {
+            "official-evidence-baseline-v1": 130,
+            "official-rule-packs-v2": 7
+          },
+          "note": "Dominated by CLARIFICATION_REQUIRED: this object's working-stage documents are tagged RD_ID_MIXED (no clean RD split), which every non-rule-pack path -- old and new -- correctly refuses to guess through rather than silently pick one."
+        },
+        "OBJ-NOVOSLOBODSKAYA": {
+          "total_evidence_groups": 134,
+          "by_finding_status": {
+            "MISSING_EVIDENCE": 21,
+            "NOT_COMPARABLE": 108,
+            "NEGATIVE_VERIFIED": 5
+          },
+          "by_model_version": {
+            "official-evidence-baseline-v1": 129,
+            "official-rule-packs-v2": 5
+          }
+        }
+      },
+      "generic_mechanism_yield": {
+        "eligible_parameters_per_object": 48,
+        "new_comparable_evidence_groups_created": 0,
+        "single_stage_real_values_found": {
+          "OBJ-TYUMENSKAYA-5-GOLD-SEED": {
+            "PZ-001 (Площадь застройки)": "4650.91 m2 -- PD only, matches manual forensic reading of the real ТЭП table",
+            "PZ-002 (Общая площадь здания)": "11618.27 m2 -- PD only, matches manual forensic reading",
+            "PZ-008 (Высота здания)": "15.814 m -- PD only, matches manual forensic reading"
+          },
+          "OBJ-NOVOSLOBODSKAYA": {
+            "PZ-001 (Площадь застройки)": "1225.8 m2 -- PD only",
+            "PZ-002 (Общая площадь здания)": "17140.2 m2 -- PD only (required the qualifier-tolerant anchor fallback: this project's real label is \"Площадь жилого здания\", not the catalog's \"Общая площадь здания\")",
+            "PZ-008 (Высота здания)": "77.05 m -- PD only"
+          }
+        },
+        "why_zero_new_findings": "The mechanism correctly finds a real PD-side value for several parameters on both objects (verified against the real document text, independent of gold), but produces zero new comparable findings because it never got a matching RD-side value for the SAME parameter within its page budget -- OBJ-TYUMENSKAYA-5-GOLD-SEED structurally lacks a clean RD stage (RD_ID_MIXED, see above) and OBJ-NOVOSLOBODSKAYA's RD-stage annotation-candidate localization for these codes did not surface the matching table page within the scanned budget. It abstains rather than pairing a PD value with an unrelated RD number, exactly as designed."
+      }
+    },
+    "hidden_blind_smoke": {
+      "measured_at": "2026-09-19 (local venv, throwaway sqlite, no Docker)",
+      "object_id": "OBJ-RECHNIKOV-7-7",
+      "total_evidence_groups": 133,
+      "by_finding_status": {
+        "NOT_COMPARABLE": 128,
+        "CANDIDATE": 1,
+        "NEGATIVE_VERIFIED": 2,
+        "MISSING_EVIDENCE": 2
+      },
+      "by_model_version": {
+        "official-evidence-baseline-v1": 130,
+        "official-rule-packs-v2": 3
+      },
+      "generic_mechanism_groups": 0,
+      "positive_like": 1,
+      "candidate_rate": 0.0075,
+      "gate_max_candidates": 20,
+      "gate_max_candidate_rate": 0.15,
+      "gate_passes": true
+    },
+    "phase_abc_session_yield": {
+      "measured_at": "2026-09-20 (local venv, throwaway sqlite, no Docker)",
+      "public_object_totals_unchanged": true,
+      "single_stage_real_values_found": {
+        "OBJ-NOVOSLOBODSKAYA": {
+          "PZ-021 (Класс энергетической эффективности, ENUM)": "PD-side canonical value 'B' -- matches real page text, PD only"
+        },
+        "OBJ-TYUMENSKAYA-5-GOLD-SEED": {
+          "PZ-023 (Класс конструктивной пожарной опасности, ENUM)": "PD-side canonical value 'C0' -- matches real page text, PD only",
+          "SPZU-037 (Количество и разметка парковочных мест, TABLE_ROW_COUNT)": "PD-side row_count=1 -- table-title match found, single content row, PD only (not independently verified against the source page, unlike the ENUM hits above)"
+        }
+      },
+      "compound_mechanism_real_hits_this_run": 0,
+      "why_zero_new_comparable_findings": "Same root cause as the pre-existing numeric mechanism (checkpoint 35): each new mechanism still requires an independent PD-side AND RD-side hit for the SAME parameter before producing a comparable finding, and the upstream page-locator signal (learning_annotation keyword tagging) is broad-recall/low-precision by design, so a matching RD-side page rarely surfaces within the shared page budget on these 2 objects."
+    },
+    "phase_d_hidden_validation": {
+      "measured_at": "2026-09-20 (local venv, throwaway sqlite, no Docker, blind hidden import)",
+      "object_id": "OBJ-RECHNIKOV-7-7",
+      "codes": [
+        "SPZU-027",
+        "SPZU-029",
+        "SPZU-036",
+        "SPZU-039"
+      ],
+      "result": "ALL FOUR ABSTAINED (NOT_COMPARABLE) -- no PD+RD comparable pair found within budget for any of the four",
+      "per_code": {
+        "SPZU-027": "gold VIOLATION_PRESENT (area decreased PD->RD); pipeline abstained -- a missed detection (false negative) from a scoring perspective",
+        "SPZU-029": "gold NO_VIOLATION (RD expands the spec, not a reduction); pipeline abstained -- a safe true negative, not a wrong answer",
+        "SPZU-036": "gold NO_VIOLATION (PD/RD equal); pipeline abstained -- a safe true negative",
+        "SPZU-039": "gold NO_VIOLATION (drainage present both stages); pipeline abstained -- expected, this code has no extractor at all (unit '--')"
+      },
+      "metrics_computed_via_evaluate_case10_on_these_4_checks_only": {
+        "finding_precision": null,
+        "finding_recall": 0.0,
+        "finding_recall_sample_size": 1,
+        "finding_recall_confidence_interval_95": [
+          0.0,
+          0.7935
+        ],
+        "finding_f1": 0.0,
+        "false_positive_rate": 0.0,
+        "false_positive_rate_sample_size": 3
+      },
+      "forensic_findings_not_used_to_tune_the_extractor": [
+        "SPZU-029's real gold pd_value/rd_value are phrased as a POSITION/ROW COUNT of the MAF specification table (\"N positions\"), not a two-field \"count / complete-set\" pair -- suggesting the parameter's real semantic may be closer to this session's table-row-count mechanism (Phase C) than the compound mechanism (Phase B) it was wired to per classify_unit('шт. / компл.') == NUMERIC_COMPOUND. Not reclassified this session: one hidden, pending-second-review example is not enough evidence to safely move a code between mechanisms without risking exactly the single-example overfit the project's no-hardcoding-to-gold rule forbids -- flagged here as an open question for a future session with more evidence.",
+        "SPZU-036's real gold pd_value/rd_value carry TWO numbers (fence height AND length: \"h=2.0 м; 174.45 м\") even though its catalog unit is 'м' (NUMERIC_SIMPLE, single value) -- the PRE-EXISTING (not this session's) numeric mechanism is therefore also likely structurally unable to capture both fields for this code. Noted, not fixed this session (out of the four extractors this session's scope covers).",
+        "This session's four new generic mechanisms (numeric, enum, compound, table-row-count) never set a per-instance `location` field in their evidence groups' delta (they group one finding per PARAMETER, not per structural element, unlike the tuned rule packs) -- `evaluation/exporter.py::evidence_group_to_prediction` would still leave `location=\"\"` for any of them, which cannot align with a gold check that expects a specific non-empty location (e.g. SPZU-027's \"SITE\"). This does not change the result above (an abstained prediction scores identically whether or not it would have aligned), but means a FUTURE comparable finding from any generic-tier mechanism against a location-scoped gold check would need this addressed first."
+      ]
+    },
+    "cross_stage_localization_session": {
+      "measured_at": "2026-09-21 (local venv, throwaway sqlite, no Docker)",
+      "signals_added": [
+        "document-manifest discipline narrowing (cross_stage_localization.narrow_candidate_fragments)",
+        "structural table fingerprint reranking (anchor_search.extract_table_fingerprint / fingerprint_similarity)"
+      ],
+      "wired_into": [
+        "generic_matrix_extraction (numeric)",
+        "generic_enum_extraction",
+        "generic_compound_extraction",
+        "generic_table_row_count"
+      ],
+      "public_object_totals_unchanged": true,
+      "new_comparable_evidence_groups_created": 0,
+      "why_still_zero": {
+        "OBJ-TYUMENSKAYA-5-GOLD-SEED": "Confirmed by direct inspection: 0/48 numeric-eligible codes (and 0/9 enum, 0/15 compound, 0/8 table-row-count codes) have even one RD-stage candidate fragment tagged by the upstream annotator at all -- this object's non-PD documents are all dataset_stage=RD_ID_MIXED, which every stage-bucketing step in this pipeline (old and new) correctly excludes rather than guessing. No ranking or fingerprinting signal can act on a candidate pool that is empty to begin with.",
+        "OBJ-NOVOSLOBODSKAYA": "DOES have 10 genuine RD-stage documents, and 17/48 numeric-eligible codes DO have at least one RD-stage candidate fragment (a new finding this session, more precise than checkpoint 35's framing). But calling collect_generic_observations directly shows only 3/48 codes resolve on ANY stage at all, none on both PD+RD. Forensically reading the one RD candidate page tagged for PZ-002 (confidence 0.62) shows it is a real, unrelated document (a \"Стена в грунте\"/wall-in-ground construction-note-and-materials-bill sheet) that merely shares a few generic words -- a genuine false positive, not a lower-ranked correct page. Checking all 10 of this object's real RD-stage files confirms every one is a КР (structural: rebar/wall/shoring) drawing; none is a ПЗ/ГП-style document that would ever restate an object-level ТЭП scalar like \"Общая площадь здания\". The gap here is candidate EXISTENCE (no RD document of the right type contains the value at all), not candidate RANKING among several already-tagged pages -- a within-candidate-pool reranking signal cannot fix a value that was never written into any RD-stage document."
+      },
+      "conclusion": "This sharpens, rather than contradicts, the checkpoint 35/38 diagnosis. Their framing (\"broad-recall/low-precision keyword tagging\") suggested the right page exists among several tagged candidates but gets outranked; this session's direct inspection shows the more common failure on these two specific public objects is that the right page was never tagged at all (Tyumenskaya) or never existed in the RD-stage document set for this parameter class in the first place (Novoslobodskaya). The signal built this session is real, tested (27 new unit tests, 317/317 total suite green), purely additive (byte-identical evidence-group totals on both objects, zero regression), and would help in the scenario it targets -- multiple tagged candidates exist and one is structurally correct -- but that scenario essentially does not occur for the codes examined on these two objects. Phase D (SPZU-027/029/036/039, hidden object, blind) was re-run after this change: finding_recall is still 0.0 (n=1, identical to checkpoint 38) -- all four still abstain, unchanged."
+    },
+    "semantic_similarity_session": {
+      "measured_at": "2026-09-21 (local venv, throwaway sqlite, no Docker)",
+      "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 (sentence-transformers==2.6.1, already used by rag_service)",
+      "model_choice_rationale": "The literal TZ model (all-MiniLM-L6-v2, English-trained) measured 0.53 vs 0.49 cosine similarity for a genuine Russian parameter match vs. a different-but-lexically-related Russian parameter on real project text -- a 0.04 margin, not usable as a filter. The multilingual variant already in production in this repo's rag_service separated the same real pair 0.62 vs 0.41-0.49. Adopted as the TZ's own allowed 'compatible analogue' instead of the literal model, trading ~460MB disk for a model that actually discriminates the language the documents are written in.",
+      "wired_into": [
+        "cross_stage_localization.pick_best_candidate (re-rank/filter already-tagged candidates, ON by default)",
+        "anchor_search.find_anchor_end_index_for_phrase (semantic anchor-location fallback, OFF by default)"
+      ],
+      "anchor_fallback_disabled_by_default_why": "Real regression testing (this session's own new unit tests, not a hypothetical) caught the fallback confusing two DIFFERENT, unrelated same-domain ТЭП tables' own 'Площадь' rows -- a building-area parameter's anchor search matched a site-area table's row purely on embedding similarity, reviving a collision test_case10_generic_extraction.py's existing deterministic-matcher tests were specifically written to prevent. This is a genuine precision cost of comparing short, vocabulary-overlapping label text, not a threshold-tuning artifact -- raising SEMANTIC_MIN_SIMILARITY does not fix it because the genuine near-miss score (site-area row vs. building-area query) and the genuine match score occupy overlapping ranges. Re-ranking (a) has no equivalent failure mode because it only ever narrows a pool a TEXTUAL anchor already independently corroborated -- it cannot invent a match from nothing.",
+      "public_object_totals_unchanged": true,
+      "new_comparable_evidence_groups_created": 0,
+      "evidence_group_level_diff": "status_counts and source_counts dicts verified byte-identical per object between the semantic layer OFF and ON (default), not just total counts -- see CASE10_MATRIX_132_COVERAGE.md.",
+      "semantic_scoring_activity_confirmed_live": {
+        "method": "Instrumented pick_best_candidate during a real collect_*_observations pass over OBJ-NOVOSLOBODSKAYA's real annotation/document data",
+        "candidate_evaluations": 10,
+        "evaluations_with_a_computed_score": 10,
+        "score_range_observed": [
+          0.269,
+          0.729
+        ],
+        "evaluations_below_the_0.45_floor": 1,
+        "conclusion": "The mechanism is genuinely active and producing plausible scores on real data (matches the range measured directly on the checkpoint 40 example elsewhere in this doc), not silently dead code -- it simply had no comparable-group outcome to change on these two specific objects, consistent with checkpoint 40's candidate-existence diagnosis."
+      },
+      "why_still_zero_new_comparable_groups": "Checkpoint 40 already established that on both public objects the bottleneck is candidate EXISTENCE, not candidate RANKING/relevance -- OBJ-TYUMENSKAYA-5-GOLD-SEED has zero RD-stage candidates for any generic-tier code at all (RD_ID_MIXED), and OBJ-NOVOSLOBODSKAYA's real RD-stage document set for these codes never contains the value in the first place (all 10 RD documents are КР drawings, not ПЗ/ГП-style). A re-ranking/filtering signal over an existing candidate pool cannot, by construction, fix an empty or wrong-type pool -- exactly the scenario this session's real-data run confirms.",
+      "latency": {
+        "warm_embedding_ms_per_text_batched": 1.4,
+        "warm_embedding_ms_single_call": 47,
+        "budget_per_TZ_11": "500ms +/- 100ms per parameter",
+        "one_time_model_load_seconds_offline_cache_only": 11.6,
+        "note": "One-time cold load happens once per process lifetime (lazy singleton), not per parameter -- amortized cost after warmup is 1-50ms, far under budget even without additional caching. This session's own sandbox intermittently added 30-140s to that one-time load from retried HTTPS HEAD requests against a self-signed TLS interception on this specific machine (see CASE10_MATRIX_132_COVERAGE.md); a production container should set HF_HUB_OFFLINE=1 with the model pre-baked into the image at build time (added to api_service/Dockerfile this session) to avoid any network dependency at runtime."
+      },
+      "tests_added": "test_case10_semantic_similarity.py (real model, real forensic text), test_case10_anchor_search.py, plus new cases in test_case10_cross_stage_localization.py (mocked scores, including an end-to-end synthetic reproduction of the checkpoint-40 finding). Full suite: 379/379 (351 baseline + 28 new)."
+    },
+    "live_candidate_tagger_session": {
+      "measured_at": "2026-09-22 (local venv, throwaway sqlite, no Docker)",
+      "new_module": "api_service/app/domain/live_candidate_tagger.py",
+      "wired_into": [
+        "official_evidence.inference_annotation (widened source_system filter)",
+        "official_rule_packs.is_inference_locator (widened source_system filter, identical shape)",
+        "official_evidence.create_official_evidence_groups (calls tag_live_candidates against the FULL matrix catalog before building by_code, not just the run's own possibly-narrowed param scope)"
+      ],
+      "real_bugs_found_and_fixed_along_the_way": [
+        {
+          "bug": "dataset_sources._original_page_snapshots corrected a rotated page's word BBOXES for /Rotate but never re-sorted the word ORDER, which fitz's get_text('words', sort=True) computes in the raw, unrotated content-stream frame -- on a 90/270deg page (~32% of real pages per project_case10_rotation_fix) this silently scrambles reading order for every literal anchor-phrase matcher in the whole generic-tier family, not just the new tagger.",
+          "evidence": "Real LOS3A RD page (19-0322-OK-1_N-1-AR2..., p.11, rotation=90): 0/132 catalog anchors matched pre-fix on this exact page, 5/132 post-fix (this bug alone), 9/132 after the two anchor_search.py fixes below too.",
+          "fix": "Re-cluster words by their already-corrected visible bbox (anchor_search.cluster_rows, same primitive used elsewhere for row fingerprinting) whenever rotation != 0; the far more common 0deg case (already covered by existing tests/fixtures) is untouched."
+        },
+        {
+          "bug": "28/132 catalog parameter_name values end in a disambiguating parenthesized qualifier (e.g. PZ-004 'Строительный объем (Общий)') that a real document's own table label never repeats verbatim (real LOS3A RD row: just 'Строительный объём').",
+          "fix": "anchor_search.anchor_word_variants also tries the phrase with any trailing '(...)' qualifier stripped (same technique derive_title_candidates already used for source-hint text, widened past its 12-char cap)."
+        },
+        {
+          "bug": "find_anchor_end_word_index returned the FIRST literal match by reading order, not the tightest one. Real LOS3A PD page (01-01-00-02-PZ.pdf, p.14): the 2-word leading-word-dropped variant ['площадь','здания'] matched an EARLIER, gap-2 coincidence inside unrelated flowing prose about a different sub-quantity ('...площадь подземной части здания...') before ever reaching the LATER, genuine, gap-0 table label ('4. Площадь здания ... 25036,27'). This silently returned an unrelated row's number (1061.49) for PZ-002.",
+          "fix": "Scan every literal match on the page and keep the one with the smallest total inter-word gap, tie-broken by earliest position -- strictly more specific than reading order alone, so a page with only one match is unaffected.",
+          "verified": "Same real PD page 14, PZ-002 ('Общая площадь здания'): 25036.27 post-fix, matching the manually-verified real value exactly (was 1061.49 pre-fix)."
+        },
+        {
+          "bug": "checkpoint 41's semantic anchor-location fallback (still OFF by default) confuses a site-area row for a building-area query purely on embedding similarity (see SEMANTIC_SIMILARITY_SESSION above) -- shipped disabled, not re-fixed, at the time.",
+          "fix": "Added a lexical scope-word gate (anchor_search._scope_compatible: building vs. site/territory nouns) that rejects a row whose own scope word contradicts the anchor's BEFORE the embedding ever ranks it -- real regression test (test_case10_anchor_search.py's SemanticAnchorFallbackScopeGateTests) reproduces the exact checkpoint-41 collision fixture and proves it no longer wins even when the embedding score is mocked to prefer it. Still shipped OFF by default (per checkpoint 41's own reasoning: this closes ONE known collision class, not a blanket guarantee against every future one) -- an explicit scoping choice per the user's 'try to fix, not just re-enable' brief, not a silent regression re-hide."
+        }
+      ],
+      "budget_sizing_phase_c": {
+        "dev_machine": "8 physical / 12 logical core i5-12450H (not the organizer-confirmed 24-physical-core/640GB/GPU grading server -- see gpu.py/checkpoint 42)",
+        "measured_single_threaded_throughput": "~10-12 pages/sec on a dense, drawing-sheet-heavy real RD document (full-page word extraction + all 132 anchor phrases); ~160 pages/sec on a flowing-text PD document. Anchor matching itself added no measurable overhead over bare text extraction.",
+        "settings": {
+          "CASE10_LIVE_TAGGER_MAX_DOCUMENTS": 500,
+          "CASE10_LIVE_TAGGER_MAX_PAGES_TOTAL": 6000,
+          "CASE10_LIVE_TAGGER_MAX_PAGES_PER_DOCUMENT": 220,
+          "CASE10_LIVE_TAGGER_MAX_SECONDS": 600
+        },
+        "honest_limitation": "Sizing is extrapolated from real dev-machine measurement, scaled conservatively (no credit taken for the grading server's extra cores) -- this session did NOT implement cross-document parallelism (a deliberate scope decision, not an oversight); the tagging pass is a ONE-TIME cost per document (idempotent, see live_tagger_scanned_at), so it does not compete with the TZ 11 '<=2 minutes per 132-parameter comparison' budget for any run after a document's first."
+      },
+      "real_data_run_public_objects": {
+        "method": "in-process venv, throwaway sqlite, no Docker/HTTP -- import_official_dataset with include_annotations True/False, create_process/run_process, same method as checkpoints 35-41",
+        "note_on_code_version": "Run before the tightest-match-gap and discipline-hard-filter fixes above; those two fixes only affect PD-side VALUE-SELECTION precision on an already-open document, not RD-stage candidate EXISTENCE, which is the actual established bottleneck on these two objects (confirmed 3 independent ways: checkpoints 40, 41, and this session's own control run below) -- a re-run is very unlikely to change the comparable-group outcome, but was not re-verified with the final code state; flagged honestly rather than silently assumed.",
+        "with_organizer_tags_plus_live_tagger": {
+          "OBJ-NOVOSLOBODSKAYA": {
+            "comparable_groups": 5,
+            "live_fragments": 25,
+            "live_pages": 25,
+            "organizer_tagged_pages": 1795,
+            "overlap_pages": 24
+          },
+          "OBJ-TYUMENSKAYA-5-GOLD-SEED": {
+            "comparable_groups": 7,
+            "live_fragments": 16,
+            "live_pages": 13,
+            "organizer_tagged_pages": 2015,
+            "overlap_pages": 12
+          }
+        },
+        "control_organizer_tags_live_tagger_disabled": {
+          "OBJ-NOVOSLOBODSKAYA": {
+            "comparable_groups": 5,
+            "status_counts_byte_identical_to_above": true
+          },
+          "OBJ-TYUMENSKAYA-5-GOLD-SEED": {
+            "comparable_groups": 7,
+            "status_counts_byte_identical_to_above": true
+          },
+          "conclusion": "The 5/7 comparable groups are entirely PRE-EXISTING official-rule-packs-v2 tier behavior with organizer tags present, unaffected by the live tagger -- byte-identical with it on vs. off. The live tagger contributes ZERO net new comparable groups on these two specific public objects. This is NOT a tagger failure: it reconfirms, a third independent way, checkpoints 40/41's diagnosis that candidate EXISTENCE (not ranking/tagging mechanism) is the bottleneck here -- Tyumenskaya has zero real RD-stage documents at all (RD_ID_MIXED only) and Novoslobodskaya's RD set is real but the wrong document type (KR drawings, never a TEP-style restatement)."
+        },
+        "live_tagger_only_organizer_tags_not_imported": {
+          "OBJ-NOVOSLOBODSKAYA": {
+            "comparable_groups": 0,
+            "live_fragments": 25,
+            "organizer_tagged_pages": 0
+          },
+          "OBJ-TYUMENSKAYA-5-GOLD-SEED": {
+            "comparable_groups": 0,
+            "live_fragments": 16,
+            "organizer_tagged_pages": 0
+          },
+          "conclusion": "Same live_fragments count as the with-tags run (deterministic, does not depend on organizer data being present) -- the 92-96% overlap between the tagger's own found pages and the organizer's own tagged pages (24/25 and 12/13) is an implicit silver validation of tagger quality against data with a known expected answer, without hardcoding that answer into the tagger. 0 comparable groups here is the honest, structurally-expected outcome (same document-availability constraint as above), not a regression."
+        }
+      },
+      "real_data_run_new_objects": {
+        "method": "in-process venv, throwaway sqlite, no Docker/HTTP -- manifest built from the multi_object_annotation_20260817 SILVER registry, SHA-256 RE-VERIFIED against the actual extracted bytes at manifest-build time (not trusted from the registry), original_document_bytes monkeypatched to read from the verified local extraction root, create_process/run_process unmodified. All 6 objects previously measured at EXACTLY 0 SourceFragment / 0 comparable EvidenceGroup regardless of document richness (project_case10_new_objects_no_tagger_gap) -- this is the direct, decisive test of whether this session's work closes that gap.",
+        "results": {
+          "LOS3A": {
+            "live_fragments": 451,
+            "comparable_groups": 10
+          },
+          "ALT79B": {
+            "live_fragments": 381,
+            "comparable_groups": 3
+          },
+          "POL17": {
+            "live_fragments": 319,
+            "comparable_groups": 5
+          },
+          "OKT103": {
+            "live_fragments": 271,
+            "comparable_groups": 0
+          },
+          "IZM12": {
+            "live_fragments": 216,
+            "comparable_groups": 0
+          },
+          "DOO25": {
+            "live_fragments": 119,
+            "comparable_groups": 1
+          }
+        },
+        "total_comparable_groups_created": 19,
+        "OKT103_IZM12_honest_zero": "Both structurally mirror OBJ-NOVOSLOBODSKAYA's pattern (candidate_coverage.py: narrow, single-discipline RD set, mostly KR/KZh) per NEW_OBJECTS_ANALYSE.md section 3 -- real candidates were found (216/271 live_fragments) but did not pair into full PD+RD comparable groups, an honest structural non-result, not a tagger bug.",
+        "DOO25_note": "Lowest fragment count despite being the largest object (1770 documents) because 71.7% of its PDFs have no text layer (project_case10_ocr_fallback_hardening/case10_ocr_tesseract_quality_tuning) -- this tagger only scans the text layer by design (forced OCR is deliberately not used for the tagging pass, see Phase C budget reasoning); an honest, documented scope limit, not a silent gap."
+      },
+      "los3a_forensic_deep_dive_pz001_pz002_pz004": {
+        "why": "The task's own success criterion named these 3 specific codes and this specific document pair (RD 19-0322-OK-1_N-1-AR2..., p.11; PD 01-01-00-02-PZ.pdf, p.14) -- verified forensically rather than accepting the 10-comparable headline number at face value, per this project's standing forensic-audit-before-claiming-success rule.",
+        "PZ-001": {
+          "comparable": false,
+          "finding": "The live tagger found candidates on BOTH the named RD page (p.11, correct row) AND a genuinely correct PD page (p.14 of the named PZ document, value 1076.49) among its 10 tagged fragments for this code -- but candidate-RANKING (cross_stage_localization.pick_best_candidate, pre-existing infrastructure, not modified this session) selected a DIFFERENT PD candidate instead: an empty, unfilled certificate/template form field on an unrelated document ('Общая площадь участка застройки – Га', no number present). The generic mechanism correctly abstained (no value on the selected PD candidate) rather than fabricate one -- an honest MISSING_EVIDENCE-adjacent outcome, not a wrong value. A genuinely available BETTER candidate existed but was not the one ranking chose; a real, now-newly-exposed (candidates finally exist to rank at all) precision gap in the pre-existing ranking machinery, left open for a future session."
+        },
+        "PZ-002": {
+          "comparable": true,
+          "RD_value": "25036.27 (page 11 of the exact named RD document -- forensically verified correct, matches NEW_OBJECTS_ANALYSE.md section 6's manual reading exactly)",
+          "PD_value": "16867.90 (WRONG -- from a different PD document, a fire-safety ПБ.1.pdf page 10, matching a different, related normative metric 'площадь помещений здания по СП 118.13330.2012 прил. Г.5', not 'Общая площадь здания по СП 54.13330.2016' the catalog actually wants)",
+          "root_cause": "A semantic near-miss the leading-word-drop anchor fallback cannot distinguish (both share 'площадь'+'здания' within gap tolerance) compounded by candidate ranking preferring this document's page over the correct PZ-document page-14 candidate that was also tagged. Not fixed this session -- scoped out as a deeper cross-document semantic-disambiguation problem, not a quick patch."
+        },
+        "PZ-004": {
+          "comparable": true,
+          "RD_value": "88264.00 (a different, also-genuinely-correct RD document/page than the one named -- AR3 Техническое пространство p.6, not AR2 p.11 -- but the exact same named AR2/p.11 page independently verified to also contain this value)",
+          "PD_value": "0.5120 (WRONG -- the documented tied-zero-gap collision between the table's own descriptive preamble sentence and its real numbered row, see the tightest-match fix note above; both are equally 'tight' so the fix's tie-break defaults to the earlier, wrong one)"
+        },
+        "honest_summary": "Real, substantial, forensically-verified recall improvement (0 -> 10 comparable groups on LOS3A alone, 19 across all 6 new objects) with an honestly-documented remaining precision gap: none of the 3 named codes yet produces a fully-correct comparable PAIR end to end, though 2/3 (PZ-002, PZ-004) DO have a forensically-correct RD side, and all 3 had a genuinely correct candidate tagged somewhere in their pool. This is NOT the 'validation gives 0 on LOS3A' failure scenario the task explicitly warned about -- it is a real, non-zero, partially-precise result with clearly-identified, pre-existing (not newly-introduced) follow-up work in candidate ranking and cross-document semantic disambiguation."
+      },
+      "tests_added": "29 new (test_case10_live_candidate_tagger.py: 22; test_case10_anchor_search.py: 4 scope-gate; test_case10_generic_extraction.py: 3 qualifier-strip/tightest-match). Full suite: 422/422 (393 baseline + 29 new).",
+      "what_is_next": "Candidate-ranking precision (why pick_best_candidate chose the empty PZ-001 template over the correct page; PZ-002's cross-document semantic near-miss) and PZ-004-style tied-gap anchor/table-row disambiguation are the sharpest, now-concretely-reproducible next targets -- previously invisible because candidates essentially did not exist to rank at all outside the 3 official objects. Optional, explicitly scoped out this session: populating Param.regex_pattern (still None for all 132 catalog params) as an additional candidate signal alongside anchor phrases."
+    },
+    "los3a_forensic_fixes_session": {
+      "measured_at": "2026-09-23 (local venv, throwaway sqlite, no Docker, real bytes from local E:\\ extraction root)",
+      "pz004_row_item_prefix_tiebreak": {
+        "fix": "anchor_search.find_anchor_end_word_index now breaks a tied (equal total_gap) match by whether a real table row's own numeric item prefix (e.g. '5.') immediately precedes the match -- a pure tie-breaker on top of, never instead of, the existing gap comparison.",
+        "real_bug_reproduced": "Real PD page 14 (1. 01-01-00-02-ПЗ.pdf) has two exact gap-0 matches for 'Строительный объем': the section's own descriptive preamble sentence and the real numbered row ('5. Строительный объем в т.ч. 88264,00 ...'). Pre-fix, direct find_anchor_numeric_value call on the real page returned 0.5120 (an unrelated row's value, picked up from the preamble match's lookahead window) -- confirmed by re-running the exact assertion against pre-fix code.",
+        "post_fix_direct_call": "find_anchor_numeric_value on the same real page now returns 88264.00.",
+        "post_fix_full_pipeline": "Real tag_live_candidates + collect_generic_observations run across all 150 real LOS3A PD/RD PDFs (7026 pages, discipline-classified from filename tokens): PD=88264.00, RD=88264.00 -- comparable AND correct, unconditionally (no catalog dependency).",
+        "status": "CONFIRMED_FIXED_END_TO_END"
+      },
+      "pz002_normative_reference_mismatch": {
+        "fix": "anchor_search.extract_normative_references/expected_normative_references (regex for 'СП/СНиП/ГОСТ NN.NNNNN' near the found value, compared against Param.sp_reference/gost_reference/fz_reference) feeds cross_stage_localization.StageCandidate.normative_mismatch, which demotes (never drops) a candidate whose nearby text cites a different normative document than the parameter's own catalog-declared one.",
+        "real_bug_reproduced": "The same real document (9. 01-09-00-01-15-ПБ.1.pdf) legitimately anchor-matches 'Общая площадь здания' twice: page 9's real ТЭП row ('Площадь здания (по СП 54.13330.2016, прил. А.1.2)' = 25036.27) and page 10's related-but-distinct quantity ('Площадь помещений здания (по СП 118.13330.2012, прил. Г.5)' = 16867.90).",
+        "post_fix_full_pipeline_without_catalog_sp_reference": "Today's actual catalog state (Param.sp_reference never populated by official_dataset.py's importer for any of the 132 parameters): PD=16867.90 -- the bug reproduces byte-for-byte, unfixed in production today.",
+        "post_fix_full_pipeline_with_catalog_sp_reference": "With Param.sp_reference='СП 54.13330.2016' set (simulating a populated catalog, NOT applied to the real catalog this session -- see note below): PD=25036.27, RD=25036.27 -- comparable AND correct.",
+        "why_not_populated_this_session": "The real parameter_catalog_132.jsonl has no sp_reference field at all; authoring 132 correct normative citations from scratch is a separate, much larger catalog-enrichment task outside this session's 3-fix scope, and would risk being wrong without an authoritative source -- left as real, tested, dormant infrastructure, not silently claimed as a live fix.",
+        "status": "REAL_FIX_VERIFIED_DORMANT_PENDING_CATALOG_DATA"
+      },
+      "pz001_empty_candidate_ranking": {
+        "fix": "cross_stage_localization.StageCandidate.is_empty_value (a found value of exactly zero, a typical unfilled template/certificate placeholder) is ranked below a non-empty candidate in pick_best_candidate, both in the reference-fingerprint branch (as the dominant signal, ahead of fingerprint/semantic score) and the no-reference (PD round 1) branch -- never a hard filter, so an empty candidate still wins when it is the only one.",
+        "real_document_relocation": "A targeted full-text search of every real LOS3A PD/RD/ID PDF for the forensic report's own quoted phrase ('Общая площадь участка застройки – Га') did not locate the original empty-template/certificate document this session -- the fix is verified at the unit/StageCandidate level against the documented structural pattern (a generalized, non-LOS3A-specific fixture), not re-confirmed end-to-end against the original real document.",
+        "new_orthogonal_finding": "The real full-pipeline LOS3A run surfaced a DIFFERENT, previously undocumented bug on the same PD page 14: a multi-column reflow where the real value (1076.49) is emitted BEFORE its own label ('2. Площадь застройки') in fitz's own reading order, while the first number found AFTER the label is an unrelated parenthetical threshold ('4,5' м, a cantilever-height allowance) -- producing PD=4.5, still wrong, for a reason unrelated to case 1's empty-candidate collision. is_empty_value correctly does not fire here (4.5 is non-zero), confirming the fix is precisely scoped rather than accidentally masking this different problem. Left unfixed -- outside this session's 3-case scope.",
+        "status": "INFRASTRUCTURE_BUILT_AND_UNIT_TESTED_NOT_RECONFIRMED_END_TO_END"
+      },
+      "honest_summary": "Measurable improvement from the documented 0/3: PZ-004 is confirmed fixed end to end in the real pipeline today, unconditionally. PZ-002's fix is real and end-to-end verified against the actual forensic collision on real PDF bytes, but is dormant until Param.sp_reference is populated in the catalog (confirmed: today's actual catalog still reproduces the original bug byte-for-byte). PZ-001's fix is real, tested infrastructure for the documented empty-candidate pattern, but the original document was not relocated this session, and a full pipeline run surfaced a second, different, still-open bug on the same page.",
+      "tests_added": "4 in test_case10_anchor_search.py (row-item-prefix tie-break, normative-reference extraction), 7 in test_case10_generic_extraction.py (real LOS3A PD-page-14 fixture, is_empty_value/normative_mismatch unit tests), 8 in test_case10_cross_stage_localization.py (existence-signal ranking tests, real end-to-end PZ-002 reproduction via resolve_stage_round with the real PB.1.pdf page 9/10 excerpts). Full suite: 470/470 (run from the repo root with PYTHONPATH covering both the repo root and api_service/ -- see case10_checkpoint42_gpu_docker memory for this environment quirk).",
+      "what_is_next": "Populate Param.sp_reference/gost_reference for the 132-parameter catalog from an authoritative normative source (activates the PZ-002 fix and any other SP/GOST-citation collision in the same family) -- explicitly NOT done this session to avoid guessing normative citations without a source. Re-locate PZ-001's original empty-certificate document (or accept the newly-found value-before-label reflow bug as PZ-001's actual current blocker and fix that instead -- a distinct, now-concretely-reproducible target: real LOS3A PD page 14, 'Площадь застройки', value 1076.49 emitted before its own label in fitz reading order)."
+    },
+    "top_missing_capabilities": [
+      {
+        "capability_needed": "Small controlled per-domain vocabulary extractor (concrete/steel grades, fire-resistance classes, material marks) -- same shape as the existing KR-055 rule pack, generalized across a curated code list instead of one code.",
+        "label": "Material/fire/structural class or grade lookup",
+        "parameter_count": 7,
+        "example_codes": [
+          "IOS2-072",
+          "IOS3-075",
+          "OOS-098",
+          "OOS-099",
+          "OOS-100",
+          "OOS-101",
+          "PPM-109"
+        ]
+      },
+      {
+        "capability_needed": "Structured multi-value/multi-unit parser (e.g. \"м3/ч / Па / кВт\" fan curves, \"шт. / м\" counts-with-dimension) -- the generic anchor mechanism only ever extracts a single scalar.",
+        "label": "Multi-axis numeric specification",
+        "parameter_count": 10,
+        "example_codes": [
+          "AR-052",
+          "KR-066",
+          "POD-094",
+          "PPM-114",
+          "PZ-016",
+          "PZ-017",
+          "PZ-018",
+          "ZU-126"
+        ]
+      },
+      {
+        "capability_needed": "Table-row counting over a specification/schedule list, not a single label:value pair -- needs a table-structure extractor, not an anchor-phrase one.",
+        "label": "Equipment/room/fixture count",
+        "parameter_count": 5,
+        "example_codes": [
+          "POS-082",
+          "POS-086",
+          "PPM-103",
+          "PZ-007",
+          "PZ-013"
+        ]
+      },
+      {
+        "capability_needed": "Drawing or scheme interpretation (fencing type on a plan, drainage layout presence, landscaping composition) -- inherently a CV/vector-drawing comparison problem, not text.",
+        "label": "Presence/scheme/drawing-only check",
+        "parameter_count": 18,
+        "example_codes": [
+          "AR-043",
+          "AR-053",
+          "KR-063",
+          "ODI-115",
+          "ODI-122",
+          "ODI-123",
+          "POD-091",
+          "POD-092"
+        ]
+      }
+    ],
+    "priority_backlog": {
+      "P0_gold_backed_but_unimplemented": {
+        "description": "Real organizer-provided gold checks exist for these codes (closed methodology package) but no extractor exists at all -- highest-value next target since correctness can be measured immediately, not just asserted.",
+        "codes": [
+          "SPZU-039"
+        ],
+        "detail": [
+          {
+            "code": "SPZU-039",
+            "name": "Мероприятия по инженерной подготовке (дренажи)",
+            "unit": "—",
+            "data_type_class": "NONE"
+          }
+        ]
+      },
+      "P1_partial_with_gold_ready_to_validate": {
+        "description": "Already PARTIAL (generic anchor mechanism applies) AND has real gold checks -- the cheapest next step is running the existing mechanism against the closed gold for these specific codes to get a first real precision/recall reading before investing in anything new.",
+        "codes": [
+          "SPZU-027",
+          "SPZU-029",
+          "SPZU-036"
+        ]
+      },
+      "P1_high_priority_config_only": {
+        "description": "CONFIG_ONLY parameters whose criticality is \"Критическое (приостановка работ)\" -- highest business impact if a real violation is missed, prioritize extractor engineering here over MEDIUM-priority CONFIG_ONLY parameters.",
+        "count": 35,
+        "codes": [
+          "AR-043",
+          "AR-044",
+          "IOS1-068",
+          "KR-063",
+          "KR-066",
+          "ODI-115",
+          "ODI-123",
+          "OOS-098",
+          "OOS-099",
+          "OOS-100",
+          "OOS-101",
+          "POD-091",
+          "POD-092",
+          "POD-096",
+          "POS-085",
+          "POS-087",
+          "PPM-102",
+          "PPM-103",
+          "PPM-106",
+          "PPM-109",
+          "PPM-111",
+          "PPM-114",
+          "PZ-007",
+          "PZ-013",
+          "PZ-014",
+          "PZ-016",
+          "PZ-017",
+          "PZ-018",
+          "SPZU-032",
+          "SPZU-034",
+          "SPZU-035",
+          "SPZU-039",
+          "ZU-126",
+          "ZU-127",
+          "ZU-131"
+        ]
+      },
+      "P2_remaining_config_only": {
+        "description": "CONFIG_ONLY, MEDIUM review priority -- lowest business impact, defer.",
+        "count": 12,
+        "codes": [
+          "AR-052",
+          "AR-053",
+          "IOS2-072",
+          "IOS3-075",
+          "ODI-122",
+          "POD-094",
+          "POD-095",
+          "POS-082",
+          "POS-086",
+          "POS-089",
+          "SM-132",
+          "ZU-130"
+        ]
+      }
+    }
+  },
+  "parameters": [
+    {
+      "parameter_id": 1,
+      "code": "PZ-001",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Площадь застройки",
+      "unit": "м²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_cross_stage_localization.py",
+        "test_case10_generic_extraction.py",
+        "test_case10_live_candidate_tagger.py",
+        "test_case10_semantic_similarity.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 2,
+      "code": "PZ-002",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Общая площадь здания",
+      "unit": "м²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_cross_stage_localization.py",
+        "test_case10_generic_extraction.py",
+        "test_case10_live_candidate_tagger.py",
+        "test_case10_semantic_similarity.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 3,
+      "code": "PZ-003",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Полезная / Расчетная площадь",
+      "unit": "м²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 4,
+      "code": "PZ-004",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Строительный объем (Общий)",
+      "unit": "м³",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_anchor_search.py",
+        "test_case10_generic_extraction.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 5,
+      "code": "PZ-005",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Строительный объем (Подземный)",
+      "unit": "м³",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 6,
+      "code": "PZ-006",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Строительный объем (Надземный)",
+      "unit": "м³",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 7,
+      "code": "PZ-007",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Этажность (надземная)",
+      "unit": "ед.",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [
+        "test_case10_logical_analysis.py",
+        "test_case10_table_row_count_extraction.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 8,
+      "code": "PZ-008",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Высота здания",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 9,
+      "code": "PZ-009",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Абсолютная отметка 0.000",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "OFFICIAL_RULE_PACK",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_fallback.py",
+        "test_case10_incremental.py",
+        "test_case10_ocr_hardening.py",
+        "test_case10_official.py",
+        "test_case10_training_release.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": true,
+        "gold_check_count": 1,
+        "positive_count": 0,
+        "negative_count": 1,
+        "coverage_status": "COVERED_PILOT"
+      },
+      "readiness_class": "PRODUCTION_READY"
+    },
+    {
+      "parameter_id": 10,
+      "code": "PZ-010",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Количество квартир",
+      "unit": "шт.",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_TABLE_ROW_COUNT",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_table_row_count_extraction.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 11,
+      "code": "PZ-011",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Квартирография",
+      "unit": "шт.",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_TABLE_ROW_COUNT",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 12,
+      "code": "PZ-012",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Количество машино-мест (подземных)",
+      "unit": "шт.",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_TABLE_ROW_COUNT",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_logical_analysis.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 13,
+      "code": "PZ-013",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Технологическая мощность / Вместимость",
+      "unit": "ед.",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 14,
+      "code": "PZ-014",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Расчетная электрическая мощность",
+      "unit": "кВт",
+      "data_type_class": "OTHER",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 15,
+      "code": "PZ-015",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Категория надежности электроснабжения",
+      "unit": "Кат.",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_ENUM",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 16,
+      "code": "PZ-016",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Суточный расход водопотребления",
+      "unit": "м³/сут",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [
+        "test_case10_compound_extraction.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 17,
+      "code": "PZ-017",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Суммарная тепловая нагрузка",
+      "unit": "Гкал/ч",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 18,
+      "code": "PZ-018",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Максимальный часовой расход газа",
+      "unit": "м³/ч",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 19,
+      "code": "PZ-019",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Коэффициент застройки (КЗ)",
+      "unit": "%",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 20,
+      "code": "PZ-020",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Коэффициент использования территории (КИТ)",
+      "unit": "%",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 21,
+      "code": "PZ-021",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Класс энергетической эффективности",
+      "unit": "Буква",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_ENUM",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 22,
+      "code": "PZ-022",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Степень огнестойкости здания",
+      "unit": "Степень",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_ENUM",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 23,
+      "code": "PZ-023",
+      "section": "Раздел 1. ПЗ",
+      "parameter_name": "Класс конструктивной пожарной опасности",
+      "unit": "Класс (С0, С1)",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_ENUM",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 24,
+      "code": "SPZU-024",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Объем грунта (выемка/насыпь)",
+      "unit": "м³",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 25,
+      "code": "SPZU-025",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Площадь асфальтобетонного покрытия",
+      "unit": "м²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 26,
+      "code": "SPZU-026",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Площадь тротуарного плиточного покрытия",
+      "unit": "м²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 27,
+      "code": "SPZU-027",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Площадь озеленения и газонов",
+      "unit": "м²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_training_release.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": true,
+        "gold_check_count": 1,
+        "positive_count": 1,
+        "negative_count": 0,
+        "coverage_status": "COVERED_PILOT"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 28,
+      "code": "SPZU-028",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Площадь детских и спортивных площадок",
+      "unit": "м²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 29,
+      "code": "SPZU-029",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Спецификация МАФ",
+      "unit": "шт. / компл.",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_compound_extraction.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": true,
+        "gold_check_count": 1,
+        "positive_count": 0,
+        "negative_count": 1,
+        "coverage_status": "COVERED_PILOT"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 30,
+      "code": "SPZU-030",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Ширина внутриплощадочных дорог и проездов",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 31,
+      "code": "SPZU-031",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Радиусы поворота дорог и пожарных проездов",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 32,
+      "code": "SPZU-032",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Конструкция дорожной одежды",
+      "unit": "мм (слои)",
+      "data_type_class": "OTHER",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 33,
+      "code": "SPZU-033",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Уклоны дорог и проездов",
+      "unit": "‰",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 34,
+      "code": "SPZU-034",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Точки и координаты подключения внешних сетей",
+      "unit": "Коорд.",
+      "data_type_class": "OTHER",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 35,
+      "code": "SPZU-035",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Охранные зоны существующих коммуникаций",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 36,
+      "code": "SPZU-036",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Тип и высотные параметры ограждения территории",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": true,
+        "gold_check_count": 1,
+        "positive_count": 0,
+        "negative_count": 1,
+        "coverage_status": "COVERED_PILOT"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 37,
+      "code": "SPZU-037",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Количество и разметка парковочных мест на участке",
+      "unit": "шт.",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_TABLE_ROW_COUNT",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 38,
+      "code": "SPZU-038",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Количество парковочных мест для МГН на участке",
+      "unit": "шт.",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_TABLE_ROW_COUNT",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 39,
+      "code": "SPZU-039",
+      "section": "Раздел 2. СПЗУ",
+      "parameter_name": "Мероприятия по инженерной подготовке (дренажи)",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": true,
+        "gold_check_count": 1,
+        "positive_count": 0,
+        "negative_count": 1,
+        "coverage_status": "COVERED_PILOT"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 40,
+      "code": "AR-040",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Ширина магистральных эвакуационных коридоров",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 41,
+      "code": "AR-041",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Ширина эвакуационных выходов (дверей)",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 42,
+      "code": "AR-042",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Высота путей эвакуации и проемов",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 43,
+      "code": "AR-043",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Направление открывания эвакуационных дверей",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 44,
+      "code": "AR-044",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Послойный состав пирога кровли",
+      "unit": "мм (слои)",
+      "data_type_class": "OTHER",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 45,
+      "code": "AR-045",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Уклоны кровли и система водостока",
+      "unit": "% / °",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 46,
+      "code": "AR-046",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Общее количество и габариты оконных блоков",
+      "unit": "шт. / м²",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 47,
+      "code": "AR-047",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Габариты и глубина тамбуров входных групп",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 48,
+      "code": "AR-048",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Количество и параметры лестничных маршей и ступеней",
+      "unit": "шт. / мм",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 49,
+      "code": "AR-049",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Высота и тип ограждений лестниц, балкона, кровли",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 50,
+      "code": "AR-050",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Спецификация и типы внутренней отделки помещений",
+      "unit": "Класс (КМ)",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_ENUM",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 51,
+      "code": "AR-051",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Параметры естественного освещения (КЕО)",
+      "unit": "%",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 52,
+      "code": "AR-052",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Цветовое решение и материалы облицовки фасадов",
+      "unit": "RAL / Артикул",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [
+        "test_case10_compound_extraction.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 53,
+      "code": "AR-053",
+      "section": "Раздел 3. АР",
+      "parameter_name": "Конструктивные мероприятия по защите от шума",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 54,
+      "code": "KR-054",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Шаг и привязка координационных осей несущего каркаса",
+      "unit": "мм",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 55,
+      "code": "KR-055",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Класс прочности бетона монолитных конструкций",
+      "unit": "Марка (B)",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "OFFICIAL_RULE_PACK",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_enum_class_extraction.py",
+        "test_case10_fallback.py",
+        "test_case10_incremental.py",
+        "test_case10_ocr_hardening.py",
+        "test_case10_official.py",
+        "test_case10_training_release.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": true,
+        "gold_check_count": 3,
+        "positive_count": 0,
+        "negative_count": 3,
+        "coverage_status": "COVERED_PILOT"
+      },
+      "readiness_class": "PRODUCTION_READY"
+    },
+    {
+      "parameter_id": 56,
+      "code": "KR-056",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Марка стали и класс прочности металлопроката",
+      "unit": "Марка (С)",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_ENUM",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_enum_class_extraction.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 57,
+      "code": "KR-057",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Марка и класс прочности рабочей арматуры",
+      "unit": "Класс (А)",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_ENUM",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 58,
+      "code": "KR-058",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Толщина монолитной фундаментной плиты / ростверка",
+      "unit": "мм",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "OFFICIAL_RULE_PACK",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_fallback.py",
+        "test_case10_generic_extraction.py",
+        "test_case10_official.py",
+        "test_case10_training_release.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": true,
+        "gold_check_count": 1,
+        "positive_count": 0,
+        "negative_count": 1,
+        "coverage_status": "COVERED_PILOT"
+      },
+      "readiness_class": "PRODUCTION_READY"
+    },
+    {
+      "parameter_id": 59,
+      "code": "KR-059",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Толщина монолитных плит перекрытий и покрытия",
+      "unit": "мм",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 60,
+      "code": "KR-060",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Геометрические сечения несущих колонн и пилонов",
+      "unit": "мм²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 61,
+      "code": "KR-061",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Толщина несущих монолитных стен (ядра жесткости)",
+      "unit": "мм",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 62,
+      "code": "KR-062",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Диаметр продольной (рабочей) арматуры в колоннах/пилонах",
+      "unit": "мм",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 63,
+      "code": "KR-063",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Наличие и конструктивное исполнение деформационных швов",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 64,
+      "code": "KR-064",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Привязки и габариты лифтовых шахт",
+      "unit": "мм",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_logical_analysis.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 65,
+      "code": "KR-065",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Схемы расположения и площади технологических проемов",
+      "unit": "м²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 66,
+      "code": "KR-066",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Антикоррозионная и огнезащитная обработка конструкций",
+      "unit": "Марка / Толщина",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [
+        "test_case10_compound_extraction.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 67,
+      "code": "KR-067",
+      "section": "Раздел 4. КР",
+      "parameter_name": "Ведомости расхода материалов (бетон, сталь)",
+      "unit": "м³ / т",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 68,
+      "code": "IOS1-068",
+      "section": "Раздел 5. ИОС1",
+      "parameter_name": "Номинальная аппаратная защита ВРУ/ГРЩ",
+      "unit": "А (Ампер)",
+      "data_type_class": "OTHER",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 69,
+      "code": "IOS1-069",
+      "section": "Раздел 5. ИОС1",
+      "parameter_name": "Сечение жил и маркировка распределительных кабелей",
+      "unit": "мм²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 70,
+      "code": "IOS1-070",
+      "section": "Раздел 5. ИОС1",
+      "parameter_name": "Параметры и контуры заземления и молниезащиты",
+      "unit": "Ом / мм²",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 71,
+      "code": "IOS2-071",
+      "section": "Раздел 5. ИОС2",
+      "parameter_name": "Диаметры стояков и разводящих трубопроводов В1/Т3",
+      "unit": "мм",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 72,
+      "code": "IOS2-072",
+      "section": "Раздел 5. ИОС2",
+      "parameter_name": "Материал и класс давления напорных труб В1/Т3",
+      "unit": "Марка",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [
+        "test_case10_enum_class_extraction.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 73,
+      "code": "IOS2-073",
+      "section": "Раздел 5. ИОС2",
+      "parameter_name": "Характеристики насосных станций хоз-питьевого водоснабжения",
+      "unit": "м³/ч / м / кВт",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 74,
+      "code": "IOS3-074",
+      "section": "Раздел 5. ИОС3",
+      "parameter_name": "Диаметры выпусков и магистралей К1/К2",
+      "unit": "мм",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 75,
+      "code": "IOS3-075",
+      "section": "Раздел 5. ИОС3",
+      "parameter_name": "Материал и тип канализационных труб и фасонных частей",
+      "unit": "Марка",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 76,
+      "code": "IOS4-076",
+      "section": "Раздел 5. ИОС4",
+      "parameter_name": "Диаметры магистралей и стояков отопления (Т1, Т2)",
+      "unit": "мм",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 77,
+      "code": "IOS4-077",
+      "section": "Раздел 5. ИОС4",
+      "parameter_name": "Технические параметры отопительных приборов (радиаторов)",
+      "unit": "Вт / шт.",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 78,
+      "code": "IOS4-078",
+      "section": "Раздел 5. ИОС4",
+      "parameter_name": "Сечения и геометрия воздуховодов общеобменной вентиляции",
+      "unit": "мм²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "OFFICIAL_RULE_PACK",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_evaluation.py",
+        "test_case10_ocr_hardening.py",
+        "test_case10_official.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": true,
+        "gold_check_count": 5,
+        "positive_count": 5,
+        "negative_count": 0,
+        "coverage_status": "COVERED_PILOT"
+      },
+      "readiness_class": "PRODUCTION_READY"
+    },
+    {
+      "parameter_id": 79,
+      "code": "IOS4-079",
+      "section": "Раздел 5. ИОС4",
+      "parameter_name": "Характеристики вентиляторов общеобменной вентиляции",
+      "unit": "м³/ч / Па / кВт",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "OFFICIAL_RULE_PACK",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [
+        "test_case10_logical_analysis.py",
+        "test_case10_official.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": true,
+        "gold_check_count": 1,
+        "positive_count": 1,
+        "negative_count": 0,
+        "coverage_status": "COVERED_PILOT"
+      },
+      "readiness_class": "PRODUCTION_READY"
+    },
+    {
+      "parameter_id": 80,
+      "code": "IOS5-080",
+      "section": "Раздел 5. ИОС5",
+      "parameter_name": "Состав и емкость систем пожарной сигнализации (АПС)",
+      "unit": "шт. / зоны",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 81,
+      "code": "POS-081",
+      "section": "Раздел 6. ПОС",
+      "parameter_name": "Границы опасных зон работы грузоподъемных кранов",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 82,
+      "code": "POS-082",
+      "section": "Раздел 6. ПОС",
+      "parameter_name": "Продолжительность этапов строительства (Календарный график)",
+      "unit": "дни",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 83,
+      "code": "POS-083",
+      "section": "Раздел 6. ПОС",
+      "parameter_name": "Посадка и габариты временных зданий и сооружений",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 84,
+      "code": "POS-084",
+      "section": "Раздел 6. ПОС",
+      "parameter_name": "Схемы движения и ширина временных автодорог",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 85,
+      "code": "POS-085",
+      "section": "Раздел 6. ПОС",
+      "parameter_name": "Места размещения площадок складирования материалов",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 86,
+      "code": "POS-086",
+      "section": "Раздел 6. ПОС",
+      "parameter_name": "Потребность в кадрах (Максимальная численность)",
+      "unit": "чел.",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [
+        "test_case10_table_row_count_extraction.py"
+      ],
+      "has_tests": true,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 87,
+      "code": "POS-087",
+      "section": "Раздел 6. ПОС",
+      "parameter_name": "Технологическая последовательность возведения",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 88,
+      "code": "POS-088",
+      "section": "Раздел 6. ПОС",
+      "parameter_name": "Точки подключения и мощности временных ресурсов",
+      "unit": "кВт / м³",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 89,
+      "code": "POS-089",
+      "section": "Раздел 6. ПОС",
+      "parameter_name": "Расположение пунктов мойки колес и выездов",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 90,
+      "code": "POD-090",
+      "section": "Раздел 7. ПОД",
+      "parameter_name": "Границы опасных зон развала и обрушения конструкций",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 91,
+      "code": "POD-091",
+      "section": "Раздел 7. ПОД",
+      "parameter_name": "Методы и технологическая последовательность демонтажа",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 92,
+      "code": "POD-092",
+      "section": "Раздел 7. ПОД",
+      "parameter_name": "Мероприятия по защите действующих коммуникаций",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 93,
+      "code": "POD-093",
+      "section": "Раздел 7. ПОД",
+      "parameter_name": "Общие объемы демонтируемых конструкций (по типам)",
+      "unit": "м³",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 94,
+      "code": "POD-094",
+      "section": "Раздел 7. ПОД",
+      "parameter_name": "Масса и класс опасности образующихся отходов",
+      "unit": "т / Класс",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 95,
+      "code": "POD-095",
+      "section": "Раздел 7. ПОД",
+      "parameter_name": "Мероприятия по пылеподавлению и снижению шума",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 96,
+      "code": "POD-096",
+      "section": "Раздел 7. ПОД",
+      "parameter_name": "Узлы временного расчленения сохраняемых конструкций",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 97,
+      "code": "POD-097",
+      "section": "Раздел 7. ПОД",
+      "parameter_name": "Места и габариты площадок временного складирования лома",
+      "unit": "м²",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 98,
+      "code": "OOS-098",
+      "section": "Раздел 8. ООС",
+      "parameter_name": "Регистрация лимитов в АИС \"ОСИГ\"",
+      "unit": "Статус",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 99,
+      "code": "OOS-099",
+      "section": "Раздел 8. ООС",
+      "parameter_name": "Верфикация транспортных средств (ГЛОНАСС)",
+      "unit": "Статус",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 100,
+      "code": "OOS-100",
+      "section": "Раздел 8. ООС",
+      "parameter_name": "Фиксация рейсов через мобильный КПТС",
+      "unit": "Статус",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 101,
+      "code": "OOS-101",
+      "section": "Раздел 8. ООС",
+      "parameter_name": "Сверка легитимности полной утилизации",
+      "unit": "Статус",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 102,
+      "code": "PPM-102",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Деление здания на пожарные отсеки",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 103,
+      "code": "PPM-103",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Пределы огнестойкости противопожарных дверей и ворот (EI)",
+      "unit": "мин",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 104,
+      "code": "PPM-104",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Ширина и высота эвакуационных проходов",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 105,
+      "code": "PPM-105",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Ширина эвакуационных дверей наружных выходов",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 106,
+      "code": "PPM-106",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Направление открывания дверей на путях эвакуации",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 107,
+      "code": "PPM-107",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Класс пожарной опасности отделочных материалов",
+      "unit": "Класс (КМ)",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_ENUM",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 108,
+      "code": "PPM-108",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Количество и расстановка извещателей АПС",
+      "unit": "шт. / м",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 109,
+      "code": "PPM-109",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Пожарная маркировка кабелей систем ПЗ (СПЗ)",
+      "unit": "Марка",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 110,
+      "code": "PPM-110",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Количество и расстановка оповещателей СОУЭ",
+      "unit": "шт.",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_TABLE_ROW_COUNT",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 111,
+      "code": "PPM-111",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Расположение и пределы огнестойкости клапанов (ОЗК)",
+      "unit": "мин (EI)",
+      "data_type_class": "OTHER",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 112,
+      "code": "PPM-112",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Производительность вентиляторов ДУ и подпора воздуха",
+      "unit": "м³/ч / Па",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 113,
+      "code": "PPM-113",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Расход воды и количество струй внутреннего пожаротушения (ВПВ)",
+      "unit": "л/с / шт.",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 114,
+      "code": "PPM-114",
+      "section": "Раздел 9. ППМ",
+      "parameter_name": "Расход воды на наружное пожаротушение (НПВ)",
+      "unit": "л/с",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 115,
+      "code": "ODI-115",
+      "section": "Раздел 10. ОДИ",
+      "parameter_name": "Технические параметры и наличие инвалидных подъемников",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 116,
+      "code": "ODI-116",
+      "section": "Раздел 10. ОДИ",
+      "parameter_name": "Ширина коридоров на путях движения МГН",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 117,
+      "code": "ODI-117",
+      "section": "Раздел 10. ОДИ",
+      "parameter_name": "Ширина дверных проемов на путях движения МГН",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 118,
+      "code": "ODI-118",
+      "section": "Раздел 10. ОДИ",
+      "parameter_name": "Высота порогов в дверных проемах на путях МГН",
+      "unit": "м",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 119,
+      "code": "ODI-119",
+      "section": "Раздел 10. ОДИ",
+      "parameter_name": "Габариты и планировка санузлов для инвалидов (универсальные кабины)",
+      "unit": "м² / м",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 120,
+      "code": "ODI-120",
+      "section": "Раздел 10. ОДИ",
+      "parameter_name": "Спецификация опорных стационарных и откидных поручней",
+      "unit": "шт.",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_TABLE_ROW_COUNT",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 121,
+      "code": "ODI-121",
+      "section": "Раздел 10. ОДИ",
+      "parameter_name": "Количество и габариты парковочных мест для инвалидов",
+      "unit": "шт. / м",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_COMPOUND",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 122,
+      "code": "ODI-122",
+      "section": "Раздел 10. ОДИ",
+      "parameter_name": "Наличие и расстановка тактильно-контрастных указателей",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 123,
+      "code": "ODI-123",
+      "section": "Раздел 10. ОДИ",
+      "parameter_name": "Состав систем двухсторонней связи и вызова помощника",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 124,
+      "code": "ZU-124",
+      "section": "Раздел 11. ЗУ",
+      "parameter_name": "Класс энергетической эффективности здания",
+      "unit": "Буква",
+      "data_type_class": "ENUM_CLASS",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_ENUM",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 125,
+      "code": "ZU-125",
+      "section": "Раздел 11. ЗУ",
+      "parameter_name": "Толщина теплоизоляционного слоя наружных стен",
+      "unit": "мм",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 126,
+      "code": "ZU-126",
+      "section": "Раздел 11. ЗУ",
+      "parameter_name": "Коэффициент теплопроводности (λ) утеплителя стен",
+      "unit": "Вт/(м·С)",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 127,
+      "code": "ZU-127",
+      "section": "Раздел 11. ЗУ",
+      "parameter_name": "Коэффициент сопротивления теплопередаче окон (Ro)",
+      "unit": "м²·С/Вт",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 128,
+      "code": "ZU-128",
+      "section": "Раздел 11. ЗУ",
+      "parameter_name": "Толщина утеплителя чердачных перекрытий / кровли",
+      "unit": "мм",
+      "data_type_class": "NUMERIC_SIMPLE",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_ANCHOR_TABLE",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 129,
+      "code": "ZU-129",
+      "section": "Раздел 11. ЗУ",
+      "parameter_name": "Наличие приборов учета расхода энергоресурсов",
+      "unit": "шт.",
+      "data_type_class": "NUMERIC_COUNT",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "GENERIC_TABLE_ROW_COUNT",
+      "localization": "VALUE_GROUNDED",
+      "comparison_exists": true,
+      "negative_path_exists": true,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "PARTIAL"
+    },
+    {
+      "parameter_id": 130,
+      "code": "ZU-130",
+      "section": "Раздел 11. ЗУ",
+      "parameter_name": "Установка энергосберегающего осветительного оборудования",
+      "unit": "—",
+      "data_type_class": "NONE",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 131,
+      "code": "ZU-131",
+      "section": "Раздел 11. ЗУ",
+      "parameter_name": "Удельный годовой расход тепловой энергии на отопление",
+      "unit": "кВт·ч/м²",
+      "data_type_class": "NUMERIC_COMPOUND",
+      "criticality": "Критическое (приостановка работ)",
+      "review_priority": "HIGH",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    },
+    {
+      "parameter_id": 132,
+      "code": "SM-132",
+      "section": "Раздел 12. СМ",
+      "parameter_name": "Итоговая стоимость по Сводному сметному расчету (ССР)",
+      "unit": "тыс. руб.",
+      "data_type_class": "OTHER",
+      "criticality": "Существенное (предписание)",
+      "review_priority": "MEDIUM",
+      "required_stages": [
+        "PD",
+        "RD",
+        "ID"
+      ],
+      "extractor": "NONE",
+      "localization": "CONTEXT_ONLY",
+      "comparison_exists": false,
+      "negative_path_exists": false,
+      "tests": [],
+      "has_tests": false,
+      "real_fixture": {
+        "has_gold_examples": false,
+        "gold_check_count": 0,
+        "positive_count": 0,
+        "negative_count": 0,
+        "coverage_status": "NO_GOLD_EXAMPLES"
+      },
+      "readiness_class": "CONFIG_ONLY"
+    }
+  ]
+}

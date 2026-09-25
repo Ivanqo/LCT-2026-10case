@@ -1,0 +1,11 @@
+{
+ "object": "OKT103",
+ "mode": "pipeline",
+ "pid": 20564,
+ "code_root": "C:\\Users\\Ivan\\AppData\\Local\\Temp\\claude\\D--Proga-LCT-hack-2026\\214cb2d6-ce3c-4412-b464-83fab1ada89e\\scratchpad\\code_snapshot_e1",
+ "scan_code_fingerprint": "7255fc3a5ce24ccb",
+ "wall_seconds": 60.23,
+ "submission_sha256": "c52705e6e24679043ab3a5809404de4a212c631b622579ef68be7c70fdce388c",
+ "checks": 132,
+ "coverage_summary": "Живой тэггер кандидатов: PD: просканировано 7 из 23 документов (только первые страницы у 1; не просканировано из-за лимита 16); RD: просканировано 12 из 15 документов (не просканировано из-за лимита 3; не PDF 1); ID: просканировано 21 из 67 документов (без текстового слоя 16; не просканировано из-за лимита 46; не PDF 69)"
+}

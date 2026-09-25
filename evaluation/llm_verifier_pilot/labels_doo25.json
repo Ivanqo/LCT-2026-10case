@@ -1,0 +1,9 @@
+{
+  "DOO25|AR-051|PD|numeric": {"n": 3, "strict": [], "lenient": [], "note": "page numbers"},
+  "DOO25|PZ-008|PD|numeric": {"n": 6, "strict": [], "lenient": [], "note": "[0] clause 1.75 (real '14160' in context not extracted), [1],[2] 2,3 (real 13,22 in context), [3]-[5] 7,7 is the fire-technical height (road level to top-floor window) -- consistent with LOS3A labelling fire-technical height as a different quantity"},
+  "DOO25|SPZU-033|PD|numeric": {"n": 2, "strict": [], "lenient": [], "note": "truck model number"},
+  "DOO25|PZ-023|PD|enum": {"n": 3, "strict": [0, 1, 2], "lenient": [0, 1, 2]},
+  "DOO25|PZ-015|RD|enum": {"n": 1, "strict": [], "lenient": [0], "note": "'I категория для насосов' -- a subset of consumers, not the object's category"},
+  "DOO25|PZ-023|RD|enum": {"n": 2, "strict": [0, 1], "lenient": [0, 1]},
+  "DOO25|KR-067|RD|compound": {"n": 4, "strict": [], "lenient": []}
+}

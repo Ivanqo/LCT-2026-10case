@@ -1,0 +1,32 @@
+fastapi==0.110.3
+uvicorn[standard]==0.27.1
+python-multipart==0.0.9
+SQLAlchemy==2.0.27
+alembic==1.13.1
+pydantic==2.6.4
+httpx==0.27.0
+prometheus-client==0.19.0
+requests==2.31.0
+pypdf==4.2.0
+PyMuPDF==1.24.2
+Pillow==10.3.0
+pika==1.3.2
+redis==5.0.1
+jsonschema==4.23.0
+
+# Optional semantic-anchor layer (TZ 9.1 item 2, "семантические якоря" --
+# see app/domain/semantic_similarity.py, app/domain/gpu.py). torch itself is
+# installed separately in the Dockerfile as a CUDA 12.1 wheel (runs fine with
+# no GPU present too -- see gpu.py); sentence-transformers is pinned to the
+# same version rag_service already runs in production for the same Russian
+# document corpus (rag_service's own torch install is unrelated and stays
+# CPU-only -- it doesn't get a GPU allocation from the grading server).
+sentence-transformers==2.6.1
+# torch==2.2.2 was built against the NumPy 1.x C ABI; left unpinned, pip
+# resolves whatever numpy is latest on PyPI at build time (found empirically:
+# a fresh --no-cache build pulled 2.4.6), which torch then reports as
+# ABI-incompatible on every import ("may crash") -- not a hypothetical, this
+# is the exact same failure rag_service/requirements.txt already pins around
+# (numpy==1.26.4) for the same torch version; api_service just lacked the
+# matching pin.
+numpy==1.26.4

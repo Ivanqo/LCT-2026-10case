@@ -1,0 +1,2960 @@
+{
+ "object_code": "DOO25",
+ "object_id": "OBJ-NEW-DOO25",
+ "run_seconds": 143.4,
+ "live_fragments": 119,
+ "tagger_coverage": {
+  "ID": {
+   "documents": 779,
+   "tagger_scanned": 0
+  },
+  "PD": {
+   "documents": 88,
+   "tagger_scanned": 7
+  },
+  "RD": {
+   "documents": 883,
+   "tagger_scanned": 493
+  }
+ },
+ "tagger_budget": {
+  "LIVE_TAGGER_ENABLED": true,
+  "LIVE_TAGGER_MAX_DOCUMENTS": 500,
+  "LIVE_TAGGER_MAX_PAGES_PER_DOCUMENT": 220,
+  "LIVE_TAGGER_MAX_PAGES_TOTAL": 6000,
+  "LIVE_TAGGER_MAX_SECONDS": 7200.0
+ },
+ "code_fingerprint": {
+  "anchor_search.py": "fcdd747bb8fdb328",
+  "cross_stage_localization.py": "5e47e009f4e3bae3",
+  "generic_matrix_extraction.py": "427f0af40bd5ba91",
+  "generic_enum_extraction.py": "79f72b97156fbc89",
+  "generic_compound_extraction.py": "caa86cd89b71fae1",
+  "generic_table_row_count.py": "f6fed42367b26dac",
+  "live_candidate_tagger.py": "9a292fc6b4be1439",
+  "official_evidence.py": "85e6d366e2188e4a",
+  "official_rule_packs.py": "aefa4e8fac9c45ec",
+  "semantic_similarity.py": "088af402ec499002",
+  "llm_candidate_verifier.py": "363dd939ebb7b756",
+  "dataset_sources.py": "1517d30acab2ef96"
+ },
+ "env": {
+  "CASE10_LLM_VERIFIER_ENABLED": "0"
+ },
+ "groups": [
+  {
+   "parameter_code": "AR-040",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "AR-041",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 1
+   },
+   "fragments": [
+    {
+     "stage": "working",
+     "role": "context",
+     "dataset_file_id": "DOO25-000923",
+     "filename": "04-П.СКБ-ПИР-Р-9-ИТП.ТМ.pdf",
+     "discipline": "ОВ",
+     "page": 76,
+     "bbox": [
+      0.08349573471966912,
+      0.08891553720216004,
+      0.9291203346573004,
+      0.10469827176273011
+     ],
+     "extracted_value": null,
+     "context": "стены. Для помещения ИТП, предусмотреть количество эвакуационных выходов, согласно",
+     "extractor": "annotation_context",
+     "confidence": 0.744
+    }
+   ]
+  },
+  {
+   "parameter_code": "AR-042",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "AR-043",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "AR-044",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "AR-045",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "AR-046",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "AR-047",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "AR-048",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "AR-049",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "AR-050",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "AR-051",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 3
+   },
+   "fragments": [
+    {
+     "stage": "project",
+     "role": "context",
+     "dataset_file_id": "DOO25-000840",
+     "filename": "03 Раздел ПД 3 АР_изм.1_11.pdf",
+     "discipline": "АР",
+     "page": 36,
+     "bbox": [
+      0.16670019232656083,
+      0.7999532695950715,
+      0.8598567951950246,
+      0.8158766949468019
+     ],
+     "extracted_value": null,
+     "context": "естественного освещения соответствует санитарно-эпидемиологическим",
+     "extractor": "annotation_context",
+     "confidence": 0.751
+    }
+   ]
+  },
+  {
+   "parameter_code": "AR-052",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "AR-053",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS1-068",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS1-069",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS1-070",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS2-071",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS2-072",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS2-073",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS3-074",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS3-075",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS4-076",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS4-077",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS4-078",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS4-079",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "IOS5-080",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-054",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-055",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-056",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-057",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-058",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-059",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-060",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-061",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-062",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-063",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-064",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-065",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-066",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "KR-067",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 4
+   },
+   "fragments": [
+    {
+     "stage": "working",
+     "role": "context",
+     "dataset_file_id": "DOO25-000898",
+     "filename": "04-П.СКБ-ПИР-П-АР2.pdf",
+     "discipline": "АР",
+     "page": 11,
+     "bbox": [
+      0.13882543576643772,
+      0.7878467260800178,
+      0.44414059427760594,
+      0.7991651231489385
+     ],
+     "extracted_value": null,
+     "context": "Узел М Ведомость расхода материалов",
+     "extractor": "annotation_context",
+     "confidence": 0.793
+    }
+   ]
+  },
+  {
+   "parameter_code": "ODI-115",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ODI-116",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ODI-117",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ODI-118",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ODI-119",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ODI-120",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ODI-121",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ODI-122",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ODI-123",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "OOS-098",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "OOS-099",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 6
+   },
+   "fragments": [
+    {
+     "stage": "project",
+     "role": "context",
+     "dataset_file_id": "DOO25-000816",
+     "filename": "01-06-00-01-03 Пол25 ПОС.pdf",
+     "discipline": "ПОС",
+     "page": 14,
+     "bbox": [
+      0.11912922891084768,
+      0.16447717876525744,
+      0.9642974277616865,
+      0.18040060411698783
+     ],
+     "extracted_value": null,
+     "context": "лиц и транспортных средств, а по ее прибытии принять участие в быстрейшей",
+     "extractor": "annotation_context",
+     "confidence": 0.631
+    }
+   ]
+  },
+  {
+   "parameter_code": "OOS-100",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "OOS-101",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POD-090",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POD-091",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POD-092",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POD-093",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POD-094",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POD-095",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POD-096",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POD-097",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POS-081",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POS-082",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POS-083",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POS-084",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POS-085",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POS-086",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POS-087",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POS-088",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "POS-089",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-102",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-103",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-104",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-105",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-106",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-107",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-108",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-109",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-110",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-111",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-112",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-113",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PPM-114",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 2
+   },
+   "fragments": [
+    {
+     "stage": "project",
+     "role": "context",
+     "dataset_file_id": "DOO25-000816",
+     "filename": "01-06-00-01-03 Пол25 ПОС.pdf",
+     "discipline": "ПОС",
+     "page": 35,
+     "bbox": [
+      0.14301551827953285,
+      0.37592254670992503,
+      0.9161022924272096,
+      0.39184597206165545
+     ],
+     "extracted_value": null,
+     "context": "Расход воды на наружное пожаротушение в соответствии с СП 8.13130.2020 (п.5,",
+     "extractor": "annotation_context",
+     "confidence": 0.9
+    }
+   ]
+  },
+  {
+   "parameter_code": "PZ-001",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-002",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-003",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-004",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-005",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-006",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-007",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-008",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 6
+   },
+   "fragments": [
+    {
+     "stage": "project",
+     "role": "context",
+     "dataset_file_id": "DOO25-000840",
+     "filename": "03 Раздел ПД 3 АР_изм.1_11.pdf",
+     "discipline": "АР",
+     "page": 20,
+     "bbox": [
+      0.12094335670594705,
+      0.6769832892042977,
+      0.6885191941579641,
+      0.691632828928658
+     ],
+     "extracted_value": null,
+     "context": "1.75 Высота здания: 14200 Уточнена высота здания: 14160",
+     "extractor": "annotation_context",
+     "confidence": 0.615
+    }
+   ]
+  },
+  {
+   "parameter_code": "PZ-009",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-010",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-011",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-012",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-013",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-014",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 78
+   },
+   "fragments": [
+    {
+     "stage": "working",
+     "role": "context",
+     "dataset_file_id": "DOO25-000889",
+     "filename": "04-П.СКБ-ПИР-Р-ОВ2_ТР3.pdf",
+     "discipline": "ОВ",
+     "page": 72,
+     "bbox": [
+      0.09604733891847755,
+      0.6291435767239459,
+      0.3645190840007878,
+      0.6390672262377524
+     ],
+     "extracted_value": null,
+     "context": "Потребляемая электрическая мощность (Nп,",
+     "extractor": "annotation_context",
+     "confidence": 0.775
+    }
+   ]
+  },
+  {
+   "parameter_code": "PZ-015",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 1
+   },
+   "fragments": [
+    {
+     "stage": "working",
+     "role": "context",
+     "dataset_file_id": "DOO25-000925",
+     "filename": "04-П.СКБ-ПИР-Р-9-ИТП.ЭОМ.pdf",
+     "discipline": "ОВ",
+     "page": 4,
+     "bbox": [
+      0.3622802589398382,
+      0.36189337921783166,
+      0.9484650890504379,
+      0.37441440073008503
+     ],
+     "extracted_value": null,
+     "context": "надежности электроснабжения. I категория для насосов обеспечивается наличием технологического венткороба должны быть присоединены к нулевому защитному проводнику (занулены).",
+     "extractor": "annotation_context",
+     "confidence": 0.724
+    }
+   ]
+  },
+  {
+   "parameter_code": "PZ-016",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-017",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-018",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-019",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-020",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-021",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 6
+   },
+   "fragments": [
+    {
+     "stage": "project",
+     "role": "context",
+     "dataset_file_id": "DOO25-000793",
+     "filename": "01-03-00-01-12 Пол25 АР.pdf",
+     "discipline": "АР",
+     "page": 11,
+     "bbox": [
+      0.19693610839676295,
+      0.13532961428132212,
+      0.6645400940748472,
+      0.1512530396330525
+     ],
+     "extracted_value": null,
+     "context": "требованиям энергетической эффективности.",
+     "extractor": "annotation_context",
+     "confidence": 0.9
+    }
+   ]
+  },
+  {
+   "parameter_code": "PZ-022",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "PZ-023",
+   "group_key": "generic:enum",
+   "finding_status": "NEGATIVE_VERIFIED",
+   "comparability_status": "COMPARABLE",
+   "completeness_status": "PARTIALLY_LOADED",
+   "model_version": "generic-anchor-enum-v1",
+   "expected_value": "С0",
+   "actual_value": "С0.",
+   "confidence": 0.5,
+   "delta": {
+    "source": "generic_enum_extractor",
+    "matrix_scope": "MATRIX",
+    "parameter_code": "PZ-023",
+    "location": "SITE",
+    "comparison_result": "NON_TRIGGERING",
+    "values": {
+     "PD": "C0",
+     "RD": "C0"
+    },
+    "vocabulary_family": "FIRE_HAZARD_BUILDING_CLASS",
+    "missing_stages": [
+     "ID"
+    ],
+    "extraction_method": "anchor_phrase_plus_enum_vocabulary",
+    "gold_validated": false
+   },
+   "fragments": [
+    {
+     "stage": "project",
+     "role": "expected",
+     "dataset_file_id": "DOO25-000793",
+     "filename": "01-03-00-01-12 Пол25 АР.pdf",
+     "discipline": "АР",
+     "page": 7,
+     "bbox": [
+      0.6373711351040008,
+      0.30066629611954226,
+      0.6630948510635375,
+      0.3165897214712727
+     ],
+     "extracted_value": "С0",
+     "context": "II Класс конструктивной пожарной опасности - С0 ДОО на 220 мест вмещает 9",
+     "extractor": "generic_anchor_enum",
+     "confidence": 0.5
+    },
+    {
+     "stage": "working",
+     "role": "actual",
+     "dataset_file_id": "DOO25-000898",
+     "filename": "04-П.СКБ-ПИР-П-АР2.pdf",
+     "discipline": "АР",
+     "page": 4,
+     "bbox": [
+      0.5570864281008759,
+      0.14519523152976752,
+      0.5646002037791344,
+      0.15448743690471506
+     ],
+     "extracted_value": "С0.",
+     "context": "-класс конструктивной пожарной опасности здания - С0. 5. Размеры дверных блоков и оконных",
+     "extractor": "generic_anchor_enum",
+     "confidence": 0.5
+    }
+   ]
+  },
+  {
+   "parameter_code": "SM-132",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-024",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-025",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-026",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-027",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-028",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-029",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-030",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-031",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-032",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-033",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 2
+   },
+   "fragments": [
+    {
+     "stage": "project",
+     "role": "context",
+     "dataset_file_id": "DOO25-000816",
+     "filename": "01-06-00-01-03 Пол25 ПОС.pdf",
+     "discipline": "ПОС",
+     "page": 59,
+     "bbox": [
+      0.1932250703168743,
+      0.11238065524792161,
+      0.6764800444428891,
+      0.11939861089203534
+     ],
+     "extracted_value": null,
+     "context": "Точка подключения ▬ устройстве временных дорог и проездов,",
+     "extractor": "annotation_context",
+     "confidence": 0.665
+    }
+   ]
+  },
+  {
+   "parameter_code": "SPZU-034",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-035",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-036",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-037",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-038",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "SPZU-039",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 2
+   },
+   "fragments": [
+    {
+     "stage": "project",
+     "role": "context",
+     "dataset_file_id": "DOO25-000816",
+     "filename": "01-06-00-01-03 Пол25 ПОС.pdf",
+     "discipline": "ПОС",
+     "page": 17,
+     "bbox": [
+      0.15480750273510946,
+      0.6614841057539657,
+      0.9525117742220073,
+      0.6774075311056961
+     ],
+     "extracted_value": null,
+     "context": "Работы по инженерной подготовке территории (вертикальная планировка и пр.) и",
+     "extractor": "annotation_context",
+     "confidence": 0.761
+    }
+   ]
+  },
+  {
+   "parameter_code": "ZU-124",
+   "group_key": "annotation",
+   "finding_status": "NOT_COMPARABLE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "values_not_extracted",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 3
+   },
+   "fragments": [
+    {
+     "stage": "project",
+     "role": "context",
+     "dataset_file_id": "DOO25-000793",
+     "filename": "01-03-00-01-12 Пол25 АР.pdf",
+     "discipline": "АР",
+     "page": 11,
+     "bbox": [
+      0.21427133516094315,
+      0.16811179803533663,
+      0.8544672121609359,
+      0.18403522338706702
+     ],
+     "extracted_value": null,
+     "context": "Конструктивная схема здания принята на основании архитектурных",
+     "extractor": "annotation_context",
+     "confidence": 0.547
+    }
+   ]
+  },
+  {
+   "parameter_code": "ZU-125",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ZU-126",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ZU-127",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ZU-128",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ZU-129",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ZU-130",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  },
+  {
+   "parameter_code": "ZU-131",
+   "group_key": "annotation",
+   "finding_status": "MISSING_EVIDENCE",
+   "comparability_status": "NOT_COMPARABLE",
+   "completeness_status": "COMPLETE",
+   "model_version": "official-evidence-baseline-v1",
+   "expected_value": null,
+   "actual_value": null,
+   "confidence": null,
+   "delta": {
+    "source": "document_annotations",
+    "matrix_scope": "MATRIX",
+    "reason": "no_relevant_evidence",
+    "stages": [],
+    "location": "",
+    "candidate_regions": 0
+   },
+   "fragments": []
+  }
+ ]
+}

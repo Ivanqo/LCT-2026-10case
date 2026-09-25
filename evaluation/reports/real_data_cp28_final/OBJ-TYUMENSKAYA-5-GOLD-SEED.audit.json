@@ -1,0 +1,94 @@
+[
+  {
+    "id": 273,
+    "action": "PROCESS_CREATED",
+    "user_id": null,
+    "timestamp": "2026-09-17T16:00:52",
+    "details": {
+      "status": "PENDING"
+    }
+  },
+  {
+    "id": 274,
+    "action": "PROCESS_STATUS",
+    "user_id": 1,
+    "timestamp": "2026-09-17T16:00:52",
+    "details": {
+      "status": "PARSING"
+    }
+  },
+  {
+    "id": 275,
+    "action": "PROCESS_CACHE_HIT",
+    "user_id": 1,
+    "timestamp": "2026-09-17T16:00:52",
+    "details": {
+      "cache_key": "case10:v3:a0ae6ca24e6cd9df515e9c1c2480b024fa3987315e5d2e362e54e7fe0a29faf3:official-132-v1.1:AR-040,AR-041,AR-042,AR-043,AR-044,AR-045,AR-046,AR-047,AR-048,AR-049,AR-050,AR-051,AR-052,AR-053,IOS1-068,IOS1-069,IOS1-070,IOS2-071,IOS2-072,IOS2-073,IOS3-074,IOS3-075,IOS4-076,IOS4-077,IOS4-078,IOS4-079,IOS5-080,KR-054,KR-055,KR-056,KR-057,KR-058,KR-059,KR-060,KR-061,KR-062,KR-063,KR-064,KR-065,KR-066,KR-067,ODI-115,ODI-116,ODI-117,ODI-118,ODI-119,ODI-120,ODI-121,ODI-122,ODI-123,OOS-098,OOS-099,OOS-100,OOS-101,POD-090,POD-091,POD-092,POD-093,POD-094,POD-095,POD-096,POD-097,POS-081,POS-082,POS-083,POS-084,POS-085,POS-086,POS-087,POS-088,POS-089,PPM-102,PPM-103,PPM-104,PPM-105,PPM-106,PPM-107,PPM-108,PPM-109,PPM-110,PPM-111,PPM-112,PPM-113,PPM-114,PZ-001,PZ-002,PZ-003,PZ-004,PZ-005,PZ-006,PZ-007,PZ-008,PZ-009,PZ-010,PZ-011,PZ-012,PZ-013,PZ-014,PZ-015,PZ-016,PZ-017,PZ-018,PZ-019,PZ-020,PZ-021,PZ-022,PZ-023,SM-132,SPZU-024,SPZU-025,SPZU-026,SPZU-027,SPZU-028,SPZU-029,SPZU-030,SPZU-031,SPZU-032,SPZU-033,SPZU-034,SPZU-035,SPZU-036,SPZU-037,SPZU-038,SPZU-039,ZU-124,ZU-125,ZU-126,ZU-127,ZU-128,ZU-129,ZU-130,ZU-131"
+    }
+  },
+  {
+    "id": 276,
+    "action": "PROTOCOL_VERSION_CREATED",
+    "user_id": 1,
+    "timestamp": "2026-09-17T16:01:10",
+    "details": {
+      "protocol_id": 60,
+      "version": 1
+    }
+  },
+  {
+    "id": 277,
+    "action": "PROCESS_STATUS",
+    "user_id": 1,
+    "timestamp": "2026-09-17T16:01:10",
+    "details": {
+      "status": "READY",
+      "protocol_id": 60,
+      "version": 1
+    }
+  },
+  {
+    "id": 278,
+    "action": "INSPECTOR_DECISION",
+    "user_id": 1,
+    "timestamp": "2026-09-17T16:01:12",
+    "details": {
+      "evidence_group_id": 6230,
+      "decision": "Clarification Required",
+      "finding_status": "CLARIFICATION_REQUIRED",
+      "reason_code": null,
+      "comment": "Automated workflow smoke: original values require inspector review",
+      "protocol_version": 2
+    }
+  },
+  {
+    "id": 279,
+    "action": "PROCESS_STATUS",
+    "user_id": 1,
+    "timestamp": "2026-09-17T16:01:12",
+    "details": {
+      "status": "VERIFYING",
+      "pending_candidates": 6
+    }
+  },
+  {
+    "id": 280,
+    "action": "PROTOCOL_VERSION_CREATED",
+    "user_id": 1,
+    "timestamp": "2026-09-17T16:01:12",
+    "details": {
+      "protocol_id": 61,
+      "version": 2
+    }
+  },
+  {
+    "id": 281,
+    "action": "PROTOCOL_FINALIZED",
+    "user_id": 1,
+    "timestamp": "2026-09-17T16:01:12",
+    "details": {
+      "protocol_id": 61,
+      "version": 2
+    }
+  }
+]

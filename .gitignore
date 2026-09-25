@@ -1,0 +1,51 @@
+# CASE10 local repository (no remote). Heavy data lives outside git; see CASE10_AGENT_PROMPTS_BACKLOG.md.
+
+# Python environments and caches
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# Datasets, run outputs, scratch (root-level only: landing/data is source)
+/data/
+/logs/
+/tmp/
+/case_data/
+/learning_data/
+/New_data/
+/_case10_project_snapshot_*/
+
+# Node
+node_modules/
+
+# Archives and binary documents
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+*.tgz
+*.pdf
+*.db
+*.sqlite
+*.sqlite3
+
+# Scratch logs at the repository root
+/err*.txt
+/stdout.txt
+/Логи.txt
+
+# Secrets
+initial_admin_credentials.txt
+.env
+.env.*
+!.env.example
+
+# External Qwen proxy: has its own .git and is not part of the CASE10 delivery
+/FreeQwenApi/
+
+# Windows path artifacts ("<dir>;C" folders created by a broken path join)
+*;C/

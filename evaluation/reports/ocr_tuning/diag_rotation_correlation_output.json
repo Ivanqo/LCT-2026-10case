@@ -1,0 +1,570 @@
+[
+  {
+    "line_id": "F0206-P00081-L0003",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 1,
+    "gold": "",
+    "predicted": "TPF <<"
+  },
+  {
+    "line_id": "F0228-P00053-L0055",
+    "rotation": 270,
+    "gold_len": 16,
+    "cer": 0.0,
+    "gold": "предпринимателя)",
+    "predicted": "предпринимателя)"
+  },
+  {
+    "line_id": "F0225-P00034-L0028",
+    "rotation": 270,
+    "gold_len": 5,
+    "cer": 0.0,
+    "gold": "51320",
+    "predicted": "51320"
+  },
+  {
+    "line_id": "F0222-P00051-L0059",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 0,
+    "gold": "",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0043-P00004-L0001",
+    "rotation": 0,
+    "gold_len": 5,
+    "cer": 1.0,
+    "gold": "QkCo9",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0214-P00122-L0125",
+    "rotation": 0,
+    "gold_len": 6,
+    "cer": 0.0,
+    "gold": "WAS 35",
+    "predicted": "WAS 35"
+  },
+  {
+    "line_id": "F0226-P00014-L0015",
+    "rotation": 0,
+    "gold_len": 21,
+    "cer": 0.0,
+    "gold": "ИНФОРМАЦИОННОЕ ПИСЬМО",
+    "predicted": "ИНФОРМАЦИОННОЕ ПИСЬМО"
+  },
+  {
+    "line_id": "F0208-P00038-L0071",
+    "rotation": 270,
+    "gold_len": 15,
+    "cer": 0.06666666666666667,
+    "gold": "+49,150/+49,500",
+    "predicted": "+49,150/+4 9,500"
+  },
+  {
+    "line_id": "F0160-P00100-L0013",
+    "rotation": 0,
+    "gold_len": 7,
+    "cer": 0.2857142857142857,
+    "gold": "Тип \"С\"",
+    "predicted": "Тип “C\""
+  },
+  {
+    "line_id": "F0138-P00008-L0091",
+    "rotation": 0,
+    "gold_len": 0,
+    "cer": 0,
+    "gold": "",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0138-P00007-L0299",
+    "rotation": 0,
+    "gold_len": 0,
+    "cer": 0,
+    "gold": "",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0231-P00023-L0004",
+    "rotation": 270,
+    "gold_len": 35,
+    "cer": 0.14285714285714285,
+    "gold": "4. Предъявлены документы, подтвержд",
+    "predicted": "4. Предъявлены документы, подтверждающие"
+  },
+  {
+    "line_id": "F0222-P00051-L0071",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 0,
+    "gold": "",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0138-P00008-L0210",
+    "rotation": 0,
+    "gold_len": 15,
+    "cer": 0.26666666666666666,
+    "gold": "SN16 ТУ 2248-00",
+    "predicted": "SN16 TY 2248-001-"
+  },
+  {
+    "line_id": "F0138-P00007-L0037",
+    "rotation": 0,
+    "gold_len": 0,
+    "cer": 0,
+    "gold": "",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0210-P00010-L0031",
+    "rotation": 270,
+    "gold_len": 14,
+    "cer": 0.2857142857142857,
+    "gold": "|RiH-Riф|/Sт≤2",
+    "predicted": "|RIH-Rid|/Sr<2"
+  },
+  {
+    "line_id": "F0138-P00008-L0133",
+    "rotation": 0,
+    "gold_len": 21,
+    "cer": 0.23809523809523808,
+    "gold": "142,65 (-17,300) Отм.",
+    "predicted": "142,65 17,300) Ome."
+  },
+  {
+    "line_id": "F0231-P00023-L0080",
+    "rotation": 270,
+    "gold_len": 15,
+    "cer": 0.13333333333333333,
+    "gold": "ыполнения работ",
+    "predicted": "врполнения работ"
+  },
+  {
+    "line_id": "F0187-P00071-L0044",
+    "rotation": 0,
+    "gold_len": 0,
+    "cer": 0,
+    "gold": "",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0209-P00071-L0049",
+    "rotation": 270,
+    "gold_len": 4,
+    "cer": 0.0,
+    "gold": "Hmin",
+    "predicted": "Hmin"
+  },
+  {
+    "line_id": "F0206-P00081-L0088",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 0,
+    "gold": "",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0211-P00033-L0007",
+    "rotation": 0,
+    "gold_len": 88,
+    "cer": 0.0,
+    "gold": "Графики зависимости деформаций от испытательной нагрузки даны в Приложении 4. В качестве",
+    "predicted": "Графики зависимости деформаций от испытательной нагрузки даны в Приложении 4. В качестве"
+  },
+  {
+    "line_id": "F0226-P00036-L0071",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 1,
+    "gold": "",
+    "predicted": "АЕ"
+  },
+  {
+    "line_id": "F0201-P00007-L0016",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 1,
+    "gold": "",
+    "predicted": "“Y"
+  },
+  {
+    "line_id": "F0283-P00003-L0011",
+    "rotation": 0,
+    "gold_len": 33,
+    "cer": 0.09090909090909091,
+    "gold": "Ведомость ссылочных и прилагаемых",
+    "predicted": "Ведомость ссылочных U прулагцемых"
+  },
+  {
+    "line_id": "F0208-P00038-L0059",
+    "rotation": 270,
+    "gold_len": 62,
+    "cer": 0.0,
+    "gold": "муниципальное образование Нагатинский Затон , улица Речников ,",
+    "predicted": "муниципальное образование Нагатинский Затон , улица Речников ,"
+  },
+  {
+    "line_id": "F0203-P00005-L0001",
+    "rotation": 0,
+    "gold_len": 40,
+    "cer": 0.0,
+    "gold": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ",
+    "predicted": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ"
+  },
+  {
+    "line_id": "F0283-P00003-L0015",
+    "rotation": 0,
+    "gold_len": 23,
+    "cer": 0.043478260869565216,
+    "gold": "01-07/22-14-П-ИОСЗ.2-ПЗ",
+    "predicted": "01-07/22-14-П-ИОС3.2-ПЗ"
+  },
+  {
+    "line_id": "F0160-P00100-L0010",
+    "rotation": 0,
+    "gold_len": 7,
+    "cer": 0.42857142857142855,
+    "gold": "Тип \"С\"",
+    "predicted": "Тип “C”"
+  },
+  {
+    "line_id": "F0138-P00008-L0286",
+    "rotation": 0,
+    "gold_len": 0,
+    "cer": 1,
+    "gold": "",
+    "predicted": "77 Se,"
+  },
+  {
+    "line_id": "F0209-P00261-L0047",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 0,
+    "gold": "",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0201-P00007-L0003",
+    "rotation": 270,
+    "gold_len": 9,
+    "cer": 0.2222222222222222,
+    "gold": "СОГЛАСОВА",
+    "predicted": "СОГЛАСОВАНО"
+  },
+  {
+    "line_id": "F0160-P00052-L0034",
+    "rotation": 0,
+    "gold_len": 0,
+    "cer": 1,
+    "gold": "",
+    "predicted": "Go DS"
+  },
+  {
+    "line_id": "F0201-P00007-L0008",
+    "rotation": 270,
+    "gold_len": 4,
+    "cer": 1.5,
+    "gold": "ЩИК:",
+    "predicted": "ровщик"
+  },
+  {
+    "line_id": "F0213-P00012-L0030",
+    "rotation": 0,
+    "gold_len": 8,
+    "cer": 1.0,
+    "gold": "RAL 7016",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0138-P00008-L0011",
+    "rotation": 0,
+    "gold_len": 1,
+    "cer": 1.0,
+    "gold": "8",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0226-P00014-L0044",
+    "rotation": 0,
+    "gold_len": 0,
+    "cer": 0,
+    "gold": "",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0210-P00010-L0081",
+    "rotation": 270,
+    "gold_len": 2,
+    "cer": 0.0,
+    "gold": "11",
+    "predicted": "11"
+  },
+  {
+    "line_id": "F0209-P00071-L0017",
+    "rotation": 270,
+    "gold_len": 5,
+    "cer": 0.0,
+    "gold": "0,015",
+    "predicted": "0,015"
+  },
+  {
+    "line_id": "F0210-P00010-L0149",
+    "rotation": 270,
+    "gold_len": 21,
+    "cer": 0.0,
+    "gold": "Rh = 0,015 * Н -20,19",
+    "predicted": "Rh = 0,015 * Н -20,19"
+  },
+  {
+    "line_id": "F0218-P00105-L0010",
+    "rotation": 270,
+    "gold_len": 4,
+    "cer": 0.0,
+    "gold": "3270",
+    "predicted": "3270"
+  },
+  {
+    "line_id": "F0218-P00105-L0011",
+    "rotation": 270,
+    "gold_len": 4,
+    "cer": 0.0,
+    "gold": "Hmin",
+    "predicted": "Hmin"
+  },
+  {
+    "line_id": "F0242-P00066-L0053",
+    "rotation": 270,
+    "gold_len": 27,
+    "cer": 0.0,
+    "gold": "воды температурой +95 гр.С.",
+    "predicted": "воды температурой +95 гр.С."
+  },
+  {
+    "line_id": "F0216-P00003-L0128",
+    "rotation": 270,
+    "gold_len": 12,
+    "cer": 0.08333333333333333,
+    "gold": "21.12.2024г.",
+    "predicted": "21.12.2024г"
+  },
+  {
+    "line_id": "F0231-P00023-L0048",
+    "rotation": 270,
+    "gold_len": 5,
+    "cer": 1.0,
+    "gold": "(фами",
+    "predicted": "‘фамилия,"
+  },
+  {
+    "line_id": "F0231-P00023-L0040",
+    "rotation": 270,
+    "gold_len": 16,
+    "cer": 0.0,
+    "gold": "«23» июня 2025г.",
+    "predicted": "«23» июня 2025г."
+  },
+  {
+    "line_id": "F0209-P00261-L0046",
+    "rotation": 270,
+    "gold_len": 11,
+    "cer": 0.0,
+    "gold": "35,2 | 3,18",
+    "predicted": "35,2 | 3,18"
+  },
+  {
+    "line_id": "F0050-P00007-L0002",
+    "rotation": 270,
+    "gold_len": 7,
+    "cer": 1.0,
+    "gold": "015 082",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0208-P00038-L0013",
+    "rotation": 270,
+    "gold_len": 0,
+    "cer": 1,
+    "gold": "",
+    "predicted": ">\\"
+  },
+  {
+    "line_id": "F0213-P00012-L0020",
+    "rotation": 0,
+    "gold_len": 14,
+    "cer": 1.0,
+    "gold": "заказа | стали",
+    "predicted": "НЕЕ"
+  },
+  {
+    "line_id": "F0222-P00051-L0104",
+    "rotation": 270,
+    "gold_len": 54,
+    "cer": 0.6111111111111112,
+    "gold": "№ 6973, от 07.06.2022; Карта подбора № 6972, от 07.06.",
+    "predicted": "б/н, № от 6973, 20.12.2022; от 07.06.2022; Документ Карта подбора № 6972, от 07.0 07.0"
+  },
+  {
+    "line_id": "F0206-P00081-L0085",
+    "rotation": 270,
+    "gold_len": 16,
+    "cer": 0.875,
+    "gold": "до 12.09.2024 г.",
+    "predicted": "ны до 12.09.2024 seemas'ses г."
+  },
+  {
+    "line_id": "F0218-P00105-L0022",
+    "rotation": 270,
+    "gold_len": 15,
+    "cer": 0.0,
+    "gold": "Страница 2 из 3",
+    "predicted": "Страница 2 из 3"
+  },
+  {
+    "line_id": "F0223-P00028-L0016",
+    "rotation": 270,
+    "gold_len": 4,
+    "cer": 1.0,
+    "gold": "СТВО",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0222-P00051-L0011",
+    "rotation": 270,
+    "gold_len": 18,
+    "cer": 0.0,
+    "gold": "Марина Анатольевна",
+    "predicted": "Марина Анатольевна"
+  },
+  {
+    "line_id": "F0050-P00007-L0037",
+    "rotation": 270,
+    "gold_len": 12,
+    "cer": 1.0,
+    "gold": "разрыву, МПа",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0211-P00033-L0002",
+    "rotation": 0,
+    "gold_len": 62,
+    "cer": 0.03225806451612903,
+    "gold": "АКТ ИСПЫТАНИЙ КРЕПЁЖНЫХ ЭЛЕМЕНТОВ № 24-9098-2 от 20.09.2024 г.",
+    "predicted": "АКТ ИСПЫТАНИЙ КРЕПЕЖНЫХ ЭЛЕМЕНТОВ № 24-9098-2 от 20.09.2024 г"
+  },
+  {
+    "line_id": "F0206-P00081-L0075",
+    "rotation": 270,
+    "gold_len": 11,
+    "cer": 0.0,
+    "gold": "А.И.Звездов",
+    "predicted": "А.И.Звездов"
+  },
+  {
+    "line_id": "F0160-P00052-L0119",
+    "rotation": 0,
+    "gold_len": 9,
+    "cer": 0.6666666666666666,
+    "gold": "ООО \"ТСП\"",
+    "predicted": "000 \"TCI\""
+  },
+  {
+    "line_id": "F0218-P00105-L0005",
+    "rotation": 270,
+    "gold_len": 25,
+    "cer": 0.0,
+    "gold": "Наименование оборудования",
+    "predicted": "Наименование оборудования"
+  },
+  {
+    "line_id": "F0209-P00071-L0001",
+    "rotation": 270,
+    "gold_len": 26,
+    "cer": 0.0,
+    "gold": "Используемое оборудование:",
+    "predicted": "Используемое оборудование:"
+  },
+  {
+    "line_id": "F0207-P00057-L0091",
+    "rotation": 270,
+    "gold_len": 24,
+    "cer": 0.0,
+    "gold": "Вертикальные конструкции",
+    "predicted": "Вертикальные конструкции"
+  },
+  {
+    "line_id": "F0213-P00012-L0043",
+    "rotation": 0,
+    "gold_len": 0,
+    "cer": 1,
+    "gold": "",
+    "predicted": "Uh; fess"
+  },
+  {
+    "line_id": "F0050-P00007-L0089",
+    "rotation": 270,
+    "gold_len": 16,
+    "cer": 1.0,
+    "gold": "Лист 1 /Листов 1",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0222-P00051-L0213",
+    "rotation": 270,
+    "gold_len": 6,
+    "cer": 0.5,
+    "gold": "375И в",
+    "predicted": "1375И"
+  },
+  {
+    "line_id": "F0216-P00003-L0107",
+    "rotation": 270,
+    "gold_len": 5,
+    "cer": 0.0,
+    "gold": "Копия",
+    "predicted": "Копия"
+  },
+  {
+    "line_id": "F0226-P00014-L0081",
+    "rotation": 0,
+    "gold_len": 0,
+    "cer": 0,
+    "gold": "",
+    "predicted": ""
+  },
+  {
+    "line_id": "F0213-P00012-L0011",
+    "rotation": 0,
+    "gold_len": 66,
+    "cer": 0.06060606060606061,
+    "gold": "111033, г.Москва, Золоторожский вал, д.11, стр.9, этаж 3, комн.302",
+    "predicted": "111033, г.Москва, Золоторожский вал, д.11, стр.9, этаж 3, KOMH.302"
+  },
+  {
+    "line_id": "F0222-P00051-L0124",
+    "rotation": 270,
+    "gold_len": 5,
+    "cer": 1.2,
+    "gold": "2022;",
+    "predicted": "07.06.2022;"
+  },
+  {
+    "line_id": "F0208-P00038-L0043",
+    "rotation": 270,
+    "gold_len": 7,
+    "cer": 1.0,
+    "gold": "ТСТВЕНН",
+    "predicted": "ssa"
+  },
+  {
+    "line_id": "F0160-P00052-L0086",
+    "rotation": 0,
+    "gold_len": 6,
+    "cer": 0.0,
+    "gold": "Резерв",
+    "predicted": "Резерв"
+  }
+]

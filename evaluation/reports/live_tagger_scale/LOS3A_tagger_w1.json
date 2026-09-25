@@ -1,0 +1,75 @@
+{
+ "object": "LOS3A",
+ "mode": "tagger",
+ "pid": 2348,
+ "wall_seconds": 521.89,
+ "diagnostics": {
+  "documents_scanned": 151,
+  "documents_skipped_already_tagged": 0,
+  "documents_failed": 0,
+  "pages_scanned": 5964,
+  "fragments_created": 451,
+  "fragments_updated": 0,
+  "semantic_rejections": 58,
+  "semantic_scored": 509,
+  "semantic_unavailable": 0,
+  "documents_planned": 151,
+  "documents_deferred_by_cap": 0,
+  "documents_not_scannable": 0,
+  "documents_not_applicable": 0,
+  "cache_hits": 0,
+  "workers": 1,
+  "worker_failures_retried": 0,
+  "coverage": {
+   "enabled": true,
+   "complete": true,
+   "stages": {
+    "PD": {
+     "documents_total": 47,
+     "documents_scannable": 47,
+     "documents_scanned": 47,
+     "documents_partial": 3,
+     "documents_no_text_layer": 0,
+     "documents_failed": 0,
+     "documents_not_scanned": 0,
+     "documents_not_scannable": 0,
+     "documents_not_applicable": 0,
+     "pages_scanned": 2684,
+     "pages_total": 3966
+    },
+    "RD": {
+     "documents_total": 103,
+     "documents_scannable": 103,
+     "documents_scanned": 103,
+     "documents_partial": 0,
+     "documents_no_text_layer": 0,
+     "documents_failed": 0,
+     "documents_not_scanned": 0,
+     "documents_not_scannable": 0,
+     "documents_not_applicable": 0,
+     "pages_scanned": 3060,
+     "pages_total": 3060
+    },
+    "ID": {
+     "documents_total": 1,
+     "documents_scannable": 1,
+     "documents_scanned": 1,
+     "documents_partial": 1,
+     "documents_no_text_layer": 0,
+     "documents_failed": 0,
+     "documents_not_scanned": 0,
+     "documents_not_scannable": 0,
+     "documents_not_applicable": 0,
+     "pages_scanned": 220,
+     "pages_total": 3956
+    }
+   },
+   "documents_other_stage": 0,
+   "summary": "Живой тэггер кандидатов: PD: просканировано 47 из 47 документов (только первые страницы у 3); RD: просканировано 103 из 103 документов; ID: просканировано 1 из 1 документов (только первые страницы у 1)"
+  },
+  "plan_seconds": 0.0,
+  "scan_seconds": 502.69,
+  "merge_seconds": 19.19,
+  "elapsed_seconds": 521.88
+ }
+}

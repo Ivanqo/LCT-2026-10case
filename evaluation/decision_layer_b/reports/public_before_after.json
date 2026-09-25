@@ -1,0 +1,36 @@
+[
+ {
+  "object_id": "OBJ-NOVOSLOBODSKAYA",
+  "checks_before": 134,
+  "checks_after": 134,
+  "identical_checks": 133,
+  "rule_pack_rows_differ": [],
+  "rule_pack_groups_byte_identical": true,
+  "rule_pack_groups": 5,
+  "changed_non_rule_pack": [
+   {
+    "parameter_code": "SPZU-024",
+    "location": "SITE",
+    "before": "VIOLATION_PRESENT",
+    "after": "COMPARISON_IMPOSSIBLE",
+    "before_status": "WARNING",
+    "after_status": "COMPARISON_IMPOSSIBLE",
+    "reason": "magnitude_mismatch"
+   }
+  ],
+  "label_transitions": {
+   "VIOLATION_PRESENT -> COMPARISON_IMPOSSIBLE": 1
+  }
+ },
+ {
+  "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+  "checks_before": 137,
+  "checks_after": 137,
+  "identical_checks": 137,
+  "rule_pack_rows_differ": [],
+  "rule_pack_groups_byte_identical": true,
+  "rule_pack_groups": 7,
+  "changed_non_rule_pack": [],
+  "label_transitions": {}
+ }
+]

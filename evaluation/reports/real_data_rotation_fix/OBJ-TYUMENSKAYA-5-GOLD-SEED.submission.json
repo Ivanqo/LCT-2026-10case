@@ -1,0 +1,2573 @@
+{
+  "submission": {
+    "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+    "checks": [
+      {
+        "parameter_code": "AR-040",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 22
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-041",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 11
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-042",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 18
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-043",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 19
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-044",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "AR-045",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 17
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-046",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "AR-047",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 9
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-048",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 9
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-049",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-050",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS1-068",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0160",
+            "pdf_page_number": 5
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS1-069",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0160",
+            "pdf_page_number": 19
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS1-070",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0160",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS2-071",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0163",
+            "pdf_page_number": 12
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0204",
+            "pdf_page_number": 64
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS2-073",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0163",
+            "pdf_page_number": 8
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0204",
+            "pdf_page_number": 38
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS3-074",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0163",
+            "pdf_page_number": 12
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0204",
+            "pdf_page_number": 66
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS4-076",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0170",
+            "pdf_page_number": 28
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS4-077",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0171",
+            "pdf_page_number": 11
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0202",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS4-078",
+        "location": "140",
+        "pd_value": "Системы: V2.7, V2.8, V2.9",
+        "rd_value": "Вытяжная система не распознана в зоне помещения",
+        "id_value": null,
+        "violation_label": "VIOLATION_PRESENT",
+        "protocol_status": "CRITICAL",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 18
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0171",
+            "pdf_page_number": 88
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS4-078",
+        "location": "142",
+        "pd_value": "Системы: V2.4, V2.5, V2.6",
+        "rd_value": "Вытяжная система не распознана в зоне помещения",
+        "id_value": null,
+        "violation_label": "VIOLATION_PRESENT",
+        "protocol_status": "CRITICAL",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 18
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0171",
+            "pdf_page_number": 88
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS4-078",
+        "location": "147",
+        "pd_value": "Системы: V2.10",
+        "rd_value": "Системы: V2.3, V2.4",
+        "id_value": null,
+        "violation_label": "VIOLATION_PRESENT",
+        "protocol_status": "CRITICAL",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 18
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0171",
+            "pdf_page_number": 88
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS4-078",
+        "location": "198",
+        "pd_value": "Системы: V2.2, V2.3",
+        "rd_value": "Системы: V2.8, V2.10",
+        "id_value": null,
+        "violation_label": "VIOLATION_PRESENT",
+        "protocol_status": "CRITICAL",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 18
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0171",
+            "pdf_page_number": 88
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS4-078",
+        "location": "314",
+        "pd_value": "Системы: V2.12, V2.13",
+        "rd_value": "Вытяжная система не распознана в зоне помещения",
+        "id_value": null,
+        "violation_label": "VIOLATION_PRESENT",
+        "protocol_status": "CRITICAL",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 20
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0171",
+            "pdf_page_number": 88
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS4-079",
+        "location": "006",
+        "pd_value": "Конфигурация: P16",
+        "rd_value": "Конфигурация: 600x500",
+        "id_value": null,
+        "violation_label": "NO_VIOLATION",
+        "protocol_status": "OK",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 17
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0171",
+            "pdf_page_number": 104
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS4-079",
+        "location": "012",
+        "pd_value": "Конфигурация: P15",
+        "rd_value": "Конфигурация: 19x19, 200x200, 300x100, 450x300, 450x350, 550x300, 600x350, 600x400, 650x250, 750x360, 800x400",
+        "id_value": null,
+        "violation_label": "VIOLATION_PRESENT",
+        "protocol_status": "CRITICAL",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 17
+          },
+          {
+            "stage": "PD",
+            "file_id": "F0171",
+            "pdf_page_number": 104
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS5-080",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0173",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-054",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 16
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-055",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 18
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-056",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 19
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-057",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 24
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-058",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-059",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-060",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 16
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-061",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 16
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-062",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 19
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-063",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 5
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-064",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 22
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-065",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 9
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-066",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 24
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-115",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0151",
+            "pdf_page_number": 14
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-116",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0151",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-117",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0151",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-119",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0151",
+            "pdf_page_number": 24
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-120",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0151",
+            "pdf_page_number": 24
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-121",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0151",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-123",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0151",
+            "pdf_page_number": 37
+          }
+        ]
+      },
+      {
+        "parameter_code": "OOS-098",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "OOS-099",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0180",
+            "pdf_page_number": 16
+          }
+        ]
+      },
+      {
+        "parameter_code": "OOS-100",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0180",
+            "pdf_page_number": 24
+          }
+        ]
+      },
+      {
+        "parameter_code": "OOS-101",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "POD-090",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0180",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-091",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0180",
+            "pdf_page_number": 17
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 25
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-092",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0180",
+            "pdf_page_number": 108
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 30
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-096",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0180",
+            "pdf_page_number": 54
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-097",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0180",
+            "pdf_page_number": 20
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0197",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-081",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0187",
+            "pdf_page_number": 7
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-083",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0187",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-085",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0187",
+            "pdf_page_number": 7
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-087",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0187",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-102",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 11
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0198",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-103",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 18
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 17
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-104",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 11
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 433
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-105",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 10
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0204",
+            "pdf_page_number": 63
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-106",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 19
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-107",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 7
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0195",
+            "pdf_page_number": 2
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-108",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0175",
+            "pdf_page_number": 11
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-109",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 15
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0196",
+            "pdf_page_number": 2
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-110",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0173",
+            "pdf_page_number": 11
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-111",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 18
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-112",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 17
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0195",
+            "pdf_page_number": 2
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-113",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0160",
+            "pdf_page_number": 18
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 196
+          }
+        ]
+      },
+      {
+        "parameter_code": "PPM-114",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 16
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 11
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-001",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0150",
+            "pdf_page_number": 5
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 37
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-002",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0150",
+            "pdf_page_number": 24
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0197",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-004",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0150",
+            "pdf_page_number": 26
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 36
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-005",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-006",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-007",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 85
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-008",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 275
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-009",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 7
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-010",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 238
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 37
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-011",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 238
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 37
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-012",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 23
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-013",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 138
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 23
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-014",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 127
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-015",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 123
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-016",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 127
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 35
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-017",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 117
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-018",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 127
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 35
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-019",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": []
+      },
+      {
+        "parameter_code": "PZ-020",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 5
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-021",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0147",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-022",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 68
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-023",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0147",
+            "pdf_page_number": 6
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0199",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-027",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 13
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-028",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 11
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0197",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-030",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-031",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-032",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 22
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-034",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 5
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 23
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-035",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 18
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0197",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-037",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 1
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 23
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-038",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 1
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 23
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-039",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 14
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-124",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0152",
+            "pdf_page_number": 4
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-125",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0152",
+            "pdf_page_number": 5
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 11
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-126",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0152",
+            "pdf_page_number": 22
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-127",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0152",
+            "pdf_page_number": 19
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0195",
+            "pdf_page_number": 2
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-128",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0152",
+            "pdf_page_number": 27
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 173
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-131",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Критическое (приостановка работ)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0152",
+            "pdf_page_number": 4
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0195",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-051",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-052",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 7
+          }
+        ]
+      },
+      {
+        "parameter_code": "AR-053",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0156",
+            "pdf_page_number": 7
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS2-072",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0163",
+            "pdf_page_number": 8
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0204",
+            "pdf_page_number": 37
+          }
+        ]
+      },
+      {
+        "parameter_code": "IOS3-075",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0163",
+            "pdf_page_number": 8
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0204",
+            "pdf_page_number": 37
+          }
+        ]
+      },
+      {
+        "parameter_code": "KR-067",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0158",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-118",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0151",
+            "pdf_page_number": 14
+          }
+        ]
+      },
+      {
+        "parameter_code": "ODI-122",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0151",
+            "pdf_page_number": 9
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 29
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-093",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0180",
+            "pdf_page_number": 8
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 36
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-094",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0180",
+            "pdf_page_number": 23
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 35
+          }
+        ]
+      },
+      {
+        "parameter_code": "POD-095",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0180",
+            "pdf_page_number": 26
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-082",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0187",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-084",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0187",
+            "pdf_page_number": 67
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-086",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0187",
+            "pdf_page_number": 6
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-088",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0187",
+            "pdf_page_number": 27
+          }
+        ]
+      },
+      {
+        "parameter_code": "POS-089",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0187",
+            "pdf_page_number": 27
+          }
+        ]
+      },
+      {
+        "parameter_code": "PZ-003",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0148",
+            "pdf_page_number": 89
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 28
+          }
+        ]
+      },
+      {
+        "parameter_code": "SM-132",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0180",
+            "pdf_page_number": 10
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-024",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 8
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-025",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 11
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0203",
+            "pdf_page_number": 45
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-026",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-029",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 12
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0197",
+            "pdf_page_number": 1
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-033",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 18
+          }
+        ]
+      },
+      {
+        "parameter_code": "SPZU-036",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0154",
+            "pdf_page_number": 12
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-129",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0152",
+            "pdf_page_number": 1
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 11
+          }
+        ]
+      },
+      {
+        "parameter_code": "ZU-130",
+        "location": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+        "pd_value": null,
+        "rd_value": null,
+        "id_value": null,
+        "violation_label": "COMPARISON_IMPOSSIBLE",
+        "protocol_status": "COMPARISON_IMPOSSIBLE",
+        "criticality": "Существенное (предписание)",
+        "evidence": [
+          {
+            "stage": "PD",
+            "file_id": "F0152",
+            "pdf_page_number": 4
+          },
+          {
+            "stage": "RD",
+            "file_id": "F0201",
+            "pdf_page_number": 6
+          }
+        ]
+      }
+    ]
+  },
+  "schema": "submission_schema.json",
+  "validation_errors": []
+}

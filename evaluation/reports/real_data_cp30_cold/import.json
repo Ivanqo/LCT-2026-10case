@@ -1,0 +1,55 @@
+{
+  "project_id": 24,
+  "seconds": 27.188000000000102,
+  "dataset_version": "case10-official-public-v1",
+  "matrix_version": "official-132-v1.1",
+  "matrix_params": 132,
+  "objects": [
+    "OBJ-NOVOSLOBODSKAYA",
+    "OBJ-TYUMENSKAYA-5-GOLD-SEED"
+  ],
+  "document_manifest": {
+    "created": 203,
+    "updated": 0,
+    "skipped": 213
+  },
+  "files_index": {
+    "created": 0,
+    "skipped": 0,
+    "updated": 203
+  },
+  "page_index": {
+    "created": 10146,
+    "skipped": 0,
+    "updated": 0
+  },
+  "annotations": {
+    "created": 30318,
+    "skipped": 0,
+    "updated": 0
+  },
+  "gold_checks": {
+    "created": 30,
+    "evaluation_allowed": 30,
+    "skipped": 4,
+    "training_allowed": 20,
+    "updated": 0
+  },
+  "documents_by_object_stage": {
+    "OBJ-NOVOSLOBODSKAYA:ID": 99,
+    "OBJ-NOVOSLOBODSKAYA:PD": 36,
+    "OBJ-NOVOSLOBODSKAYA:RD": 10,
+    "OBJ-TYUMENSKAYA-5-GOLD-SEED:PD": 47,
+    "OBJ-TYUMENSKAYA-5-GOLD-SEED:RD_ID_MIXED": 10,
+    "OBJ-TYUMENSKAYA-5-GOLD-SEED:UNKNOWN": 1
+  },
+  "gold_by_object_code": {
+    "OBJ-NOVOSLOBODSKAYA:KR-055:NO_VIOLATION": 6,
+    "OBJ-NOVOSLOBODSKAYA:KR-058:NO_VIOLATION": 2,
+    "OBJ-NOVOSLOBODSKAYA:PZ-009:NO_VIOLATION": 2,
+    "OBJ-TYUMENSKAYA-5-GOLD-SEED:FREE-HEATING-001:VIOLATION_PRESENT": 8,
+    "OBJ-TYUMENSKAYA-5-GOLD-SEED:IOS4-078:VIOLATION_PRESENT": 10,
+    "OBJ-TYUMENSKAYA-5-GOLD-SEED:IOS4-079:VIOLATION_PRESENT": 2
+  },
+  "processes": []
+}

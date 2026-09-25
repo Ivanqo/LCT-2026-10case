@@ -1,0 +1,15 @@
+{
+  "IZM12|AR-041|PD|numeric": {"n": 9, "strict": [0], "lenient": [0], "note": "'автостоянка: 3 лестницы с шириной дверных проемов ... 1,20 м'; others are timings, safety coefficient 0.8, person counts, corridor width, clause numbers"},
+  "IZM12|AR-051|PD|numeric": {"n": 1, "strict": [], "lenient": []},
+  "IZM12|PZ-001|PD|numeric": {"n": 5, "strict": [0, 1, 2], "lenient": [0, 1, 2], "note": "819,6; [3] hard surfaces; [4] extracted total floor area 15462.8 from the row after 'Площадь застройки: 819.6+1389.91'"},
+  "IZM12|PZ-002|PD|numeric": {"n": 9, "strict": [3, 5], "lenient": [3, 5], "note": "15462,8 'Площадь жилого здания' / 'Общая площадь жилого здания (СП 54 А.1.2)'; [0],[2] GPZU limit; [1],[6] 'суммарная поэтажная площадь жилой части' (different quantity)"},
+  "IZM12|PZ-004|PD|numeric": {"n": 2, "strict": [0, 1], "lenient": [0, 1]},
+  "IZM12|PZ-005|PD|numeric": {"n": 2, "strict": [], "lenient": []},
+  "IZM12|PZ-006|PD|numeric": {"n": 1, "strict": [], "lenient": [], "note": "'выше отм. 0,000 48 518,0' is in context but TOTAL 58465,4 was extracted"},
+  "IZM12|PZ-008|PD|numeric": {"n": 14, "strict": [13], "lenient": [13], "note": "'высота здания от пола первого этажа до парапета: 80,5 м'; [3]-[6],[10] fire-technical height; [0] design height to top-floor slab; [7],[8] area limit"},
+  "IZM12|SPZU-028|PD|numeric": {"n": 1, "strict": [], "lenient": []},
+  "IZM12|PZ-015|PD|enum": {"n": 3, "strict": [], "lenient": [0], "note": "'потребители ... относятся к I и II категориям' -- II extracted from a two-valued statement (lenient); [1] a subsystem (III), [2] special group of equipment"},
+  "IZM12|PZ-021|PD|enum": {"n": 3, "strict": [], "lenient": [], "note": "no energy-efficiency class letter in any candidate"},
+  "IZM12|PZ-022|PD|enum": {"n": 3, "strict": [0, 1, 2], "lenient": [0, 1, 2]},
+  "IZM12|PZ-023|PD|enum": {"n": 6, "strict": [0, 1, 2, 3, 4, 5], "lenient": [0, 1, 2, 3, 4, 5]}
+}

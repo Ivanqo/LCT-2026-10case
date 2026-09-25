@@ -1,0 +1,248 @@
+{
+  "run_seconds": 589.1,
+  "comparable": [
+    "AR-041",
+    "KR-067",
+    "PZ-002",
+    "PZ-004",
+    "PZ-005",
+    "PZ-006",
+    "PZ-008",
+    "PZ-022",
+    "PZ-023",
+    "SPZU-024"
+  ],
+  "groups": [
+    {
+      "code": "AR-041",
+      "comparability": "COMPARABLE",
+      "finding": "CANDIDATE",
+      "expected": "0,000",
+      "actual": "04.25",
+      "values": {
+        "PD": "0.000",
+        "RD": "4.25"
+      },
+      "llm_verification": {
+        "PD": {
+          "model": "Qwen/Qwen3-4B-Instruct-2507",
+          "mode": "rerank",
+          "candidates_shown": 7,
+          "choice": {
+            "document": "9. 01-09-00-01-15-ПБ.1.pdf",
+            "page": 132,
+            "value": "0,000"
+          },
+          "agrees_with_deterministic_pick": false,
+          "reason": "Строка с шириной 1,05 м в контексте параметров эвакуационных выходов, единица — метры, соответствует параметру 'Ширина эвакуационных выходов (дверей)'",
+          "latency_seconds": 12.84
+        }
+      }
+    },
+    {
+      "code": "KR-067",
+      "comparability": "COMPARABLE",
+      "finding": "CANDIDATE",
+      "expected": "644,97 / 1,35",
+      "actual": "2 / 10",
+      "values": {
+        "PD": "644,97 / 1,35",
+        "RD": "2 / 10"
+      },
+      "llm_verification": {
+        "PD": {
+          "model": "Qwen/Qwen3-4B-Instruct-2507",
+          "mode": "rerank",
+          "candidates_shown": 1,
+          "choice": {
+            "document": "8. 01-08-00-02-06-ООС.2.pdf",
+            "page": 19,
+            "value": "644,97 / 1,35"
+          },
+          "agrees_with_deterministic_pick": true,
+          "reason": "Значение 644,97 / 1,35 соответствует единице измерения м³/т и относится к расходу бетона и стали в ведомостях, как указано в контексте и строке.",
+          "latency_seconds": 10.04
+        }
+      }
+    },
+    {
+      "code": "PZ-002",
+      "comparability": "COMPARABLE",
+      "finding": "NEGATIVE_VERIFIED",
+      "expected": "25036,27",
+      "actual": "25036,27",
+      "values": {
+        "PD": "25036.27",
+        "RD": "25036.27"
+      },
+      "llm_verification": {
+        "PD": {
+          "model": "Qwen/Qwen3-4B-Instruct-2507",
+          "mode": "rerank",
+          "candidates_shown": 5,
+          "choice": {
+            "document": "1. 01-01-00-02-ПЗ.pdf",
+            "page": 14,
+            "value": "25036,27"
+          },
+          "agrees_with_deterministic_pick": false,
+          "reason": "Параметр — общая площадь здания. Кандидат 3 указывает на площадь здания по СП 54.13330.2016, прил. А.1.2, с единицей измерения м², соответствует определению параметра PZ-002.",
+          "latency_seconds": 14.36
+        }
+      }
+    },
+    {
+      "code": "PZ-004",
+      "comparability": "COMPARABLE",
+      "finding": "NEGATIVE_VERIFIED",
+      "expected": "88264,00",
+      "actual": "88264,00",
+      "values": {
+        "PD": "88264.00",
+        "RD": "88264.00"
+      },
+      "llm_verification": {
+        "RD": {
+          "model": "Qwen/Qwen3-4B-Instruct-2507",
+          "mode": "rerank",
+          "candidates_shown": 1,
+          "choice": {
+            "document": "19-0322-ОК-1_Н-АР3. Техническое пространство_Изм.4.pdf",
+            "page": 6,
+            "value": "88264,00"
+          },
+          "agrees_with_deterministic_pick": true,
+          "reason": "Строка содержит прямое указание на строительный объем в м³ с единицей измерения, соответствующей параметру PZ-004.",
+          "latency_seconds": 7.0
+        }
+      }
+    },
+    {
+      "code": "PZ-005",
+      "comparability": "COMPARABLE",
+      "finding": "NEGATIVE_VERIFIED",
+      "expected": "88264,00",
+      "actual": "88264,00",
+      "values": {
+        "PD": "88264.00",
+        "RD": "88264.00"
+      },
+      "llm_verification": null
+    },
+    {
+      "code": "PZ-006",
+      "comparability": "COMPARABLE",
+      "finding": "NEGATIVE_VERIFIED",
+      "expected": "88264,00",
+      "actual": "88264,00",
+      "values": {
+        "PD": "88264.00",
+        "RD": "88264.00"
+      },
+      "llm_verification": null
+    },
+    {
+      "code": "PZ-008",
+      "comparability": "COMPARABLE",
+      "finding": "CANDIDATE",
+      "expected": "10,00",
+      "actual": "2.12",
+      "values": {
+        "PD": "10.00",
+        "RD": "2.12"
+      },
+      "llm_verification": null
+    },
+    {
+      "code": "PZ-022",
+      "comparability": "COMPARABLE",
+      "finding": "CANDIDATE",
+      "expected": "I,",
+      "actual": "II.",
+      "values": {
+        "PD": "I",
+        "RD": "II"
+      },
+      "llm_verification": {
+        "RD": {
+          "model": "Qwen/Qwen3-4B-Instruct-2507",
+          "mode": "rerank",
+          "candidates_shown": 2,
+          "choice": {
+            "document": "19-0322-ОК-1_Н-МЗ. Молниезащита уравнивание потенциалов_изм.3.pdf",
+            "page": 11,
+            "value": "II."
+          },
+          "agrees_with_deterministic_pick": true,
+          "reason": "Оба кандидата содержат одно и то же значение \"II\" и указывают на степень огнестойкости здания. Значение соответствует параметру PZ-022, единица — степень. Контекст явно указывает на степень огнестойкости здания. Оба одинаковы, но первый по порядку — выбор 1.",
+          "latency_seconds": 15.44
+        }
+      }
+    },
+    {
+      "code": "PZ-023",
+      "comparability": "COMPARABLE",
+      "finding": "NEGATIVE_VERIFIED",
+      "expected": "С0;",
+      "actual": "С0;",
+      "values": {
+        "PD": "C0",
+        "RD": "C0"
+      },
+      "llm_verification": {
+        "RD": {
+          "model": "Qwen/Qwen3-4B-Instruct-2507",
+          "mode": "rerank",
+          "candidates_shown": 2,
+          "choice": {
+            "document": "19-0322-ОК-1_Н-НК2. Наружные сети дождевой канализации_ИЗМ.2.pdf",
+            "page": 40,
+            "value": "С0;"
+          },
+          "agrees_with_deterministic_pick": true,
+          "reason": "Оба кандидата содержат значение С0 по параметру «Класс конструктивной пожарной опасности» с совпадением единицы измерения и контекста. Однако кандидат 1 указан в документе с более высоким приоритетом по маркировке и структуре. В условиях задачи выбор между ними не влияет, так как оба соответствуют. ",
+          "latency_seconds": 16.91
+        }
+      }
+    },
+    {
+      "code": "SPZU-024",
+      "comparability": "COMPARABLE",
+      "finding": "CANDIDATE",
+      "expected": "2.10",
+      "actual": "88,00",
+      "values": {
+        "PD": "2.10",
+        "RD": "88.00"
+      },
+      "llm_verification": {
+        "PD": {
+          "model": "Qwen/Qwen3-4B-Instruct-2507",
+          "mode": "rerank",
+          "candidates_shown": 2,
+          "choice": {
+            "document": "2. 01-02-00-01-ПЗУ1.pdf",
+            "page": 22,
+            "value": "2.10"
+          },
+          "agrees_with_deterministic_pick": true,
+          "reason": "В строке 1 указано прямое вычисление объема грунта в м³ (4487 м3), соответствующее параметру «Объем грунта (выемка/насыпь)» с единицей измерения м³. Строки 2 дают объем в тоннах, не соответствует параметру.",
+          "latency_seconds": 15.0
+        },
+        "RD": {
+          "model": "Qwen/Qwen3-4B-Instruct-2507",
+          "mode": "rerank",
+          "candidates_shown": 1,
+          "choice": {
+            "document": "19-0322-ОК-1-Н-ГП. Генеральный план_Изм.7.pdf",
+            "page": 13,
+            "value": "88,00"
+          },
+          "agrees_with_deterministic_pick": true,
+          "reason": "Значение 88,00 м³ соответствует объему грунта выемки, указанному в контексте как под газоном, с указанием в примечании 3 и единицей измерения м³, совпадающей с параметром.",
+          "latency_seconds": 12.15
+        }
+      }
+    }
+  ]
+}

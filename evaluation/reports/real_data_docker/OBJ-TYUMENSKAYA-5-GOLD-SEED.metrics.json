@@ -1,0 +1,132 @@
+{
+  "ocr_cer": null,
+  "ocr_wer": null,
+  "ocr_character_accuracy": null,
+  "ocr_coverage": null,
+  "ocr_items": 0,
+  "key_field_exact_match": null,
+  "document_linking_accuracy": null,
+  "evidence_page_accuracy": 0.9166666666666666,
+  "source_localization_exact_file_page": 0.9166666666666666,
+  "evidence_bbox_iou": null,
+  "evidence_bbox_items": 0,
+  "evidence_localization_accuracy": 0.9166666666666666,
+  "evidence_items": 12,
+  "finding_precision": 1.0,
+  "finding_recall": 1.0,
+  "finding_f1": 1.0,
+  "finding_detection_f1": 1.0,
+  "finding_false_positive_rate": null,
+  "counts": {
+    "ocr_items": 0,
+    "key_fields": 0,
+    "document_links": 0,
+    "evidence_items": 12,
+    "findings": 6,
+    "status_value_items": 12,
+    "finding_confusion": {
+      "tp": 6,
+      "fp": 0,
+      "tn": 0,
+      "fn": 0
+    }
+  },
+  "normalized_value_and_status_accuracy": 0.5,
+  "protocol_status_accuracy": 0.5,
+  "normalized_value_accuracy": null,
+  "status_value_items": 12,
+  "false_positive_rate": null,
+  "coverage": 0.015151515151515152,
+  "abstention_rate": 0.9848484848484849,
+  "object_level_split_valid": true,
+  "object_level_split_objects": 1,
+  "object_level_split_conflicts": {},
+  "per_category_metrics": {
+    "IOS4": {
+      "finding_precision": 1.0,
+      "finding_recall": 1.0,
+      "finding_f1": 1.0,
+      "finding_detection_f1": 1.0,
+      "finding_false_positive_rate": null,
+      "counts": {
+        "tp": 6,
+        "fp": 0,
+        "tn": 0,
+        "fn": 0
+      }
+    }
+  },
+  "quality_gates": {
+    "ocr_character_accuracy": {
+      "value": null,
+      "operator": ">=",
+      "threshold": 0.95,
+      "passed": null
+    },
+    "key_field_exact_match": {
+      "value": null,
+      "operator": ">=",
+      "threshold": 0.9,
+      "passed": null
+    },
+    "document_linking_accuracy": {
+      "value": null,
+      "operator": ">=",
+      "threshold": 0.95,
+      "passed": null
+    },
+    "evidence_localization_accuracy": {
+      "value": 0.9166666666666666,
+      "operator": ">=",
+      "threshold": 0.95,
+      "passed": false
+    },
+    "normalized_value_and_status_accuracy": {
+      "value": 0.5,
+      "operator": ">=",
+      "threshold": 0.9,
+      "passed": false
+    },
+    "finding_precision": {
+      "value": 1.0,
+      "operator": ">=",
+      "threshold": 0.9,
+      "passed": true
+    },
+    "finding_recall": {
+      "value": 1.0,
+      "operator": ">=",
+      "threshold": 0.8,
+      "passed": true
+    },
+    "finding_f1": {
+      "value": 1.0,
+      "operator": ">=",
+      "threshold": 0.85,
+      "passed": true
+    },
+    "false_positive_rate": {
+      "value": null,
+      "operator": "<=",
+      "threshold": 0.1,
+      "passed": null
+    },
+    "object_level_split": {
+      "value": true,
+      "operator": "required",
+      "threshold": true,
+      "passed": true,
+      "objects": 1,
+      "conflicts": {}
+    },
+    "regression_gate": {
+      "value": null,
+      "operator": "max_degradation_pp",
+      "threshold": 0.02,
+      "passed": null,
+      "reason": "baseline metrics are required to evaluate recall/FPR regression"
+    }
+  },
+  "evaluation_scope": "public_matrix_checks_document_annotation_baseline_no_gold_inference",
+  "acceptance_metrics_source": "Матрица_параметров_редакция1.1.xlsx::МЕТРИКИ"
+}

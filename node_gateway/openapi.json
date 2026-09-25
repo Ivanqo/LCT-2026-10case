@@ -1,0 +1,923 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CASE10 Node API Gateway",
+    "version": "0.1.0",
+    "description": "Minimal OpenAPI contract for the CASE10 Node.js gateway. The gateway proxies CASE10 requests to the existing Python API engine."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8080",
+      "description": "Local docker-compose gateway"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Gateway and upstream health",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Gateway and Python API are reachable"
+          },
+          "503": {
+            "description": "Gateway is running but Python API is unavailable"
+          }
+        }
+      }
+    },
+    "/openapi.json": {
+      "get": {
+        "summary": "Gateway OpenAPI document",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OpenAPI document",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login helper for gateway smoke and clients",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Access token"
+          },
+          "401": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/projects": {
+      "get": {
+        "summary": "List projects for authenticated user",
+        "responses": {
+          "200": {
+            "description": "Project list"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create project for CASE10 workflow",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created project"
+          }
+        }
+      }
+    },
+    "/api/upload": {
+      "post": {
+        "summary": "Upload a PD/RD/ID document (PDF, DOCX, XML or IFC) and route it to indexing",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["project_id", "file"],
+                "properties": {
+                  "project_id": { "type": "integer" },
+                  "file_type": { "type": "string", "default": "auto" },
+                  "file": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upload accepted; returns upload_id and a process_id for CASE10 polling"
+          }
+        }
+      }
+    },
+    "/api/documents": {
+      "get": {
+        "summary": "List uploaded documents for a project",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectIdQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document list"
+          }
+        }
+      }
+    },
+    "/api/documents/{document_id}": {
+      "delete": {
+        "summary": "Delete an uploaded document",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "$ref": "#/components/parameters/ProjectIdQuery"
+          },
+          {
+            "name": "source_type",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "rag" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletion result"
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/projects/{project_id}/official-dataset/import": {
+      "post": {
+        "summary": "Import official public CASE10 dataset into a project",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectId"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfficialDatasetImportRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Import summary"
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/matrix": {
+      "get": {
+        "summary": "Get CASE10 parameter matrix",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectIdQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matrix and params",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MatrixResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/case10/matrix/import": {
+      "post": {
+        "summary": "Import a matrix version",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectIdQuery"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Imported matrix"
+          }
+        }
+      }
+    },
+    "/api/case10/projects/{project_id}/processes": {
+      "post": {
+        "summary": "Create a CASE10 inspection process and enqueue worker processing",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectId"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Inspection process with process_id and queued job metadata; poll /status until READY or FAILED"
+          }
+        }
+      }
+    },
+    "/api/case10/processes": {
+      "get": {
+        "summary": "List inspection processes",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectIdQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Process list"
+          }
+        }
+      }
+    },
+    "/api/case10/processes/{process_id}/status": {
+      "get": {
+        "summary": "Get inspection process status",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProcessId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Process status"
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/processes/{process_id}/run": {
+      "post": {
+        "summary": "Enqueue worker processing for an existing inspection process",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProcessId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated process with queued job metadata"
+          },
+          "409": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups": {
+      "get": {
+        "summary": "List evidence groups",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectIdQuery"
+          },
+          {
+            "name": "process_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evidence groups"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/{evidence_group_id}": {
+      "get": {
+        "summary": "Get one evidence group",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/EvidenceGroupId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evidence group"
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/{evidence_group_id}/decisions": {
+      "post": {
+        "summary": "Record inspector decision for an evidence group",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/EvidenceGroupId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceDecisionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Decision result"
+          },
+          "409": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-fragments/{fragment_id}/page.png": {
+      "get": {
+        "summary": "Render an evidence source page with highlighted fragment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/FragmentId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PNG image",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
+          },
+          "422": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/protocol": {
+      "get": {
+        "summary": "Legacy protocol issue list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectIdQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Protocol issue list"
+          }
+        }
+      }
+    },
+    "/api/case10/protocols/current": {
+      "get": {
+        "summary": "Get current versioned protocol",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectIdQuery"
+          },
+          {
+            "name": "process_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current protocol or null"
+          }
+        }
+      }
+    },
+    "/api/case10/protocols/{protocol_id}/json": {
+      "get": {
+        "summary": "Get protocol JSON",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProtocolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Protocol JSON"
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/protocols/{protocol_id}/evaluation-predictions": {
+      "get": {
+        "summary": "Export protocol as CASE10 evaluation predictions",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProtocolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evaluation predictions"
+          },
+          "409": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/protocols/{protocol_id}/submission": {
+      "get": {
+        "summary": "Export protocol as submission payload",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProtocolId"
+          },
+          {
+            "name": "include_suspicions",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Submission and schema validation errors"
+          },
+          "409": {
+            "$ref": "#/components/responses/PythonError"
+          },
+          "503": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/protocols/{protocol_id}/pdf": {
+      "get": {
+        "summary": "Export protocol as PDF",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProtocolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PDF file",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/case10/protocols/{protocol_id}/finalize": {
+      "post": {
+        "summary": "Finalize protocol",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProtocolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Finalized protocol"
+          },
+          "409": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/protocols/{protocol_id}/unfinalize": {
+      "post": {
+        "summary": "Unfinalize protocol (Admin/Supervisor only)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProtocolId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["reason"],
+                "properties": {
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Unfinalized protocol"
+          },
+          "403": {
+            "$ref": "#/components/responses/PythonError"
+          },
+          "409": {
+            "$ref": "#/components/responses/PythonError"
+          },
+          "422": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/processes/{process_id}/protocols": {
+      "get": {
+        "summary": "Get protocol history for process",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProcessId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Protocol history"
+          }
+        }
+      }
+    },
+    "/api/case10/processes/{process_id}/audit": {
+      "get": {
+        "summary": "Get process audit log",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProcessId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Audit log"
+          }
+        }
+      }
+    },
+    "/api/case10/projects/{project_id}/training-release": {
+      "post": {
+        "summary": "Prepare managed training release gate without running training",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectId"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataset_version": {
+                    "type": "string"
+                  },
+                  "min_confirmed_violations": {
+                    "type": "integer",
+                    "default": 100
+                  },
+                  "candidate_metrics": {
+                    "type": "object"
+                  },
+                  "baseline_metrics": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Training release gate result; no model is trained or published"
+          }
+        }
+      }
+    },
+    "/api/case10/projects/{project_id}/ml-retraining-log": {
+      "get": {
+        "summary": "List ML retraining gate log entries",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectId"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retraining log entries"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "parameters": {
+      "ProjectId": {
+        "name": "project_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "ProjectIdQuery": {
+        "name": "project_id",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "ProcessId": {
+        "name": "process_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "ProtocolId": {
+        "name": "protocol_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "EvidenceGroupId": {
+        "name": "evidence_group_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "FragmentId": {
+        "name": "fragment_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    },
+    "responses": {
+      "PythonError": {
+        "description": "HTTP error body forwarded from Python API",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "required": [
+          "login",
+          "password"
+        ],
+        "properties": {
+          "login": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        }
+      },
+      "ProjectCreate": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "OfficialDatasetImportRequest": {
+        "type": "object",
+        "properties": {
+          "object_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "include_hidden": {
+            "type": "boolean",
+            "default": false
+          },
+          "include_pages": {
+            "type": "boolean",
+            "default": true
+          },
+          "include_annotations": {
+            "type": "boolean",
+            "default": true
+          },
+          "include_gold": {
+            "type": "boolean",
+            "default": true
+          },
+          "allow_hidden_gold_labels": {
+            "type": "boolean",
+            "default": false
+          },
+          "run_processes": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "ProcessCreateRequest": {
+        "type": "object",
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "run_immediately": {
+            "type": "boolean",
+            "default": true,
+            "description": "When true, the API enqueues a RabbitMQ worker job and returns before heavy processing starts."
+          },
+          "affected_param_codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "matrix_version": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EvidenceDecisionRequest": {
+        "type": "object",
+        "required": [
+          "decision"
+        ],
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "Confirm",
+              "Reject",
+              "Clarification Required"
+            ]
+          },
+          "reason_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "MatrixResponse": {
+        "type": "object",
+        "required": [
+          "matrix",
+          "params"
+        ],
+        "properties": {
+          "matrix": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "string"
+              },
+              "params_count": {
+                "type": "integer",
+                "example": 132
+              }
+            }
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "detail": {}
+        }
+      }
+    }
+  }
+}

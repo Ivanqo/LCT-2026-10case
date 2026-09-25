@@ -1,0 +1,94 @@
+{
+ "observed": {
+  "source": "learning_data/extracted/train_public_203/data/public_gold_checks.jsonl",
+  "n_rows": 15,
+  "location_types_seen": {
+   "ROOM": {
+    "n": 10,
+    "examples": [
+     {
+      "parameter_code": "IOS4-079",
+      "location": "012",
+      "label": "VIOLATION_PRESENT"
+     },
+     {
+      "parameter_code": "FREE-HEATING-001",
+      "location": "267",
+      "label": "VIOLATION_PRESENT"
+     },
+     {
+      "parameter_code": "FREE-HEATING-001",
+      "location": "270",
+      "label": "VIOLATION_PRESENT"
+     },
+     {
+      "parameter_code": "FREE-HEATING-001",
+      "location": "271",
+      "label": "VIOLATION_PRESENT"
+     },
+     {
+      "parameter_code": "FREE-HEATING-001",
+      "location": "272",
+      "label": "VIOLATION_PRESENT"
+     },
+     {
+      "parameter_code": "IOS4-078",
+      "location": "140",
+      "label": "VIOLATION_PRESENT"
+     }
+    ]
+   },
+   "CONSTRUCTION_ELEMENT": {
+    "n": 5,
+    "examples": [
+     {
+      "parameter_code": "PZ-009",
+      "location": "Отметка 0.000",
+      "label": "NO_VIOLATION"
+     },
+     {
+      "parameter_code": "KR-055",
+      "location": "Стена в грунте",
+      "label": "NO_VIOLATION"
+     },
+     {
+      "parameter_code": "KR-055",
+      "location": "Фундаментная плита",
+      "label": "NO_VIOLATION"
+     },
+     {
+      "parameter_code": "KR-055",
+      "location": "Вертикальные конструкции подземной части",
+      "label": "NO_VIOLATION"
+     },
+     {
+      "parameter_code": "KR-058",
+      "location": "Фундаментная плита",
+      "label": "NO_VIOLATION"
+     }
+    ]
+   }
+  },
+  "location_types_not_seen_in_public_gold": [
+   "SITE"
+  ],
+  "room_number_format": "string, zero padding preserved ('012', '140')",
+  "element_format": "descriptive Russian name / level ('Фундаментная плита', 'Отметка 0.000')",
+  "site_convention_evidence": "brief_only (task statement + code comment about closed gold SPZU-027); NOT verifiable from public gold"
+ },
+ "normalisation": "NFC, casefold, ё->е, blank runs collapsed, surrounding quotes/dots/commas stripped; match levels STRICT/LOOSE (leading-zero-insensitive room numbers, element-name containment)",
+ "expected_location_type_rule": {
+  "ROOM": [
+   "FREE-HEATING-001",
+   "IOS4-078",
+   "IOS4-079"
+  ],
+  "CONSTRUCTION_ELEMENT": [
+   "KR-055",
+   "KR-058",
+   "PZ-009"
+  ],
+  "SITE": "every other code (brief-only evidence)"
+ },
+ "generic_mechanisms_emit": "SITE"
+}

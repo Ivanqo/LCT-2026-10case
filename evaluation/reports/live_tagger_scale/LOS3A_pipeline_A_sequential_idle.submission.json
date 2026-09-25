@@ -1,0 +1,1758 @@
+{
+  "object_id": "OBJ-NEW-LOS3A",
+  "checks": [
+    {
+      "parameter_code": "AR-040",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "AR-041",
+      "location": "SITE",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000030",
+          "pdf_page_number": 19
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000131",
+          "pdf_page_number": 12
+        }
+      ]
+    },
+    {
+      "parameter_code": "AR-042",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "AR-043",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "AR-044",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "AR-045",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "AR-046",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "AR-047",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "AR-048",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "AR-049",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "AR-050",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS1-068",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS1-069",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS1-070",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS2-071",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS2-073",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS3-074",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS4-076",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS4-077",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS4-078",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS4-079",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS5-080",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-054",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-055",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-056",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-057",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-058",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-059",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-060",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-061",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-062",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-063",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-064",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-065",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-066",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ODI-115",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ODI-116",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ODI-117",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ODI-119",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ODI-120",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ODI-121",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ODI-123",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "OOS-098",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "OOS-099",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000007",
+          "pdf_page_number": 25
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000115",
+          "pdf_page_number": 49
+        }
+      ]
+    },
+    {
+      "parameter_code": "OOS-100",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "OOS-101",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POD-090",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POD-091",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POD-092",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POD-096",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POD-097",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POS-081",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POS-083",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POS-085",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POS-087",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000042",
+          "pdf_page_number": 5
+        }
+      ]
+    },
+    {
+      "parameter_code": "PPM-102",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PPM-103",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PPM-104",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PPM-105",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PPM-106",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PPM-107",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000009",
+          "pdf_page_number": 24
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000068",
+          "pdf_page_number": 6
+        }
+      ]
+    },
+    {
+      "parameter_code": "PPM-108",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PPM-109",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PPM-110",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PPM-111",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PPM-112",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PPM-113",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PPM-114",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000047",
+          "pdf_page_number": 22
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-001",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000003",
+          "pdf_page_number": 14
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000069",
+          "pdf_page_number": 11
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-002",
+      "location": "SITE",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000047",
+          "pdf_page_number": 10
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000069",
+          "pdf_page_number": 11
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-004",
+      "location": "SITE",
+      "pd_value": "88264,00",
+      "rd_value": "88264,00",
+      "id_value": null,
+      "violation_label": "NO_VIOLATION",
+      "protocol_status": "OK",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000074",
+          "pdf_page_number": 6
+        },
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000003",
+          "pdf_page_number": 14
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-005",
+      "location": "SITE",
+      "pd_value": "88264,00",
+      "rd_value": "88264,00",
+      "id_value": null,
+      "violation_label": "NO_VIOLATION",
+      "protocol_status": "OK",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000072",
+          "pdf_page_number": 10
+        },
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000003",
+          "pdf_page_number": 14
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-006",
+      "location": "SITE",
+      "pd_value": "88264,00",
+      "rd_value": "88264,00",
+      "id_value": null,
+      "violation_label": "NO_VIOLATION",
+      "protocol_status": "OK",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000072",
+          "pdf_page_number": 10
+        },
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000003",
+          "pdf_page_number": 14
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-007",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000046",
+          "pdf_page_number": 10
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000135",
+          "pdf_page_number": 36
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-008",
+      "location": "SITE",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000046",
+          "pdf_page_number": 14
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000134",
+          "pdf_page_number": 9
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-009",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PZ-010",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000070",
+          "pdf_page_number": 10
+        },
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000047",
+          "pdf_page_number": 131
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-011",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PZ-012",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000003",
+          "pdf_page_number": 26
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000133",
+          "pdf_page_number": 73
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-013",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PZ-014",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PZ-015",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000011",
+          "pdf_page_number": 6
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000126",
+          "pdf_page_number": 13
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-016",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PZ-017",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000024",
+          "pdf_page_number": 64
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000147",
+          "pdf_page_number": 109
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-018",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PZ-019",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PZ-020",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PZ-021",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000003",
+          "pdf_page_number": 5
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000133",
+          "pdf_page_number": 109
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-022",
+      "location": "SITE",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000009",
+          "pdf_page_number": 8
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000113",
+          "pdf_page_number": 11
+        }
+      ]
+    },
+    {
+      "parameter_code": "PZ-023",
+      "location": "SITE",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000003",
+          "pdf_page_number": 18
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000115",
+          "pdf_page_number": 40
+        }
+      ]
+    },
+    {
+      "parameter_code": "SPZU-027",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SPZU-028",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000133",
+          "pdf_page_number": 77
+        },
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000003",
+          "pdf_page_number": 30
+        }
+      ]
+    },
+    {
+      "parameter_code": "SPZU-030",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SPZU-031",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SPZU-032",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000048",
+          "pdf_page_number": 46
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000050",
+          "pdf_page_number": 16
+        }
+      ]
+    },
+    {
+      "parameter_code": "SPZU-034",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SPZU-035",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SPZU-037",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SPZU-038",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SPZU-039",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000007",
+          "pdf_page_number": 3
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000114",
+          "pdf_page_number": 27
+        }
+      ]
+    },
+    {
+      "parameter_code": "ZU-124",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000015",
+          "pdf_page_number": 32
+        }
+      ]
+    },
+    {
+      "parameter_code": "ZU-125",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ZU-126",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ZU-127",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ZU-128",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ZU-131",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Критическое (приостановка работ)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000005",
+          "pdf_page_number": 31
+        }
+      ]
+    },
+    {
+      "parameter_code": "AR-051",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000046",
+          "pdf_page_number": 33
+        }
+      ]
+    },
+    {
+      "parameter_code": "AR-052",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "AR-053",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000043",
+          "pdf_page_number": 53
+        }
+      ]
+    },
+    {
+      "parameter_code": "IOS2-072",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "IOS3-075",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "KR-067",
+      "location": "SITE",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000044",
+          "pdf_page_number": 19
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000075",
+          "pdf_page_number": 6
+        }
+      ]
+    },
+    {
+      "parameter_code": "ODI-118",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ODI-122",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POD-093",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POD-094",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POD-095",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POS-082",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": [
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000133",
+          "pdf_page_number": 73
+        },
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000003",
+          "pdf_page_number": 26
+        }
+      ]
+    },
+    {
+      "parameter_code": "POS-084",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POS-086",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000042",
+          "pdf_page_number": 37
+        }
+      ]
+    },
+    {
+      "parameter_code": "POS-088",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "POS-089",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "PZ-003",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SM-132",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SPZU-024",
+      "location": "SITE",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000007",
+          "pdf_page_number": 22
+        },
+        {
+          "stage": "RD",
+          "file_id": "LOS3A-000050",
+          "pdf_page_number": 13
+        }
+      ]
+    },
+    {
+      "parameter_code": "SPZU-025",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SPZU-026",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SPZU-029",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "SPZU-033",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": [
+        {
+          "stage": "PD",
+          "file_id": "LOS3A-000043",
+          "pdf_page_number": 45
+        }
+      ]
+    },
+    {
+      "parameter_code": "SPZU-036",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ZU-129",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    },
+    {
+      "parameter_code": "ZU-130",
+      "location": "OBJ-NEW-LOS3A",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "criticality": "Существенное (предписание)",
+      "evidence": []
+    }
+  ]
+}

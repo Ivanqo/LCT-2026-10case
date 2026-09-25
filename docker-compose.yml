@@ -1,0 +1,359 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api_service/Dockerfile
+    environment:
+      RAG_SERVICE_URL: http://rag:8001
+      IFC_SERVICE_URL: http://ifc:8002
+      API_DATA_DIR: /data
+      API_LOG_DIR: /logs
+      API_PROJECT_FILES_DIR: /data/project_files
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+      ENABLE_METRICS: ${ENABLE_METRICS:-true}
+      DEFAULT_ADMIN_LOGIN: ${DEFAULT_ADMIN_LOGIN:-admin}
+      DEFAULT_ADMIN_PASSWORD: ${DEFAULT_ADMIN_PASSWORD:-Admin123!ChangeMe}
+      DEFAULT_ADMIN_EMAIL: ${DEFAULT_ADMIN_EMAIL:-admin@local}
+      DEFAULT_ADMIN_ORG: ${DEFAULT_ADMIN_ORG:-Default}
+      DEFAULT_ADMIN_API_KEY: ${DEFAULT_ADMIN_API_KEY:-}
+      QWEN_PROXY_BASE_URL: ${QWEN_PROXY_BASE_URL:-http://host.docker.internal:3264/api}
+      QWEN_MODEL: ${QWEN_MODEL:-qwen3.7-max}
+      QWEN_TIMEOUT: ${QWEN_TIMEOUT:-120}
+      ENABLE_OPTIONAL_OCR: ${ENABLE_OPTIONAL_OCR:-false}
+      OCR_LANG: ${OCR_LANG:-rus+eng}
+      API_AUTO_PROCESS_UPLOADS: ${API_AUTO_PROCESS_UPLOADS:-false}
+      RABBITMQ_URL: ${RABBITMQ_URL:-amqp://guest:guest@rabbitmq:5672/%2F}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/2}
+      CASE10_JOB_MAX_ATTEMPTS: ${CASE10_JOB_MAX_ATTEMPTS:-3}
+      CASE10_JOB_STALE_SECONDS: ${CASE10_JOB_STALE_SECONDS:-900}
+      # GPU detection/observability (see app/domain/gpu.py). No `deploy.resources.
+      # reservations.devices` block here on purpose -- neither this repo's own dev
+      # machine nor its prod host has a GPU; the organizer's grading server instead
+      # injects one directly into the container via the NVIDIA Container Toolkit
+      # (`docker run --gpus`), outside of this compose file. Set CASE10_EXPECT_GPU=1
+      # only on a host where a GPU is actually expected, so a missing one there logs a
+      # loud startup WARNING instead of a silent CPU fallback.
+      CASE10_EXPECT_GPU: ${CASE10_EXPECT_GPU:-0}
+      CASE10_GPU_MEMORY_FRACTION: ${CASE10_GPU_MEMORY_FRACTION:-0.2}
+      # Промпт 8.2: switchable full-page OCR-fallback engine (app/domain/ocr_paddle.py,
+      # see evaluation/OCR_PADDLEOCR_PILOT_REPORT.md for the accuracy comparison this
+      # default is based on). "tesseract" or "paddleocr"; anything else falls back to
+      # tesseract.
+      CASE10_OCR_ENGINE: ${CASE10_OCR_ENGINE:-tesseract}
+      CASE10_OCR_PADDLE_LANG: ${CASE10_OCR_PADDLE_LANG:-ru}
+      # Live candidate tagger (app/config.py, app/domain/live_candidate_tagger.py). Limits are
+      # deterministic documents/pages caps (NOT wall-clock) so the output does not depend on machine
+      # speed/load; WORKERS=0 = auto (CPUs available to the container, capped at MAX_WORKERS);
+      # the SHA-256-keyed result cache lives on the /data volume, so a re-launch re-tags nothing.
+      CASE10_LIVE_TAGGER_WORKERS: ${CASE10_LIVE_TAGGER_WORKERS:-0}
+      CASE10_LIVE_TAGGER_MAX_WORKERS: ${CASE10_LIVE_TAGGER_MAX_WORKERS:-24}
+      CASE10_LIVE_TAGGER_CACHE_ENABLED: ${CASE10_LIVE_TAGGER_CACHE_ENABLED:-1}
+      # ТЗ 9.6 (Low priority): outbound sync to ИАИС "РиН". Empty by default --
+      # no real target is deployed for this hackathon, which the client treats
+      # as "sync disabled" (see app/domain/iais_rin_sync.py).
+      IAIS_RIN_BASE_URL: ${IAIS_RIN_BASE_URL:-}
+      IAIS_RIN_CLIENT_CERT_PATH: ${IAIS_RIN_CLIENT_CERT_PATH:-}
+      IAIS_RIN_CLIENT_KEY_PATH: ${IAIS_RIN_CLIENT_KEY_PATH:-}
+    volumes:
+      - api_data:/data
+      - logs:/logs
+      - ./case_data:/app/case_data:ro
+      - ./learning_data:/app/learning_data:ro
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${API_HOST_PORT:-8000}:8000"
+    depends_on:
+      rag:
+        condition: service_healthy
+      ifc:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          python -c "import urllib.request;
+          urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5).read()"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  case10_worker:
+    build:
+      context: .
+      dockerfile: api_service/Dockerfile
+    command: ["python", "-m", "app.worker_case10"]
+    environment:
+      RAG_SERVICE_URL: http://rag:8001
+      IFC_SERVICE_URL: http://ifc:8002
+      API_DATA_DIR: /data
+      API_LOG_DIR: /logs
+      API_PROJECT_FILES_DIR: /data/project_files
+      ENABLE_METRICS: ${ENABLE_METRICS:-true}
+      QWEN_PROXY_BASE_URL: ${QWEN_PROXY_BASE_URL:-http://host.docker.internal:3264/api}
+      QWEN_MODEL: ${QWEN_MODEL:-qwen3.7-max}
+      QWEN_TIMEOUT: ${QWEN_TIMEOUT:-120}
+      ENABLE_OPTIONAL_OCR: ${ENABLE_OPTIONAL_OCR:-false}
+      OCR_LANG: ${OCR_LANG:-rus+eng}
+      RABBITMQ_URL: ${RABBITMQ_URL:-amqp://guest:guest@rabbitmq:5672/%2F}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/2}
+      CASE10_JOB_MAX_ATTEMPTS: ${CASE10_JOB_MAX_ATTEMPTS:-3}
+      CASE10_JOB_STALE_SECONDS: ${CASE10_JOB_STALE_SECONDS:-900}
+      # GPU detection/observability (see app/domain/gpu.py). No `deploy.resources.
+      # reservations.devices` block here on purpose -- neither this repo's own dev
+      # machine nor its prod host has a GPU; the organizer's grading server instead
+      # injects one directly into the container via the NVIDIA Container Toolkit
+      # (`docker run --gpus`), outside of this compose file. Set CASE10_EXPECT_GPU=1
+      # only on a host where a GPU is actually expected, so a missing one there logs a
+      # loud startup WARNING instead of a silent CPU fallback.
+      CASE10_EXPECT_GPU: ${CASE10_EXPECT_GPU:-0}
+      CASE10_GPU_MEMORY_FRACTION: ${CASE10_GPU_MEMORY_FRACTION:-0.2}
+      CASE10_OCR_ENGINE: ${CASE10_OCR_ENGINE:-tesseract}
+      CASE10_OCR_PADDLE_LANG: ${CASE10_OCR_PADDLE_LANG:-ru}
+      # Live candidate tagger (app/config.py, app/domain/live_candidate_tagger.py). Limits are
+      # deterministic documents/pages caps (NOT wall-clock) so the output does not depend on machine
+      # speed/load; WORKERS=0 = auto (CPUs available to the container, capped at MAX_WORKERS);
+      # the SHA-256-keyed result cache lives on the /data volume, so a re-launch re-tags nothing.
+      CASE10_LIVE_TAGGER_WORKERS: ${CASE10_LIVE_TAGGER_WORKERS:-0}
+      CASE10_LIVE_TAGGER_MAX_WORKERS: ${CASE10_LIVE_TAGGER_MAX_WORKERS:-24}
+      CASE10_LIVE_TAGGER_CACHE_ENABLED: ${CASE10_LIVE_TAGGER_CACHE_ENABLED:-1}
+      CASE10_WORKER_RECONNECT_SECONDS: ${CASE10_WORKER_RECONNECT_SECONDS:-5}
+    volumes:
+      - api_data:/data
+      - logs:/logs
+      - ./case_data:/app/case_data:ro
+      - ./learning_data:/app/learning_data:ro
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  node_gateway:
+    build:
+      context: .
+      dockerfile: node_gateway/Dockerfile
+    environment:
+      PYTHON_API_BASE_URL: http://api:8000
+      PORT: 8080
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${GATEWAY_HOST_PORT:-8080}:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          node -e "fetch('http://127.0.0.1:8080/health')
+          .then(r => process.exit(r.ok ? 0 : 1))
+          .catch(() => process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
+
+  rag:
+    build:
+      context: .
+      dockerfile: rag_service/Dockerfile
+    environment:
+      RAG_DATA_DIR: /data
+      RAG_UPLOADS_DIR: /data/uploads
+      RAG_VECTORSTORE_DIR: /data/vectorstore
+      RAG_SQLITE_PATH: /data/rag.db
+      RAG_LOG_DIR: /logs
+      HF_HOME: /data/huggingface
+      SENTENCE_TRANSFORMERS_HOME: /data/huggingface/sentence_transformers
+      TRANSFORMERS_CACHE: /data/huggingface/transformers
+      QWEN_PROXY_BASE_URL: ${QWEN_PROXY_BASE_URL:-http://host.docker.internal:3264/api}
+      QWEN_MODEL: ${QWEN_MODEL:-qwen3.7-max}
+      QWEN_TIMEOUT: ${QWEN_TIMEOUT:-120}
+      RAG_ENABLE_OCR: ${RAG_ENABLE_OCR:-0}
+      RAG_ENABLE_TABLE_DETECTION: ${RAG_ENABLE_TABLE_DETECTION:-0}
+      RAG_RENDER_DPI: ${RAG_RENDER_DPI:-120}
+      RAG_RENDER_MAX_SIDE: ${RAG_RENDER_MAX_SIDE:-2400}
+      RAG_MAX_PAGES: ${RAG_MAX_PAGES:-80}
+      RAG_EMBED_BATCH_SIZE: ${RAG_EMBED_BATCH_SIZE:-16}
+      RAG_ENABLE_VECTOR_SEARCH: ${RAG_ENABLE_VECTOR_SEARCH:-0}
+      RAG_ENABLE_ASSET_SEARCH: ${RAG_ENABLE_ASSET_SEARCH:-0}
+      RAG_ENABLE_LLM_SUMMARY: ${RAG_ENABLE_LLM_SUMMARY:-0}
+      RAG_INDEX_EMBEDDINGS: ${RAG_INDEX_EMBEDDINGS:-0}
+    volumes:
+      - rag_data:/data
+      - logs:/logs
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${RAG_HOST_PORT:-8001}:8001"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          python -c "import urllib.request;
+          urllib.request.urlopen('http://127.0.0.1:8001/health', timeout=5).read()"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  ifc:
+    build:
+      context: .
+      dockerfile: ifc_service/Dockerfile
+    environment:
+      IFC_DATA_DIR: /data
+      IFC_UPLOADS_DIR: /data/ifc
+      IFC_LOG_DIR: /logs
+      IFC_DATABASE_URL: postgresql+psycopg://ifc:${POSTGRES_PASSWORD:-ifc}@postgres:5432/${POSTGRES_DB:-ifcdb}
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+    volumes:
+      - ifc_data:/data
+      - logs:/logs
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${IFC_HOST_PORT:-8002}:8002"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          python -c "import urllib.request;
+          urllib.request.urlopen('http://127.0.0.1:8002/health', timeout=5).read()"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  ifc_worker:
+    build:
+      context: .
+      dockerfile: ifc_service/Dockerfile
+    command: ["celery", "-A", "app.celery_app.celery", "worker", "-l", "INFO"]
+    environment:
+      IFC_DATA_DIR: /data
+      IFC_UPLOADS_DIR: /data/ifc
+      IFC_LOG_DIR: /logs
+      IFC_DATABASE_URL: postgresql+psycopg://ifc:${POSTGRES_PASSWORD:-ifc}@postgres:5432/${POSTGRES_DB:-ifcdb}
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+    volumes:
+      - ifc_data:/data
+      - logs:/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ifcdb}
+      POSTGRES_USER: ${POSTGRES_USER:-ifc}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ifc}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${POSTGRES_HOST_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ifc} -d ${POSTGRES_DB:-ifcdb}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${REDIS_HOST_PORT:-6379}:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${RABBITMQ_HOST_PORT:-5672}:5672"
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${RABBITMQ_MANAGEMENT_HOST_PORT:-15672}:15672"
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${FRONTEND_HOST_PORT:-3000}:80"
+    depends_on:
+      api:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/ >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 5s
+
+  react_frontend:
+    build:
+      context: ./frontend_react
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE: ${REACT_FRONTEND_API_BASE:-}
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${REACT_FRONTEND_HOST_PORT:-3100}:80"
+    depends_on:
+      node_gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/ >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 5s
+
+  landing:
+    build:
+      context: ./landing
+      dockerfile: Dockerfile
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+      LANDING_BRAND: ${LANDING_BRAND:-DocuRAG}
+      LANDING_YOUTUBE: ${LANDING_YOUTUBE:-}
+      LANDING_MP4: ${LANDING_MP4:-}
+      LANDING_RATE_LIMIT_MAX: ${LANDING_RATE_LIMIT_MAX:-5}
+      LANDING_RATE_LIMIT_WINDOW_SEC: ${LANDING_RATE_LIMIT_WINDOW_SEC:-900}
+    volumes:
+      - ./landing/data:/app/data
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${LANDING_HOST_PORT:-3001}:3001"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          python -c "import urllib.request;
+          urllib.request.urlopen('http://127.0.0.1:3001/health', timeout=5).read()"
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 5s
+
+volumes:
+  api_data:
+  rag_data:
+  ifc_data:
+  postgres_data:
+  logs:

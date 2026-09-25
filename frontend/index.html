@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CASE10 Control</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main id="loginScreen" class="auth-shell">
+    <section class="auth-card">
+      <div class="auth-brand">
+        <div class="brand-title">CASE10 Control</div>
+        <div class="brand-sub">Объектный контроль проекта</div>
+      </div>
+      <div class="form">
+        <label>
+          <span class="label">Логин</span>
+          <input id="loginInput" class="input" type="text" autocomplete="username" autofocus>
+        </label>
+        <label>
+          <span class="label">Пароль</span>
+          <input id="passwordInput" class="input" type="password" autocomplete="current-password">
+        </label>
+        <button id="loginBtn" class="btn primary" type="button">Войти</button>
+        <div id="loginError" class="error hidden"></div>
+      </div>
+    </section>
+  </main>
+
+  <main id="appShell" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">C10</div>
+        <div>
+          <div class="brand-title">CASE10 Control</div>
+          <div id="brandSub" class="brand-sub">Объекты, изменения, доказательства</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">Пользователь</div>
+        <div id="meInfo" class="pill large">...</div>
+        <button id="logoutBtn" class="btn ghost top-gap" type="button">Выйти</button>
+      </div>
+
+      <div class="block">
+        <div class="block-title">Проект</div>
+        <div class="form">
+          <select id="projectSelect" class="select"></select>
+          <div class="row gap">
+            <button id="refreshProjectsBtn" class="btn ghost" type="button">Обновить</button>
+          </div>
+          <details class="details">
+            <summary>Создать проект</summary>
+            <input id="projectName" class="input" type="text" placeholder="Название проекта">
+            <textarea id="projectDesc" class="textarea top-gap" placeholder="Описание"></textarea>
+            <button id="createProjectBtn" class="btn primary top-gap" type="button">Создать</button>
+          </details>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" type="button" data-view="overviewView">Проекты</button>
+        <button class="nav-item" type="button" data-view="docsView">Документы</button>
+        <button class="nav-item" type="button" data-view="matrixView">Матрица</button>
+        <button class="nav-item" type="button" data-view="candidatesView">Кандидаты</button>
+        <button class="nav-item" type="button" data-view="objectsView">Объекты</button>
+        <button class="nav-item" type="button" data-view="changesView">Изменения</button>
+        <button class="nav-item" type="button" data-view="protocolView">Протокол</button>
+        <button class="nav-item" type="button" data-view="chatView">AI Assistant</button>
+        <button id="adminNavBtn" class="nav-item hidden" type="button" data-view="adminView">Администрирование</button>
+      </nav>
+
+      <div id="statusBox" class="status ok sidebar-status">Готово</div>
+    </aside>
+
+    <section class="main">
+      <div id="errorBox" class="error hidden"></div>
+
+      <section id="overviewView" class="view">
+        <div class="topbar">
+          <div>
+            <h1>Проект</h1>
+            <p class="muted">ПД / РД / ИД, evidence groups, решение инспектора, версионированный протокол.</p>
+          </div>
+          <div class="topbar-actions">
+            <button id="importOfficialDatasetBtn" class="btn ghost" type="button">Импорт CASE10 real data</button>
+            <button id="startInspectionBtn" class="btn ghost" type="button">Запустить проверку</button>
+            <button id="seedSyntheticBtn" class="btn primary" type="button">Создать synthetic dataset</button>
+          </div>
+        </div>
+
+        <section class="case-grid">
+          <article class="card">
+            <div class="card-title">Документы по стадиям</div>
+            <div id="overviewStages" class="stage-cards"></div>
+          </article>
+          <article class="card">
+            <div class="card-title">Объекты</div>
+            <div id="overviewObjects" class="metric-xl">0</div>
+            <div class="muted small">CanonicalEntity в выбранном проекте</div>
+          </article>
+          <article class="card">
+            <div class="card-title">Evidence / статусы</div>
+            <div id="overviewChanges" class="risk-summary"></div>
+          </article>
+        </section>
+
+        <section class="card">
+          <div class="card-title">Текущий процесс проверки</div>
+          <div id="overviewInspection" class="inspection-summary muted">Проверка еще не запускалась.</div>
+        </section>
+
+        <section class="card">
+          <div class="card-title">Целевая цепочка контроля</div>
+          <div id="pipelineFlow" class="pipeline-flow"></div>
+        </section>
+      </section>
+
+      <section id="matrixView" class="view hidden">
+        <div class="topbar">
+          <div>
+            <h1>Матрица</h1>
+            <p class="muted">Официальные 132 параметра CASE10, версии матрицы и источники ПД / РД / ИД.</p>
+          </div>
+          <button id="refreshMatrixBtn" class="btn ghost" type="button">Обновить</button>
+        </div>
+        <section class="card">
+          <div id="matrixTable" class="table-wrap"></div>
+        </section>
+      </section>
+
+      <section id="candidatesView" class="view hidden">
+        <div class="topbar">
+          <div>
+            <h1>Кандидаты</h1>
+            <p class="muted">Главный экран инспектора: expected, actual, delta и доказательства по ПД / РД / ИД.</p>
+          </div>
+          <button id="refreshCandidatesBtn" class="btn ghost" type="button">Обновить</button>
+        </div>
+        <div id="candidateCards" class="candidate-list"></div>
+      </section>
+
+      <section id="objectsView" class="view hidden">
+        <div class="topbar">
+          <div>
+            <h1>Объекты</h1>
+            <p class="muted">Реестр CanonicalEntity и вычисляемый Object Portrait.</p>
+          </div>
+          <button id="refreshObjectsBtn" class="btn ghost" type="button">Обновить</button>
+        </div>
+
+        <div class="objects-layout">
+          <section class="card">
+            <div class="card-title">Object Registry</div>
+            <div id="entityRegistry" class="table-wrap"></div>
+          </section>
+          <section class="card portrait-card">
+            <div class="card-title">Object Portrait</div>
+            <div id="portraitPanel" class="portrait-panel muted">Выберите объект в реестре.</div>
+          </section>
+        </div>
+      </section>
+
+      <section id="changesView" class="view hidden">
+        <div class="topbar">
+          <div>
+            <h1>Изменения</h1>
+            <p class="muted">Change Engine поверх истории наблюдений CanonicalEntity.</p>
+          </div>
+          <button id="refreshChangesBtn" class="btn ghost" type="button">Обновить</button>
+        </div>
+        <section class="card">
+          <div id="changesTable" class="table-wrap"></div>
+        </section>
+        <section class="card">
+          <div class="card-title">Evidence Viewer shell</div>
+          <div id="evidenceShell" class="evidence-shell">
+            <div>source A</div>
+            <div>source B</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="protocolView" class="view hidden">
+        <div class="topbar">
+          <div>
+            <h1>Протокол</h1>
+            <p class="muted">Workflow инспектора: New, Confirmed, Rejected, Needs Review.</p>
+          </div>
+          <button id="refreshProtocolBtn" class="btn ghost" type="button">Обновить</button>
+        </div>
+        <div id="protocolBoard" class="protocol-board"></div>
+      </section>
+
+      <section id="chatView" class="view hidden">
+        <div class="topbar">
+          <div>
+            <h1>AI Assistant</h1>
+            <p class="muted">Вспомогательный поиск доказательств, контекст и объяснения по проекту.</p>
+          </div>
+          <div class="topbar-actions">
+            <label class="label-inline">Top K</label>
+            <input id="topK" class="input small" type="number" min="1" max="20" value="5">
+            <button id="loadHistoryToChatBtn" class="btn ghost" type="button">Загрузить историю</button>
+            <button id="clearChatBtn" class="btn ghost" type="button">Очистить</button>
+          </div>
+        </div>
+
+        <div id="chatMessages" class="chat"></div>
+        <div id="chatProcessing" class="chat-processing hidden">
+          <div class="chat-processing-spinner"></div>
+          <div>
+            <div class="chat-processing-title">Запрос обрабатывается</div>
+            <div id="chatProcessingText" class="chat-processing-text">Ждем ответ модели...</div>
+          </div>
+        </div>
+
+        <div class="composer">
+          <textarea id="questionInput" class="textarea" rows="4" placeholder="Введите вопрос по документам"></textarea>
+          <div class="row gap wrap top-gap">
+            <button id="sendBtn" class="btn primary" type="button">Отправить</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="docsView" class="view hidden">
+        <div class="topbar">
+          <div>
+            <h1>Документы</h1>
+            <p class="muted">Загрузка PDF, DOCX и IFC в выбранный проект.</p>
+          </div>
+          <button id="refreshDocsBtn" class="btn ghost" type="button">Обновить</button>
+        </div>
+
+        <section class="card">
+          <div class="card-title">Версии документов по стадиям</div>
+          <div id="docStageGroups" class="stage-groups"></div>
+        </section>
+
+        <div class="grid2">
+          <section class="card">
+            <div class="card-title">Загрузить файл</div>
+            <div class="form">
+              <select id="fileType" class="select">
+                <option value="auto">Определить автоматически</option>
+                <option value="pdf">PDF</option>
+                <option value="docx">DOCX</option>
+                <option value="xml">XML</option>
+                <option value="ifc">IFC</option>
+              </select>
+              <input id="fileInput" class="file" type="file" accept=".pdf,.docx,.xml,.ifc">
+              <button id="uploadBtn" class="btn primary" type="button">Загрузить</button>
+              <div id="uploadProgressWrap" class="upload-progress-wrap hidden">
+                <div class="upload-progress-meta">
+                  <span id="uploadProgressLabel">Подготовка...</span>
+                </div>
+                <div class="upload-progress">
+                  <div id="uploadProgressBar" class="upload-progress-bar"></div>
+                </div>
+              </div>
+              <div id="uploadResult" class="hint"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-title">Список документов</div>
+            <div id="docsList" class="list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="historyView" class="view hidden">
+        <div class="topbar">
+          <div>
+            <h1>История проекта</h1>
+            <p class="muted">Сохраненные вопросы и ответы.</p>
+          </div>
+          <button id="refreshHistoryBtn" class="btn ghost" type="button">Обновить</button>
+        </div>
+        <div id="historyList" class="list"></div>
+      </section>
+
+      <section id="adminView" class="view hidden">
+        <div class="topbar">
+          <div>
+            <h1>Администрирование</h1>
+            <p class="muted">Организации, пользователи и аналитика вопросов.</p>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <section class="card">
+            <div class="card-title">Организации</div>
+            <div class="form">
+              <input id="orgNameInput" class="input" type="text" placeholder="Название организации">
+              <div class="row gap wrap">
+                <button id="createOrgBtn" class="btn primary" type="button">Создать</button>
+                <button id="refreshOrgsBtn" class="btn ghost" type="button">Обновить</button>
+              </div>
+              <select id="orgSelect" class="select"></select>
+              <div id="orgList" class="list"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-title">Пользователи</div>
+            <div class="form">
+              <select id="userOrgSelect" class="select"></select>
+              <input id="userLoginInput" class="input" type="text" placeholder="Логин">
+              <input id="userEmailInput" class="input" type="email" placeholder="Email">
+              <label class="checkbox">
+                <input id="userIsAdminInput" type="checkbox">
+                <span>Администратор</span>
+              </label>
+              <div class="row gap wrap">
+                <button id="createUserBtn" class="btn primary" type="button">Создать пользователя</button>
+                <button id="refreshUsersBtn" class="btn ghost" type="button">Обновить</button>
+              </div>
+              <div class="divider"></div>
+              <input id="batchPrefixInput" class="input" type="text" placeholder="Префикс логинов">
+              <input id="batchCountInput" class="input small" type="number" min="1" max="100" value="5">
+              <button id="createBatchBtn" class="btn ghost" type="button">Создать пачку</button>
+              <div id="userList" class="list"></div>
+            </div>
+          </section>
+
+          <section class="card admin-analytics-card">
+            <div class="card-title">Созданные доступы</div>
+            <div class="row gap wrap">
+              <button id="refreshCredentialsBtn" class="btn ghost" type="button">Обновить</button>
+              <button id="downloadCredentialsTxtBtn" class="btn ghost" type="button">Скачать TXT</button>
+            </div>
+            <div id="credentialsList" class="list top-gap"></div>
+          </section>
+
+          <section class="card admin-analytics-card">
+            <div class="card-title">Вопросы пользователей</div>
+            <div class="row gap wrap">
+              <select id="analyticsOrgSelect" class="select"></select>
+              <button id="refreshQuestionsBtn" class="btn ghost" type="button">Обновить</button>
+              <button id="downloadQuestionsCsvBtn" class="btn ghost" type="button">Скачать CSV</button>
+            </div>
+            <div id="questionsSummary" class="muted small top-gap"></div>
+            <div id="adminQuestionsList" class="questions-list top-gap"></div>
+          </section>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="imageLightbox" class="lightbox hidden" aria-hidden="true">
+    <div class="lightbox-backdrop" data-close-lightbox="1"></div>
+    <div class="lightbox-dialog">
+      <button id="lightboxCloseBtn" class="lightbox-close" type="button" aria-label="Закрыть">x</button>
+      <img id="lightboxImage" class="lightbox-image" alt="">
+      <div id="lightboxCaption" class="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

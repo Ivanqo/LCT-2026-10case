@@ -1,0 +1,5210 @@
+{
+  "total_params": 132,
+  "findings": [
+    {
+      "id": "9632",
+      "group_id": 9632,
+      "parameter_code": "AR-040",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9633",
+      "group_id": 9633,
+      "parameter_code": "AR-041",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9634",
+      "group_id": 9634,
+      "parameter_code": "AR-042",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9635",
+      "group_id": 9635,
+      "parameter_code": "AR-043",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9636",
+      "group_id": 9636,
+      "parameter_code": "AR-044",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9637",
+      "group_id": 9637,
+      "parameter_code": "AR-045",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9638",
+      "group_id": 9638,
+      "parameter_code": "AR-046",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9639",
+      "group_id": 9639,
+      "parameter_code": "AR-047",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9640",
+      "group_id": 9640,
+      "parameter_code": "AR-048",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9641",
+      "group_id": 9641,
+      "parameter_code": "AR-049",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9642",
+      "group_id": 9642,
+      "parameter_code": "AR-050",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9646",
+      "group_id": 9646,
+      "parameter_code": "IOS1-068",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "IOS1",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9647",
+      "group_id": 9647,
+      "parameter_code": "IOS1-069",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "IOS1",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9648",
+      "group_id": 9648,
+      "parameter_code": "IOS1-070",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "IOS1",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9649",
+      "group_id": 9649,
+      "parameter_code": "IOS2-071",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "IOS2",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9651",
+      "group_id": 9651,
+      "parameter_code": "IOS2-073",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "IOS2",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9652",
+      "group_id": 9652,
+      "parameter_code": "IOS3-074",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "IOS3",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9654",
+      "group_id": 9654,
+      "parameter_code": "IOS4-076",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "IOS4",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9655",
+      "group_id": 9655,
+      "parameter_code": "IOS4-077",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "IOS4",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9656",
+      "group_id": 9656,
+      "parameter_code": "IOS4-078",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "140",
+      "category": "IOS4",
+      "status": "CANDIDATE",
+      "protocol_status": "CRITICAL",
+      "comparison_result": "TRIGGERED",
+      "expected_value": "V2.7,V2.8,V2.9",
+      "actual_value": "V2.8,V2.9,V2.10",
+      "normalized_value": "PD:V2.7,V2.8,V2.9 | RD:V2.8,V2.9,V2.10"
+    },
+    {
+      "id": "9657",
+      "group_id": 9657,
+      "parameter_code": "IOS4-078",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "141",
+      "category": "IOS4",
+      "status": "NEGATIVE_VERIFIED",
+      "protocol_status": "OK",
+      "comparison_result": "NON_TRIGGERING",
+      "expected_value": "V2.7,V2.8,V2.9,V2.10",
+      "actual_value": "V2.2,V2.3,V2.7,V2.9,V2.10",
+      "normalized_value": "PD:V2.7,V2.8,V2.9,V2.10 | RD:V2.2,V2.3,V2.7,V2.9,V2.10"
+    },
+    {
+      "id": "9658",
+      "group_id": 9658,
+      "parameter_code": "IOS4-078",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "142",
+      "category": "IOS4",
+      "status": "CANDIDATE",
+      "protocol_status": "CRITICAL",
+      "comparison_result": "TRIGGERED",
+      "expected_value": "V2.4,V2.5,V2.6",
+      "actual_value": "MISSING_EXHAUST",
+      "normalized_value": "PD:V2.4,V2.5,V2.6 | RD:MISSING_EXHAUST"
+    },
+    {
+      "id": "9659",
+      "group_id": 9659,
+      "parameter_code": "IOS4-078",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "146",
+      "category": "IOS4",
+      "status": "NEGATIVE_VERIFIED",
+      "protocol_status": "OK",
+      "comparison_result": "NON_TRIGGERING",
+      "expected_value": "V2.10",
+      "actual_value": "V2.1",
+      "normalized_value": "PD:V2.10 | RD:V2.1"
+    },
+    {
+      "id": "9660",
+      "group_id": 9660,
+      "parameter_code": "IOS4-078",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "147",
+      "category": "IOS4",
+      "status": "CANDIDATE",
+      "protocol_status": "CRITICAL",
+      "comparison_result": "TRIGGERED",
+      "expected_value": "V2.10",
+      "actual_value": "V2.2,V2.3,V2.7",
+      "normalized_value": "PD:V2.10 | RD:V2.2,V2.3,V2.7"
+    },
+    {
+      "id": "9661",
+      "group_id": 9661,
+      "parameter_code": "IOS4-078",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "150",
+      "category": "IOS4",
+      "status": "NEGATIVE_VERIFIED",
+      "protocol_status": "OK",
+      "comparison_result": "NON_TRIGGERING",
+      "expected_value": "V2.2,V2.3",
+      "actual_value": "V2.9",
+      "normalized_value": "PD:V2.2,V2.3 | RD:V2.9"
+    },
+    {
+      "id": "9662",
+      "group_id": 9662,
+      "parameter_code": "IOS4-078",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "198",
+      "category": "IOS4",
+      "status": "CANDIDATE",
+      "protocol_status": "CRITICAL",
+      "comparison_result": "TRIGGERED",
+      "expected_value": "V2.2,V2.3",
+      "actual_value": "MISSING_EXHAUST",
+      "normalized_value": "PD:V2.2,V2.3 | RD:MISSING_EXHAUST"
+    },
+    {
+      "id": "9663",
+      "group_id": 9663,
+      "parameter_code": "IOS4-078",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "314",
+      "category": "IOS4",
+      "status": "CANDIDATE",
+      "protocol_status": "CRITICAL",
+      "comparison_result": "TRIGGERED",
+      "expected_value": "V2.12,V2.13",
+      "actual_value": "MISSING_EXHAUST",
+      "normalized_value": "PD:V2.12,V2.13 | RD:MISSING_EXHAUST"
+    },
+    {
+      "id": "9664",
+      "group_id": 9664,
+      "parameter_code": "IOS4-079",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "006",
+      "category": "IOS4",
+      "status": "NEGATIVE_VERIFIED",
+      "protocol_status": "OK",
+      "comparison_result": "NON_TRIGGERING",
+      "expected_value": "P16",
+      "actual_value": "200x100,350x200,400x350,600x500",
+      "normalized_value": "PD:P16 | RD:200x100,350x200,400x350,600x500"
+    },
+    {
+      "id": "9665",
+      "group_id": 9665,
+      "parameter_code": "IOS4-079",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "012",
+      "category": "IOS4",
+      "status": "CANDIDATE",
+      "protocol_status": "CRITICAL",
+      "comparison_result": "TRIGGERED",
+      "expected_value": "P15",
+      "actual_value": "19x19,50x350,200x200,300x100,350x300,400x300,400x400,450x300,450x350,550x300,600x400,650x250,1200x350",
+      "normalized_value": "PD:P15 | RD:19x19,50x350,200x200,300x100,350x300,400x300,400x400,450x300,450x350,550x300,600x400,650x250,1200x350"
+    },
+    {
+      "id": "9666",
+      "group_id": 9666,
+      "parameter_code": "IOS5-080",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "IOS5",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9667",
+      "group_id": 9667,
+      "parameter_code": "KR-054",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9668",
+      "group_id": 9668,
+      "parameter_code": "KR-055",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9669",
+      "group_id": 9669,
+      "parameter_code": "KR-056",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9670",
+      "group_id": 9670,
+      "parameter_code": "KR-057",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9671",
+      "group_id": 9671,
+      "parameter_code": "KR-058",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9672",
+      "group_id": 9672,
+      "parameter_code": "KR-059",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9673",
+      "group_id": 9673,
+      "parameter_code": "KR-060",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9674",
+      "group_id": 9674,
+      "parameter_code": "KR-061",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9675",
+      "group_id": 9675,
+      "parameter_code": "KR-062",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9676",
+      "group_id": 9676,
+      "parameter_code": "KR-063",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9677",
+      "group_id": 9677,
+      "parameter_code": "KR-064",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9678",
+      "group_id": 9678,
+      "parameter_code": "KR-065",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9679",
+      "group_id": 9679,
+      "parameter_code": "KR-066",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9681",
+      "group_id": 9681,
+      "parameter_code": "ODI-115",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ODI",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9682",
+      "group_id": 9682,
+      "parameter_code": "ODI-116",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ODI",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9683",
+      "group_id": 9683,
+      "parameter_code": "ODI-117",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ODI",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9685",
+      "group_id": 9685,
+      "parameter_code": "ODI-119",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ODI",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9686",
+      "group_id": 9686,
+      "parameter_code": "ODI-120",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ODI",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9687",
+      "group_id": 9687,
+      "parameter_code": "ODI-121",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ODI",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9689",
+      "group_id": 9689,
+      "parameter_code": "ODI-123",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ODI",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9690",
+      "group_id": 9690,
+      "parameter_code": "OOS-098",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "OOS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9691",
+      "group_id": 9691,
+      "parameter_code": "OOS-099",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "OOS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9692",
+      "group_id": 9692,
+      "parameter_code": "OOS-100",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "OOS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9693",
+      "group_id": 9693,
+      "parameter_code": "OOS-101",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "OOS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9694",
+      "group_id": 9694,
+      "parameter_code": "POD-090",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POD",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9695",
+      "group_id": 9695,
+      "parameter_code": "POD-091",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POD",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9696",
+      "group_id": 9696,
+      "parameter_code": "POD-092",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POD",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9700",
+      "group_id": 9700,
+      "parameter_code": "POD-096",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POD",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9701",
+      "group_id": 9701,
+      "parameter_code": "POD-097",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POD",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9702",
+      "group_id": 9702,
+      "parameter_code": "POS-081",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9704",
+      "group_id": 9704,
+      "parameter_code": "POS-083",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9706",
+      "group_id": 9706,
+      "parameter_code": "POS-085",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9708",
+      "group_id": 9708,
+      "parameter_code": "POS-087",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9711",
+      "group_id": 9711,
+      "parameter_code": "PPM-102",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9712",
+      "group_id": 9712,
+      "parameter_code": "PPM-103",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9713",
+      "group_id": 9713,
+      "parameter_code": "PPM-104",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9714",
+      "group_id": 9714,
+      "parameter_code": "PPM-105",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9715",
+      "group_id": 9715,
+      "parameter_code": "PPM-106",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9716",
+      "group_id": 9716,
+      "parameter_code": "PPM-107",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9717",
+      "group_id": 9717,
+      "parameter_code": "PPM-108",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9718",
+      "group_id": 9718,
+      "parameter_code": "PPM-109",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9719",
+      "group_id": 9719,
+      "parameter_code": "PPM-110",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9720",
+      "group_id": 9720,
+      "parameter_code": "PPM-111",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9721",
+      "group_id": 9721,
+      "parameter_code": "PPM-112",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9722",
+      "group_id": 9722,
+      "parameter_code": "PPM-113",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9723",
+      "group_id": 9723,
+      "parameter_code": "PPM-114",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PPM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9724",
+      "group_id": 9724,
+      "parameter_code": "PZ-001",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9725",
+      "group_id": 9725,
+      "parameter_code": "PZ-002",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9727",
+      "group_id": 9727,
+      "parameter_code": "PZ-004",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9728",
+      "group_id": 9728,
+      "parameter_code": "PZ-005",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9729",
+      "group_id": 9729,
+      "parameter_code": "PZ-006",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9730",
+      "group_id": 9730,
+      "parameter_code": "PZ-007",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9731",
+      "group_id": 9731,
+      "parameter_code": "PZ-008",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9732",
+      "group_id": 9732,
+      "parameter_code": "PZ-009",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9733",
+      "group_id": 9733,
+      "parameter_code": "PZ-010",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9734",
+      "group_id": 9734,
+      "parameter_code": "PZ-011",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9735",
+      "group_id": 9735,
+      "parameter_code": "PZ-012",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9736",
+      "group_id": 9736,
+      "parameter_code": "PZ-013",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9737",
+      "group_id": 9737,
+      "parameter_code": "PZ-014",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9738",
+      "group_id": 9738,
+      "parameter_code": "PZ-015",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9739",
+      "group_id": 9739,
+      "parameter_code": "PZ-016",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9740",
+      "group_id": 9740,
+      "parameter_code": "PZ-017",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9741",
+      "group_id": 9741,
+      "parameter_code": "PZ-018",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9742",
+      "group_id": 9742,
+      "parameter_code": "PZ-019",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9743",
+      "group_id": 9743,
+      "parameter_code": "PZ-020",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9744",
+      "group_id": 9744,
+      "parameter_code": "PZ-021",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9745",
+      "group_id": 9745,
+      "parameter_code": "PZ-022",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9746",
+      "group_id": 9746,
+      "parameter_code": "PZ-023",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9751",
+      "group_id": 9751,
+      "parameter_code": "SPZU-027",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9752",
+      "group_id": 9752,
+      "parameter_code": "SPZU-028",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9754",
+      "group_id": 9754,
+      "parameter_code": "SPZU-030",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9755",
+      "group_id": 9755,
+      "parameter_code": "SPZU-031",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9756",
+      "group_id": 9756,
+      "parameter_code": "SPZU-032",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9758",
+      "group_id": 9758,
+      "parameter_code": "SPZU-034",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9759",
+      "group_id": 9759,
+      "parameter_code": "SPZU-035",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9761",
+      "group_id": 9761,
+      "parameter_code": "SPZU-037",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9762",
+      "group_id": 9762,
+      "parameter_code": "SPZU-038",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9763",
+      "group_id": 9763,
+      "parameter_code": "SPZU-039",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9764",
+      "group_id": 9764,
+      "parameter_code": "ZU-124",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9765",
+      "group_id": 9765,
+      "parameter_code": "ZU-125",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9766",
+      "group_id": 9766,
+      "parameter_code": "ZU-126",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9767",
+      "group_id": 9767,
+      "parameter_code": "ZU-127",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9768",
+      "group_id": 9768,
+      "parameter_code": "ZU-128",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9771",
+      "group_id": 9771,
+      "parameter_code": "ZU-131",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9643",
+      "group_id": 9643,
+      "parameter_code": "AR-051",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9644",
+      "group_id": 9644,
+      "parameter_code": "AR-052",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9645",
+      "group_id": 9645,
+      "parameter_code": "AR-053",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "AR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9650",
+      "group_id": 9650,
+      "parameter_code": "IOS2-072",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "IOS2",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9653",
+      "group_id": 9653,
+      "parameter_code": "IOS3-075",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "IOS3",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9680",
+      "group_id": 9680,
+      "parameter_code": "KR-067",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "KR",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9684",
+      "group_id": 9684,
+      "parameter_code": "ODI-118",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ODI",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9688",
+      "group_id": 9688,
+      "parameter_code": "ODI-122",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ODI",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9697",
+      "group_id": 9697,
+      "parameter_code": "POD-093",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POD",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9698",
+      "group_id": 9698,
+      "parameter_code": "POD-094",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POD",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9699",
+      "group_id": 9699,
+      "parameter_code": "POD-095",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POD",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9703",
+      "group_id": 9703,
+      "parameter_code": "POS-082",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9705",
+      "group_id": 9705,
+      "parameter_code": "POS-084",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9707",
+      "group_id": 9707,
+      "parameter_code": "POS-086",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9709",
+      "group_id": 9709,
+      "parameter_code": "POS-088",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9710",
+      "group_id": 9710,
+      "parameter_code": "POS-089",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "POS",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9726",
+      "group_id": 9726,
+      "parameter_code": "PZ-003",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "PZ",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9747",
+      "group_id": 9747,
+      "parameter_code": "SM-132",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SM",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9748",
+      "group_id": 9748,
+      "parameter_code": "SPZU-024",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9749",
+      "group_id": 9749,
+      "parameter_code": "SPZU-025",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9750",
+      "group_id": 9750,
+      "parameter_code": "SPZU-026",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9753",
+      "group_id": 9753,
+      "parameter_code": "SPZU-029",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9757",
+      "group_id": 9757,
+      "parameter_code": "SPZU-033",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9760",
+      "group_id": 9760,
+      "parameter_code": "SPZU-036",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "SPZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9769",
+      "group_id": 9769,
+      "parameter_code": "ZU-129",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    },
+    {
+      "id": "9770",
+      "group_id": 9770,
+      "parameter_code": "ZU-130",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "location": "",
+      "category": "ZU",
+      "status": "CLARIFICATION_REQUIRED",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "comparison_result": "COMPARISON_IMPOSSIBLE"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "9632:E1",
+      "finding_id": "9632",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 22,
+      "bbox": [
+        0.25755537950807306,
+        0.46297567197640066,
+        0.6157615814093859,
+        0.4971783090773597
+      ]
+    },
+    {
+      "id": "9633:E1",
+      "finding_id": "9633",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 11,
+      "bbox": [
+        0.18765826668678637,
+        0.8235285590015586,
+        0.3144185906141542,
+        0.8361408534643744
+      ]
+    },
+    {
+      "id": "9634:E1",
+      "finding_id": "9634",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 18,
+      "bbox": [
+        0.42290367687742064,
+        0.25889978263962776,
+        0.7500595543483728,
+        0.3147784032496996
+      ]
+    },
+    {
+      "id": "9635:E1",
+      "finding_id": "9635",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 19,
+      "bbox": [
+        0.21093746541924452,
+        0.7060994493832009,
+        0.36497233539560386,
+        0.8531423965947189
+      ]
+    },
+    {
+      "id": "9637:E1",
+      "finding_id": "9637",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 17,
+      "bbox": [
+        0.33024133594889593,
+        0.3863046946346629,
+        0.40981017051456164,
+        0.3976343331243595
+      ]
+    },
+    {
+      "id": "9639:E1",
+      "finding_id": "9639",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 9,
+      "bbox": [
+        0.18744067199839043,
+        0.5611372527785805,
+        0.7143789547809466,
+        0.6305258566932128
+      ]
+    },
+    {
+      "id": "9640:E1",
+      "finding_id": "9640",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 9,
+      "bbox": [
+        0.30668515165233134,
+        0.3363973411680777,
+        0.4812698053417836,
+        0.41980901252197833
+      ]
+    },
+    {
+      "id": "9641:E1",
+      "finding_id": "9641",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 10,
+      "bbox": [
+        0.4267584125547005,
+        0.3902949865913868,
+        0.5780855087772245,
+        0.42166168949323873
+      ]
+    },
+    {
+      "id": "9642:E1",
+      "finding_id": "9642",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 6,
+      "bbox": [
+        0.411570393843368,
+        0.2717258168555296,
+        0.5785799507067049,
+        0.28309820329584345
+      ]
+    },
+    {
+      "id": "9646:E1",
+      "finding_id": "9646",
+      "file_id": "F0160",
+      "stage": "PD",
+      "page": 5,
+      "bbox": [
+        0.31994078166155016,
+        0.564454832531157,
+        0.35969470112563573,
+        0.5742548261369977
+      ]
+    },
+    {
+      "id": "9647:E1",
+      "finding_id": "9647",
+      "file_id": "F0160",
+      "stage": "PD",
+      "page": 19,
+      "bbox": [
+        0.19051081827933805,
+        0.6755676754639348,
+        0.49783995301076317,
+        0.7292547921319801
+      ]
+    },
+    {
+      "id": "9648:E1",
+      "finding_id": "9648",
+      "file_id": "F0160",
+      "stage": "PD",
+      "page": 1,
+      "bbox": [
+        0.36895572437959556,
+        0.3858164880168127,
+        0.48083983349199055,
+        0.3937202507979513
+      ]
+    },
+    {
+      "id": "9649:E1",
+      "finding_id": "9649",
+      "file_id": "F0163",
+      "stage": "PD",
+      "page": 12,
+      "bbox": [
+        0.1809751267401164,
+        0.39850331938464967,
+        0.1830012046250721,
+        0.40202791843731445
+      ]
+    },
+    {
+      "id": "9649:E2",
+      "finding_id": "9649",
+      "file_id": "F0204",
+      "stage": "RD",
+      "page": 64,
+      "bbox": [
+        0.05057069760752071,
+        0.458606267575981,
+        0.6146358961280097,
+        0.4865117145524842
+      ]
+    },
+    {
+      "id": "9651:E1",
+      "finding_id": "9651",
+      "file_id": "F0163",
+      "stage": "PD",
+      "page": 8,
+      "bbox": [
+        0.4541053708414725,
+        0.2843310617929498,
+        0.6194147096447172,
+        0.312053406922726
+      ]
+    },
+    {
+      "id": "9651:E2",
+      "finding_id": "9651",
+      "file_id": "F0204",
+      "stage": "RD",
+      "page": 38,
+      "bbox": [
+        0.09566095300225361,
+        0.5295561758810517,
+        0.9512885489981621,
+        0.579870531878736
+      ]
+    },
+    {
+      "id": "9652:E1",
+      "finding_id": "9652",
+      "file_id": "F0163",
+      "stage": "PD",
+      "page": 12,
+      "bbox": [
+        0.37644210917837667,
+        0.5251781255219158,
+        0.37878394926954434,
+        0.5275814391654914
+      ]
+    },
+    {
+      "id": "9652:E2",
+      "finding_id": "9652",
+      "file_id": "F0204",
+      "stage": "RD",
+      "page": 66,
+      "bbox": [
+        0.3290686099632906,
+        0.05583551916534845,
+        0.3566478858189025,
+        0.0651001802081113
+      ]
+    },
+    {
+      "id": "9654:E1",
+      "finding_id": "9654",
+      "file_id": "F0170",
+      "stage": "PD",
+      "page": 28,
+      "bbox": [
+        0.5485510746826752,
+        0.8537235340083176,
+        0.5575635823954312,
+        0.8604321227566121
+      ]
+    },
+    {
+      "id": "9655:E1",
+      "finding_id": "9655",
+      "file_id": "F0171",
+      "stage": "PD",
+      "page": 11,
+      "bbox": [
+        0.26354041938652556,
+        0.6464536762568873,
+        0.5053230956015462,
+        0.6616803502562016
+      ]
+    },
+    {
+      "id": "9655:E2",
+      "finding_id": "9655",
+      "file_id": "F0202",
+      "stage": "RD",
+      "page": 6,
+      "bbox": [
+        0.5187193649030222,
+        0.6870058953820342,
+        0.6057313192101108,
+        0.6966980684451817
+      ]
+    },
+    {
+      "id": "9656:E1",
+      "finding_id": "9656",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 18,
+      "bbox": [
+        0.848468,
+        0.148378,
+        0.999475,
+        0.243333
+      ]
+    },
+    {
+      "id": "9656:E2",
+      "finding_id": "9656",
+      "file_id": "F0171",
+      "stage": "PD",
+      "page": 88,
+      "bbox": [
+        0.216437,
+        0.606011,
+        0.225593,
+        0.663884
+      ]
+    },
+    {
+      "id": "9657:E1",
+      "finding_id": "9657",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 18,
+      "bbox": [
+        0.837358,
+        0.21671,
+        0.988365,
+        0.311665
+      ]
+    },
+    {
+      "id": "9657:E2",
+      "finding_id": "9657",
+      "file_id": "F0171",
+      "stage": "PD",
+      "page": 88,
+      "bbox": [
+        0.216437,
+        0.606011,
+        0.326166,
+        0.663884
+      ]
+    },
+    {
+      "id": "9658:E1",
+      "finding_id": "9658",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 18,
+      "bbox": [
+        0.833217,
+        0.093398,
+        0.984223,
+        0.188354
+      ]
+    },
+    {
+      "id": "9658:E2",
+      "finding_id": "9658",
+      "file_id": "F0171",
+      "stage": "PD",
+      "page": 88,
+      "bbox": [
+        0.165677,
+        0.606011,
+        0.173218,
+        0.663884
+      ]
+    },
+    {
+      "id": "9659:E1",
+      "finding_id": "9659",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 18,
+      "bbox": [
+        0.84122,
+        0.311944,
+        0.992227,
+        0.4069
+      ]
+    },
+    {
+      "id": "9659:E2",
+      "finding_id": "9659",
+      "file_id": "F0171",
+      "stage": "PD",
+      "page": 88,
+      "bbox": [
+        0.318599,
+        0.616087,
+        0.37709,
+        0.654564
+      ]
+    },
+    {
+      "id": "9660:E1",
+      "finding_id": "9660",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 18,
+      "bbox": [
+        0.834248,
+        0.245909,
+        0.985255,
+        0.340864
+      ]
+    },
+    {
+      "id": "9660:E2",
+      "finding_id": "9660",
+      "file_id": "F0171",
+      "stage": "PD",
+      "page": 88,
+      "bbox": [
+        0.318599,
+        0.616087,
+        0.326591,
+        0.673809
+      ]
+    },
+    {
+      "id": "9661:E1",
+      "finding_id": "9661",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 18,
+      "bbox": [
+        0.653801,
+        0.135559,
+        0.804808,
+        0.230514
+      ]
+    },
+    {
+      "id": "9661:E2",
+      "finding_id": "9661",
+      "file_id": "F0171",
+      "stage": "PD",
+      "page": 88,
+      "bbox": [
+        0.658195,
+        0.606464,
+        0.70937,
+        0.673809
+      ]
+    },
+    {
+      "id": "9662:E1",
+      "finding_id": "9662",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 18,
+      "bbox": [
+        0.63188,
+        0.095998,
+        0.782887,
+        0.190953
+      ]
+    },
+    {
+      "id": "9662:E2",
+      "finding_id": "9662",
+      "file_id": "F0171",
+      "stage": "PD",
+      "page": 88,
+      "bbox": [
+        0.703064,
+        0.606464,
+        0.713486,
+        0.673809
+      ]
+    },
+    {
+      "id": "9663:E1",
+      "finding_id": "9663",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 20,
+      "bbox": [
+        0.652933,
+        0.035015,
+        0.80394,
+        0.12997
+      ]
+    },
+    {
+      "id": "9663:E2",
+      "finding_id": "9663",
+      "file_id": "F0171",
+      "stage": "PD",
+      "page": 88,
+      "bbox": [
+        0.757387,
+        0.320419,
+        0.865762,
+        0.370182
+      ]
+    },
+    {
+      "id": "9664:E1",
+      "finding_id": "9664",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 17,
+      "bbox": [
+        0.130119,
+        0.611027,
+        0.34824,
+        0.75346
+      ]
+    },
+    {
+      "id": "9664:E2",
+      "finding_id": "9664",
+      "file_id": "F0171",
+      "stage": "PD",
+      "page": 104,
+      "bbox": [
+        0.145092,
+        0.469001,
+        0.192393,
+        0.543024
+      ]
+    },
+    {
+      "id": "9665:E1",
+      "finding_id": "9665",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 17,
+      "bbox": [
+        0.761295,
+        0.473223,
+        0.979416,
+        0.615656
+      ]
+    },
+    {
+      "id": "9665:E2",
+      "finding_id": "9665",
+      "file_id": "F0171",
+      "stage": "PD",
+      "page": 104,
+      "bbox": [
+        0.81823,
+        0.323491,
+        0.868106,
+        0.349678
+      ]
+    },
+    {
+      "id": "9666:E1",
+      "finding_id": "9666",
+      "file_id": "F0173",
+      "stage": "PD",
+      "page": 8,
+      "bbox": [
+        0.16645833668742976,
+        0.21545261832340962,
+        0.939183369725066,
+        0.24330007190373643
+      ]
+    },
+    {
+      "id": "9667:E1",
+      "finding_id": "9667",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 16,
+      "bbox": [
+        0.18846790604982322,
+        0.6016358322861403,
+        0.3776862178677824,
+        0.6354942410543469
+      ]
+    },
+    {
+      "id": "9668:E1",
+      "finding_id": "9668",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 18,
+      "bbox": [
+        0.8996928659958869,
+        0.7452552983474431,
+        0.9375316481716777,
+        0.7568794676069003
+      ]
+    },
+    {
+      "id": "9669:E1",
+      "finding_id": "9669",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 19,
+      "bbox": [
+        0.40917775704723214,
+        0.896993029877154,
+        0.7533865273803654,
+        0.9050148404910012
+      ]
+    },
+    {
+      "id": "9670:E1",
+      "finding_id": "9670",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 24,
+      "bbox": [
+        0.32464618894754343,
+        0.6629313518367165,
+        0.5083075457443276,
+        0.6782578506132151
+      ]
+    },
+    {
+      "id": "9671:E1",
+      "finding_id": "9671",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 6,
+      "bbox": [
+        0.2660270083536307,
+        0.6872640009604163,
+        0.4804581799175556,
+        0.7025902097561422
+      ]
+    },
+    {
+      "id": "9672:E1",
+      "finding_id": "9672",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 6,
+      "bbox": [
+        0.26555531667241317,
+        0.610758011190068,
+        0.45128593461184,
+        0.6221150356625604
+      ]
+    },
+    {
+      "id": "9673:E1",
+      "finding_id": "9673",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 16,
+      "bbox": [
+        0.18846785478734632,
+        0.17082073185637425,
+        0.7570937784474707,
+        0.23954213340884434
+      ]
+    },
+    {
+      "id": "9674:E1",
+      "finding_id": "9674",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 16,
+      "bbox": [
+        0.18846790604982322,
+        0.5666303683234283,
+        0.49437809542058964,
+        0.6354942410543469
+      ]
+    },
+    {
+      "id": "9675:E1",
+      "finding_id": "9675",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 19,
+      "bbox": [
+        0.2807487202578954,
+        0.12361680077552457,
+        0.8234360356553082,
+        0.22721296651925493
+      ]
+    },
+    {
+      "id": "9676:E1",
+      "finding_id": "9676",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 5,
+      "bbox": [
+        0.4061565517085117,
+        0.599892214146741,
+        0.647970164828343,
+        0.6494810286603947
+      ]
+    },
+    {
+      "id": "9677:E1",
+      "finding_id": "9677",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 22,
+      "bbox": [
+        0.1287447623845787,
+        0.6458662008415532,
+        0.5538200131375476,
+        0.6769822976887517
+      ]
+    },
+    {
+      "id": "9678:E1",
+      "finding_id": "9678",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 9,
+      "bbox": [
+        0.18849144834234066,
+        0.25721325360022,
+        0.3961900496866684,
+        0.28616857684251246
+      ]
+    },
+    {
+      "id": "9679:E1",
+      "finding_id": "9679",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 24,
+      "bbox": [
+        0.1302332452951555,
+        0.43395945256849744,
+        0.6885547703169344,
+        0.44928595134499605
+      ]
+    },
+    {
+      "id": "9681:E1",
+      "finding_id": "9681",
+      "file_id": "F0151",
+      "stage": "PD",
+      "page": 14,
+      "bbox": [
+        0.14346583350788206,
+        0.5083649672173087,
+        0.5230450464914782,
+        0.6042863003576115
+      ]
+    },
+    {
+      "id": "9682:E1",
+      "finding_id": "9682",
+      "file_id": "F0151",
+      "stage": "PD",
+      "page": 12,
+      "bbox": [
+        0.5380630042497618,
+        0.7988718587196173,
+        0.6988465840172005,
+        0.8102617243403426
+      ]
+    },
+    {
+      "id": "9683:E1",
+      "finding_id": "9683",
+      "file_id": "F0151",
+      "stage": "PD",
+      "page": 12,
+      "bbox": [
+        0.2030388550095179,
+        0.6267404919103695,
+        0.4436989342428527,
+        0.6414989194228193
+      ]
+    },
+    {
+      "id": "9685:E1",
+      "finding_id": "9685",
+      "file_id": "F0151",
+      "stage": "PD",
+      "page": 24,
+      "bbox": [
+        0.31137889603795393,
+        0.743428908344828,
+        0.5446548461546427,
+        0.7587543208044473
+      ]
+    },
+    {
+      "id": "9685:E2",
+      "finding_id": "9685",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 6,
+      "bbox": [
+        0.27618123543362655,
+        0.7689090828431191,
+        0.48116465336134456,
+        0.7785290788301663
+      ]
+    },
+    {
+      "id": "9686:E1",
+      "finding_id": "9686",
+      "file_id": "F0151",
+      "stage": "PD",
+      "page": 24,
+      "bbox": [
+        0.24559616876550625,
+        0.4853151913615881,
+        0.9284366595196522,
+        0.5254713692175383
+      ]
+    },
+    {
+      "id": "9687:E1",
+      "finding_id": "9687",
+      "file_id": "F0151",
+      "stage": "PD",
+      "page": 1,
+      "bbox": [
+        0.3604547719880911,
+        0.4999587864796745,
+        0.8252472414892241,
+        0.6349523855161263
+      ]
+    },
+    {
+      "id": "9689:E1",
+      "finding_id": "9689",
+      "file_id": "F0151",
+      "stage": "PD",
+      "page": 37,
+      "bbox": [
+        0.4262408791380749,
+        0.04786753174442573,
+        0.4295100090411721,
+        0.1019547737684826
+      ]
+    },
+    {
+      "id": "9691:E1",
+      "finding_id": "9691",
+      "file_id": "F0180",
+      "stage": "PD",
+      "page": 16,
+      "bbox": [
+        0.44922510921768105,
+        0.5443423309688613,
+        0.9242450126557564,
+        0.5913304852193438
+      ]
+    },
+    {
+      "id": "9692:E1",
+      "finding_id": "9692",
+      "file_id": "F0180",
+      "stage": "PD",
+      "page": 24,
+      "bbox": [
+        0.5133098217775811,
+        0.8253162229995546,
+        0.8735336980280317,
+        0.8373874836466375
+      ]
+    },
+    {
+      "id": "9694:E1",
+      "finding_id": "9694",
+      "file_id": "F0180",
+      "stage": "PD",
+      "page": 12,
+      "bbox": [
+        0.44983477377758435,
+        0.48935900617948336,
+        0.781002860516788,
+        0.5360050880993913
+      ]
+    },
+    {
+      "id": "9695:E1",
+      "finding_id": "9695",
+      "file_id": "F0180",
+      "stage": "PD",
+      "page": 17,
+      "bbox": [
+        0.21989107661500865,
+        0.6490216832829201,
+        0.377043383752642,
+        0.6960098375334026
+      ]
+    },
+    {
+      "id": "9695:E2",
+      "finding_id": "9695",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 25,
+      "bbox": [
+        0.3950463325644987,
+        0.43393127550244154,
+        0.7061499491014867,
+        0.4836882953537997
+      ]
+    },
+    {
+      "id": "9696:E1",
+      "finding_id": "9696",
+      "file_id": "F0180",
+      "stage": "PD",
+      "page": 108,
+      "bbox": [
+        0.31381366515139586,
+        0.25078185890179633,
+        0.3293663556589788,
+        0.38589981332810647
+      ]
+    },
+    {
+      "id": "9696:E2",
+      "finding_id": "9696",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 30,
+      "bbox": [
+        0.4416122951205401,
+        0.20165480415567344,
+        0.695381548153459,
+        0.2737839159413287
+      ]
+    },
+    {
+      "id": "9700:E1",
+      "finding_id": "9700",
+      "file_id": "F0180",
+      "stage": "PD",
+      "page": 54,
+      "bbox": [
+        0.6087094554372638,
+        0.303728099107176,
+        0.6260475395708701,
+        0.4372807953533254
+      ]
+    },
+    {
+      "id": "9701:E1",
+      "finding_id": "9701",
+      "file_id": "F0180",
+      "stage": "PD",
+      "page": 20,
+      "bbox": [
+        0.26404830495717635,
+        0.6664800575963109,
+        0.7762070138034086,
+        0.6785513182433937
+      ]
+    },
+    {
+      "id": "9701:E2",
+      "finding_id": "9701",
+      "file_id": "F0197",
+      "stage": "RD",
+      "page": 1,
+      "bbox": [
+        0.5404029692579436,
+        0.2200771795889744,
+        0.6436995435881134,
+        0.23983052873469957
+      ]
+    },
+    {
+      "id": "9702:E1",
+      "finding_id": "9702",
+      "file_id": "F0187",
+      "stage": "PD",
+      "page": 7,
+      "bbox": [
+        0.2885573896332703,
+        0.5194521203334541,
+        0.757009437291088,
+        0.5414882566147154
+      ]
+    },
+    {
+      "id": "9704:E1",
+      "finding_id": "9704",
+      "file_id": "F0187",
+      "stage": "PD",
+      "page": 6,
+      "bbox": [
+        0.1194706175665366,
+        0.24285579920260963,
+        0.4810792349866823,
+        0.2511980608916274
+      ]
+    },
+    {
+      "id": "9706:E1",
+      "finding_id": "9706",
+      "file_id": "F0187",
+      "stage": "PD",
+      "page": 7,
+      "bbox": [
+        0.11945379235417243,
+        0.9314232693004711,
+        0.8304543468557638,
+        0.9552290685030809
+      ]
+    },
+    {
+      "id": "9708:E1",
+      "finding_id": "9708",
+      "file_id": "F0187",
+      "stage": "PD",
+      "page": 6,
+      "bbox": [
+        0.2803614993624616,
+        0.5389156216020298,
+        0.7405981789712576,
+        0.567041464298659
+      ]
+    },
+    {
+      "id": "9711:E1",
+      "finding_id": "9711",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 11,
+      "bbox": [
+        0.40035606860821893,
+        0.9254239440567591,
+        0.5448180675016348,
+        0.9351290154532663
+      ]
+    },
+    {
+      "id": "9711:E2",
+      "finding_id": "9711",
+      "file_id": "F0198",
+      "stage": "RD",
+      "page": 1,
+      "bbox": [
+        0.2038937895089988,
+        0.036174767378176,
+        0.28651274610685823,
+        0.07436845366254405
+      ]
+    },
+    {
+      "id": "9712:E1",
+      "finding_id": "9712",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 18,
+      "bbox": [
+        0.8955895578693225,
+        0.1288157030927046,
+        0.9383705045017856,
+        0.13874873033693938
+      ]
+    },
+    {
+      "id": "9712:E2",
+      "finding_id": "9712",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 17,
+      "bbox": [
+        0.22888106787764786,
+        0.3933649895099221,
+        0.23248211649440279,
+        0.39546289642062316
+      ]
+    },
+    {
+      "id": "9713:E1",
+      "finding_id": "9713",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 11,
+      "bbox": [
+        0.18765826668678637,
+        0.8018668912537802,
+        0.6079114229666516,
+        0.8607952764221295
+      ]
+    },
+    {
+      "id": "9713:E2",
+      "finding_id": "9713",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 433,
+      "bbox": [
+        0.08087978843881302,
+        0.579324935224447,
+        0.12385479582457984,
+        0.6058153890940469
+      ]
+    },
+    {
+      "id": "9714:E1",
+      "finding_id": "9714",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 10,
+      "bbox": [
+        0.3376760726321614,
+        0.22210347388801507,
+        0.6098497057492078,
+        0.2809890386208797
+      ]
+    },
+    {
+      "id": "9714:E2",
+      "finding_id": "9714",
+      "file_id": "F0204",
+      "stage": "RD",
+      "page": 63,
+      "bbox": [
+        0.03597540715991217,
+        0.46522568443985535,
+        0.9298968199117403,
+        0.47825136796627116
+      ]
+    },
+    {
+      "id": "9715:E1",
+      "finding_id": "9715",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 19,
+      "bbox": [
+        0.21093746541924452,
+        0.7060994493832009,
+        0.36497233539560386,
+        0.8531423965947189
+      ]
+    },
+    {
+      "id": "9716:E1",
+      "finding_id": "9716",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 7,
+      "bbox": [
+        0.2785700165987626,
+        0.7769273128272194,
+        0.464903073286052,
+        0.835071991607992
+      ]
+    },
+    {
+      "id": "9716:E2",
+      "finding_id": "9716",
+      "file_id": "F0195",
+      "stage": "RD",
+      "page": 2,
+      "bbox": [
+        0.2732476811765323,
+        0.886440612358039,
+        0.5379664295366289,
+        0.9012304020607557
+      ]
+    },
+    {
+      "id": "9717:E1",
+      "finding_id": "9717",
+      "file_id": "F0175",
+      "stage": "PD",
+      "page": 11,
+      "bbox": [
+        0.5046136301386509,
+        0.211945833871989,
+        0.703787122669279,
+        0.22401996265820073
+      ]
+    },
+    {
+      "id": "9718:E1",
+      "finding_id": "9718",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 15,
+      "bbox": [
+        0.40537975956943817,
+        0.8360695283547392,
+        0.6442444545043006,
+        0.8488955806918579
+      ]
+    },
+    {
+      "id": "9718:E2",
+      "finding_id": "9718",
+      "file_id": "F0196",
+      "stage": "RD",
+      "page": 2,
+      "bbox": [
+        0.14592780714571527,
+        0.8999274971932527,
+        0.5749957567498426,
+        0.9088110844483002
+      ]
+    },
+    {
+      "id": "9719:E1",
+      "finding_id": "9719",
+      "file_id": "F0173",
+      "stage": "PD",
+      "page": 11,
+      "bbox": [
+        0.28047043214879125,
+        0.532097909150713,
+        0.32163978245151104,
+        0.5414350265961169
+      ]
+    },
+    {
+      "id": "9719:E2",
+      "finding_id": "9719",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 12,
+      "bbox": [
+        0.2699590197507147,
+        0.8192606983157988,
+        0.32404083035780284,
+        0.8292522040533951
+      ]
+    },
+    {
+      "id": "9720:E1",
+      "finding_id": "9720",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 18,
+      "bbox": [
+        0.44327533826266285,
+        0.5442068897881361,
+        0.6567029827473467,
+        0.5568618778379185
+      ]
+    },
+    {
+      "id": "9721:E1",
+      "finding_id": "9721",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 17,
+      "bbox": [
+        0.24282040641818822,
+        0.9513325001922661,
+        0.4808722901262512,
+        0.964015974794982
+      ]
+    },
+    {
+      "id": "9721:E2",
+      "finding_id": "9721",
+      "file_id": "F0195",
+      "stage": "RD",
+      "page": 2,
+      "bbox": [
+        0.31046180500892107,
+        0.7015617171262619,
+        0.7270361246129828,
+        0.7119655291994507
+      ]
+    },
+    {
+      "id": "9722:E1",
+      "finding_id": "9722",
+      "file_id": "F0160",
+      "stage": "PD",
+      "page": 18,
+      "bbox": [
+        0.5087497358700878,
+        0.631027930442597,
+        0.6305576855114708,
+        0.6852149015040362
+      ]
+    },
+    {
+      "id": "9722:E2",
+      "finding_id": "9722",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 196,
+      "bbox": [
+        0.08087978843881302,
+        0.675483613002895,
+        0.15205491009880515,
+        0.6828351598454201
+      ]
+    },
+    {
+      "id": "9723:E1",
+      "finding_id": "9723",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 16,
+      "bbox": [
+        0.3032436748654494,
+        0.10171013185504794,
+        0.5473299632815251,
+        0.1948838658325398
+      ]
+    },
+    {
+      "id": "9723:E2",
+      "finding_id": "9723",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 11,
+      "bbox": [
+        0.4033528017968113,
+        0.44971022581746856,
+        0.6864006185125413,
+        0.5826871896707101
+      ]
+    },
+    {
+      "id": "9724:E1",
+      "finding_id": "9724",
+      "file_id": "F0150",
+      "stage": "PD",
+      "page": 5,
+      "bbox": [
+        0.2494450836875314,
+        0.8200794390657048,
+        0.44643578662219546,
+        0.8348857779833448
+      ]
+    },
+    {
+      "id": "9724:E2",
+      "finding_id": "9724",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 37,
+      "bbox": [
+        0.0956373722628785,
+        0.2967430084539826,
+        0.8372584499272739,
+        0.3117494418483989
+      ]
+    },
+    {
+      "id": "9725:E1",
+      "finding_id": "9725",
+      "file_id": "F0150",
+      "stage": "PD",
+      "page": 24,
+      "bbox": [
+        0.1477639486993838,
+        0.4103514226493994,
+        0.3064276584438578,
+        0.42414261922397223
+      ]
+    },
+    {
+      "id": "9725:E2",
+      "finding_id": "9725",
+      "file_id": "F0197",
+      "stage": "RD",
+      "page": 1,
+      "bbox": [
+        0.14650626470578598,
+        0.23612582152958086,
+        0.1621391373192704,
+        0.23983052873469957
+      ]
+    },
+    {
+      "id": "9727:E1",
+      "finding_id": "9727",
+      "file_id": "F0150",
+      "stage": "PD",
+      "page": 26,
+      "bbox": [
+        0.18842302575129516,
+        0.5492137279517635,
+        0.3701908235450197,
+        0.5622838510348364
+      ]
+    },
+    {
+      "id": "9727:E2",
+      "finding_id": "9727",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 36,
+      "bbox": [
+        0.18386494572380208,
+        0.5104597113522102,
+        0.2541451095135673,
+        0.5224148217636975
+      ]
+    },
+    {
+      "id": "9728:E1",
+      "finding_id": "9728",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 10,
+      "bbox": [
+        0.23876580654896634,
+        0.13334757479767842,
+        0.8933149237965897,
+        0.2563488770608082
+      ]
+    },
+    {
+      "id": "9729:E1",
+      "finding_id": "9729",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 10,
+      "bbox": [
+        0.23085445903123586,
+        0.13334757479767842,
+        0.8933149237965897,
+        0.23183697747380524
+      ]
+    },
+    {
+      "id": "9730:E1",
+      "finding_id": "9730",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 85,
+      "bbox": [
+        0.7189880725544492,
+        0.24422274889178403,
+        0.813767317361791,
+        0.2521332255861364
+      ]
+    },
+    {
+      "id": "9731:E1",
+      "finding_id": "9731",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 275,
+      "bbox": [
+        0.3532135990439111,
+        0.7304286808173631,
+        0.8800304683613402,
+        0.7580474347168374
+      ]
+    },
+    {
+      "id": "9732:E1",
+      "finding_id": "9732",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 7,
+      "bbox": [
+        0.6191248716003109,
+        0.5235631506036277,
+        0.8336199931041716,
+        0.5354688558090076
+      ]
+    },
+    {
+      "id": "9733:E1",
+      "finding_id": "9733",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 238,
+      "bbox": [
+        0.35755854845357443,
+        0.30067293545477364,
+        0.46647097542820704,
+        0.31036540196187745
+      ]
+    },
+    {
+      "id": "9733:E2",
+      "finding_id": "9733",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 37,
+      "bbox": [
+        0.7095986834975732,
+        0.4689320072371791,
+        0.8332493141336903,
+        0.4802701626988088
+      ]
+    },
+    {
+      "id": "9734:E1",
+      "finding_id": "9734",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 238,
+      "bbox": [
+        0.35755854845357443,
+        0.30067293545477364,
+        0.46647097542820704,
+        0.31036540196187745
+      ]
+    },
+    {
+      "id": "9734:E2",
+      "finding_id": "9734",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 37,
+      "bbox": [
+        0.7095986834975732,
+        0.4689320072371791,
+        0.8332493141336903,
+        0.4802701626988088
+      ]
+    },
+    {
+      "id": "9735:E1",
+      "finding_id": "9735",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 23,
+      "bbox": [
+        0.3800270163505771,
+        0.3369182450623339,
+        0.6653008292320789,
+        0.4249183903427116
+      ]
+    },
+    {
+      "id": "9736:E1",
+      "finding_id": "9736",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 138,
+      "bbox": [
+        0.3052139936719548,
+        0.4199141555356935,
+        0.951454536898372,
+        0.45953785615894194
+      ]
+    },
+    {
+      "id": "9736:E2",
+      "finding_id": "9736",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 23,
+      "bbox": [
+        0.07935153966336751,
+        0.25092999897143975,
+        0.3204252878618759,
+        0.29897715516175977
+      ]
+    },
+    {
+      "id": "9737:E1",
+      "finding_id": "9737",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 127,
+      "bbox": [
+        0.6113203175024697,
+        0.8094635583685328,
+        0.8116176620617565,
+        0.8847680394563728
+      ]
+    },
+    {
+      "id": "9738:E1",
+      "finding_id": "9738",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 123,
+      "bbox": [
+        0.21471735092656152,
+        0.055420600378871775,
+        0.7948053392829587,
+        0.14711741385539115
+      ]
+    },
+    {
+      "id": "9739:E1",
+      "finding_id": "9739",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 127,
+      "bbox": [
+        0.4463412008311293,
+        0.5165414744534153,
+        0.6400466728425473,
+        0.5590615263896901
+      ]
+    },
+    {
+      "id": "9739:E2",
+      "finding_id": "9739",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 35,
+      "bbox": [
+        0.35994271110631293,
+        0.3923702283483533,
+        0.5184421886904108,
+        0.46117366192753356
+      ]
+    },
+    {
+      "id": "9740:E1",
+      "finding_id": "9740",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 117,
+      "bbox": [
+        0.0957203658978601,
+        0.30126158762339633,
+        0.25938909022305456,
+        0.31103993117696827
+      ]
+    },
+    {
+      "id": "9741:E1",
+      "finding_id": "9741",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 127,
+      "bbox": [
+        0.2724520006418541,
+        0.5165414744534153,
+        0.6400466728425473,
+        0.5590615263896901
+      ]
+    },
+    {
+      "id": "9741:E2",
+      "finding_id": "9741",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 35,
+      "bbox": [
+        0.3305626989817119,
+        0.39573831020232486,
+        0.4385008678224715,
+        0.46117366192753356
+      ]
+    },
+    {
+      "id": "9743:E1",
+      "finding_id": "9743",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 5,
+      "bbox": [
+        0.5346737855893591,
+        0.38365635127268566,
+        0.7701908286712674,
+        0.46233671786925223
+      ]
+    },
+    {
+      "id": "9744:E1",
+      "finding_id": "9744",
+      "file_id": "F0147",
+      "stage": "PD",
+      "page": 8,
+      "bbox": [
+        0.18856412571896905,
+        0.7782972139297784,
+        0.45885237872758944,
+        0.7913673732604505
+      ]
+    },
+    {
+      "id": "9745:E1",
+      "finding_id": "9745",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 68,
+      "bbox": [
+        0.39813881837735193,
+        0.42632080995695454,
+        0.616622955152612,
+        0.4368253642140647
+      ]
+    },
+    {
+      "id": "9746:E1",
+      "finding_id": "9746",
+      "file_id": "F0147",
+      "stage": "PD",
+      "page": 6,
+      "bbox": [
+        0.46617952960115844,
+        0.4102218737297482,
+        0.7401497869070097,
+        0.44143624007422927
+      ]
+    },
+    {
+      "id": "9746:E2",
+      "finding_id": "9746",
+      "file_id": "F0199",
+      "stage": "RD",
+      "page": 1,
+      "bbox": [
+        0.2038937895089988,
+        0.126815714397487,
+        0.23279205424673605,
+        0.12957913090284218
+      ]
+    },
+    {
+      "id": "9751:E1",
+      "finding_id": "9751",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 13,
+      "bbox": [
+        0.23200899800004574,
+        0.5070985485953802,
+        0.45462947840532275,
+        0.5202330111670879
+      ]
+    },
+    {
+      "id": "9752:E1",
+      "finding_id": "9752",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 11,
+      "bbox": [
+        0.39242705067593164,
+        0.4150302265105226,
+        0.7903656890809796,
+        0.4923301892407411
+      ]
+    },
+    {
+      "id": "9752:E2",
+      "finding_id": "9752",
+      "file_id": "F0197",
+      "stage": "RD",
+      "page": 1,
+      "bbox": [
+        0.5428504175787804,
+        0.18663703171364984,
+        0.6436995435881134,
+        0.23983052873469957
+      ]
+    },
+    {
+      "id": "9754:E1",
+      "finding_id": "9754",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 12,
+      "bbox": [
+        0.5746311434105725,
+        0.798287619915214,
+        0.872709630978858,
+        0.8756445638714234
+      ]
+    },
+    {
+      "id": "9755:E1",
+      "finding_id": "9755",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 12,
+      "bbox": [
+        0.32105696973350584,
+        0.86433661782496,
+        0.7638115722581008,
+        0.9010529710090976
+      ]
+    },
+    {
+      "id": "9756:E1",
+      "finding_id": "9756",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 22,
+      "bbox": [
+        0.5745958161834103,
+        0.021264282371539118,
+        0.8978772259398595,
+        0.20658060830449265
+      ]
+    },
+    {
+      "id": "9758:E1",
+      "finding_id": "9758",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 5,
+      "bbox": [
+        0.4265815217430308,
+        0.7990525937876264,
+        0.8667148944049364,
+        0.8343050292248113
+      ]
+    },
+    {
+      "id": "9758:E2",
+      "finding_id": "9758",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 23,
+      "bbox": [
+        0.24664704954200564,
+        0.15725794965099624,
+        0.5447097995298821,
+        0.24168772533280158
+      ]
+    },
+    {
+      "id": "9759:E1",
+      "finding_id": "9759",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 18,
+      "bbox": [
+        0.6933550981897639,
+        0.8242558015684036,
+        0.7201441676486416,
+        0.8466748190366551
+      ]
+    },
+    {
+      "id": "9759:E2",
+      "finding_id": "9759",
+      "file_id": "F0197",
+      "stage": "RD",
+      "page": 1,
+      "bbox": [
+        0.044952946221268414,
+        0.037477743448772485,
+        0.07140505873916933,
+        0.05360192997873006
+      ]
+    },
+    {
+      "id": "9761:E1",
+      "finding_id": "9761",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 1,
+      "bbox": [
+        0.3544996100463382,
+        0.5054535962946834,
+        0.8507880016686962,
+        0.6673878247358982
+      ]
+    },
+    {
+      "id": "9761:E2",
+      "finding_id": "9761",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 23,
+      "bbox": [
+        0.29312591714978986,
+        0.40234599448259684,
+        0.4871694121311421,
+        0.4519271298029289
+      ]
+    },
+    {
+      "id": "9762:E1",
+      "finding_id": "9762",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 1,
+      "bbox": [
+        0.3544996100463382,
+        0.5054535962946834,
+        0.8507880016686962,
+        0.6673878247358982
+      ]
+    },
+    {
+      "id": "9762:E2",
+      "finding_id": "9762",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 23,
+      "bbox": [
+        0.29312591714978986,
+        0.40234599448259684,
+        0.4871694121311421,
+        0.4519271298029289
+      ]
+    },
+    {
+      "id": "9763:E1",
+      "finding_id": "9763",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 14,
+      "bbox": [
+        0.16737475526011966,
+        0.5436864040402444,
+        0.30846493180091333,
+        0.5534998978180178
+      ]
+    },
+    {
+      "id": "9764:E1",
+      "finding_id": "9764",
+      "file_id": "F0152",
+      "stage": "PD",
+      "page": 4,
+      "bbox": [
+        0.3117671067755359,
+        0.349877088015768,
+        0.6015728558213105,
+        0.36072530576118617
+      ]
+    },
+    {
+      "id": "9765:E1",
+      "finding_id": "9765",
+      "file_id": "F0152",
+      "stage": "PD",
+      "page": 5,
+      "bbox": [
+        0.31449421928426713,
+        0.34825221688504515,
+        0.7117097748213682,
+        0.4085201939362551
+      ]
+    },
+    {
+      "id": "9765:E2",
+      "finding_id": "9765",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 11,
+      "bbox": [
+        0.4033528017968113,
+        0.44971022581746856,
+        0.6580595430073214,
+        0.49138637425196735
+      ]
+    },
+    {
+      "id": "9766:E1",
+      "finding_id": "9766",
+      "file_id": "F0152",
+      "stage": "PD",
+      "page": 22,
+      "bbox": [
+        0.4662613445142947,
+        0.15824482092489808,
+        0.945810948291232,
+        0.20162781443578037
+      ]
+    },
+    {
+      "id": "9767:E1",
+      "finding_id": "9767",
+      "file_id": "F0152",
+      "stage": "PD",
+      "page": 19,
+      "bbox": [
+        0.49281438482515855,
+        0.10351753408742355,
+        0.7986983021765125,
+        0.11487399754545757
+      ]
+    },
+    {
+      "id": "9767:E2",
+      "finding_id": "9767",
+      "file_id": "F0195",
+      "stage": "RD",
+      "page": 2,
+      "bbox": [
+        0.2029219082080447,
+        0.6903930809039118,
+        0.3360201357594065,
+        0.7918313359421393
+      ]
+    },
+    {
+      "id": "9768:E1",
+      "finding_id": "9768",
+      "file_id": "F0152",
+      "stage": "PD",
+      "page": 27,
+      "bbox": [
+        0.27213506063274506,
+        0.237207189174843,
+        0.7504694873947108,
+        0.3381401878800062
+      ]
+    },
+    {
+      "id": "9768:E2",
+      "finding_id": "9768",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 173,
+      "bbox": [
+        0.08017701862239036,
+        0.43739721157771677,
+        0.14615340032497373,
+        0.46388766544731663
+      ]
+    },
+    {
+      "id": "9771:E1",
+      "finding_id": "9771",
+      "file_id": "F0152",
+      "stage": "PD",
+      "page": 4,
+      "bbox": [
+        0.2119864255935913,
+        0.7085216728383037,
+        0.35918136079935836,
+        0.7166016251828601
+      ]
+    },
+    {
+      "id": "9771:E2",
+      "finding_id": "9771",
+      "file_id": "F0195",
+      "stage": "RD",
+      "page": 1,
+      "bbox": [
+        0.18349287031479586,
+        0.08924110938137897,
+        0.4546935676427372,
+        0.09775654663665843
+      ]
+    },
+    {
+      "id": "9643:E1",
+      "finding_id": "9643",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 6,
+      "bbox": [
+        0.19653878074543535,
+        0.17282315076787208,
+        0.40121970725818623,
+        0.18124554807004328
+      ]
+    },
+    {
+      "id": "9644:E1",
+      "finding_id": "9644",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 7,
+      "bbox": [
+        0.19624207786328657,
+        0.7769273128272194,
+        0.38565897087671647,
+        0.8625481054883875
+      ]
+    },
+    {
+      "id": "9645:E1",
+      "finding_id": "9645",
+      "file_id": "F0156",
+      "stage": "PD",
+      "page": 7,
+      "bbox": [
+        0.3469508576027363,
+        0.8996722451745556,
+        0.5850854081786631,
+        0.9093915236050958
+      ]
+    },
+    {
+      "id": "9650:E1",
+      "finding_id": "9650",
+      "file_id": "F0163",
+      "stage": "PD",
+      "page": 8,
+      "bbox": [
+        0.3650876696006233,
+        0.697018714707978,
+        0.691345807134363,
+        0.7265155610581022
+      ]
+    },
+    {
+      "id": "9650:E2",
+      "finding_id": "9650",
+      "file_id": "F0204",
+      "stage": "RD",
+      "page": 37,
+      "bbox": [
+        0.2599939530782246,
+        0.5453416766315238,
+        0.9454443190564259,
+        0.618063460936419
+      ]
+    },
+    {
+      "id": "9653:E1",
+      "finding_id": "9653",
+      "file_id": "F0163",
+      "stage": "PD",
+      "page": 8,
+      "bbox": [
+        0.11477525043514153,
+        0.697018714707978,
+        0.46272925733076486,
+        0.7067251693252227
+      ]
+    },
+    {
+      "id": "9653:E2",
+      "finding_id": "9653",
+      "file_id": "F0204",
+      "stage": "RD",
+      "page": 37,
+      "bbox": [
+        0.0961326318678519,
+        0.5836771471811758,
+        0.4847435179366894,
+        0.633208304185356
+      ]
+    },
+    {
+      "id": "9680:E1",
+      "finding_id": "9680",
+      "file_id": "F0158",
+      "stage": "PD",
+      "page": 8,
+      "bbox": [
+        0.12912197732086506,
+        0.2557694574561234,
+        0.574617763904101,
+        0.3235117570529486
+      ]
+    },
+    {
+      "id": "9684:E1",
+      "finding_id": "9684",
+      "file_id": "F0151",
+      "stage": "PD",
+      "page": 14,
+      "bbox": [
+        0.1433007042541602,
+        0.10536868085634518,
+        0.47739811762134315,
+        0.17402441580288033
+      ]
+    },
+    {
+      "id": "9688:E1",
+      "finding_id": "9688",
+      "file_id": "F0151",
+      "stage": "PD",
+      "page": 9,
+      "bbox": [
+        0.5108035157447058,
+        0.5941329490894495,
+        0.6262918272335599,
+        0.6021541803232517
+      ]
+    },
+    {
+      "id": "9688:E2",
+      "finding_id": "9688",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 29,
+      "bbox": [
+        0.21542855994577662,
+        0.25880172873509627,
+        0.5866721353477026,
+        0.2701732634782168
+      ]
+    },
+    {
+      "id": "9697:E1",
+      "finding_id": "9697",
+      "file_id": "F0180",
+      "stage": "PD",
+      "page": 8,
+      "bbox": [
+        0.27474883829958807,
+        0.5762236678968417,
+        0.5123437205832108,
+        0.5893210368031844
+      ]
+    },
+    {
+      "id": "9697:E2",
+      "finding_id": "9697",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 36,
+      "bbox": [
+        0.18386494572380208,
+        0.5104597113522102,
+        0.9458859965574171,
+        0.5950153026428056
+      ]
+    },
+    {
+      "id": "9698:E1",
+      "finding_id": "9698",
+      "file_id": "F0180",
+      "stage": "PD",
+      "page": 23,
+      "bbox": [
+        0.119858406674922,
+        0.5331119347071704,
+        0.7468271909881006,
+        0.5800003450443513
+      ]
+    },
+    {
+      "id": "9698:E2",
+      "finding_id": "9698",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 35,
+      "bbox": [
+        0.6119137277119722,
+        0.10557859487069533,
+        0.7856330346883954,
+        0.15909477055748764
+      ]
+    },
+    {
+      "id": "9699:E1",
+      "finding_id": "9699",
+      "file_id": "F0180",
+      "stage": "PD",
+      "page": 26,
+      "bbox": [
+        0.24864916052814967,
+        0.4224895921285815,
+        0.8028759801494737,
+        0.43175323558816436
+      ]
+    },
+    {
+      "id": "9703:E1",
+      "finding_id": "9703",
+      "file_id": "F0187",
+      "stage": "PD",
+      "page": 6,
+      "bbox": [
+        0.30274484951161007,
+        0.4946907575208409,
+        0.43917540928450327,
+        0.5184252990213846
+      ]
+    },
+    {
+      "id": "9705:E1",
+      "finding_id": "9705",
+      "file_id": "F0187",
+      "stage": "PD",
+      "page": 67,
+      "bbox": [
+        0.5898672014274853,
+        0.6117497170056413,
+        0.8770285996814702,
+        0.6992503549027613
+      ]
+    },
+    {
+      "id": "9707:E1",
+      "finding_id": "9707",
+      "file_id": "F0187",
+      "stage": "PD",
+      "page": 6,
+      "bbox": [
+        0.28502319803385157,
+        0.28705688655309897,
+        0.6634977517518211,
+        0.2975174519753534
+      ]
+    },
+    {
+      "id": "9709:E1",
+      "finding_id": "9709",
+      "file_id": "F0187",
+      "stage": "PD",
+      "page": 27,
+      "bbox": [
+        0.19794415126401554,
+        0.6378583544762595,
+        0.7354563530669197,
+        0.6803296846683581
+      ]
+    },
+    {
+      "id": "9710:E1",
+      "finding_id": "9710",
+      "file_id": "F0187",
+      "stage": "PD",
+      "page": 27,
+      "bbox": [
+        0.23457959676078396,
+        0.20333499456324755,
+        0.34045480202068623,
+        0.2131404675607104
+      ]
+    },
+    {
+      "id": "9726:E1",
+      "finding_id": "9726",
+      "file_id": "F0148",
+      "stage": "PD",
+      "page": 89,
+      "bbox": [
+        0.6202671533731273,
+        0.8361565742596954,
+        0.7298193725616362,
+        0.894844192232038
+      ]
+    },
+    {
+      "id": "9726:E2",
+      "finding_id": "9726",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 28,
+      "bbox": [
+        0.7432094903658839,
+        0.5853202704004492,
+        0.8826850014092055,
+        0.6368189204060342
+      ]
+    },
+    {
+      "id": "9747:E1",
+      "finding_id": "9747",
+      "file_id": "F0180",
+      "stage": "PD",
+      "page": 10,
+      "bbox": [
+        0.4346426363841821,
+        0.23036139481424436,
+        0.7533477972503108,
+        0.25940653603886765
+      ]
+    },
+    {
+      "id": "9748:E1",
+      "finding_id": "9748",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 8,
+      "bbox": [
+        0.5351725694896196,
+        0.3584833555011568,
+        0.7514525479142682,
+        0.369807902948068
+      ]
+    },
+    {
+      "id": "9749:E1",
+      "finding_id": "9749",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 11,
+      "bbox": [
+        0.509660413772259,
+        0.08518892647442729,
+        0.7659569581789436,
+        0.10041561859754124
+      ]
+    },
+    {
+      "id": "9749:E2",
+      "finding_id": "9749",
+      "file_id": "F0203",
+      "stage": "RD",
+      "page": 45,
+      "bbox": [
+        0.062392784567440254,
+        0.496171747420576,
+        0.13007807370995272,
+        0.515302463268724
+      ]
+    },
+    {
+      "id": "9750:E1",
+      "finding_id": "9750",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 12,
+      "bbox": [
+        0.5523743087639458,
+        0.755844363538192,
+        0.7900368402916507,
+        0.8316499102473195
+      ]
+    },
+    {
+      "id": "9753:E1",
+      "finding_id": "9753",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 12,
+      "bbox": [
+        0.1676800361256927,
+        0.38050442449070493,
+        0.9581317820897722,
+        0.41379541579512336
+      ]
+    },
+    {
+      "id": "9753:E2",
+      "finding_id": "9753",
+      "file_id": "F0197",
+      "stage": "RD",
+      "page": 1,
+      "bbox": [
+        0.20547307417696756,
+        0.18457569156273182,
+        0.2382115613694159,
+        0.18756016581277818
+      ]
+    },
+    {
+      "id": "9757:E1",
+      "finding_id": "9757",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 18,
+      "bbox": [
+        0.18132548207625074,
+        0.9418492289174013,
+        0.2840973045367243,
+        0.9701783558984047
+      ]
+    },
+    {
+      "id": "9760:E1",
+      "finding_id": "9760",
+      "file_id": "F0154",
+      "stage": "PD",
+      "page": 12,
+      "bbox": [
+        0.34588864170122524,
+        0.16058801072957934,
+        0.46283485803318386,
+        0.1718959386522432
+      ]
+    },
+    {
+      "id": "9769:E1",
+      "finding_id": "9769",
+      "file_id": "F0152",
+      "stage": "PD",
+      "page": 1,
+      "bbox": [
+        0.11020379090117692,
+        0.5161671179613596,
+        0.4575121725314529,
+        0.5502506267753621
+      ]
+    },
+    {
+      "id": "9769:E2",
+      "finding_id": "9769",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 11,
+      "bbox": [
+        0.4031310915842084,
+        0.26057108672549845,
+        0.6068399727980792,
+        0.27030597758433966
+      ]
+    },
+    {
+      "id": "9770:E1",
+      "finding_id": "9770",
+      "file_id": "F0152",
+      "stage": "PD",
+      "page": 4,
+      "bbox": [
+        0.2997211423781463,
+        0.7085453787682008,
+        0.5340820115559977,
+        0.7302728422039787
+      ]
+    },
+    {
+      "id": "9770:E2",
+      "finding_id": "9770",
+      "file_id": "F0201",
+      "stage": "RD",
+      "page": 6,
+      "bbox": [
+        0.47197475261497585,
+        0.5159397730189835,
+        0.9249949993453782,
+        0.6920800518079686
+      ]
+    }
+  ],
+  "document_links": [
+    {
+      "id": "9632:E1",
+      "finding_id": "9632",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9633:E1",
+      "finding_id": "9633",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9634:E1",
+      "finding_id": "9634",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9635:E1",
+      "finding_id": "9635",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9637:E1",
+      "finding_id": "9637",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9639:E1",
+      "finding_id": "9639",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9640:E1",
+      "finding_id": "9640",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9641:E1",
+      "finding_id": "9641",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9642:E1",
+      "finding_id": "9642",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9646:E1",
+      "finding_id": "9646",
+      "target_document_id": "F0160",
+      "stage": "PD"
+    },
+    {
+      "id": "9647:E1",
+      "finding_id": "9647",
+      "target_document_id": "F0160",
+      "stage": "PD"
+    },
+    {
+      "id": "9648:E1",
+      "finding_id": "9648",
+      "target_document_id": "F0160",
+      "stage": "PD"
+    },
+    {
+      "id": "9649:E1",
+      "finding_id": "9649",
+      "target_document_id": "F0163",
+      "stage": "PD"
+    },
+    {
+      "id": "9649:E2",
+      "finding_id": "9649",
+      "target_document_id": "F0204",
+      "stage": "RD"
+    },
+    {
+      "id": "9651:E1",
+      "finding_id": "9651",
+      "target_document_id": "F0163",
+      "stage": "PD"
+    },
+    {
+      "id": "9651:E2",
+      "finding_id": "9651",
+      "target_document_id": "F0204",
+      "stage": "RD"
+    },
+    {
+      "id": "9652:E1",
+      "finding_id": "9652",
+      "target_document_id": "F0163",
+      "stage": "PD"
+    },
+    {
+      "id": "9652:E2",
+      "finding_id": "9652",
+      "target_document_id": "F0204",
+      "stage": "RD"
+    },
+    {
+      "id": "9654:E1",
+      "finding_id": "9654",
+      "target_document_id": "F0170",
+      "stage": "PD"
+    },
+    {
+      "id": "9655:E1",
+      "finding_id": "9655",
+      "target_document_id": "F0171",
+      "stage": "PD"
+    },
+    {
+      "id": "9655:E2",
+      "finding_id": "9655",
+      "target_document_id": "F0202",
+      "stage": "RD"
+    },
+    {
+      "id": "9656:E1",
+      "finding_id": "9656",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9656:E2",
+      "finding_id": "9656",
+      "target_document_id": "F0171",
+      "stage": "PD"
+    },
+    {
+      "id": "9657:E1",
+      "finding_id": "9657",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9657:E2",
+      "finding_id": "9657",
+      "target_document_id": "F0171",
+      "stage": "PD"
+    },
+    {
+      "id": "9658:E1",
+      "finding_id": "9658",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9658:E2",
+      "finding_id": "9658",
+      "target_document_id": "F0171",
+      "stage": "PD"
+    },
+    {
+      "id": "9659:E1",
+      "finding_id": "9659",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9659:E2",
+      "finding_id": "9659",
+      "target_document_id": "F0171",
+      "stage": "PD"
+    },
+    {
+      "id": "9660:E1",
+      "finding_id": "9660",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9660:E2",
+      "finding_id": "9660",
+      "target_document_id": "F0171",
+      "stage": "PD"
+    },
+    {
+      "id": "9661:E1",
+      "finding_id": "9661",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9661:E2",
+      "finding_id": "9661",
+      "target_document_id": "F0171",
+      "stage": "PD"
+    },
+    {
+      "id": "9662:E1",
+      "finding_id": "9662",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9662:E2",
+      "finding_id": "9662",
+      "target_document_id": "F0171",
+      "stage": "PD"
+    },
+    {
+      "id": "9663:E1",
+      "finding_id": "9663",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9663:E2",
+      "finding_id": "9663",
+      "target_document_id": "F0171",
+      "stage": "PD"
+    },
+    {
+      "id": "9664:E1",
+      "finding_id": "9664",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9664:E2",
+      "finding_id": "9664",
+      "target_document_id": "F0171",
+      "stage": "PD"
+    },
+    {
+      "id": "9665:E1",
+      "finding_id": "9665",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9665:E2",
+      "finding_id": "9665",
+      "target_document_id": "F0171",
+      "stage": "PD"
+    },
+    {
+      "id": "9666:E1",
+      "finding_id": "9666",
+      "target_document_id": "F0173",
+      "stage": "PD"
+    },
+    {
+      "id": "9667:E1",
+      "finding_id": "9667",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9668:E1",
+      "finding_id": "9668",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9669:E1",
+      "finding_id": "9669",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9670:E1",
+      "finding_id": "9670",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9671:E1",
+      "finding_id": "9671",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9672:E1",
+      "finding_id": "9672",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9673:E1",
+      "finding_id": "9673",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9674:E1",
+      "finding_id": "9674",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9675:E1",
+      "finding_id": "9675",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9676:E1",
+      "finding_id": "9676",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9677:E1",
+      "finding_id": "9677",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9678:E1",
+      "finding_id": "9678",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9679:E1",
+      "finding_id": "9679",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9681:E1",
+      "finding_id": "9681",
+      "target_document_id": "F0151",
+      "stage": "PD"
+    },
+    {
+      "id": "9682:E1",
+      "finding_id": "9682",
+      "target_document_id": "F0151",
+      "stage": "PD"
+    },
+    {
+      "id": "9683:E1",
+      "finding_id": "9683",
+      "target_document_id": "F0151",
+      "stage": "PD"
+    },
+    {
+      "id": "9685:E1",
+      "finding_id": "9685",
+      "target_document_id": "F0151",
+      "stage": "PD"
+    },
+    {
+      "id": "9685:E2",
+      "finding_id": "9685",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9686:E1",
+      "finding_id": "9686",
+      "target_document_id": "F0151",
+      "stage": "PD"
+    },
+    {
+      "id": "9687:E1",
+      "finding_id": "9687",
+      "target_document_id": "F0151",
+      "stage": "PD"
+    },
+    {
+      "id": "9689:E1",
+      "finding_id": "9689",
+      "target_document_id": "F0151",
+      "stage": "PD"
+    },
+    {
+      "id": "9691:E1",
+      "finding_id": "9691",
+      "target_document_id": "F0180",
+      "stage": "PD"
+    },
+    {
+      "id": "9692:E1",
+      "finding_id": "9692",
+      "target_document_id": "F0180",
+      "stage": "PD"
+    },
+    {
+      "id": "9694:E1",
+      "finding_id": "9694",
+      "target_document_id": "F0180",
+      "stage": "PD"
+    },
+    {
+      "id": "9695:E1",
+      "finding_id": "9695",
+      "target_document_id": "F0180",
+      "stage": "PD"
+    },
+    {
+      "id": "9695:E2",
+      "finding_id": "9695",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9696:E1",
+      "finding_id": "9696",
+      "target_document_id": "F0180",
+      "stage": "PD"
+    },
+    {
+      "id": "9696:E2",
+      "finding_id": "9696",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9700:E1",
+      "finding_id": "9700",
+      "target_document_id": "F0180",
+      "stage": "PD"
+    },
+    {
+      "id": "9701:E1",
+      "finding_id": "9701",
+      "target_document_id": "F0180",
+      "stage": "PD"
+    },
+    {
+      "id": "9701:E2",
+      "finding_id": "9701",
+      "target_document_id": "F0197",
+      "stage": "RD"
+    },
+    {
+      "id": "9702:E1",
+      "finding_id": "9702",
+      "target_document_id": "F0187",
+      "stage": "PD"
+    },
+    {
+      "id": "9704:E1",
+      "finding_id": "9704",
+      "target_document_id": "F0187",
+      "stage": "PD"
+    },
+    {
+      "id": "9706:E1",
+      "finding_id": "9706",
+      "target_document_id": "F0187",
+      "stage": "PD"
+    },
+    {
+      "id": "9708:E1",
+      "finding_id": "9708",
+      "target_document_id": "F0187",
+      "stage": "PD"
+    },
+    {
+      "id": "9711:E1",
+      "finding_id": "9711",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9711:E2",
+      "finding_id": "9711",
+      "target_document_id": "F0198",
+      "stage": "RD"
+    },
+    {
+      "id": "9712:E1",
+      "finding_id": "9712",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9712:E2",
+      "finding_id": "9712",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9713:E1",
+      "finding_id": "9713",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9713:E2",
+      "finding_id": "9713",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9714:E1",
+      "finding_id": "9714",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9714:E2",
+      "finding_id": "9714",
+      "target_document_id": "F0204",
+      "stage": "RD"
+    },
+    {
+      "id": "9715:E1",
+      "finding_id": "9715",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9716:E1",
+      "finding_id": "9716",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9716:E2",
+      "finding_id": "9716",
+      "target_document_id": "F0195",
+      "stage": "RD"
+    },
+    {
+      "id": "9717:E1",
+      "finding_id": "9717",
+      "target_document_id": "F0175",
+      "stage": "PD"
+    },
+    {
+      "id": "9718:E1",
+      "finding_id": "9718",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9718:E2",
+      "finding_id": "9718",
+      "target_document_id": "F0196",
+      "stage": "RD"
+    },
+    {
+      "id": "9719:E1",
+      "finding_id": "9719",
+      "target_document_id": "F0173",
+      "stage": "PD"
+    },
+    {
+      "id": "9719:E2",
+      "finding_id": "9719",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9720:E1",
+      "finding_id": "9720",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9721:E1",
+      "finding_id": "9721",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9721:E2",
+      "finding_id": "9721",
+      "target_document_id": "F0195",
+      "stage": "RD"
+    },
+    {
+      "id": "9722:E1",
+      "finding_id": "9722",
+      "target_document_id": "F0160",
+      "stage": "PD"
+    },
+    {
+      "id": "9722:E2",
+      "finding_id": "9722",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9723:E1",
+      "finding_id": "9723",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9723:E2",
+      "finding_id": "9723",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9724:E1",
+      "finding_id": "9724",
+      "target_document_id": "F0150",
+      "stage": "PD"
+    },
+    {
+      "id": "9724:E2",
+      "finding_id": "9724",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9725:E1",
+      "finding_id": "9725",
+      "target_document_id": "F0150",
+      "stage": "PD"
+    },
+    {
+      "id": "9725:E2",
+      "finding_id": "9725",
+      "target_document_id": "F0197",
+      "stage": "RD"
+    },
+    {
+      "id": "9727:E1",
+      "finding_id": "9727",
+      "target_document_id": "F0150",
+      "stage": "PD"
+    },
+    {
+      "id": "9727:E2",
+      "finding_id": "9727",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9728:E1",
+      "finding_id": "9728",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9729:E1",
+      "finding_id": "9729",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9730:E1",
+      "finding_id": "9730",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9731:E1",
+      "finding_id": "9731",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9732:E1",
+      "finding_id": "9732",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9733:E1",
+      "finding_id": "9733",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9733:E2",
+      "finding_id": "9733",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9734:E1",
+      "finding_id": "9734",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9734:E2",
+      "finding_id": "9734",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9735:E1",
+      "finding_id": "9735",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9736:E1",
+      "finding_id": "9736",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9736:E2",
+      "finding_id": "9736",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9737:E1",
+      "finding_id": "9737",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9738:E1",
+      "finding_id": "9738",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9739:E1",
+      "finding_id": "9739",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9739:E2",
+      "finding_id": "9739",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9740:E1",
+      "finding_id": "9740",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9741:E1",
+      "finding_id": "9741",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9741:E2",
+      "finding_id": "9741",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9743:E1",
+      "finding_id": "9743",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9744:E1",
+      "finding_id": "9744",
+      "target_document_id": "F0147",
+      "stage": "PD"
+    },
+    {
+      "id": "9745:E1",
+      "finding_id": "9745",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9746:E1",
+      "finding_id": "9746",
+      "target_document_id": "F0147",
+      "stage": "PD"
+    },
+    {
+      "id": "9746:E2",
+      "finding_id": "9746",
+      "target_document_id": "F0199",
+      "stage": "RD"
+    },
+    {
+      "id": "9751:E1",
+      "finding_id": "9751",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9752:E1",
+      "finding_id": "9752",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9752:E2",
+      "finding_id": "9752",
+      "target_document_id": "F0197",
+      "stage": "RD"
+    },
+    {
+      "id": "9754:E1",
+      "finding_id": "9754",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9755:E1",
+      "finding_id": "9755",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9756:E1",
+      "finding_id": "9756",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9758:E1",
+      "finding_id": "9758",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9758:E2",
+      "finding_id": "9758",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9759:E1",
+      "finding_id": "9759",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9759:E2",
+      "finding_id": "9759",
+      "target_document_id": "F0197",
+      "stage": "RD"
+    },
+    {
+      "id": "9761:E1",
+      "finding_id": "9761",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9761:E2",
+      "finding_id": "9761",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9762:E1",
+      "finding_id": "9762",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9762:E2",
+      "finding_id": "9762",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9763:E1",
+      "finding_id": "9763",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9764:E1",
+      "finding_id": "9764",
+      "target_document_id": "F0152",
+      "stage": "PD"
+    },
+    {
+      "id": "9765:E1",
+      "finding_id": "9765",
+      "target_document_id": "F0152",
+      "stage": "PD"
+    },
+    {
+      "id": "9765:E2",
+      "finding_id": "9765",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9766:E1",
+      "finding_id": "9766",
+      "target_document_id": "F0152",
+      "stage": "PD"
+    },
+    {
+      "id": "9767:E1",
+      "finding_id": "9767",
+      "target_document_id": "F0152",
+      "stage": "PD"
+    },
+    {
+      "id": "9767:E2",
+      "finding_id": "9767",
+      "target_document_id": "F0195",
+      "stage": "RD"
+    },
+    {
+      "id": "9768:E1",
+      "finding_id": "9768",
+      "target_document_id": "F0152",
+      "stage": "PD"
+    },
+    {
+      "id": "9768:E2",
+      "finding_id": "9768",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9771:E1",
+      "finding_id": "9771",
+      "target_document_id": "F0152",
+      "stage": "PD"
+    },
+    {
+      "id": "9771:E2",
+      "finding_id": "9771",
+      "target_document_id": "F0195",
+      "stage": "RD"
+    },
+    {
+      "id": "9643:E1",
+      "finding_id": "9643",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9644:E1",
+      "finding_id": "9644",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9645:E1",
+      "finding_id": "9645",
+      "target_document_id": "F0156",
+      "stage": "PD"
+    },
+    {
+      "id": "9650:E1",
+      "finding_id": "9650",
+      "target_document_id": "F0163",
+      "stage": "PD"
+    },
+    {
+      "id": "9650:E2",
+      "finding_id": "9650",
+      "target_document_id": "F0204",
+      "stage": "RD"
+    },
+    {
+      "id": "9653:E1",
+      "finding_id": "9653",
+      "target_document_id": "F0163",
+      "stage": "PD"
+    },
+    {
+      "id": "9653:E2",
+      "finding_id": "9653",
+      "target_document_id": "F0204",
+      "stage": "RD"
+    },
+    {
+      "id": "9680:E1",
+      "finding_id": "9680",
+      "target_document_id": "F0158",
+      "stage": "PD"
+    },
+    {
+      "id": "9684:E1",
+      "finding_id": "9684",
+      "target_document_id": "F0151",
+      "stage": "PD"
+    },
+    {
+      "id": "9688:E1",
+      "finding_id": "9688",
+      "target_document_id": "F0151",
+      "stage": "PD"
+    },
+    {
+      "id": "9688:E2",
+      "finding_id": "9688",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9697:E1",
+      "finding_id": "9697",
+      "target_document_id": "F0180",
+      "stage": "PD"
+    },
+    {
+      "id": "9697:E2",
+      "finding_id": "9697",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9698:E1",
+      "finding_id": "9698",
+      "target_document_id": "F0180",
+      "stage": "PD"
+    },
+    {
+      "id": "9698:E2",
+      "finding_id": "9698",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9699:E1",
+      "finding_id": "9699",
+      "target_document_id": "F0180",
+      "stage": "PD"
+    },
+    {
+      "id": "9703:E1",
+      "finding_id": "9703",
+      "target_document_id": "F0187",
+      "stage": "PD"
+    },
+    {
+      "id": "9705:E1",
+      "finding_id": "9705",
+      "target_document_id": "F0187",
+      "stage": "PD"
+    },
+    {
+      "id": "9707:E1",
+      "finding_id": "9707",
+      "target_document_id": "F0187",
+      "stage": "PD"
+    },
+    {
+      "id": "9709:E1",
+      "finding_id": "9709",
+      "target_document_id": "F0187",
+      "stage": "PD"
+    },
+    {
+      "id": "9710:E1",
+      "finding_id": "9710",
+      "target_document_id": "F0187",
+      "stage": "PD"
+    },
+    {
+      "id": "9726:E1",
+      "finding_id": "9726",
+      "target_document_id": "F0148",
+      "stage": "PD"
+    },
+    {
+      "id": "9726:E2",
+      "finding_id": "9726",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9747:E1",
+      "finding_id": "9747",
+      "target_document_id": "F0180",
+      "stage": "PD"
+    },
+    {
+      "id": "9748:E1",
+      "finding_id": "9748",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9749:E1",
+      "finding_id": "9749",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9749:E2",
+      "finding_id": "9749",
+      "target_document_id": "F0203",
+      "stage": "RD"
+    },
+    {
+      "id": "9750:E1",
+      "finding_id": "9750",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9753:E1",
+      "finding_id": "9753",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9753:E2",
+      "finding_id": "9753",
+      "target_document_id": "F0197",
+      "stage": "RD"
+    },
+    {
+      "id": "9757:E1",
+      "finding_id": "9757",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9760:E1",
+      "finding_id": "9760",
+      "target_document_id": "F0154",
+      "stage": "PD"
+    },
+    {
+      "id": "9769:E1",
+      "finding_id": "9769",
+      "target_document_id": "F0152",
+      "stage": "PD"
+    },
+    {
+      "id": "9769:E2",
+      "finding_id": "9769",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    },
+    {
+      "id": "9770:E1",
+      "finding_id": "9770",
+      "target_document_id": "F0152",
+      "stage": "PD"
+    },
+    {
+      "id": "9770:E2",
+      "finding_id": "9770",
+      "target_document_id": "F0201",
+      "stage": "RD"
+    }
+  ],
+  "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+  "provenance": "independent_runtime"
+}

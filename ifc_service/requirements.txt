@@ -1,0 +1,16 @@
+fastapi==0.110.3
+uvicorn[standard]==0.27.1
+python-multipart==0.0.9
+SQLAlchemy==2.0.27
+pydantic==2.6.4
+
+psycopg[binary]==3.1.18
+celery==5.4.0
+redis==5.0.1
+
+# Важно для Ubuntu: под Python 3.11 обычно доступны готовые wheels,
+# что исключает долгую сборку из исходников.
+ifcopenshell==0.8.4.post1
+
+# Часто требуется ifcopenshell/геометрии; фиксируем, чтобы не словить numpy 2.x несовместимости.
+numpy==1.26.4

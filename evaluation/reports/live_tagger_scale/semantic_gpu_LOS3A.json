@@ -1,0 +1,1 @@
+{"object": "LOS3A", "n": 509, "torch": "2.5.1+cu124", "cpu": {"max_abs_diff_vs_project_cpu": 3.5762786865234375e-07, "mean_abs_diff": 6.434725403551503e-08, "decision_flips": 0}, "cuda": {"max_abs_diff_vs_project_cpu": 4.76837158203125e-07, "mean_abs_diff": 1.0577189664709545e-07, "decision_flips": 0}}

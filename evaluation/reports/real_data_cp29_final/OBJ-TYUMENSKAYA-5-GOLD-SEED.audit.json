@@ -1,0 +1,135 @@
+[
+  {
+    "id": 405,
+    "action": "PROCESS_CREATED",
+    "user_id": null,
+    "timestamp": "2026-09-17T18:04:52",
+    "details": {
+      "status": "PENDING"
+    }
+  },
+  {
+    "id": 406,
+    "action": "PROCESS_STATUS",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:04:52",
+    "details": {
+      "status": "PARSING"
+    }
+  },
+  {
+    "id": 407,
+    "action": "RULE_FALLBACK_DISCOVERY",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:05:12",
+    "details": {
+      "attempts": [
+        {
+          "code": "IOS4-078",
+          "stage": "ID",
+          "location": "141",
+          "documents_scanned": 0,
+          "pages_scanned": 0,
+          "ocr_pages_scanned": 0,
+          "found": false,
+          "elapsed_seconds": 0.0
+        },
+        {
+          "code": "IOS4-078",
+          "stage": "ID",
+          "location": "146",
+          "documents_scanned": 0,
+          "pages_scanned": 0,
+          "ocr_pages_scanned": 0,
+          "found": false,
+          "elapsed_seconds": 0.0
+        },
+        {
+          "code": "IOS4-078",
+          "stage": "ID",
+          "location": "150",
+          "documents_scanned": 0,
+          "pages_scanned": 0,
+          "ocr_pages_scanned": 0,
+          "found": false,
+          "elapsed_seconds": 0.0
+        },
+        {
+          "code": "IOS4-079",
+          "stage": "ID",
+          "location": "006",
+          "documents_scanned": 0,
+          "pages_scanned": 0,
+          "ocr_pages_scanned": 0,
+          "found": false,
+          "elapsed_seconds": 0.0
+        }
+      ]
+    }
+  },
+  {
+    "id": 408,
+    "action": "PROTOCOL_VERSION_CREATED",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:05:13",
+    "details": {
+      "protocol_id": 88,
+      "version": 1
+    }
+  },
+  {
+    "id": 409,
+    "action": "PROCESS_STATUS",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:05:13",
+    "details": {
+      "status": "READY",
+      "protocol_id": 88,
+      "version": 1
+    }
+  },
+  {
+    "id": 410,
+    "action": "INSPECTOR_DECISION",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:05:14",
+    "details": {
+      "evidence_group_id": 9771,
+      "decision": "Clarification Required",
+      "finding_status": "CLARIFICATION_REQUIRED",
+      "reason_code": null,
+      "comment": "Automated workflow smoke: original values require inspector review",
+      "protocol_version": 2
+    }
+  },
+  {
+    "id": 411,
+    "action": "PROCESS_STATUS",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:05:14",
+    "details": {
+      "status": "VERIFYING",
+      "pending_candidates": 6
+    }
+  },
+  {
+    "id": 412,
+    "action": "PROTOCOL_VERSION_CREATED",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:05:15",
+    "details": {
+      "protocol_id": 89,
+      "version": 2
+    }
+  },
+  {
+    "id": 413,
+    "action": "PROTOCOL_FINALIZED",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:05:15",
+    "details": {
+      "protocol_id": 89,
+      "version": 2
+    }
+  }
+]

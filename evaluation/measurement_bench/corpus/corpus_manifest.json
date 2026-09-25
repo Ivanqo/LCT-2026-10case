@@ -1,0 +1,74 @@
+{
+ "corpus_version": "v1",
+ "frozen_at": "2026-09-24T13:16:13+00:00",
+ "corpus_sha256": "8de27cf4cb15c006e85a8af53e681a056d5544b961db3c4ea4a68f6824773d10",
+ "probe_log_sha256": "7bf6b12ea812f932fe9768c93bda6d5167e9b4d8f491a45cf7e67f10547129d6",
+ "probe_plan_sha256": "a225935885d56ea43192c153f188795a87f1b886829a957c4c95d5e4fb13e27f",
+ "summary": {
+  "n_triples": 173,
+  "by_family": {
+   "NUMERIC_TABLE": 92,
+   "COMPOUND": 4,
+   "ENUM": 63,
+   "TABLE_COUNT": 14
+  },
+  "by_split": {
+   "holdout": 105,
+   "dev": 68
+  },
+  "holdout_share": 0.6069,
+  "by_object": {
+   "ALT79B": 20,
+   "DOO25": 22,
+   "IZM12": 19,
+   "LOS3A": 31,
+   "NOV": 20,
+   "OKT103": 22,
+   "POL17": 22,
+   "TYU": 17
+  },
+  "by_stage": {
+   "PD": 121,
+   "RD": 49,
+   "ID": 3
+  },
+  "by_family_split": {
+   "COMPOUND/holdout": 4,
+   "ENUM/dev": 24,
+   "ENUM/holdout": 39,
+   "NUMERIC_TABLE/dev": 37,
+   "NUMERIC_TABLE/holdout": 55,
+   "TABLE_COUNT/dev": 7,
+   "TABLE_COUNT/holdout": 7
+  },
+  "by_provenance": {
+   "SUPPLEMENT": 60,
+   "PLAN": 102,
+   "PASS1_MECHANISM_SELECTED": 11
+  },
+  "selected_by_system_output": 11,
+  "truth_kind": {
+   "SET_ANY": 38,
+   "SINGLE": 135
+  },
+  "critical_triples": 164,
+  "distinct_critical_codes": 25,
+  "probe_log_by_status": {
+   "ABSENT": 94,
+   "NOT_SCALAR": 135,
+   "CONFLICT": 7,
+   "NOT_APPLICABLE": 8,
+   "NO_TEXT_LAYER": 15
+  },
+  "probe_log_planned_by_status": {
+   "ABSENT": 81,
+   "CONFLICT": 6,
+   "NOT_APPLICABLE": 8,
+   "NOT_SCALAR": 126,
+   "NO_TEXT_LAYER": 11
+  }
+ },
+ "plan_attempts": 280,
+ "plan_uncovered": [],
+ "statement": "All values were read from the original PDFs (reader.py/probe_object.py, no pipeline involved) and written before any extractor was run on this corpus. Downstream stages verify corpus_sha256 and that their own outputs are created after frozen_at."
+}

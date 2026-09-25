@@ -1,0 +1,73 @@
+[
+  {
+    "object": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+    "rule": "IOS4-078",
+    "location": "314",
+    "check_id": "TRAIN-0010",
+    "finding_group_id": "G-TR-004",
+    "file_id": "F0201",
+    "file_sha256": "0c398d7bca356455568413a6fc3b14044b7e538a902251b80e2a5574d80184fd",
+    "public_gold_page": 18,
+    "public_gold_document_sheet_number": 4,
+    "independently_observed_page": 20,
+    "extracted_target": "Вытяжная система не распознана в зоне помещения",
+    "extraction_method": "official_rule:ios4-078-ocr",
+    "evidence_bbox_pdf": [
+      1556.5919189453125,
+      117.99978637695312,
+      1916.5919189453125,
+      437.9997863769531
+    ],
+    "evidence_page_width": 2384.0,
+    "evidence_page_height": 3370.0,
+    "page_labels": [],
+    "verification": {
+      "public_gold_page_contains_room_token": false,
+      "independently_observed_page_contains_room_token": true,
+      "sibling_checks_sharing_the_same_evidence_bundle": [
+        {
+          "location": "140",
+          "check_id": "TRAIN-0006",
+          "finding_group_id": "G-TR-003",
+          "pdf_page_number": 18,
+          "document_sheet_number": 4,
+          "page_contains_own_room_token": true
+        },
+        {
+          "location": "142",
+          "check_id": "TRAIN-0007",
+          "finding_group_id": "G-TR-003",
+          "pdf_page_number": 18,
+          "document_sheet_number": 4,
+          "page_contains_own_room_token": true
+        },
+        {
+          "location": "147",
+          "check_id": "TRAIN-0008",
+          "finding_group_id": "G-TR-004",
+          "pdf_page_number": 18,
+          "document_sheet_number": 4,
+          "page_contains_own_room_token": true
+        },
+        {
+          "location": "198",
+          "check_id": "TRAIN-0009",
+          "finding_group_id": "G-TR-004",
+          "pdf_page_number": 18,
+          "document_sheet_number": 4,
+          "page_contains_own_room_token": true
+        },
+        {
+          "location": "314",
+          "check_id": "TRAIN-0010",
+          "finding_group_id": "G-TR-004",
+          "pdf_page_number": 18,
+          "document_sheet_number": 4,
+          "page_contains_own_room_token": false
+        }
+      ]
+    },
+    "reason": "POSSIBLE_GOLD_LOCALIZATION_CONFLICT",
+    "explanation": "Room 314's RD evidence in public gold (check TRAIN-0010) cites the same F0201 evidence bundle (pdf page 18 / sheet 4) as sibling rooms 140/142/147/198 in the same finding_group_id. Direct, gold-blind text search of the original PDF shows page 18 is 'Экспликация помещений 1 этажа' (floor 1 room explication) and does not contain room 314 anywhere in its text layer; the sibling rooms 140/142/147/198 ARE genuinely listed there. Room 314 is a floor-3 room ('прототипирования', 37.4 m2) and is independently found via text layer + OCR only on pdf page 20 ('Экспликация помещений 3 этажа' / OV floor plan for that floor), which the runtime pipeline already selects on its own, gold-blind. No PDF /PageLabels are defined for F0201, but a consistent 14-page physical-page-to-sheet-number offset (pdf_page = document_sheet_number + 14) holds for the sibling checks, ruling out a systematic page-numbering bug as the explanation for the 314 mismatch specifically."
+  }
+]

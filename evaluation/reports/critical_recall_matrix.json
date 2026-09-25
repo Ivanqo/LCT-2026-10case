@@ -1,0 +1,2793 @@
+{
+ "generated_at": "2026-09-24T18:17:04+00:00",
+ "summary": {
+  "by_family": {
+   "COMPOUND": {
+    "codes": 12,
+    "weight_mass": 0.0976,
+    "holdout_extraction": {
+     "k": 0,
+     "n": 4,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.4899
+     ]
+    },
+    "seeded_pairs": 0,
+    "seeded_pairs_caught": 0,
+    "seeded_pair_recall": null,
+    "status": {
+     "UNTESTED": 12
+    }
+   },
+   "ENUM": {
+    "codes": 9,
+    "weight_mass": 0.0732,
+    "holdout_extraction": {
+     "k": 11,
+     "n": 39,
+     "rate": 0.2821,
+     "wilson95": [
+      0.1654,
+      0.4378
+     ]
+    },
+    "seeded_pairs": 4,
+    "seeded_pairs_caught": 4,
+    "seeded_pair_recall": {
+     "k": 4,
+     "n": 4,
+     "rate": 1.0,
+     "wilson95": [
+      0.5101,
+      1.0
+     ]
+    },
+    "status": {
+     "UNTESTED": 8,
+     "WEAK": 1
+    }
+   },
+   "NONE": {
+    "codes": 35,
+    "weight_mass": 0.3008,
+    "holdout_extraction": null,
+    "seeded_pairs": 0,
+    "seeded_pairs_caught": 0,
+    "seeded_pair_recall": null,
+    "status": {
+     "NO_MECHANISM": 35
+    }
+   },
+   "NUMERIC_TABLE": {
+    "codes": 38,
+    "weight_mass": 0.3659,
+    "holdout_extraction": {
+     "k": 9,
+     "n": 55,
+     "rate": 0.1636,
+     "wilson95": [
+      0.0886,
+      0.2826
+     ]
+    },
+    "seeded_pairs": 2,
+    "seeded_pairs_caught": 2,
+    "seeded_pair_recall": {
+     "k": 2,
+     "n": 2,
+     "rate": 1.0,
+     "wilson95": [
+      0.3424,
+      1.0
+     ]
+    },
+    "status": {
+     "WEAK": 2,
+     "UNTESTED": 36
+    }
+   },
+   "RULE_PACK": {
+    "codes": 5,
+    "weight_mass": 0.1057,
+    "holdout_extraction": null,
+    "seeded_pairs": 0,
+    "seeded_pairs_caught": 0,
+    "seeded_pair_recall": null,
+    "status": {
+     "UNTESTED": 5
+    }
+   },
+   "TABLE_COUNT": {
+    "codes": 7,
+    "weight_mass": 0.0569,
+    "holdout_extraction": {
+     "k": 0,
+     "n": 7,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.3543
+     ]
+    },
+    "seeded_pairs": 0,
+    "seeded_pairs_caught": 0,
+    "seeded_pair_recall": null,
+    "status": {
+     "UNTESTED": 7
+    }
+   }
+  },
+  "n_codes": 106,
+  "by_status": {
+   "WEAK": 3,
+   "UNTESTED": 68,
+   "NO_MECHANISM": 35
+  },
+  "by_mechanism": {
+   "GENERIC_ANCHOR_TABLE": 38,
+   "NONE": 35,
+   "OFFICIAL_RULE_PACK": 5,
+   "GENERIC_TABLE_ROW_COUNT": 7,
+   "GENERIC_ANCHOR_ENUM": 9,
+   "GENERIC_ANCHOR_COMPOUND": 12
+  },
+  "verified": [],
+  "weight_mass_by_status": {
+   "VERIFIED": 0,
+   "WEAK": 0.0244,
+   "UNTESTED": 0.6748,
+   "NO_MECHANISM": 0.3008
+  },
+  "L2": {
+   "attempted": 24,
+   "verified_edits": 24,
+   "declared_fragile": false
+  }
+ },
+ "top10_by_weight_x_worst_recall": [
+  {
+   "code": "IOS4-078",
+   "name": "Сечения и геометрия воздуховодов общеобменной вентиляции",
+   "status": "UNTESTED",
+   "mechanism": "OFFICIAL_RULE_PACK",
+   "weight": 0.04878,
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.04878
+  },
+  {
+   "code": "AR-041",
+   "name": "Ширина эвакуационных выходов (дверей)",
+   "status": "UNTESTED",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "weight": 0.02439,
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.02439
+  },
+  {
+   "code": "AR-040",
+   "name": "Ширина магистральных эвакуационных коридоров",
+   "status": "UNTESTED",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "weight": 0.01626,
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626
+  },
+  {
+   "code": "AR-044",
+   "name": "Послойный состав пирога кровли",
+   "status": "NO_MECHANISM",
+   "mechanism": "NONE",
+   "weight": 0.01626,
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626
+  },
+  {
+   "code": "IOS1-069",
+   "name": "Сечение жил и маркировка распределительных кабелей",
+   "status": "UNTESTED",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "weight": 0.01626,
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626
+  },
+  {
+   "code": "IOS4-079",
+   "name": "Характеристики вентиляторов общеобменной вентиляции",
+   "status": "UNTESTED",
+   "mechanism": "OFFICIAL_RULE_PACK",
+   "weight": 0.01626,
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626
+  },
+  {
+   "code": "KR-054",
+   "name": "Шаг и привязка координационных осей несущего каркаса",
+   "status": "UNTESTED",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "weight": 0.01626,
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626
+  },
+  {
+   "code": "KR-055",
+   "name": "Класс прочности бетона монолитных конструкций",
+   "status": "UNTESTED",
+   "mechanism": "OFFICIAL_RULE_PACK",
+   "weight": 0.01626,
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626
+  },
+  {
+   "code": "KR-058",
+   "name": "Толщина монолитной фундаментной плиты / ростверка",
+   "status": "UNTESTED",
+   "mechanism": "OFFICIAL_RULE_PACK",
+   "weight": 0.01626,
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626
+  },
+  {
+   "code": "PPM-103",
+   "name": "Пределы огнестойкости противопожарных дверей и ворот (EI)",
+   "status": "NO_MECHANISM",
+   "mechanism": "NONE",
+   "weight": 0.01626,
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626
+  }
+ ],
+ "top10_tie_at_cutoff": {
+  "priority": 0.01626,
+  "n_codes_tied": 10,
+  "codes": [
+   "AR-040",
+   "AR-044",
+   "IOS1-069",
+   "IOS4-079",
+   "KR-054",
+   "KR-055",
+   "KR-058",
+   "PPM-103",
+   "SPZU-027",
+   "SPZU-030"
+  ],
+  "note": "no tested pair exists for these codes, so recall is unknown (counted as 0) and the order between them is decided only by prior weight, then by number of prior sources, then by code"
+ },
+ "rule_pack_evidence_on_new_objects": {
+  "IOS4-078": {
+   "MISSING_EVIDENCE/missing_stage": 1,
+   "MISSING_EVIDENCE/no_relevant_evidence": 5
+  },
+  "IOS4-079": {
+   "MISSING_EVIDENCE/missing_stage": 1,
+   "MISSING_EVIDENCE/no_relevant_evidence": 5
+  },
+  "KR-055": {
+   "MISSING_EVIDENCE/missing_stage": 1,
+   "MISSING_EVIDENCE/no_relevant_evidence": 5
+  },
+  "KR-058": {
+   "MISSING_EVIDENCE/missing_stage": 1,
+   "MISSING_EVIDENCE/no_relevant_evidence": 5
+  },
+  "PZ-009": {
+   "MISSING_EVIDENCE/missing_stage": 1,
+   "NOT_COMPARABLE/values_not_extracted": 2,
+   "MISSING_EVIDENCE/no_relevant_evidence": 3
+  }
+ },
+ "rows": [
+  {
+   "code": "PZ-001",
+   "name": "Площадь застройки",
+   "unit": "м²",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 5,
+    "n": 9,
+    "rate": 0.5556,
+    "wilson95": [
+     0.2667,
+     0.8112
+    ]
+   },
+   "seeded": {
+    "layer": "protocol",
+    "pairs": 1,
+    "pairs_caught": 1,
+    "pair_recall": {
+     "k": 1,
+     "n": 1,
+     "rate": 1.0,
+     "wilson95": [
+      0.2065,
+      1.0
+     ]
+    },
+    "variants_must_catch": 2,
+    "variants_caught": 2,
+    "variant_recall": {
+     "k": 2,
+     "n": 2,
+     "rate": 1.0,
+     "wilson95": [
+      0.3424,
+      1.0
+     ]
+    },
+    "variants_caught_with_evidence_and_location": 2,
+    "fp_on_must_not_catch": {
+     "k": 0,
+     "n": 3,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.5615
+     ]
+    }
+   },
+   "seeded_other_layer": {
+    "layer": "extractor+legacy",
+    "pairs": 1,
+    "pair_recall": {
+     "k": 1,
+     "n": 1,
+     "rate": 1.0,
+     "wilson95": [
+      0.2065,
+      1.0
+     ]
+    },
+    "fp_on_must_not_catch": {
+     "k": 0,
+     "n": 3,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.5615
+     ]
+    }
+   },
+   "status": "WEAK",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0551,
+   "priority": 0.007682,
+   "basis": {
+    "extraction": "code",
+    "recall": "pairs"
+   }
+  },
+  {
+   "code": "PZ-002",
+   "name": "Общая площадь здания",
+   "unit": "м²",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 5,
+    "n": 9,
+    "rate": 0.5556,
+    "wilson95": [
+     0.2667,
+     0.8112
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-004",
+   "name": "Строительный объем (Общий)",
+   "unit": "м³",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 7,
+    "n": 10,
+    "rate": 0.7,
+    "wilson95": [
+     0.3968,
+     0.8922
+    ]
+   },
+   "seeded": {
+    "layer": "protocol",
+    "pairs": 1,
+    "pairs_caught": 1,
+    "pair_recall": {
+     "k": 1,
+     "n": 1,
+     "rate": 1.0,
+     "wilson95": [
+      0.2065,
+      1.0
+     ]
+    },
+    "variants_must_catch": 2,
+    "variants_caught": 2,
+    "variant_recall": {
+     "k": 2,
+     "n": 2,
+     "rate": 1.0,
+     "wilson95": [
+      0.3424,
+      1.0
+     ]
+    },
+    "variants_caught_with_evidence_and_location": 2,
+    "fp_on_must_not_catch": {
+     "k": 0,
+     "n": 3,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.5615
+     ]
+    }
+   },
+   "seeded_other_layer": {
+    "layer": "extractor+legacy",
+    "pairs": 1,
+    "pair_recall": {
+     "k": 1,
+     "n": 1,
+     "rate": 1.0,
+     "wilson95": [
+      0.2065,
+      1.0
+     ]
+    },
+    "fp_on_must_not_catch": {
+     "k": 0,
+     "n": 3,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.5615
+     ]
+    }
+   },
+   "status": "WEAK",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.082,
+   "priority": 0.007464,
+   "basis": {
+    "extraction": "code",
+    "recall": "pairs"
+   }
+  },
+  {
+   "code": "PZ-005",
+   "name": "Строительный объем (Подземный)",
+   "unit": "м³",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 0,
+    "n": 9,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.2991
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-006",
+   "name": "Строительный объем (Надземный)",
+   "unit": "м³",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 0,
+    "n": 8,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.3244
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-007",
+   "name": "Этажность (надземная)",
+   "unit": "ед.",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-008",
+   "name": "Высота здания",
+   "unit": "м",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 1,
+    "n": 8,
+    "rate": 0.125,
+    "wilson95": [
+     0.0224,
+     0.4709
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-009",
+   "name": "Абсолютная отметка 0.000",
+   "unit": "м",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "OFFICIAL_RULE_PACK",
+   "family": "RULE_PACK",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-010",
+   "name": "Количество квартир",
+   "unit": "шт.",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_TABLE_ROW_COUNT",
+   "family": "TABLE_COUNT",
+   "extraction": {
+    "k": 0,
+    "n": 6,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.3903
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-011",
+   "name": "Квартирография",
+   "unit": "шт.",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_TABLE_ROW_COUNT",
+   "family": "TABLE_COUNT",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-012",
+   "name": "Количество машино-мест (подземных)",
+   "unit": "шт.",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_TABLE_ROW_COUNT",
+   "family": "TABLE_COUNT",
+   "extraction": {
+    "k": 0,
+    "n": 7,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.3543
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-013",
+   "name": "Технологическая мощность / Вместимость",
+   "unit": "ед.",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-014",
+   "name": "Расчетная электрическая мощность",
+   "unit": "кВт",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-015",
+   "name": "Категория надежности электроснабжения",
+   "unit": "Кат.",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_ENUM",
+   "family": "ENUM",
+   "extraction": {
+    "k": 2,
+    "n": 4,
+    "rate": 0.5,
+    "wilson95": [
+     0.15,
+     0.85
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-016",
+   "name": "Суточный расход водопотребления",
+   "unit": "м³/сут",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-017",
+   "name": "Суммарная тепловая нагрузка",
+   "unit": "Гкал/ч",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-018",
+   "name": "Максимальный часовой расход газа",
+   "unit": "м³/ч",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-019",
+   "name": "Коэффициент застройки (КЗ)",
+   "unit": "%",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.5615
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-020",
+   "name": "Коэффициент использования территории (КИТ)",
+   "unit": "%",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-021",
+   "name": "Класс энергетической эффективности",
+   "unit": "Буква",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_ENUM",
+   "family": "ENUM",
+   "extraction": {
+    "k": 0,
+    "n": 2,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.6576
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-022",
+   "name": "Степень огнестойкости здания",
+   "unit": "Степень",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_ENUM",
+   "family": "ENUM",
+   "extraction": {
+    "k": 3,
+    "n": 13,
+    "rate": 0.2308,
+    "wilson95": [
+     0.0818,
+     0.5026
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PZ-023",
+   "name": "Класс конструктивной пожарной опасности",
+   "unit": "Класс (С0, С1)",
+   "section": "Раздел 1. ПЗ",
+   "mechanism": "GENERIC_ANCHOR_ENUM",
+   "family": "ENUM",
+   "extraction": {
+    "k": 12,
+    "n": 13,
+    "rate": 0.9231,
+    "wilson95": [
+     0.6669,
+     0.9863
+    ]
+   },
+   "seeded": {
+    "layer": "protocol",
+    "pairs": 4,
+    "pairs_caught": 4,
+    "pair_recall": {
+     "k": 4,
+     "n": 4,
+     "rate": 1.0,
+     "wilson95": [
+      0.5101,
+      1.0
+     ]
+    },
+    "variants_must_catch": 4,
+    "variants_caught": 4,
+    "variant_recall": {
+     "k": 4,
+     "n": 4,
+     "rate": 1.0,
+     "wilson95": [
+      0.5101,
+      1.0
+     ]
+    },
+    "variants_caught_with_evidence_and_location": 4,
+    "fp_on_must_not_catch": {
+     "k": 0,
+     "n": 8,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.3244
+     ]
+    }
+   },
+   "seeded_other_layer": {
+    "layer": "extractor+legacy",
+    "pairs": 4,
+    "pair_recall": {
+     "k": 4,
+     "n": 4,
+     "rate": 1.0,
+     "wilson95": [
+      0.5101,
+      1.0
+     ]
+    },
+    "fp_on_must_not_catch": {
+     "k": 0,
+     "n": 8,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.3244
+     ]
+    }
+   },
+   "status": "WEAK",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.3402,
+   "priority": 0.005364,
+   "basis": {
+    "extraction": "code",
+    "recall": "pairs"
+   }
+  },
+  {
+   "code": "SPZU-027",
+   "name": "Площадь озеленения и газонов",
+   "unit": "м²",
+   "section": "Раздел 2. СПЗУ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 0,
+    "n": 8,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.3244
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.01626,
+   "weight_sources": {
+    "pilot": 1
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "SPZU-028",
+   "name": "Площадь детских и спортивных площадок",
+   "unit": "м²",
+   "section": "Раздел 2. СПЗУ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "SPZU-030",
+   "name": "Ширина внутриплощадочных дорог и проездов",
+   "unit": "м",
+   "section": "Раздел 2. СПЗУ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 0,
+    "n": 2,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.6576
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.01626,
+   "weight_sources": {
+    "annex2": 1
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "SPZU-031",
+   "name": "Радиусы поворота дорог и пожарных проездов",
+   "unit": "м",
+   "section": "Раздел 2. СПЗУ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "SPZU-032",
+   "name": "Конструкция дорожной одежды",
+   "unit": "мм (слои)",
+   "section": "Раздел 2. СПЗУ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "SPZU-034",
+   "name": "Точки и координаты подключения внешних сетей",
+   "unit": "Коорд.",
+   "section": "Раздел 2. СПЗУ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "SPZU-035",
+   "name": "Охранные зоны существующих коммуникаций",
+   "unit": "—",
+   "section": "Раздел 2. СПЗУ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "SPZU-037",
+   "name": "Количество и разметка парковочных мест на участке",
+   "unit": "шт.",
+   "section": "Раздел 2. СПЗУ",
+   "mechanism": "GENERIC_TABLE_ROW_COUNT",
+   "family": "TABLE_COUNT",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "SPZU-038",
+   "name": "Количество парковочных мест для МГН на участке",
+   "unit": "шт.",
+   "section": "Раздел 2. СПЗУ",
+   "mechanism": "GENERIC_TABLE_ROW_COUNT",
+   "family": "TABLE_COUNT",
+   "extraction": {
+    "k": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.7935
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "SPZU-039",
+   "name": "Мероприятия по инженерной подготовке (дренажи)",
+   "unit": "—",
+   "section": "Раздел 2. СПЗУ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "AR-040",
+   "name": "Ширина магистральных эвакуационных коридоров",
+   "unit": "м",
+   "section": "Раздел 3. АР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.01626,
+   "weight_sources": {
+    "annex2": 1
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "AR-041",
+   "name": "Ширина эвакуационных выходов (дверей)",
+   "unit": "м",
+   "section": "Раздел 3. АР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.02439,
+   "weight_sources": {
+    "annotations": 1,
+    "annex2": 1
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.02439,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "AR-042",
+   "name": "Высота путей эвакуации и проемов",
+   "unit": "м",
+   "section": "Раздел 3. АР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 0,
+    "n": 2,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.6576
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "AR-043",
+   "name": "Направление открывания эвакуационных дверей",
+   "unit": "—",
+   "section": "Раздел 3. АР",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "AR-044",
+   "name": "Послойный состав пирога кровли",
+   "unit": "мм (слои)",
+   "section": "Раздел 3. АР",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.01626,
+   "weight_sources": {
+    "annotations": 1
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "AR-045",
+   "name": "Уклоны кровли и система водостока",
+   "unit": "% / °",
+   "section": "Раздел 3. АР",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "AR-046",
+   "name": "Общее количество и габариты оконных блоков",
+   "unit": "шт. / м²",
+   "section": "Раздел 3. АР",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "AR-047",
+   "name": "Габариты и глубина тамбуров входных групп",
+   "unit": "м",
+   "section": "Раздел 3. АР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "AR-048",
+   "name": "Количество и параметры лестничных маршей и ступеней",
+   "unit": "шт. / мм",
+   "section": "Раздел 3. АР",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "AR-049",
+   "name": "Высота и тип ограждений лестниц, балкона, кровли",
+   "unit": "м",
+   "section": "Раздел 3. АР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 0,
+    "n": 5,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.4345
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "AR-050",
+   "name": "Спецификация и типы внутренней отделки помещений",
+   "unit": "Класс (КМ)",
+   "section": "Раздел 3. АР",
+   "mechanism": "GENERIC_ANCHOR_ENUM",
+   "family": "ENUM",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-054",
+   "name": "Шаг и привязка координационных осей несущего каркаса",
+   "unit": "мм",
+   "section": "Раздел 4. КР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.01626,
+   "weight_sources": {
+    "annotations": 1
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-055",
+   "name": "Класс прочности бетона монолитных конструкций",
+   "unit": "Марка (B)",
+   "section": "Раздел 4. КР",
+   "mechanism": "OFFICIAL_RULE_PACK",
+   "family": "RULE_PACK",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.01626,
+   "weight_sources": {
+    "annex2": 1
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-056",
+   "name": "Марка стали и класс прочности металлопроката",
+   "unit": "Марка (С)",
+   "section": "Раздел 4. КР",
+   "mechanism": "GENERIC_ANCHOR_ENUM",
+   "family": "ENUM",
+   "extraction": {
+    "k": 0,
+    "n": 14,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.2153
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-057",
+   "name": "Марка и класс прочности рабочей арматуры",
+   "unit": "Класс (А)",
+   "section": "Раздел 4. КР",
+   "mechanism": "GENERIC_ANCHOR_ENUM",
+   "family": "ENUM",
+   "extraction": {
+    "k": 0,
+    "n": 14,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.2153
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-058",
+   "name": "Толщина монолитной фундаментной плиты / ростверка",
+   "unit": "мм",
+   "section": "Раздел 4. КР",
+   "mechanism": "OFFICIAL_RULE_PACK",
+   "family": "RULE_PACK",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.01626,
+   "weight_sources": {
+    "annotations": 1
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-059",
+   "name": "Толщина монолитных плит перекрытий и покрытия",
+   "unit": "мм",
+   "section": "Раздел 4. КР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 0,
+    "n": 7,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.3543
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-060",
+   "name": "Геометрические сечения несущих колонн и пилонов",
+   "unit": "мм²",
+   "section": "Раздел 4. КР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-061",
+   "name": "Толщина несущих монолитных стен (ядра жесткости)",
+   "unit": "мм",
+   "section": "Раздел 4. КР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": {
+    "k": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.5615
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-062",
+   "name": "Диаметр продольной (рабочей) арматуры в колоннах/пилонах",
+   "unit": "мм",
+   "section": "Раздел 4. КР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-063",
+   "name": "Наличие и конструктивное исполнение деформационных швов",
+   "unit": "—",
+   "section": "Раздел 4. КР",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-064",
+   "name": "Привязки и габариты лифтовых шахт",
+   "unit": "мм",
+   "section": "Раздел 4. КР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-065",
+   "name": "Схемы расположения и площади технологических проемов",
+   "unit": "м²",
+   "section": "Раздел 4. КР",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "KR-066",
+   "name": "Антикоррозионная и огнезащитная обработка конструкций",
+   "unit": "Марка / Толщина",
+   "section": "Раздел 4. КР",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "IOS1-068",
+   "name": "Номинальная аппаратная защита ВРУ/ГРЩ",
+   "unit": "А (Ампер)",
+   "section": "Раздел 5. ИОС1",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "IOS1-069",
+   "name": "Сечение жил и маркировка распределительных кабелей",
+   "unit": "мм²",
+   "section": "Раздел 5. ИОС1",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.01626,
+   "weight_sources": {
+    "annex2": 1
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "IOS1-070",
+   "name": "Параметры и контуры заземления и молниезащиты",
+   "unit": "Ом / мм²",
+   "section": "Раздел 5. ИОС1",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "IOS2-071",
+   "name": "Диаметры стояков и разводящих трубопроводов В1/Т3",
+   "unit": "мм",
+   "section": "Раздел 5. ИОС2",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "IOS2-073",
+   "name": "Характеристики насосных станций хоз-питьевого водоснабжения",
+   "unit": "м³/ч / м / кВт",
+   "section": "Раздел 5. ИОС2",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": {
+    "k": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.5615
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "IOS3-074",
+   "name": "Диаметры выпусков и магистралей К1/К2",
+   "unit": "мм",
+   "section": "Раздел 5. ИОС3",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "IOS4-076",
+   "name": "Диаметры магистралей и стояков отопления (Т1, Т2)",
+   "unit": "мм",
+   "section": "Раздел 5. ИОС4",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "IOS4-077",
+   "name": "Технические параметры отопительных приборов (радиаторов)",
+   "unit": "Вт / шт.",
+   "section": "Раздел 5. ИОС4",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "IOS4-078",
+   "name": "Сечения и геометрия воздуховодов общеобменной вентиляции",
+   "unit": "мм²",
+   "section": "Раздел 5. ИОС4",
+   "mechanism": "OFFICIAL_RULE_PACK",
+   "family": "RULE_PACK",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.04878,
+   "weight_sources": {
+    "pilot": 5
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.04878,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "IOS4-079",
+   "name": "Характеристики вентиляторов общеобменной вентиляции",
+   "unit": "м³/ч / Па / кВт",
+   "section": "Раздел 5. ИОС4",
+   "mechanism": "OFFICIAL_RULE_PACK",
+   "family": "RULE_PACK",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.01626,
+   "weight_sources": {
+    "pilot": 1
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "IOS5-080",
+   "name": "Состав и емкость систем пожарной сигнализации (АПС)",
+   "unit": "шт. / зоны",
+   "section": "Раздел 5. ИОС5",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "POS-081",
+   "name": "Границы опасных зон работы грузоподъемных кранов",
+   "unit": "м",
+   "section": "Раздел 6. ПОС",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "POS-083",
+   "name": "Посадка и габариты временных зданий и сооружений",
+   "unit": "м",
+   "section": "Раздел 6. ПОС",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "POS-085",
+   "name": "Места размещения площадок складирования материалов",
+   "unit": "—",
+   "section": "Раздел 6. ПОС",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "POS-087",
+   "name": "Технологическая последовательность возведения",
+   "unit": "—",
+   "section": "Раздел 6. ПОС",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "POD-090",
+   "name": "Границы опасных зон развала и обрушения конструкций",
+   "unit": "м",
+   "section": "Раздел 7. ПОД",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "POD-091",
+   "name": "Методы и технологическая последовательность демонтажа",
+   "unit": "—",
+   "section": "Раздел 7. ПОД",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "POD-092",
+   "name": "Мероприятия по защите действующих коммуникаций",
+   "unit": "—",
+   "section": "Раздел 7. ПОД",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "POD-096",
+   "name": "Узлы временного расчленения сохраняемых конструкций",
+   "unit": "—",
+   "section": "Раздел 7. ПОД",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "POD-097",
+   "name": "Места и габариты площадок временного складирования лома",
+   "unit": "м²",
+   "section": "Раздел 7. ПОД",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "OOS-098",
+   "name": "Регистрация лимитов в АИС \"ОСИГ\"",
+   "unit": "Статус",
+   "section": "Раздел 8. ООС",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "OOS-099",
+   "name": "Верфикация транспортных средств (ГЛОНАСС)",
+   "unit": "Статус",
+   "section": "Раздел 8. ООС",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "OOS-100",
+   "name": "Фиксация рейсов через мобильный КПТС",
+   "unit": "Статус",
+   "section": "Раздел 8. ООС",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "OOS-101",
+   "name": "Сверка легитимности полной утилизации",
+   "unit": "Статус",
+   "section": "Раздел 8. ООС",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-102",
+   "name": "Деление здания на пожарные отсеки",
+   "unit": "—",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-103",
+   "name": "Пределы огнестойкости противопожарных дверей и ворот (EI)",
+   "unit": "мин",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.01626,
+   "weight_sources": {
+    "annex2": 1
+   },
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.01626,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-104",
+   "name": "Ширина и высота эвакуационных проходов",
+   "unit": "м",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-105",
+   "name": "Ширина эвакуационных дверей наружных выходов",
+   "unit": "м",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-106",
+   "name": "Направление открывания дверей на путях эвакуации",
+   "unit": "—",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-107",
+   "name": "Класс пожарной опасности отделочных материалов",
+   "unit": "Класс (КМ)",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "GENERIC_ANCHOR_ENUM",
+   "family": "ENUM",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-108",
+   "name": "Количество и расстановка извещателей АПС",
+   "unit": "шт. / м",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-109",
+   "name": "Пожарная маркировка кабелей систем ПЗ (СПЗ)",
+   "unit": "Марка",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-110",
+   "name": "Количество и расстановка оповещателей СОУЭ",
+   "unit": "шт.",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "GENERIC_TABLE_ROW_COUNT",
+   "family": "TABLE_COUNT",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-111",
+   "name": "Расположение и пределы огнестойкости клапанов (ОЗК)",
+   "unit": "мин (EI)",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-112",
+   "name": "Производительность вентиляторов ДУ и подпора воздуха",
+   "unit": "м³/ч / Па",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-113",
+   "name": "Расход воды и количество струй внутреннего пожаротушения (ВПВ)",
+   "unit": "л/с / шт.",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": {
+    "k": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.7935
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "PPM-114",
+   "name": "Расход воды на наружное пожаротушение (НПВ)",
+   "unit": "л/с",
+   "section": "Раздел 9. ППМ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ODI-115",
+   "name": "Технические параметры и наличие инвалидных подъемников",
+   "unit": "—",
+   "section": "Раздел 10. ОДИ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ODI-116",
+   "name": "Ширина коридоров на путях движения МГН",
+   "unit": "м",
+   "section": "Раздел 10. ОДИ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ODI-117",
+   "name": "Ширина дверных проемов на путях движения МГН",
+   "unit": "м",
+   "section": "Раздел 10. ОДИ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ODI-119",
+   "name": "Габариты и планировка санузлов для инвалидов (универсальные кабины)",
+   "unit": "м² / м",
+   "section": "Раздел 10. ОДИ",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ODI-120",
+   "name": "Спецификация опорных стационарных и откидных поручней",
+   "unit": "шт.",
+   "section": "Раздел 10. ОДИ",
+   "mechanism": "GENERIC_TABLE_ROW_COUNT",
+   "family": "TABLE_COUNT",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ODI-121",
+   "name": "Количество и габариты парковочных мест для инвалидов",
+   "unit": "шт. / м",
+   "section": "Раздел 10. ОДИ",
+   "mechanism": "GENERIC_ANCHOR_COMPOUND",
+   "family": "COMPOUND",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ODI-123",
+   "name": "Состав систем двухсторонней связи и вызова помощника",
+   "unit": "—",
+   "section": "Раздел 10. ОДИ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ZU-124",
+   "name": "Класс энергетической эффективности здания",
+   "unit": "Буква",
+   "section": "Раздел 11. ЗУ",
+   "mechanism": "GENERIC_ANCHOR_ENUM",
+   "family": "ENUM",
+   "extraction": {
+    "k": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson95": [
+     0.0,
+     0.5615
+    ]
+   },
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "code",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ZU-125",
+   "name": "Толщина теплоизоляционного слоя наружных стен",
+   "unit": "мм",
+   "section": "Раздел 11. ЗУ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ZU-126",
+   "name": "Коэффициент теплопроводности (λ) утеплителя стен",
+   "unit": "Вт/(м·С)",
+   "section": "Раздел 11. ЗУ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ZU-127",
+   "name": "Коэффициент сопротивления теплопередаче окон (Ro)",
+   "unit": "м²·С/Вт",
+   "section": "Раздел 11. ЗУ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ZU-128",
+   "name": "Толщина утеплителя чердачных перекрытий / кровли",
+   "unit": "мм",
+   "section": "Раздел 11. ЗУ",
+   "mechanism": "GENERIC_ANCHOR_TABLE",
+   "family": "NUMERIC_TABLE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "UNTESTED",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  },
+  {
+   "code": "ZU-131",
+   "name": "Удельный годовой расход тепловой энергии на отопление",
+   "unit": "кВт·ч/м²",
+   "section": "Раздел 11. ЗУ",
+   "mechanism": "NONE",
+   "family": "NONE",
+   "extraction": null,
+   "seeded": null,
+   "seeded_other_layer": null,
+   "status": "NO_MECHANISM",
+   "weight": 0.00813,
+   "weight_sources": {},
+   "e2e_recall_lower_bound": 0.0,
+   "priority": 0.00813,
+   "basis": {
+    "extraction": "family_holdout",
+    "recall": "none"
+   }
+  }
+ ]
+}

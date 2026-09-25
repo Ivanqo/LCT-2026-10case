@@ -1,0 +1,67 @@
+[
+  {
+    "object": "LOS3A",
+    "run_seconds": 460.7,
+    "live_fragments": 451,
+    "comparable_codes": [
+      "AR-041",
+      "KR-067",
+      "PZ-002",
+      "PZ-004",
+      "PZ-005",
+      "PZ-006",
+      "PZ-008",
+      "PZ-022",
+      "PZ-023",
+      "SPZU-024"
+    ],
+    "pools_captured": 26
+  },
+  {
+    "object": "ALT79B",
+    "run_seconds": 156.7,
+    "live_fragments": 381,
+    "comparable_codes": [
+      "KR-067",
+      "PZ-023",
+      "SPZU-024"
+    ],
+    "pools_captured": 17
+  },
+  {
+    "object": "POL17",
+    "run_seconds": 348.6,
+    "live_fragments": 319,
+    "comparable_codes": [
+      "AR-041",
+      "PZ-005",
+      "PZ-006",
+      "PZ-022",
+      "PZ-023"
+    ],
+    "pools_captured": 24
+  },
+  {
+    "object": "DOO25",
+    "run_seconds": 201.3,
+    "live_fragments": 119,
+    "comparable_codes": [
+      "PZ-023"
+    ],
+    "pools_captured": 7
+  },
+  {
+    "object": "OKT103",
+    "run_seconds": 155.1,
+    "live_fragments": 271,
+    "comparable_codes": [],
+    "pools_captured": 14
+  },
+  {
+    "object": "IZM12",
+    "run_seconds": 229.2,
+    "live_fragments": 216,
+    "comparable_codes": [],
+    "pools_captured": 13
+  }
+]

@@ -1,0 +1,75 @@
+{
+ "object": "DOO25",
+ "mode": "tagger",
+ "pid": 29616,
+ "wall_seconds": 162.08,
+ "diagnostics": {
+  "documents_scanned": 1294,
+  "documents_skipped_already_tagged": 0,
+  "documents_failed": 0,
+  "pages_scanned": 14890,
+  "fragments_created": 569,
+  "fragments_updated": 0,
+  "semantic_rejections": 31,
+  "semantic_scored": 600,
+  "semantic_unavailable": 0,
+  "documents_planned": 1294,
+  "documents_deferred_by_cap": 0,
+  "documents_not_scannable": 456,
+  "documents_not_applicable": 0,
+  "cache_hits": 0,
+  "workers": 12,
+  "worker_failures_retried": 0,
+  "coverage": {
+   "enabled": true,
+   "complete": true,
+   "stages": {
+    "PD": {
+     "documents_total": 88,
+     "documents_scannable": 85,
+     "documents_scanned": 85,
+     "documents_partial": 8,
+     "documents_no_text_layer": 0,
+     "documents_failed": 0,
+     "documents_not_scanned": 0,
+     "documents_not_scannable": 3,
+     "documents_not_applicable": 0,
+     "pages_scanned": 5859,
+     "pages_total": 7540
+    },
+    "RD": {
+     "documents_total": 883,
+     "documents_scannable": 656,
+     "documents_scanned": 656,
+     "documents_partial": 7,
+     "documents_no_text_layer": 385,
+     "documents_failed": 0,
+     "documents_not_scanned": 0,
+     "documents_not_scannable": 227,
+     "documents_not_applicable": 0,
+     "pages_scanned": 6485,
+     "pages_total": 6842
+    },
+    "ID": {
+     "documents_total": 779,
+     "documents_scannable": 553,
+     "documents_scanned": 553,
+     "documents_partial": 3,
+     "documents_no_text_layer": 384,
+     "documents_failed": 0,
+     "documents_not_scanned": 0,
+     "documents_not_scannable": 226,
+     "documents_not_applicable": 0,
+     "pages_scanned": 2546,
+     "pages_total": 2690
+    }
+   },
+   "documents_other_stage": 0,
+   "summary": "Живой тэггер кандидатов: PD: просканировано 85 из 85 документов (только первые страницы у 8; не PDF 3); RD: просканировано 656 из 656 документов (только первые страницы у 7; без текстового слоя 385; не PDF 227); ID: просканировано 553 из 553 документов (только первые страницы у 3; без текстового слоя 384; не PDF 226)"
+  },
+  "plan_seconds": 0.03,
+  "scan_seconds": 139.05,
+  "merge_seconds": 22.98,
+  "elapsed_seconds": 162.06
+ }
+}

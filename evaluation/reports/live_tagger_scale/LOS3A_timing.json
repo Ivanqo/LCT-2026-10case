@@ -1,0 +1,64 @@
+{
+ "object": "LOS3A",
+ "runs": [
+  {
+   "workers": 1,
+   "wall_seconds": 521.89,
+   "plan_s": 0.0,
+   "scan_s": 502.69,
+   "merge_s": 19.19,
+   "documents_scanned": 151,
+   "pages_scanned": 5964,
+   "fragments": 451,
+   "failed": 0,
+   "pages_per_second": 11.9,
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 47 из 47 документов (только первые страницы у 3); RD: просканировано 103 из 103 документов; ID: просканировано 1 из 1 документов (только первые страницы у 1)"
+  },
+  {
+   "workers": 4,
+   "wall_seconds": 238.42,
+   "plan_s": 0.0,
+   "scan_s": 183.59,
+   "merge_s": 54.81,
+   "documents_scanned": 151,
+   "pages_scanned": 5964,
+   "fragments": 451,
+   "failed": 0,
+   "pages_per_second": 32.5,
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 47 из 47 документов (только первые страницы у 3); RD: просканировано 103 из 103 документов; ID: просканировано 1 из 1 документов (только первые страницы у 1)"
+  },
+  {
+   "workers": 8,
+   "wall_seconds": 150.06,
+   "plan_s": 0.0,
+   "scan_s": 126.72,
+   "merge_s": 23.33,
+   "documents_scanned": 151,
+   "pages_scanned": 5964,
+   "fragments": 451,
+   "failed": 0,
+   "pages_per_second": 47.1,
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 47 из 47 документов (только первые страницы у 3); RD: просканировано 103 из 103 документов; ID: просканировано 1 из 1 документов (только первые страницы у 1)"
+  },
+  {
+   "workers": 12,
+   "wall_seconds": 88.39,
+   "plan_s": 0.0,
+   "scan_s": 68.88,
+   "merge_s": 19.5,
+   "documents_scanned": 151,
+   "pages_scanned": 5964,
+   "fragments": 451,
+   "failed": 0,
+   "pages_per_second": 86.6,
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 47 из 47 документов (только первые страницы у 3); RD: просканировано 103 из 103 документов; ID: просканировано 1 из 1 документов (только первые страницы у 1)"
+  }
+ ],
+ "cache": {
+  "cold_wall_seconds": 84.08,
+  "warm_wall_seconds": 42.69,
+  "warm_cache_hits": 141,
+  "warm_workers": 10,
+  "warm_scan_seconds": 24.89
+ }
+}

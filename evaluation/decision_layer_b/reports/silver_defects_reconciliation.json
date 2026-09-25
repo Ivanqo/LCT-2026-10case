@@ -1,0 +1,682 @@
+{
+ "records": 48,
+ "summary": {
+  "MATCH": 21,
+  "NOT_DETECTABLE_FROM_METADATA": 20,
+  "COVERED_BY_REVISION_ANALYSIS": 7
+ },
+ "results": [
+  {
+   "finding_id": "ALT79B-F-0001",
+   "object": "ALT79B",
+   "finding_type": "UNREADABLE_OR_EMPTY_SOURCE_FILE",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_files": 1,
+   "detected_files": 1,
+   "missed": [],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "ALT79B-F-0002",
+   "object": "ALT79B",
+   "finding_type": "UNREADABLE_OR_EMPTY_SOURCE_FILE",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_files": 1,
+   "detected_files": 1,
+   "missed": [],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "UNDMS-F-0001",
+   "object": "UNDMS",
+   "finding_type": "TEMPORARY_EDITOR_ARTIFACTS",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_files": 8,
+   "detected_files": 8,
+   "missed": [],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "UNDMS-F-0002",
+   "object": "UNDMS",
+   "finding_type": "PDF_WITHOUT_MACHINE_READABLE_TEXT",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "OKT103-F-0001",
+   "object": "OKT103",
+   "finding_type": "PDF_WITHOUT_MACHINE_READABLE_TEXT",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "POL16-F-0001",
+   "object": "POL16",
+   "finding_type": "PDF_WITHOUT_MACHINE_READABLE_TEXT",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "DOO25-F-0001",
+   "object": "DOO25",
+   "finding_type": "TEMPORARY_EDITOR_ARTIFACTS",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_files": 6,
+   "detected_files": 6,
+   "missed": [],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "DOO25-F-0002",
+   "object": "DOO25",
+   "finding_type": "PDF_WITHOUT_MACHINE_READABLE_TEXT",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "SOSH25-F-0001",
+   "object": "SOSH25",
+   "finding_type": "TEMPORARY_EDITOR_ARTIFACTS",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_files": 75,
+   "detected_files": 75,
+   "missed": [],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "SOSH25-F-0002",
+   "object": "SOSH25",
+   "finding_type": "UNREADABLE_OR_EMPTY_SOURCE_FILE",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_files": 1,
+   "detected_files": 1,
+   "missed": [],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "SOSH25-F-0003",
+   "object": "SOSH25",
+   "finding_type": "PDF_WITHOUT_MACHINE_READABLE_TEXT",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "ALT79B-F-0003",
+   "object": "ALT79B",
+   "finding_type": "EXACT_DUPLICATES_WITHIN_STAGE",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_redundant_files": 5,
+   "detected_redundant_files": 19,
+   "missed": [],
+   "extra": [
+    "ALT79B-000017",
+    "ALT79B-000027",
+    "ALT79B-000029",
+    "ALT79B-000033",
+    "ALT79B-000036",
+    "ALT79B-000039",
+    "ALT79B-000041",
+    "ALT79B-000043",
+    "ALT79B-000048",
+    "ALT79B-000049"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "UNDMS-F-0003",
+   "object": "UNDMS",
+   "finding_type": "EXACT_DUPLICATES_WITHIN_STAGE",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_redundant_files": 5,
+   "detected_redundant_files": 113,
+   "missed": [],
+   "extra": [
+    "UNDMS-000474",
+    "UNDMS-000475",
+    "UNDMS-000476",
+    "UNDMS-000477",
+    "UNDMS-000478",
+    "UNDMS-000479",
+    "UNDMS-000480",
+    "UNDMS-000481",
+    "UNDMS-000482",
+    "UNDMS-000483"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "OKT103-F-0002",
+   "object": "OKT103",
+   "finding_type": "EXACT_DUPLICATES_WITHIN_STAGE",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_redundant_files": 9,
+   "detected_redundant_files": 11,
+   "missed": [],
+   "extra": [
+    "OKT103-000059",
+    "OKT103-000060"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "POL16-F-0002",
+   "object": "POL16",
+   "finding_type": "EXACT_DUPLICATES_WITHIN_STAGE",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_redundant_files": 5,
+   "detected_redundant_files": 65,
+   "missed": [],
+   "extra": [
+    "POL16-000084",
+    "POL16-000087",
+    "POL16-000091",
+    "POL16-000095",
+    "POL16-000099",
+    "POL16-000103",
+    "POL16-000106",
+    "POL16-000109",
+    "POL16-000112",
+    "POL16-000116"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "DOO25-F-0003",
+   "object": "DOO25",
+   "finding_type": "EXACT_DUPLICATES_ACROSS_STAGES",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_groups": 5,
+   "detected_groups": 660,
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "DOO25-F-0004",
+   "object": "DOO25",
+   "finding_type": "EXACT_DUPLICATES_WITHIN_STAGE",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_redundant_files": 5,
+   "detected_redundant_files": 261,
+   "missed": [],
+   "extra": [
+    "DOO25-000037",
+    "DOO25-000038",
+    "DOO25-000039",
+    "DOO25-000040",
+    "DOO25-000051",
+    "DOO25-000056",
+    "DOO25-000061",
+    "DOO25-000072",
+    "DOO25-000073",
+    "DOO25-000074"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "DOO25-F-0005",
+   "object": "DOO25",
+   "finding_type": "EXACT_DUPLICATES_ACROSS_OBJECTS",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "SOSH25-F-0004",
+   "object": "SOSH25",
+   "finding_type": "EXACT_DUPLICATES_ACROSS_STAGES",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_groups": 0,
+   "detected_groups": 0,
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "SOSH25-F-0005",
+   "object": "SOSH25",
+   "finding_type": "EXACT_DUPLICATES_WITHIN_STAGE",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_redundant_files": 31,
+   "detected_redundant_files": 304,
+   "missed": [],
+   "extra": [
+    "SOSH25-000035",
+    "SOSH25-000044",
+    "SOSH25-000045",
+    "SOSH25-000046",
+    "SOSH25-000120",
+    "SOSH25-000124",
+    "SOSH25-000126",
+    "SOSH25-000127",
+    "SOSH25-000129",
+    "SOSH25-000132"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "SOSH25-F-0006",
+   "object": "SOSH25",
+   "finding_type": "EXACT_DUPLICATES_ACROSS_OBJECTS",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "POL17-F-0001",
+   "object": "POL17",
+   "finding_type": "EXACT_DUPLICATES_WITHIN_STAGE",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "expected_redundant_files": 1,
+   "detected_redundant_files": 1,
+   "missed": [],
+   "extra": [],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "ALT79B-F-0004",
+   "object": "ALT79B",
+   "finding_type": "SAME_LOGICAL_NAME_DIFFERENT_CONTENT",
+   "status": "CANDIDATE_NEEDS_EXPERT",
+   "records": 1,
+   "detected_unordered_or_mixed": 11,
+   "result": "COVERED_BY_REVISION_ANALYSIS"
+  },
+  {
+   "finding_id": "DOO25-F-0006",
+   "object": "DOO25",
+   "finding_type": "SAME_LOGICAL_NAME_DIFFERENT_CONTENT",
+   "status": "CANDIDATE_NEEDS_EXPERT",
+   "records": 8,
+   "detected_unordered_or_mixed": 18,
+   "result": "COVERED_BY_REVISION_ANALYSIS"
+  },
+  {
+   "finding_id": "OKT103-F-0003",
+   "object": "OKT103",
+   "finding_type": "SAME_LOGICAL_NAME_DIFFERENT_CONTENT",
+   "status": "CANDIDATE_NEEDS_EXPERT",
+   "records": 7,
+   "detected_unordered_or_mixed": 3,
+   "result": "COVERED_BY_REVISION_ANALYSIS"
+  },
+  {
+   "finding_id": "POL16-F-0003",
+   "object": "POL16",
+   "finding_type": "SAME_LOGICAL_NAME_DIFFERENT_CONTENT",
+   "status": "CANDIDATE_NEEDS_EXPERT",
+   "records": 4,
+   "detected_unordered_or_mixed": 17,
+   "result": "COVERED_BY_REVISION_ANALYSIS"
+  },
+  {
+   "finding_id": "POL17-F-0002",
+   "object": "POL17",
+   "finding_type": "SAME_LOGICAL_NAME_DIFFERENT_CONTENT",
+   "status": "CANDIDATE_NEEDS_EXPERT",
+   "records": 7,
+   "detected_unordered_or_mixed": 3,
+   "result": "COVERED_BY_REVISION_ANALYSIS"
+  },
+  {
+   "finding_id": "SOSH25-F-0007",
+   "object": "SOSH25",
+   "finding_type": "SAME_LOGICAL_NAME_DIFFERENT_CONTENT",
+   "status": "CANDIDATE_NEEDS_EXPERT",
+   "records": 8,
+   "detected_unordered_or_mixed": 6,
+   "result": "COVERED_BY_REVISION_ANALYSIS"
+  },
+  {
+   "finding_id": "UNDMS-F-0004",
+   "object": "UNDMS",
+   "finding_type": "SAME_LOGICAL_NAME_DIFFERENT_CONTENT",
+   "status": "CANDIDATE_NEEDS_EXPERT",
+   "records": 8,
+   "detected_unordered_or_mixed": 8,
+   "result": "COVERED_BY_REVISION_ANALYSIS"
+  },
+  {
+   "finding_id": "ALT79B-F-0005",
+   "object": "ALT79B",
+   "finding_type": "MISSING_COMPARISON_STAGE",
+   "status": "DATASET_COMPLETENESS_ERROR",
+   "case": "Алтуфьевское, 79Б",
+   "expected_missing": [
+    "ID"
+   ],
+   "detected_missing": [
+    "ID"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "UNDMS-F-0005",
+   "object": "UNDMS",
+   "finding_type": "MISSING_COMPARISON_STAGE",
+   "status": "DATASET_COMPLETENESS_ERROR",
+   "case": "Дело 52872 ТПУ Рассказовка этап 2.1",
+   "expected_missing": [
+    "RD"
+   ],
+   "detected_missing": [
+    "RD"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "UNDMS-F-0006",
+   "object": "UNDMS",
+   "finding_type": "MISSING_COMPARISON_STAGE",
+   "status": "DATASET_COMPLETENESS_ERROR",
+   "case": "Дело 58486мс староватутинский пр -д",
+   "expected_missing": [
+    "ID"
+   ],
+   "detected_missing": [
+    "ID"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "UNDMS-F-0007",
+   "object": "UNDMS",
+   "finding_type": "MISSING_COMPARISON_STAGE",
+   "status": "DATASET_COMPLETENESS_ERROR",
+   "case": "Дело №54552 пр.пр.3982",
+   "expected_missing": [
+    "ID"
+   ],
+   "detected_missing": [
+    "ID"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "UNDMS-F-0008",
+   "object": "UNDMS",
+   "finding_type": "MISSING_COMPARISON_STAGE",
+   "status": "DATASET_COMPLETENESS_ERROR",
+   "case": "Дело №58401 ул. Ташкентская",
+   "expected_missing": [
+    "ID",
+    "PD"
+   ],
+   "detected_missing": [
+    "ID",
+    "PD"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "DOO25-F-0007",
+   "object": "DOO25",
+   "finding_type": "ID_REFERENCED_RD_NOT_IN_PACKAGE",
+   "status": "DATASET_COMPLETENESS_ERROR",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "IZM12-F-0001",
+   "object": "IZM12",
+   "finding_type": "POST_EXECUTION_RD_REVISION_RECHECK",
+   "status": "CANDIDATE_NEEDS_EXPERT",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "LOS3A-F-0001",
+   "object": "LOS3A",
+   "finding_type": "ID_REFERENCES_OLDER_RD_REVISION",
+   "status": "CANDIDATE_NEEDS_EXPERT",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "POL16-F-0004",
+   "object": "POL16",
+   "finding_type": "POST_EXECUTION_RD_REVISION_RECHECK",
+   "status": "CANDIDATE_NEEDS_EXPERT",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "POL17-F-0003",
+   "object": "POL17",
+   "finding_type": "ID_REFERENCED_RD_NOT_IN_PACKAGE",
+   "status": "DATASET_COMPLETENESS_ERROR",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "SOSH25-F-0008",
+   "object": "SOSH25",
+   "finding_type": "ID_REFERENCED_RD_NOT_IN_PACKAGE",
+   "status": "DATASET_COMPLETENESS_ERROR",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "DOO25-F-0008",
+   "object": "DOO25",
+   "finding_type": "ACT_NUMBER_FILENAME_CONTENT_MISMATCH",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "SOSH25-F-0009",
+   "object": "SOSH25",
+   "finding_type": "ACT_NUMBER_FILENAME_CONTENT_MISMATCH",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "ALT79B-F-0006",
+   "object": "ALT79B",
+   "finding_type": "MIXED_PROJECT_BASELINES",
+   "status": "CANDIDATE_NEEDS_EXPERT",
+   "record_families": {
+    "ЖС-РД-270121": 10,
+    "2025-04": 10
+   },
+   "detected_mixed_series_sections": 11,
+   "detected_series": [
+    "|202504266",
+    "|ЖС270121",
+    "|ЖСРЛ06242024"
+   ],
+   "result": "MATCH"
+  },
+  {
+   "finding_id": "ALT79B-F-0007",
+   "object": "ALT79B",
+   "finding_type": "FILENAME_TITLE_CODE_MISMATCH",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "UNDMS-F-0009",
+   "object": "UNDMS",
+   "finding_type": "FILENAME_TITLE_CODE_MISMATCH",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "IZM12-F-0002",
+   "object": "IZM12",
+   "finding_type": "FILENAME_TITLE_CODE_MISMATCH",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "POL16-F-0005",
+   "object": "POL16",
+   "finding_type": "FILENAME_TITLE_CODE_MISMATCH",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  },
+  {
+   "finding_id": "DOO25-F-0009",
+   "object": "DOO25",
+   "finding_type": "FILENAME_TITLE_CODE_MISMATCH",
+   "status": "DATASET_DEFECT_CONFIRMED",
+   "result": "NOT_DETECTABLE_FROM_METADATA",
+   "note": "content-level (text layer / act number / title cipher / ID->RD reference): needs the page text, not the manifest"
+  }
+ ],
+ "per_object": {
+  "ALT79B": {
+   "files": 78,
+   "excluded_by_reason": {
+    "EXACT_DUPLICATE_WITHIN_STAGE": 19,
+    "UNREADABLE_OR_EMPTY_SOURCE_FILE": 2
+   },
+   "cross_stage_duplicate_groups": 0,
+   "revision_conflicts": {
+    "MIXED_PROJECT_BASELINES": 11
+   },
+   "superseded_revisions": 0,
+   "stage_files": {
+    "PD": 47,
+    "RD": 10,
+    "ID": 0
+   }
+  },
+  "DOO25": {
+   "files": 1770,
+   "excluded_by_reason": {
+    "EXACT_DUPLICATE_WITHIN_STAGE": 261,
+    "TEMPORARY_OR_SERVICE_FILE": 6
+   },
+   "cross_stage_duplicate_groups": 660,
+   "revision_conflicts": {
+    "MIXED_PROJECT_BASELINES": 16,
+    "UNORDERED_REVISIONS": 2
+   },
+   "superseded_revisions": 0,
+   "stage_files": {
+    "PD": 88,
+    "RD": 755,
+    "ID": 660
+   }
+  },
+  "IZM12": {
+   "files": 72,
+   "excluded_by_reason": {},
+   "cross_stage_duplicate_groups": 0,
+   "revision_conflicts": {},
+   "superseded_revisions": 0,
+   "stage_files": {
+    "PD": 54,
+    "RD": 9,
+    "ID": 9
+   }
+  },
+  "LOS3A": {
+   "files": 152,
+   "excluded_by_reason": {},
+   "cross_stage_duplicate_groups": 0,
+   "revision_conflicts": {},
+   "superseded_revisions": 0,
+   "stage_files": {
+    "PD": 47,
+    "RD": 104,
+    "ID": 1
+   }
+  },
+  "OKT103": {
+   "files": 176,
+   "excluded_by_reason": {
+    "EXACT_DUPLICATE_WITHIN_STAGE": 11
+   },
+   "cross_stage_duplicate_groups": 0,
+   "revision_conflicts": {
+    "UNORDERED_REVISIONS": 3
+   },
+   "superseded_revisions": 2,
+   "stage_files": {
+    "PD": 23,
+    "RD": 16,
+    "ID": 126
+   }
+  },
+  "POL16": {
+   "files": 293,
+   "excluded_by_reason": {
+    "EXACT_DUPLICATE_WITHIN_STAGE": 65
+   },
+   "cross_stage_duplicate_groups": 0,
+   "revision_conflicts": {
+    "MIXED_PROJECT_BASELINES": 1,
+    "UNORDERED_REVISIONS": 16
+   },
+   "superseded_revisions": 16,
+   "stage_files": {
+    "PD": 35,
+    "RD": 173,
+    "ID": 20
+   }
+  },
+  "POL17": {
+   "files": 142,
+   "excluded_by_reason": {
+    "EXACT_DUPLICATE_WITHIN_STAGE": 1
+   },
+   "cross_stage_duplicate_groups": 0,
+   "revision_conflicts": {
+    "MIXED_PROJECT_BASELINES": 1,
+    "UNORDERED_REVISIONS": 2
+   },
+   "superseded_revisions": 3,
+   "stage_files": {
+    "PD": 65,
+    "RD": 50,
+    "ID": 26
+   }
+  },
+  "SOSH25": {
+   "files": 3774,
+   "excluded_by_reason": {
+    "EXACT_DUPLICATE_WITHIN_STAGE": 304,
+    "TEMPORARY_OR_SERVICE_FILE": 75,
+    "UNREADABLE_OR_EMPTY_SOURCE_FILE": 1
+   },
+   "cross_stage_duplicate_groups": 0,
+   "revision_conflicts": {
+    "MIXED_PROJECT_BASELINES": 1,
+    "UNORDERED_REVISIONS": 5
+   },
+   "superseded_revisions": 0,
+   "stage_files": {
+    "PD": 129,
+    "RD": 137,
+    "ID": 3128
+   }
+  },
+  "UNDMS": {
+   "files": 2472,
+   "excluded_by_reason": {
+    "TEMPORARY_OR_SERVICE_FILE": 8,
+    "EXACT_DUPLICATE_WITHIN_STAGE": 113
+   },
+   "cross_stage_duplicate_groups": 0,
+   "revision_conflicts": {
+    "MIXED_PROJECT_BASELINES": 8
+   },
+   "superseded_revisions": 0,
+   "stage_files": {
+    "PD": 675,
+    "RD": 115,
+    "ID": 1560
+   }
+  }
+ }
+}

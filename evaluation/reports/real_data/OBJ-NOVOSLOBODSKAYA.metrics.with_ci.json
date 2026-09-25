@@ -1,0 +1,216 @@
+{
+  "ocr_cer": null,
+  "ocr_wer": null,
+  "ocr_character_accuracy": null,
+  "ocr_character_accuracy_sample_size": null,
+  "ocr_character_accuracy_confidence_interval_95": null,
+  "ocr_coverage": null,
+  "ocr_items": 0,
+  "key_field_exact_match": null,
+  "key_field_exact_match_sample_size": null,
+  "key_field_exact_match_confidence_interval_95": null,
+  "document_linking_accuracy": 0.0,
+  "document_linking_accuracy_sample_size": 12,
+  "document_linking_accuracy_confidence_interval_95": [
+    2.1025014877572554e-17,
+    0.24249400665524087
+  ],
+  "evidence_page_accuracy": 0.4166666666666667,
+  "source_localization_exact_file_page": 0.4166666666666667,
+  "evidence_bbox_iou": null,
+  "evidence_bbox_items": 0,
+  "evidence_localization_accuracy": 0.4166666666666667,
+  "evidence_localization_accuracy_sample_size": 12,
+  "evidence_localization_accuracy_confidence_interval_95": [
+    0.19326031365875665,
+    0.6804886874504503
+  ],
+  "evidence_localization_accuracy_strict_public_gold": 0.4166666666666667,
+  "evidence_localization_accuracy_source_verified": 0.4166666666666667,
+  "evidence_localization_adjudicated_cases_applied": 0,
+  "evidence_items": 12,
+  "finding_precision": null,
+  "finding_precision_sample_size": null,
+  "finding_precision_confidence_interval_95": null,
+  "finding_recall": null,
+  "finding_recall_sample_size": null,
+  "finding_recall_confidence_interval_95": null,
+  "finding_f1": null,
+  "finding_f1_sample_size": null,
+  "finding_f1_confidence_interval_95": null,
+  "finding_detection_f1": null,
+  "finding_false_positive_rate": 0.0,
+  "finding_false_positive_rate_sample_size": 5,
+  "finding_false_positive_rate_confidence_interval_95": [
+    0.0,
+    0.43448246478317476
+  ],
+  "counts": {
+    "ocr_items": 0,
+    "key_fields": 0,
+    "document_links": 12,
+    "evidence_items": 12,
+    "findings": 5,
+    "status_value_items": 15,
+    "finding_confusion": {
+      "tp": 0,
+      "fp": 0,
+      "tn": 5,
+      "fn": 0
+    }
+  },
+  "normalized_value_and_status_accuracy": 0.8,
+  "protocol_status_accuracy": 0.8,
+  "normalized_value_accuracy": null,
+  "status_value_items": 15,
+  "false_positive_rate": 0.0,
+  "false_positive_rate_sample_size": 5,
+  "false_positive_rate_confidence_interval_95": [
+    0.0,
+    0.43448246478317476
+  ],
+  "coverage": 0.022727272727272728,
+  "abstention_rate": 0.9772727272727273,
+  "localization_completeness": 0.4166666666666667,
+  "object_level_split_valid": true,
+  "object_level_split_objects": 1,
+  "object_level_split_conflicts": {},
+  "per_category_metrics": {
+    "KR": {
+      "finding_precision": null,
+      "finding_precision_sample_size": null,
+      "finding_precision_confidence_interval_95": null,
+      "finding_recall": null,
+      "finding_recall_sample_size": null,
+      "finding_recall_confidence_interval_95": null,
+      "finding_f1": null,
+      "finding_f1_sample_size": null,
+      "finding_f1_confidence_interval_95": null,
+      "finding_detection_f1": null,
+      "finding_false_positive_rate": 0.0,
+      "finding_false_positive_rate_sample_size": 4,
+      "finding_false_positive_rate_confidence_interval_95": [
+        0.0,
+        0.4898908364545973
+      ],
+      "counts": {
+        "tp": 0,
+        "fp": 0,
+        "tn": 4,
+        "fn": 0
+      }
+    },
+    "PZ": {
+      "finding_precision": null,
+      "finding_precision_sample_size": null,
+      "finding_precision_confidence_interval_95": null,
+      "finding_recall": null,
+      "finding_recall_sample_size": null,
+      "finding_recall_confidence_interval_95": null,
+      "finding_f1": null,
+      "finding_f1_sample_size": null,
+      "finding_f1_confidence_interval_95": null,
+      "finding_detection_f1": null,
+      "finding_false_positive_rate": 0.0,
+      "finding_false_positive_rate_sample_size": 1,
+      "finding_false_positive_rate_confidence_interval_95": [
+        0.0,
+        0.7934506856227626
+      ],
+      "counts": {
+        "tp": 0,
+        "fp": 0,
+        "tn": 1,
+        "fn": 0
+      }
+    }
+  },
+  "metric_denominator_reasons": {
+    "ocr_character_accuracy": "No public/train-safe human OCR reference text is provided; page_index only marks text_source/needs_ocr.",
+    "key_field_exact_match": "Public DOCUMENT_FIELD annotations are MACHINE_ASSISTED_PREANNOTATION_NEEDS_EXPERT_ACCEPTANCE, not final key-field gold.",
+    "document_linking_accuracy": "Computed from public gold evidence file_id rows when predictions export matching evidence/document_links.",
+    "localization_completeness": "Computed from public gold evidence file_id/page rows; bbox denominator remains null unless gold bbox is present."
+  },
+  "quality_gates": {
+    "ocr_character_accuracy": {
+      "value": null,
+      "operator": ">=",
+      "threshold": 0.95,
+      "passed": null,
+      "reason": "No public/train-safe human OCR reference text is provided; page_index only marks text_source/needs_ocr."
+    },
+    "key_field_exact_match": {
+      "value": null,
+      "operator": ">=",
+      "threshold": 0.9,
+      "passed": null,
+      "reason": "Public DOCUMENT_FIELD annotations are MACHINE_ASSISTED_PREANNOTATION_NEEDS_EXPERT_ACCEPTANCE, not final key-field gold."
+    },
+    "document_linking_accuracy": {
+      "value": 0.0,
+      "operator": ">=",
+      "threshold": 0.95,
+      "passed": false,
+      "reason": null
+    },
+    "evidence_localization_accuracy": {
+      "value": 0.4166666666666667,
+      "operator": ">=",
+      "threshold": 0.95,
+      "passed": false,
+      "reason": null
+    },
+    "normalized_value_and_status_accuracy": {
+      "value": 0.8,
+      "operator": ">=",
+      "threshold": 0.9,
+      "passed": false,
+      "reason": null
+    },
+    "finding_precision": {
+      "value": null,
+      "operator": ">=",
+      "threshold": 0.9,
+      "passed": null,
+      "reason": null
+    },
+    "finding_recall": {
+      "value": null,
+      "operator": ">=",
+      "threshold": 0.8,
+      "passed": null,
+      "reason": null
+    },
+    "finding_f1": {
+      "value": null,
+      "operator": ">=",
+      "threshold": 0.85,
+      "passed": null,
+      "reason": null
+    },
+    "false_positive_rate": {
+      "value": 0.0,
+      "operator": "<=",
+      "threshold": 0.1,
+      "passed": true,
+      "reason": null
+    },
+    "object_level_split": {
+      "value": true,
+      "operator": "required",
+      "threshold": true,
+      "passed": true,
+      "objects": 1,
+      "conflicts": {}
+    },
+    "regression_gate": {
+      "value": null,
+      "operator": "max_degradation_pp",
+      "threshold": 0.02,
+      "passed": null,
+      "reason": "baseline metrics are required to evaluate recall/FPR regression"
+    }
+  },
+  "evaluation_scope": "public_matrix_checks_document_annotation_baseline_no_gold_inference",
+  "acceptance_metrics_source": "Матрица_параметров_редакция1.1.xlsx::МЕТРИКИ"
+}

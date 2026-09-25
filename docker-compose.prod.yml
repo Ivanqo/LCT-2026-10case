@@ -1,0 +1,91 @@
+services:
+  api:
+    restart: unless-stopped
+    environment:
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://app.docaibuild.ru}
+
+  rag:
+    restart: unless-stopped
+
+  ifc:
+    restart: unless-stopped
+
+  ifc_worker:
+    restart: unless-stopped
+
+  postgres:
+    restart: unless-stopped
+
+  redis:
+    restart: unless-stopped
+
+  frontend:
+    restart: unless-stopped
+
+  react_frontend:
+    restart: unless-stopped
+
+  landing:
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    environment:
+      ROOT_DOMAIN: ${ROOT_DOMAIN:-docaibuild.ru}
+      LANDING_DOMAIN: ${LANDING_DOMAIN:-landing.docaibuild.ru}
+      APP_DOMAIN: ${APP_DOMAIN:-app.docaibuild.ru}
+      CERT_NAME: ${CERT_NAME:-docaibuild.ru}
+      CLIENT_MAX_BODY_SIZE: ${CLIENT_MAX_BODY_SIZE:-100m}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/templates/https.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - certbot_www:/var/www/certbot:ro
+      - certbot_conf:/etc/letsencrypt:ro
+    depends_on:
+      landing:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+
+  nginx_bootstrap:
+    image: nginx:1.27-alpine
+    profiles: ["bootstrap"]
+    environment:
+      ROOT_DOMAIN: ${ROOT_DOMAIN:-docaibuild.ru}
+      LANDING_DOMAIN: ${LANDING_DOMAIN:-landing.docaibuild.ru}
+      APP_DOMAIN: ${APP_DOMAIN:-app.docaibuild.ru}
+      CLIENT_MAX_BODY_SIZE: ${CLIENT_MAX_BODY_SIZE:-100m}
+    ports:
+      - "80:80"
+    volumes:
+      - ./deploy/nginx/templates/bootstrap.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - certbot_www:/var/www/certbot:ro
+    depends_on:
+      landing:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+
+  certbot:
+    image: certbot/certbot:latest
+    restart: unless-stopped
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+    entrypoint: /bin/sh
+    command: >
+      -c "trap exit TERM; while :; do
+      certbot renew --webroot -w /var/www/certbot --quiet;
+      sleep 12h & wait $${!};
+      done"
+
+volumes:
+  certbot_www:
+  certbot_conf:

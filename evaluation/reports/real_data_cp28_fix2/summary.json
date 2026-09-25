@@ -1,0 +1,48 @@
+[
+  {
+    "object_id": "OBJ-NOVOSLOBODSKAYA",
+    "process_id": "027a8100f6ad4e338c76b1bf27de4100",
+    "protocol_id": 38,
+    "protocol_version": 1,
+    "protocol_status": "DRAFT",
+    "seconds": 18.23,
+    "statuses": {
+      "NOT_COMPARABLE": 108,
+      "NEGATIVE_VERIFIED": 5,
+      "MISSING_EVIDENCE": 21
+    },
+    "fragments": 197,
+    "submission_valid": true,
+    "coverage": 0.022727272727272728,
+    "finding_f1": null,
+    "false_positive_rate": 0.0,
+    "source_localization_exact_file_page": 0.75,
+    "evidence_localization_accuracy": 0.75,
+    "normalized_value_and_status_accuracy": 1.0,
+    "object_level_split_valid": true,
+    "abstention_rate": 0.9772727272727273
+  },
+  {
+    "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+    "process_id": "e1a78ef8b0c84d5cad1617f153ea99e1",
+    "protocol_id": 39,
+    "protocol_version": 1,
+    "protocol_status": "DRAFT",
+    "seconds": 17.45,
+    "statuses": {
+      "CLARIFICATION_REQUIRED": 130,
+      "CANDIDATE": 6,
+      "NEGATIVE_VERIFIED": 4
+    },
+    "fragments": 191,
+    "submission_valid": true,
+    "coverage": 0.015151515151515152,
+    "finding_f1": 1.0,
+    "false_positive_rate": null,
+    "source_localization_exact_file_page": 0.9166666666666666,
+    "evidence_localization_accuracy": 0.9166666666666666,
+    "normalized_value_and_status_accuracy": 1.0,
+    "object_level_split_valid": true,
+    "abstention_rate": 0.9848484848484849
+  }
+]

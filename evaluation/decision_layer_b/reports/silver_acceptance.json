@@ -1,0 +1,784 @@
+{
+ "acceptance": {
+  "unsupported_checks": 6,
+  "committed_before": 6,
+  "committed_after": 0,
+  "after_detail": {
+   "LOS3A::AR-041": {
+    "label": "COMPARISON_IMPOSSIBLE",
+    "reason": "multi_instance_parameter",
+    "status": "NOT_COMPARABLE"
+   },
+   "LOS3A::KR-067": {
+    "label": "COMPARISON_IMPOSSIBLE",
+    "reason": "evidence_discipline_mismatch",
+    "status": "NOT_COMPARABLE"
+   },
+   "ALT79B::KR-067": {
+    "label": "COMPARISON_IMPOSSIBLE",
+    "reason": "revision_conflict",
+    "status": "NOT_COMPARABLE"
+   },
+   "POL17::PZ-005": {
+    "label": "COMPARISON_IMPOSSIBLE",
+    "reason": "revision_conflict",
+    "status": "NOT_COMPARABLE"
+   },
+   "POL17::PZ-006": {
+    "label": "COMPARISON_IMPOSSIBLE",
+    "reason": "revision_conflict",
+    "status": "NOT_COMPARABLE"
+   },
+   "POL17::AR-041": {
+    "label": "COMPARISON_IMPOSSIBLE",
+    "reason": "multi_instance_parameter",
+    "status": "NOT_COMPARABLE"
+   }
+  },
+  "PASS": true
+ },
+ "table": [
+  {
+   "check": "LOS3A::PZ-002",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "CANDIDATE",
+    "label": "VIOLATION_PRESENT",
+    "finding_status": "CANDIDATE",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-table-v1",
+    "reason": "evidence_discipline_mismatch",
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::PZ-004",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::PZ-005",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::PZ-006",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::PZ-008",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "CANDIDATE",
+    "label": "VIOLATION_PRESENT",
+    "finding_status": "CANDIDATE",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-table-v1",
+    "reason": "evidence_discipline_mismatch",
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::PZ-022",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "CANDIDATE",
+    "label": "VIOLATION_PRESENT",
+    "finding_status": "CANDIDATE",
+    "model": "generic-anchor-enum-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-enum-v1",
+    "reason": "evidence_discipline_mismatch",
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::PZ-023",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-enum-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-enum-v1",
+    "reason": "evidence_discipline_mismatch",
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::SPZU-024",
+   "truth": "VIOLATION_PRESENT",
+   "in_original_19": true,
+   "before": {
+    "outcome": "CANDIDATE",
+    "label": "VIOLATION_PRESENT",
+    "finding_status": "CANDIDATE",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-table-v1",
+    "reason": "unit_evidence_absent",
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::AR-041",
+   "truth": "NEEDS_REVIEW",
+   "in_original_19": true,
+   "before": {
+    "outcome": "CANDIDATE",
+    "label": "VIOLATION_PRESENT",
+    "finding_status": "CANDIDATE",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-table-v1",
+    "reason": "multi_instance_parameter",
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::KR-067",
+   "truth": "NEEDS_REVIEW",
+   "in_original_19": true,
+   "before": {
+    "outcome": "CANDIDATE",
+    "label": "VIOLATION_PRESENT",
+    "finding_status": "CANDIDATE",
+    "model": "generic-anchor-compound-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-compound-v1",
+    "reason": "evidence_discipline_mismatch",
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::PZ-001",
+   "truth": "NO_VIOLATION",
+   "in_original_19": false,
+   "before": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "official-evidence-baseline-v1",
+    "reason": "values_not_extracted",
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "official-evidence-baseline-v1",
+    "reason": "values_not_extracted",
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::PZ-010",
+   "truth": "NO_VIOLATION",
+   "in_original_19": false,
+   "before": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "official-evidence-baseline-v1",
+    "reason": "values_not_extracted",
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "official-evidence-baseline-v1",
+    "reason": "values_not_extracted",
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::PZ-011",
+   "truth": "NO_VIOLATION",
+   "in_original_19": false,
+   "before": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "MISSING_EVIDENCE",
+    "model": "official-evidence-baseline-v1",
+    "reason": "no_relevant_evidence",
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "MISSING_EVIDENCE",
+    "model": "official-evidence-baseline-v1",
+    "reason": "no_relevant_evidence",
+    "trigger": null
+   }
+  },
+  {
+   "check": "LOS3A::PZ-012",
+   "truth": "NO_VIOLATION",
+   "in_original_19": false,
+   "before": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "official-evidence-baseline-v1",
+    "reason": "values_not_extracted",
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "official-evidence-baseline-v1",
+    "reason": "values_not_extracted",
+    "trigger": null
+   }
+  },
+  {
+   "check": "ALT79B::PZ-023",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-enum-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-enum-v1",
+    "reason": "revision_conflict",
+    "trigger": null
+   }
+  },
+  {
+   "check": "ALT79B::SPZU-024",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "MISSING_DOCUMENT",
+    "finding_status": "MISSING_EVIDENCE",
+    "model": "generic-anchor-table-v1",
+    "reason": "missing_discipline_document",
+    "trigger": null
+   }
+  },
+  {
+   "check": "ALT79B::KR-067",
+   "truth": "NEEDS_REVIEW",
+   "in_original_19": true,
+   "before": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-compound-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-compound-v1",
+    "reason": "revision_conflict",
+    "trigger": null
+   }
+  },
+  {
+   "check": "POL17::PZ-023",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-enum-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-enum-v1",
+    "reason": "revision_conflict",
+    "trigger": null
+   }
+  },
+  {
+   "check": "POL17::PZ-022",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-enum-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-enum-v1",
+    "reason": null,
+    "trigger": null
+   }
+  },
+  {
+   "check": "POL17::PZ-005",
+   "truth": "NEEDS_REVIEW",
+   "in_original_19": true,
+   "before": {
+    "outcome": "CANDIDATE",
+    "label": "VIOLATION_PRESENT",
+    "finding_status": "CANDIDATE",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-table-v1",
+    "reason": "revision_conflict",
+    "trigger": null
+   }
+  },
+  {
+   "check": "POL17::PZ-006",
+   "truth": "NEEDS_REVIEW",
+   "in_original_19": true,
+   "before": {
+    "outcome": "CANDIDATE",
+    "label": "VIOLATION_PRESENT",
+    "finding_status": "CANDIDATE",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-table-v1",
+    "reason": "revision_conflict",
+    "trigger": null
+   }
+  },
+  {
+   "check": "POL17::AR-041",
+   "truth": "NEEDS_REVIEW",
+   "in_original_19": true,
+   "before": {
+    "outcome": "CANDIDATE",
+    "label": "VIOLATION_PRESENT",
+    "finding_status": "CANDIDATE",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-table-v1",
+    "reason": "multi_instance_parameter",
+    "trigger": null
+   }
+  },
+  {
+   "check": "DOO25::PZ-023",
+   "truth": "NO_VIOLATION",
+   "in_original_19": true,
+   "before": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-enum-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-enum-v1",
+    "reason": "revision_conflict",
+    "trigger": null
+   }
+  },
+  {
+   "check": "DOO25::PZ-001",
+   "truth": "NO_VIOLATION",
+   "in_original_19": false,
+   "before": {
+    "outcome": "NEGATIVE_VERIFIED",
+    "label": "NO_VIOLATION",
+    "finding_status": "NEGATIVE_VERIFIED",
+    "model": "generic-anchor-table-v1",
+    "reason": null,
+    "trigger": null
+   },
+   "after": {
+    "outcome": "ABSTAIN",
+    "label": "COMPARISON_IMPOSSIBLE",
+    "finding_status": "NOT_COMPARABLE",
+    "model": "generic-anchor-table-v1",
+    "reason": "revision_conflict",
+    "trigger": null
+   }
+  }
+ ],
+ "metrics": {
+  "before": {
+   "committed_groups": 22,
+   "committed_by_truth": {
+    "NEEDS_REVIEW": 6,
+    "NO_VIOLATION": 13,
+    "UNLABELED": 2,
+    "VIOLATION_PRESENT": 1
+   },
+   "coverage_of_determinate": {
+    "k": 14,
+    "n": 18,
+    "value": 0.778,
+    "wilson95": [
+     0.548,
+     0.91
+    ]
+   },
+   "resolved_correct": {
+    "k": 11,
+    "n": 14,
+    "value": 0.786,
+    "wilson95": [
+     0.524,
+     0.924
+    ]
+   },
+   "precision_of_CANDIDATE": {
+    "k": 1,
+    "n": 4,
+    "value": 0.25,
+    "wilson95": [
+     0.046,
+     0.699
+    ]
+   },
+   "npv_of_NEGATIVE_VERIFIED": {
+    "k": 10,
+    "n": 10,
+    "value": 1.0,
+    "wilson95": [
+     0.722,
+     1.0
+    ]
+   },
+   "false_positive_rate_on_no_violation": {
+    "k": 3,
+    "n": 17,
+    "value": 0.176,
+    "wilson95": [
+     0.062,
+     0.41
+    ]
+   },
+   "recall_of_violations_abstain_counts_as_miss": {
+    "k": 1,
+    "n": 1,
+    "value": 1.0,
+    "wilson95": [
+     0.207,
+     1.0
+    ]
+   },
+   "evaluate_case10": {
+    "finding_precision": 0.25,
+    "finding_recall": 1.0,
+    "finding_f1": 0.4,
+    "counts": {
+     "ocr_items": 0,
+     "key_fields": 0,
+     "document_links": 0,
+     "evidence_items": 0,
+     "findings": 18,
+     "status_value_items": 0,
+     "finding_confusion": {
+      "tp": 1,
+      "fp": 3,
+      "tn": 14,
+      "fn": 0
+     }
+    }
+   }
+  },
+  "after": {
+   "committed_groups": 4,
+   "committed_by_truth": {
+    "NO_VIOLATION": 4
+   },
+   "coverage_of_determinate": {
+    "k": 4,
+    "n": 18,
+    "value": 0.222,
+    "wilson95": [
+     0.09,
+     0.452
+    ]
+   },
+   "resolved_correct": {
+    "k": 4,
+    "n": 4,
+    "value": 1.0,
+    "wilson95": [
+     0.51,
+     1.0
+    ]
+   },
+   "precision_of_CANDIDATE": {
+    "k": 0,
+    "n": 0,
+    "value": null,
+    "wilson95": null
+   },
+   "npv_of_NEGATIVE_VERIFIED": {
+    "k": 4,
+    "n": 4,
+    "value": 1.0,
+    "wilson95": [
+     0.51,
+     1.0
+    ]
+   },
+   "false_positive_rate_on_no_violation": {
+    "k": 0,
+    "n": 17,
+    "value": 0.0,
+    "wilson95": [
+     0.0,
+     0.184
+    ]
+   },
+   "recall_of_violations_abstain_counts_as_miss": {
+    "k": 0,
+    "n": 1,
+    "value": 0.0,
+    "wilson95": [
+     0.0,
+     0.793
+    ]
+   },
+   "evaluate_case10": {
+    "finding_precision": null,
+    "finding_recall": 0.0,
+    "finding_f1": 0.0,
+    "counts": {
+     "ocr_items": 0,
+     "key_fields": 0,
+     "document_links": 0,
+     "evidence_items": 0,
+     "findings": 18,
+     "status_value_items": 0,
+     "finding_confusion": {
+      "tp": 0,
+      "fp": 0,
+      "tn": 17,
+      "fn": 1
+     }
+    }
+   }
+  }
+ },
+ "label_counts": {
+  "before": {
+   "labels": {
+    "MISSING_DOCUMENT": 129,
+    "NO_VIOLATION": 11,
+    "COMPARISON_IMPOSSIBLE": 641,
+    "VIOLATION_PRESENT": 11
+   },
+   "reasons": {
+    "missing_stage": 129,
+    "no_relevant_evidence": 502,
+    "values_not_extracted": 139
+   }
+  },
+  "after": {
+   "labels": {
+    "MISSING_DOCUMENT": 233,
+    "COMPARISON_IMPOSSIBLE": 555,
+    "NO_VIOLATION": 4
+   },
+   "reasons": {
+    "missing_stage": 84,
+    "missing_discipline_document": 149,
+    "revision_conflict": 8,
+    "no_relevant_evidence": 422,
+    "values_not_extracted": 116,
+    "multi_instance_parameter": 2,
+    "evidence_discipline_mismatch": 6,
+    "unit_evidence_absent": 1
+   }
+  }
+ },
+ "committed_after": [
+  {
+   "check": "LOS3A::PZ-004",
+   "status": "NEGATIVE_VERIFIED",
+   "model": "generic-anchor-table-v1",
+   "values": {
+    "PD": "88264.00",
+    "RD": "88264.00"
+   },
+   "reason": null,
+   "trigger": null
+  },
+  {
+   "check": "LOS3A::PZ-005",
+   "status": "NEGATIVE_VERIFIED",
+   "model": "generic-anchor-table-v1",
+   "values": {
+    "PD": "88264.00",
+    "RD": "88264.00"
+   },
+   "reason": null,
+   "trigger": null
+  },
+  {
+   "check": "LOS3A::PZ-006",
+   "status": "NEGATIVE_VERIFIED",
+   "model": "generic-anchor-table-v1",
+   "values": {
+    "PD": "88264.00",
+    "RD": "88264.00"
+   },
+   "reason": null,
+   "trigger": null
+  },
+  {
+   "check": "POL17::PZ-022",
+   "status": "NEGATIVE_VERIFIED",
+   "model": "generic-anchor-enum-v1",
+   "values": {
+    "PD": "II",
+    "RD": "II"
+   },
+   "reason": null,
+   "trigger": null
+  }
+ ]
+}

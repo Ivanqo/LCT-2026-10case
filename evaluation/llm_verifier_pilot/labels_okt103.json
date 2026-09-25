@@ -1,0 +1,16 @@
+{
+  "OKT103|AR-041|PD|numeric": {"n": 9, "strict": [], "lenient": [], "note": "clause/page numbers only"},
+  "OKT103|PZ-001|PD|numeric": {"n": 10, "strict": [4, 5], "lenient": [0, 1, 4, 5], "note": "PZ TEP 'Площадь застройки: 3326.0 кв. м'; [1] is the same 0,3326 in hectares (unit mismatch, lenient); [0] 1262,9 'в том числе по цоколю' sub-item (lenient); [8],[9] 783,0 is the EXISTING building being demolished"},
+  "OKT103|PZ-002|PD|numeric": {"n": 11, "strict": [4, 5], "lenient": [4, 5, 6, 7], "note": "16605,70; [6],[7] 14761 'Общая площадь строящегося здания' in a POS duration calculation (lenient)"},
+  "OKT103|PZ-004|PD|numeric": {"n": 4, "strict": [2, 3], "lenient": [2, 3]},
+  "OKT103|PZ-005|PD|numeric": {"n": 7, "strict": [], "lenient": [], "note": "TOTAL volume / dimensions only"},
+  "OKT103|PZ-006|PD|numeric": {"n": 5, "strict": [], "lenient": [], "note": "'наземная часть 59 780' in context but not extracted"},
+  "OKT103|PZ-008|PD|numeric": {"n": 15, "strict": [], "lenient": [], "note": "[4],[5] extracted item number 6.3 (real 63,96 in context); others are OPPOSING buildings' lengths in the KEO calc"},
+  "OKT103|PZ-020|PD|numeric": {"n": 4, "strict": [], "lenient": []},
+  "OKT103|SPZU-024|PD|numeric": {"n": 1, "strict": [0], "lenient": [0], "note": "'Объем извлеченного грунта 19041,341 м3' (foundation calculation output)"},
+  "OKT103|SPZU-025|PD|numeric": {"n": 3, "strict": [], "lenient": [], "note": "78,0 is asphalt DISMANTLING in a trench zone"},
+  "OKT103|PZ-021|PD|enum": {"n": 1, "strict": [], "lenient": []},
+  "OKT103|PZ-022|PD|enum": {"n": 2, "strict": [1], "lenient": [1], "note": "[0] 'не ниже III' is a NEIGHBOURING warehouse; [1] 'проектируемого жилого здания I степени'"},
+  "OKT103|PZ-023|PD|enum": {"n": 12, "strict": [0, 1, 2, 3, 4, 5, 6, 7, 8, 11], "lenient": [0, 1, 2, 3, 4, 5, 6, 7, 8, 11], "note": "[9] neighbouring warehouse, [10] transformer substation"},
+  "OKT103|KR-067|RD|compound": {"n": 15, "strict": [], "lenient": []}
+}

@@ -1,0 +1,75 @@
+{
+ "object": "ALT79B",
+ "mode": "tagger",
+ "pid": 16604,
+ "wall_seconds": 53.17,
+ "diagnostics": {
+  "documents_scanned": 78,
+  "documents_skipped_already_tagged": 0,
+  "documents_failed": 0,
+  "pages_scanned": 4105,
+  "fragments_created": 381,
+  "fragments_updated": 0,
+  "semantic_rejections": 17,
+  "semantic_scored": 398,
+  "semantic_unavailable": 0,
+  "documents_planned": 78,
+  "documents_deferred_by_cap": 0,
+  "documents_not_scannable": 0,
+  "documents_not_applicable": 0,
+  "cache_hits": 0,
+  "workers": 4,
+  "worker_failures_retried": 0,
+  "coverage": {
+   "enabled": true,
+   "complete": true,
+   "stages": {
+    "PD": {
+     "documents_total": 68,
+     "documents_scannable": 68,
+     "documents_scanned": 68,
+     "documents_partial": 1,
+     "documents_no_text_layer": 0,
+     "documents_failed": 0,
+     "documents_not_scanned": 0,
+     "documents_not_scannable": 0,
+     "documents_not_applicable": 0,
+     "pages_scanned": 3589,
+     "pages_total": 3867
+    },
+    "RD": {
+     "documents_total": 10,
+     "documents_scannable": 10,
+     "documents_scanned": 10,
+     "documents_partial": 1,
+     "documents_no_text_layer": 0,
+     "documents_failed": 0,
+     "documents_not_scanned": 0,
+     "documents_not_scannable": 0,
+     "documents_not_applicable": 0,
+     "pages_scanned": 516,
+     "pages_total": 539
+    },
+    "ID": {
+     "documents_total": 0,
+     "documents_scannable": 0,
+     "documents_scanned": 0,
+     "documents_partial": 0,
+     "documents_no_text_layer": 0,
+     "documents_failed": 0,
+     "documents_not_scanned": 0,
+     "documents_not_scannable": 0,
+     "documents_not_applicable": 0,
+     "pages_scanned": 0,
+     "pages_total": 0
+    }
+   },
+   "documents_other_stage": 0,
+   "summary": "Живой тэггер кандидатов: PD: просканировано 68 из 68 документов (только первые страницы у 1); RD: просканировано 10 из 10 документов (только первые страницы у 1)"
+  },
+  "plan_seconds": 0.0,
+  "scan_seconds": 35.0,
+  "merge_seconds": 18.16,
+  "elapsed_seconds": 53.16
+ }
+}

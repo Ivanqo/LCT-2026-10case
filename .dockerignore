@@ -1,0 +1,29 @@
+.git
+.gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Runtime data
+logs/
+log/
+*.db
+*.sqlite
+*.sqlite3
+uploads/
+data/
+vectorstore/
+
+# Frontend build artefacts (если появятся)
+node_modules/
+frontend/node_modules/
+dist/
+build/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,145 @@
+[
+  {
+    "id": 396,
+    "action": "PROCESS_CREATED",
+    "user_id": null,
+    "timestamp": "2026-09-17T18:04:18",
+    "details": {
+      "status": "PENDING"
+    }
+  },
+  {
+    "id": 397,
+    "action": "PROCESS_STATUS",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:04:18",
+    "details": {
+      "status": "PARSING"
+    }
+  },
+  {
+    "id": 398,
+    "action": "RULE_FALLBACK_DISCOVERY",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:04:47",
+    "details": {
+      "attempts": [
+        {
+          "code": "KR-055",
+          "stage": "ID",
+          "location": "Вертикальные конструкции подземной части",
+          "documents_scanned": 5,
+          "pages_scanned": 80,
+          "ocr_pages_scanned": 5,
+          "found": false,
+          "elapsed_seconds": 10.336
+        },
+        {
+          "code": "KR-055",
+          "stage": "ID",
+          "location": "Стена в грунте",
+          "documents_scanned": 0,
+          "pages_scanned": 0,
+          "ocr_pages_scanned": 0,
+          "found": false,
+          "elapsed_seconds": 0.0
+        },
+        {
+          "code": "KR-055",
+          "stage": "ID",
+          "location": "Фундаментная плита",
+          "documents_scanned": 0,
+          "pages_scanned": 0,
+          "ocr_pages_scanned": 0,
+          "found": false,
+          "elapsed_seconds": 0.0
+        },
+        {
+          "code": "KR-058",
+          "stage": "ID",
+          "location": "Фундаментная плита",
+          "documents_scanned": 0,
+          "pages_scanned": 0,
+          "ocr_pages_scanned": 0,
+          "found": false,
+          "elapsed_seconds": 0.0
+        },
+        {
+          "code": "PZ-009",
+          "stage": "ID",
+          "location": "Отметка 0.000",
+          "documents_scanned": 0,
+          "pages_scanned": 0,
+          "ocr_pages_scanned": 0,
+          "found": false,
+          "elapsed_seconds": 0.0
+        }
+      ]
+    }
+  },
+  {
+    "id": 399,
+    "action": "PROTOCOL_VERSION_CREATED",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:04:48",
+    "details": {
+      "protocol_id": 86,
+      "version": 1
+    }
+  },
+  {
+    "id": 400,
+    "action": "PROCESS_STATUS",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:04:48",
+    "details": {
+      "status": "READY",
+      "protocol_id": 86,
+      "version": 1
+    }
+  },
+  {
+    "id": 401,
+    "action": "INSPECTOR_DECISION",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:04:50",
+    "details": {
+      "evidence_group_id": 9631,
+      "decision": "Clarification Required",
+      "finding_status": "CLARIFICATION_REQUIRED",
+      "reason_code": null,
+      "comment": "Automated workflow smoke: original values require inspector review",
+      "protocol_version": 2
+    }
+  },
+  {
+    "id": 402,
+    "action": "PROCESS_STATUS",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:04:50",
+    "details": {
+      "status": "COMPLETED",
+      "pending_candidates": 0
+    }
+  },
+  {
+    "id": 403,
+    "action": "PROTOCOL_VERSION_CREATED",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:04:50",
+    "details": {
+      "protocol_id": 87,
+      "version": 2
+    }
+  },
+  {
+    "id": 404,
+    "action": "PROTOCOL_FINALIZED",
+    "user_id": 1,
+    "timestamp": "2026-09-17T18:04:51",
+    "details": {
+      "protocol_id": 87,
+      "version": 2
+    }
+  }
+]

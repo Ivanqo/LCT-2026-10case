@@ -1,0 +1,10 @@
+{
+ "object": "LOS3A",
+ "threshold": 0.45,
+ "n_scored": 509,
+ "rejected": 58,
+ "min_margin": 0.00359399914741515,
+ "margins_below_1e-3": 0,
+ "margins_below_1e-2": 13,
+ "fragments": 451
+}

@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Search Integration Report</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #182230;
+      --muted: #667085;
+      --line: #d0d7e2;
+      --ok: #14714b;
+      --ok-bg: #eaf7ef;
+      --bad: #b42318;
+      --bad-bg: #fff0ed;
+      --warn-bg: #fff7df;
+      --surface: #f4f7fb;
+      --panel: #ffffff;
+      --chip: #edf2f7;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--surface);
+    }
+    header {
+      padding: 30px 32px 22px;
+      background: linear-gradient(180deg, #ffffff 0%, #eef4fb 100%);
+      border-bottom: 1px solid var(--line);
+    }
+    h1, h2, h3 { margin: 0; letter-spacing: 0; }
+    h1 { font-size: 28px; }
+    h3 { font-size: 14px; margin: 18px 0 10px; color: #344054; }
+    main { padding: 24px 32px 40px; max-width: 1240px; margin: 0 auto; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat, .case, table {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    }
+    .stat { padding: 16px; border-left: 4px solid #7a8fa8; }
+    .stat.good { border-left-color: var(--ok); }
+    .stat.bad { border-left-color: var(--bad); }
+    .stat.info { border-left-color: #2563a8; }
+    .stat strong { display: block; font-size: 28px; }
+    .stat span, .meta { color: var(--muted); font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 24px; overflow: hidden; }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { font-size: 13px; color: var(--muted); }
+    tr:last-child td { border-bottom: 0; }
+    .cases { display: grid; gap: 16px; }
+    .case { padding: 20px; }
+    .case.pass { border-left: 5px solid var(--ok); }
+    .case.fail { border-left: 5px solid var(--bad); }
+    .case-head { display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+    .case-head p { margin: 6px 0 0; color: #344054; }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      background: var(--chip);
+      white-space: nowrap;
+    }
+    .case.pass .status { color: var(--ok); background: var(--ok-bg); }
+    .case.fail .status { color: var(--bad); background: var(--bad-bg); }
+    .case-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .case-grid section {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fbfcfe;
+    }
+    dl { display: grid; grid-template-columns: 180px 1fr; gap: 8px 12px; margin: 0; }
+    dt { color: var(--muted); }
+    dd { margin: 0; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 8px;
+      margin: 0 4px 4px 0;
+      border-radius: 999px;
+      background: var(--chip);
+      border: 1px solid #d9e2ec;
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .expect-chip { background: var(--warn-bg); }
+    .found-chip { background: #e8f3ff; }
+    .term-chip { background: #f1f5f9; }
+    .muted-chip { color: var(--muted); }
+    .errors {
+      margin: 16px 0 4px;
+      padding: 10px 14px 10px 28px;
+      border-radius: 8px;
+      color: var(--bad);
+      background: var(--bad-bg);
+    }
+    .ok-line { color: var(--ok); }
+    .case.pass .errors { background: var(--ok-bg); color: var(--ok); }
+    .sources {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .source-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: #ffffff;
+    }
+    .source-card.exact { border-color: #89c9a8; background: #fbfffc; }
+    .source-top, .source-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+    .source-top span {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .source-meta {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .source-card p, .empty { margin: 10px 0 0; color: #344054; line-height: 1.45; }
+    @media (max-width: 820px) {
+      header, main { padding-left: 16px; padding-right: 16px; }
+      .stats, .case-grid { grid-template-columns: 1fr; }
+      dl { grid-template-columns: 1fr; }
+      .case-head { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Document Search Integration Report</h1>
+    <p class="meta">Сформировано: 2026-07-11T22:03:11.159144+00:00 · root: C:\Users\Ivan\AppData\Local\Temp\rag-search-it-k9b85awk</p>
+  </header>
+  <main>
+    <section class="stats">
+      <div class="stat info"><strong>3</strong><span>кейсов</span></div>
+      <div class="stat good"><strong>3</strong><span>успешно</span></div>
+      <div class="stat bad"><strong>0</strong><span>ошибок</span></div>
+      <div class="stat good"><strong>3</strong><span>точных страниц</span></div>
+      <div class="stat info"><strong>15</strong><span>источников найдено</span></div>
+    </section>
+    <table>
+      <thead><tr><th>Файл</th><th>document_id</th><th>chunks</th><th>Время</th></tr></thead>
+      <tbody><tr><td>318-ПБ-Р-К2-2023-КЖ1.24.pdf</td><td>1</td><td>198</td><td>54464 ms</td></tr><tr><td>3-18-ПБ-Р-К2-2023-КМ1.pdf</td><td>2</td><td>146</td><td>29393 ms</td></tr><tr><td>318-ПБ-Р-К2-2023-АР3.pdf</td><td>3</td><td>255</td><td>45905 ms</td></tr></tbody>
+    </table>
+    <section class="cases">
+            <article class="case pass">
+              <div class="case-head">
+                <div>
+                  <h2>reinforced_stair_flight</h2>
+                  <p>Найди армирование Лм-9.6 лестничного марша</p>
+                </div>
+                <span class="status">passed</span>
+              </div>
+              <div class="case-grid">
+                <section>
+                  <h3>Ожидание</h3>
+                  <dl>
+                    <dt>Файл</dt><dd>КЖ1.24</dd>
+                    <dt>Страницы</dt><dd><span class="chip expect-chip">8</span></dd>
+                    <dt>Термины</dt><dd><span class="chip term-chip">Лм-9.6</span><span class="chip term-chip">Армирование</span></dd>
+                  </dl>
+                </section>
+                <section>
+                  <h3>Результат</h3>
+                  <dl>
+                    <dt>Страницы найденного файла</dt><dd><span class="chip found-chip">3</span><span class="chip found-chip">4</span><span class="chip found-chip">8</span></dd>
+                    <dt>Точных совпадений</dt><dd>1</dd>
+                    <dt>Время / источники</dt><dd>290 ms / 5</dd>
+                  </dl>
+                </section>
+              </div>
+              <ul class="errors"><li class="ok-line">Ошибок нет.</li></ul>
+              <h3>Точные совпадения по файлу и странице</h3>
+              <div class="sources">
+                <article class="source-card exact">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-КЖ1.24.pdf</strong>
+                    <span>точная страница</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 8</span>
+                    <span>chunk 63</span>
+                    <span>score 0.8380000000000001</span>
+                  </div>
+                  <p>Формат А3А 0,000 = 176.300 6 +3.630 Р ООО &quot;Проектное бюро Р1&quot; +3.800 Стадия Лист Листов см. КЖ1.4 1 этажа, см. КЖ1.8 Монолитная плита перекрытия Армирование стены монолитной 410 3/18-ПБ-Р-К2-2023-КЖ1.24 18 шт, шаг 200 10-120 Третья очередь строительства жилой застройки по адресу: г. Москва, пос. Внуковское, д. Рассказовка, 18 квартал. Жилые корпуса 1, 2 Корпус 2. Секция 9,10. Лестницы надземной части Лестничная клетка ЛК9. Армирование. Лестничный марш Лм-9.6, площадка ПмЛ-9.3 7 шт, шаг 200 8-Г.3</p>
+                </article>
+                </div>
+              <h3>Все источники из ответа</h3>
+              <div class="sources">
+                <article class="source-card">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-КЖ1.24.pdf</strong>
+                    <span>источник</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 3</span>
+                    <span>chunk 13</span>
+                    <span>score 0.8380000000000001</span>
+                  </div>
+                  <p>Лестницы надземной части 3/18-ПБ-Р-К2-2023-КЖ1.14 Корпус 2. Секция 3-5. Горизонтальные конструкции с 6-го по 12-ый этажи включительно 3/18-ПБ-Р-К2-2023-КЖ1.20 Корпус 2. Секция 9,10. Горизонтальные конструкции с 13-го по 17-ый этажи включительно 3/18-ПБ-Р-К2-2023-КЖ1.22 Корпус 2. Секция 3-5. Лестницы надземной части 3/18-ПБ-Р-К2-2023-КЖ1.23 Корпус 2. Секция 6-8. Лестницы надземной части 3/18-ПБ-Р-К2-2023-КЖ1.24 Корпус 2. Секция 9,10. Лестницы надземной части 1 Общие данные 2 Лестничная клетка ЛК9</p>
+                </article>
+                
+                <article class="source-card">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-КЖ1.24.pdf</strong>
+                    <span>источник</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 3</span>
+                    <span>chunk 15</span>
+                    <span>score 0.8380000000000001</span>
+                  </div>
+                  <p>[TABLE 1] - | - | - | - | - | - | 1. Исходныеданные. Ведомость рабочих чертежей Ëåñòíè÷íûå êëåòêè ËÊ9, ËÊ10 (íàäçåìíàÿ ÷àñòü) • НастоящийкомплектрабочейдокументацииразработаннаустройстволестничныхклетокЛК9, ЛК10 (надземнаячасть) для объекта: «Третьяочередьстроительстважилойзастройкипоадресу: г.Москва, пос.Внуковское, д.Рассказовка, 18 квартал. Жилые корпуса1, 2», Корпус2. Секция9,10. Лестницынадземнойчасти. Лист Наименование Примечание • Рабочаядокументацияразработанавсоответствиисзаданиемнапрое</p>
+                </article>
+                
+                <article class="source-card exact">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-КЖ1.24.pdf</strong>
+                    <span>точная страница</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 8</span>
+                    <span>chunk 63</span>
+                    <span>score 0.8380000000000001</span>
+                  </div>
+                  <p>Формат А3А 0,000 = 176.300 6 +3.630 Р ООО &quot;Проектное бюро Р1&quot; +3.800 Стадия Лист Листов см. КЖ1.4 1 этажа, см. КЖ1.8 Монолитная плита перекрытия Армирование стены монолитной 410 3/18-ПБ-Р-К2-2023-КЖ1.24 18 шт, шаг 200 10-120 Третья очередь строительства жилой застройки по адресу: г. Москва, пос. Внуковское, д. Рассказовка, 18 квартал. Жилые корпуса 1, 2 Корпус 2. Секция 9,10. Лестницы надземной части Лестничная клетка ЛК9. Армирование. Лестничный марш Лм-9.6, площадка ПмЛ-9.3 7 шт, шаг 200 8-Г.3</p>
+                </article>
+                
+                <article class="source-card">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-КЖ1.24.pdf</strong>
+                    <span>источник</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 4</span>
+                    <span>chunk 34</span>
+                    <span>score 0.5438983050847458</span>
+                  </div>
+                  <p>Примечание Спецификация отверстий ЛК9 Наименование 1 220х150 ОВО 3 Позиция Размеры, ШхВхГ Спецификация элементов лестничной клетки (ЛК9) (надземная часть) Лм-9.5 ГОСТ 26633-2015 Лестничный марш монолитный 1 Лм-9.6 ГОСТ 26633-2015 Лестничный марш монолитный 1 Лм-9.7 Серия РС 6172-95 Сборный лестничный марш МЛ 33-60-10 (с подрезом) 26 2500.00 кг Лм-9.8 Серия РС 6172-95 Сборный лестничный марш МЛ 36-60-10 (с подрезом) 5 2700.00 кг Лм-9.4 ГОСТ 26633-2015 Лестничный марш монолитный 1 ПмЛ-9.5 ГОСТ 266</p>
+                </article>
+                
+                <article class="source-card">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-КЖ1.24.pdf</strong>
+                    <span>источник</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 4</span>
+                    <span>chunk 33</span>
+                    <span>score 0.5438983050847458</span>
+                  </div>
+                  <p>ПмЛ-9.3 2 этаж +5,500 +5,300 типовая ПмЛ-9.4 3 этаж +8,800 +8,600 типовая ПмЛ-9.4 5 этаж +15,400 +15,200 типовая ПмЛ-9.4 6 этаж +18,700 +18,500 типовая ПмЛ-9.4 7 этаж +22,000 +21,800 типовая ПмЛ-9.4 8 этаж +25,300 +25,100 типовая ПмЛ-9.4 9 этаж +28,600 +28,400 типовая ПмЛ-9.4 4 этаж +12,100 +11,900 типовая ПмЛ-9.4 11 этаж +35,200 +35,000 типовая ПмЛ-9.4 10 этаж +31,900 +31,700 типовая ПмЛ-9.4 12 этаж +38,500 +38,300 типовая ПмЛ-9.4 13 этаж +41,800 +41,600 типовая ПмЛ-9.4 15 этаж +48,550 +48,350 </p>
+                </article>
+                </div>
+            </article>
+            
+            <article class="case pass">
+              <div class="case-head">
+                <div>
+                  <h2>embedded_part_m1</h2>
+                  <p>Где описана закладная деталь М-1 для сборного марша?</p>
+                </div>
+                <span class="status">passed</span>
+              </div>
+              <div class="case-grid">
+                <section>
+                  <h3>Ожидание</h3>
+                  <dl>
+                    <dt>Файл</dt><dd>КМ1</dd>
+                    <dt>Страницы</dt><dd><span class="chip expect-chip">5</span></dd>
+                    <dt>Термины</dt><dd><span class="chip term-chip">Закладная деталь М-1</span><span class="chip term-chip">сборного марша</span></dd>
+                  </dl>
+                </section>
+                <section>
+                  <h3>Результат</h3>
+                  <dl>
+                    <dt>Страницы найденного файла</dt><dd><span class="chip found-chip">4</span><span class="chip found-chip">5</span></dd>
+                    <dt>Точных совпадений</dt><dd>1</dd>
+                    <dt>Время / источники</dt><dd>276 ms / 5</dd>
+                  </dl>
+                </section>
+              </div>
+              <ul class="errors"><li class="ok-line">Ошибок нет.</li></ul>
+              <h3>Точные совпадения по файлу и странице</h3>
+              <div class="sources">
+                <article class="source-card exact">
+                  <div class="source-top">
+                    <strong>3-18-ПБ-Р-К2-2023-КМ1.pdf</strong>
+                    <span>точная страница</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 5</span>
+                    <span>chunk 213</span>
+                    <span>score 0.7955189873417722</span>
+                  </div>
+                  <p>Закладная деталь М-1 для сборного марша ГОСТ 14098-2014-Т2-Рф 1 60 1 2 80 2 20 40 20 350 6 30 Спецификация элементов закладной детали Масса Марка, поз. Обозначение Приме- чание Наименование Кол. шт. ед. кг Закладная деталь М-1 0,51 Лист 6х60 ГОСТ103-2006 1 0,23 1 С245 ГОСТ 27772-2021 L=80 2 0,14 2 ∅8 А500 L=350 ГОСТ 34028-2016 1. Марка стали всех металлических элементов С245. 2. Металлоконструкции очистить от заусениц, грязи, масла, ржавчины до 3-ей степени очистки по ГОСТ 9.402-80. 3. Сварку эл</p>
+                </article>
+                </div>
+              <h3>Все источники из ответа</h3>
+              <div class="sources">
+                <article class="source-card">
+                  <div class="source-top">
+                    <strong>3-18-ПБ-Р-К2-2023-КМ1.pdf</strong>
+                    <span>источник</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 4</span>
+                    <span>chunk 207</span>
+                    <span>score 0.7955189873417722</span>
+                  </div>
+                  <p>[TABLE 1] - | - | Ведомость рабочих чертежей основного комплекта раздела КМ1 Ведомость ссылочных документов Лист Наименование Примечание Обозначение Наименование Примечание 1 Общие данные Изм. 1 (Зам.) Ссылочные документы 2 Закладная деталь М-1 для сборного марша Изм. 1 (Зам.) СП 20.13330.2016 Нагрузки и воздействия 3 Секция 1. Лестница-стремянка выхода на кровлю ЛС-1 1. Исходные данные СП 16.13330.2017 Стальные конструкции 4 Секция 2. Лестница-стремянка выхода на кровлю ЛС-2 Правила выполнения </p>
+                </article>
+                
+                <article class="source-card">
+                  <div class="source-top">
+                    <strong>3-18-ПБ-Р-К2-2023-КМ1.pdf</strong>
+                    <span>источник</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 4</span>
+                    <span>chunk 202</span>
+                    <span>score 0.7955189873417722</span>
+                  </div>
+                  <p>Ведомость рабочих чертежей основного комплекта раздела КМ1 Ведомость ссылочных документов Лист Наименование Примечание Обозначение Наименование Примечание 1 Общие данные Изм. 1 (Зам.) Ссылочные документы 2 Закладная деталь М-1 для сборного марша Изм. 1 (Зам.) Нагрузки и воздействия СП 20.13330.2016 1. Исходные данные 3 Секция 1. Лестница-стремянка выхода на кровлю ЛС-1 Стальные конструкции СП 16.13330.2017 4 Секция 2. Лестница-стремянка выхода на кровлю ЛС-2 Правила выполнения рабочей документац</p>
+                </article>
+                
+                <article class="source-card exact">
+                  <div class="source-top">
+                    <strong>3-18-ПБ-Р-К2-2023-КМ1.pdf</strong>
+                    <span>точная страница</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 5</span>
+                    <span>chunk 213</span>
+                    <span>score 0.7955189873417722</span>
+                  </div>
+                  <p>Закладная деталь М-1 для сборного марша ГОСТ 14098-2014-Т2-Рф 1 60 1 2 80 2 20 40 20 350 6 30 Спецификация элементов закладной детали Масса Марка, поз. Обозначение Приме- чание Наименование Кол. шт. ед. кг Закладная деталь М-1 0,51 Лист 6х60 ГОСТ103-2006 1 0,23 1 С245 ГОСТ 27772-2021 L=80 2 0,14 2 ∅8 А500 L=350 ГОСТ 34028-2016 1. Марка стали всех металлических элементов С245. 2. Металлоконструкции очистить от заусениц, грязи, масла, ржавчины до 3-ей степени очистки по ГОСТ 9.402-80. 3. Сварку эл</p>
+                </article>
+                
+                <article class="source-card">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-КЖ1.24.pdf</strong>
+                    <span>источник</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 3</span>
+                    <span>chunk 9</span>
+                    <span>score 0.41886075949367085</span>
+                  </div>
+                  <p>Зубков 1000 1000 1000 Схема установки поддерживающих элементов 800 800 ЛК10 (секция 10) Лестничная клетка ИТОГО ВСЕГО А500С Изделия арматурные ГОСТ 34028-2016 Арматура класса Ø8 Ø10 Ø12 Ø16 Итого Спецификация монолитных элементов на лестницу ЛК10 (надземная часть) Марка Лм-10.5 36.4 58.92 0 0 95.32 95.32 95.32 Лм-10.6 36.82 60.7 0 0 97.52 97.52 97.52 Лм-10.4 11.69 23.71 0 0 35.4 35.4 35.4 ПмЛ-10.3 27.36 73.58 20.22 35.94 157.1 157.1 157.1 ПмЛ-10.5 275.4 811.5 218.7 387.9 1693.5 1693.5 1693.5 ПмЛ</p>
+                </article>
+                
+                <article class="source-card">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-КЖ1.24.pdf</strong>
+                    <span>источник</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 3</span>
+                    <span>chunk 8</span>
+                    <span>score 0.5130379746835443</span>
+                  </div>
+                  <p>Перечень основных видов работ, для которых необходимо составление актов освидетельствования скрытых работ (в соответствии с СП 48.13330.2019): • устройство опалубки монолитных конструкций; • соответствие проекту арматуры и закладных деталей; • отбор контрольных образцов бетона. Разработал Суглоб Проверил Кацубо ГИП Мальцев Н. Контр. Зубков 1000 1000 1000 Схема установки поддерживающих элементов 800 800 ЛК10 (секция 10) Лестничная клетка ИТОГО ВСЕГО А500С Изделия арматурные ГОСТ 34028-2016 Армату</p>
+                </article>
+                </div>
+            </article>
+            
+            <article class="case pass">
+              <div class="case-head">
+                <div>
+                  <h2>engineering_shafts_masonry</h2>
+                  <p>Что сказано про кладку инженерных шахт?</p>
+                </div>
+                <span class="status">passed</span>
+              </div>
+              <div class="case-grid">
+                <section>
+                  <h3>Ожидание</h3>
+                  <dl>
+                    <dt>Файл</dt><dd>АР3</dd>
+                    <dt>Страницы</dt><dd><span class="chip expect-chip">7</span></dd>
+                    <dt>Термины</dt><dd><span class="chip term-chip">Кладку инженерных шахт</span><span class="chip term-chip">инженерных коммуникаций</span></dd>
+                  </dl>
+                </section>
+                <section>
+                  <h3>Результат</h3>
+                  <dl>
+                    <dt>Страницы найденного файла</dt><dd><span class="chip found-chip">7</span><span class="chip found-chip">9</span></dd>
+                    <dt>Точных совпадений</dt><dd>3</dd>
+                    <dt>Время / источники</dt><dd>222 ms / 5</dd>
+                  </dl>
+                </section>
+              </div>
+              <ul class="errors"><li class="ok-line">Ошибок нет.</li></ul>
+              <h3>Точные совпадения по файлу и странице</h3>
+              <div class="sources">
+                <article class="source-card exact">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-АР3.pdf</strong>
+                    <span>точная страница</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 7</span>
+                    <span>chunk 354</span>
+                    <span>score 1.0123809523809524</span>
+                  </div>
+                  <p>Ведомость спецификаций комплекта АР3 Ведомость основных комплектов рабочих чертежей раздела АР Ведомость ссылочных и прилагаемых документов Лист Наименование Примечание Обозначение Наименование Примечание Обозначение Наименование Примечание Подземная часть Федеральный закон от 22 июля 2008г. №123-ФЗ Технический регламент о требованиях пожарной безопасности 3/18-ПБ-Р-К2-2023-АР0.1 1 Ведомость основных комплектов рабочих чертежей раздела АР Ведомость рабочих чертежей основного комплекта АР3 Ведомо</p>
+                </article>
+                
+                <article class="source-card exact">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-АР3.pdf</strong>
+                    <span>точная страница</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 7</span>
+                    <span>chunk 371</span>
+                    <span>score 1.0123809523809524</span>
+                  </div>
+                  <p>[TABLE 1] - | - | - | - | - | - | Ведомость основных комплектов рабочих чертежей раздела АР Ведомость ссылочных и прилагаемых документов Ведомость спецификаций комплекта АР3 ОБЩИЕ УКАЗАНИЯ: 30. Кладку инженерных шахт выполнить после прокладки в них всех инженерных коммуникаций. 22. Для контроля качества строительно-монтажных работ при строительстве генподрядчиком следует 1. Рабочие чертежи разработаны на основании: Отверстия во внутренних стенах и перегородках после пропуска коммуникаций необход</p>
+                </article>
+                
+                <article class="source-card exact">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-АР3.pdf</strong>
+                    <span>точная страница</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 7</span>
+                    <span>chunk 375</span>
+                    <span>score 0.32476190476190475</span>
+                  </div>
+                  <p>[TABLE 1] 3/18-ПБ-Р-К2-2023-АР0.4 Маркировочные планы. Разрезы подземной части с 1-эм этажом. Спецификация отверстий в стенах и перегородках 1-го этажа 1.1 - акты на устройство грунтования поверхности под декоративно-отделочный слой (работы вести в 5. Расположение инженерных сетей и инженерного оборудования см. рабочую документацию по инженерным разделам СП 17.13330.2017 Кровли здания. Сечения. Узлы. Ведомости, спецификации 4 Спецификация перемычек инженерных отверстий 1-го этажа соответствии с </p>
+                </article>
+                </div>
+              <h3>Все источники из ответа</h3>
+              <div class="sources">
+                <article class="source-card exact">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-АР3.pdf</strong>
+                    <span>точная страница</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 7</span>
+                    <span>chunk 354</span>
+                    <span>score 1.0123809523809524</span>
+                  </div>
+                  <p>Ведомость спецификаций комплекта АР3 Ведомость основных комплектов рабочих чертежей раздела АР Ведомость ссылочных и прилагаемых документов Лист Наименование Примечание Обозначение Наименование Примечание Обозначение Наименование Примечание Подземная часть Федеральный закон от 22 июля 2008г. №123-ФЗ Технический регламент о требованиях пожарной безопасности 3/18-ПБ-Р-К2-2023-АР0.1 1 Ведомость основных комплектов рабочих чертежей раздела АР Ведомость рабочих чертежей основного комплекта АР3 Ведомо</p>
+                </article>
+                
+                <article class="source-card exact">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-АР3.pdf</strong>
+                    <span>точная страница</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 7</span>
+                    <span>chunk 371</span>
+                    <span>score 1.0123809523809524</span>
+                  </div>
+                  <p>[TABLE 1] - | - | - | - | - | - | Ведомость основных комплектов рабочих чертежей раздела АР Ведомость ссылочных и прилагаемых документов Ведомость спецификаций комплекта АР3 ОБЩИЕ УКАЗАНИЯ: 30. Кладку инженерных шахт выполнить после прокладки в них всех инженерных коммуникаций. 22. Для контроля качества строительно-монтажных работ при строительстве генподрядчиком следует 1. Рабочие чертежи разработаны на основании: Отверстия во внутренних стенах и перегородках после пропуска коммуникаций необход</p>
+                </article>
+                
+                <article class="source-card">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-АР3.pdf</strong>
+                    <span>источник</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 9</span>
+                    <span>chunk 430</span>
+                    <span>score 0.6403809523809524</span>
+                  </div>
+                  <p>Хранение материалов и кладочные работы производить в условиях, исключающих длительное воздействие атмосферной влаги, негативно влияющее на исходную прочность материала и ведущее к последующему снижению надежности конструкций. - инженерное отверстие в стене / перегородке Разработал Петрушина 12.23 Инв. № подл. Подп. и дата Взам. инв. № ООО &quot;Проектное бюро Р1&quot; Пк-2 Полоса из ЦСП, ГОСТ 26816-2016 (на высоту 20 мм); . 80 19. Отверстия в сетчатом ограждении кладовых выполнить по месту. 20. Устройство</p>
+                </article>
+                
+                <article class="source-card exact">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-АР3.pdf</strong>
+                    <span>точная страница</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 7</span>
+                    <span>chunk 375</span>
+                    <span>score 0.32476190476190475</span>
+                  </div>
+                  <p>[TABLE 1] 3/18-ПБ-Р-К2-2023-АР0.4 Маркировочные планы. Разрезы подземной части с 1-эм этажом. Спецификация отверстий в стенах и перегородках 1-го этажа 1.1 - акты на устройство грунтования поверхности под декоративно-отделочный слой (работы вести в 5. Расположение инженерных сетей и инженерного оборудования см. рабочую документацию по инженерным разделам СП 17.13330.2017 Кровли здания. Сечения. Узлы. Ведомости, спецификации 4 Спецификация перемычек инженерных отверстий 1-го этажа соответствии с </p>
+                </article>
+                
+                <article class="source-card">
+                  <div class="source-top">
+                    <strong>318-ПБ-Р-К2-2023-АР3.pdf</strong>
+                    <span>источник</span>
+                  </div>
+                  <div class="source-meta">
+                    <span>лист 9</span>
+                    <span>chunk 428</span>
+                    <span>score 0.32476190476190475</span>
+                  </div>
+                  <p>При возведении кладки над перемычками в дверном/инженерном проеме обязательно устанавливать временные стойки, которые демонтировать через 3 дня после окончания каменной кладки. 8. Сборку и сварку при монтаже перемычек выполнять по специально разработанному и утвержденному проекту производства сварочных работ (ППСР) или другой технологической документацией в виде технологических карт, инструкций и т.п. 9. Указания по сварке перемычек: - катеты сварных швов принимать равными наименьшей толщине сва</p>
+                </article>
+                </div>
+            </article>
+            </section>
+  </main>
+</body>
+</html>

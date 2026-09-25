@@ -1,0 +1,78 @@
+{
+ "note": "Post-freeze audit notes. The frozen corpus (value_corpus_v1.jsonl, sha256 in corpus_manifest.json) is NOT edited; these notes only quantify how much the headline would move if the audit observation were accepted as a second admissible value (SET_ANY).",
+ "written_at": "2026-09-24T18:07:52+00:00",
+ "items": [
+  {
+   "triple": "POL17::PZ-022::RD",
+   "frozen_truth": "I @ POL17-000095 p3 (also 000096/000097 p3)",
+   "pipeline_value": "II @ POL17-000124 p2 (RD, КМ pit/sheet-piling album: 'Степень огнестойкости здания - II')",
+   "reading": "genuine contradiction inside the RD set; AR albums say I, the КМ pit album says II",
+   "effect_if_accepted": "+1 holdout correct"
+  },
+  {
+   "triple": "POL17::PZ-022::PD",
+   "frozen_truth": "I @ POL17-000031 p7",
+   "pipeline_value": "II @ POL17-000064 p8 (PD)",
+   "reading": "conflicting statement inside the PD set (sub=superseded_or_conflicting_place)",
+   "effect_if_accepted": "+1 holdout correct"
+  },
+  {
+   "triple": "ALT79B::PZ-022::PD",
+   "frozen_truth": "III @ ALT79B-000015 p10",
+   "pipeline_value": "II @ ALT79B-000010 p10 (PD)",
+   "reading": "conflicting statement inside the PD set (sub=superseded_or_conflicting_place)",
+   "effect_if_accepted": "+1 holdout correct"
+  },
+  {
+   "triple": "LOS3A::PZ-022::RD",
+   "frozen_truth": "I @ LOS3A-000069 p11",
+   "pipeline_value": "II @ LOS3A-000113 p11/p14 (RD lightning-protection album)",
+   "reading": "genuine contradiction inside the RD set (dev object, not in the holdout headline)",
+   "effect_if_accepted": "dev only"
+  },
+  {
+   "triple": "OKT103::PZ-022::PD",
+   "frozen_truth": "I @ OKT103-000149 p6",
+   "pipeline_value": "III (не ниже III) @ OKT103-000156 p14",
+   "reading": "a lower bound for another part of the building, not a stated degree: a real extraction error, no change"
+  }
+ ],
+ "sensitivity_holdout": {
+  "enum_frozen": {
+   "k": 11,
+   "n": 39,
+   "rate": 0.2821,
+   "wilson95": [
+    0.1654,
+    0.4378
+   ]
+  },
+  "enum_if_three_holdout_conflicts_accepted": {
+   "k": 14,
+   "n": 39,
+   "rate": 0.359,
+   "wilson95": [
+    0.2274,
+    0.5158
+   ]
+  },
+  "all_frozen": {
+   "k": 20,
+   "n": 105,
+   "rate": 0.1905,
+   "wilson95": [
+    0.1268,
+    0.276
+   ]
+  },
+  "all_if_accepted": {
+   "k": 23,
+   "n": 105,
+   "rate": 0.219,
+   "wilson95": [
+    0.1506,
+    0.3073
+   ]
+  }
+ }
+}

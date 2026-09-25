@@ -1,0 +1,20 @@
+{
+  "_note": "ALT79B's PD folder mixes two project versions (2024 'ЖС-РД-270121' reconstruction and 2025 'П-2025-04-266' new build); a row stating the parameter for either version counts as a statement of the parameter.",
+  "ALT79B|AR-041|PD|numeric": {"n": 4, "strict": [0, 1, 2], "lenient": [0, 1, 2], "note": "'эвакуационных выходов ... шириной 1300 мм' is an exit-width statement (mm vs catalog m is a unit-normalization matter, not a wrong row); [3] 1,9 м is a smoke-valve mounting height"},
+  "ALT79B|AR-051|PD|numeric": {"n": 3, "strict": [], "lenient": [0], "note": "[0] is the accepted NORMATIVE minimum KEO 1,0 (not a calculated value); [1] lux, [2] RAL code"},
+  "ALT79B|PZ-001|PD|numeric": {"n": 8, "strict": [1, 2, 5], "lenient": [1, 2, 5], "note": "3009,4 TEP rows; [0] extracted the 'existing' column 2362,5 of a two-column row; [3],[4] 'до реконструкции'"},
+  "ALT79B|PZ-002|PD|numeric": {"n": 15, "strict": [2], "lenient": [2, 10], "note": "[2] АР TEP 'Общая площадь здания 5825.8'; [10] 5338,98 'Общая площадь здания составляет' in a process (ТХ) category calculation -- defensible alternative; others are fire-compartment/floor areas, limits, clause numbers"},
+  "ALT79B|PZ-004|PD|numeric": {"n": 8, "strict": [2, 6], "lenient": [2, 3, 6], "note": "37076,0; [3] 44454,00 is the other (2024) project version's POS; [4],[5] extracted an area 1975,5 next to the real volume row; [7] 35000 is a limit"},
+  "ALT79B|PZ-005|PD|numeric": {"n": 8, "strict": [], "lenient": [], "note": "building has no underground part (TEP lists only 'наземная часть'); no candidate is an underground volume"},
+  "ALT79B|PZ-006|PD|numeric": {"n": 8, "strict": [], "lenient": [3, 4], "note": "rows are labelled TOTAL volume; numerically equal to above-ground 37076,0 only because there is no underground part -- lenient only"},
+  "ALT79B|PZ-008|PD|numeric": {"n": 6, "strict": [3], "lenient": [3], "note": "'Высота здания – 16.400 м'; [0] extracted building WIDTH 39,6 although 'H=16,4 м' is in its context"},
+  "ALT79B|PZ-020|PD|numeric": {"n": 7, "strict": [], "lenient": []},
+  "ALT79B|SPZU-024|PD|numeric": {"n": 2, "strict": [], "lenient": [], "note": "[0] extracted 158.98 (an elevation) instead of the 7 940 м³ stated on the same row"},
+  "ALT79B|SPZU-024|RD|numeric": {"n": 2, "strict": [], "lenient": [], "note": "same extraction error as PD"},
+  "ALT79B|PZ-015|PD|enum": {"n": 2, "strict": [1], "lenient": [1], "note": "[0] extracted 'I' from the evacuation-lighting subset sentence; the consumers' category is II"},
+  "ALT79B|PZ-022|PD|enum": {"n": 13, "strict": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "lenient": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "note": "all state the designed building's fire-resistance degree (values differ across the two project versions/sections -- a real contradiction); [12] is a NEIGHBOURING building"},
+  "ALT79B|PZ-023|PD|enum": {"n": 11, "strict": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "lenient": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]},
+  "ALT79B|PZ-023|RD|enum": {"n": 2, "strict": [0, 1], "lenient": [0, 1]},
+  "ALT79B|KR-067|PD|compound": {"n": 1, "strict": [], "lenient": []},
+  "ALT79B|KR-067|RD|compound": {"n": 1, "strict": [], "lenient": []}
+}

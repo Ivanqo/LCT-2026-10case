@@ -1,0 +1,20 @@
+{
+ "object": "LOS3A",
+ "runs": [
+  {
+   "workers": 12,
+   "wall_seconds": 162.49,
+   "plan_s": 0.05,
+   "scan_s": 97.66,
+   "merge_s": 64.77,
+   "documents_scanned": 151,
+   "pages_scanned": 5964,
+   "fragments": 451,
+   "failed": 0,
+   "scan_cpu_s": 587.64,
+   "baseline_cpu_percent_before_run": 100.0,
+   "pages_per_second": 61.1,
+   "coverage": "Живой тэггер кандидатов: PD: просканировано 47 из 47 документов (только первые страницы у 3); RD: просканировано 103 из 103 документов; ID: просканировано 1 из 1 документов (только первые страницы у 1)"
+  }
+ ]
+}

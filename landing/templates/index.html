@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero section" id="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy reveal">
+      <div class="eyebrow">AI сервис для проектной и рабочей документации</div>
+      <h1>Находите ответы в ПД/РД за секунды, а не за часы поиска по PDF</h1>
+      <p class="lead">
+        Загрузите документацию проекта, задайте вопрос обычным языком и получите ответ с указанием конкретных страниц и релевантных фрагментов.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="button" data-open-modal data-cta="Запросить демонстрацию">Запросить демонстрацию</button>
+        <button class="btn btn-secondary" type="button" data-open-modal data-cta="Обсудить пилот">Обсудить пилот</button>
+      </div>
+      <ul class="hero-points">
+        <li>Поиск по сотням и тысячам страниц</li>
+        <li>Ответы с привязкой к документу</li>
+        <li>Подсветка нужных фрагментов</li>
+        <li>IFC-связка — в развитии</li>
+      </ul>
+    </div>
+
+    <div class="hero-card reveal delay-1">
+      <div class="window">
+        <div class="window-top">
+          <span></span><span></span><span></span>
+          <div class="window-title">Интерфейс поиска по проекту</div>
+        </div>
+        <div class="window-body">
+          <div class="project-chip">Проект: Жилой комплекс / Корпус 2</div>
+          <div class="search-box">
+            <span class="search-label">Вопрос</span>
+            <p>Где указаны требования к огнестойкости дверей в технических помещениях?</p>
+          </div>
+          <div class="answer-box">
+            <span class="answer-label">Ответ AI</span>
+            <p>Требования к огнестойкости дверей указаны в разделе АР и в мероприятиях по пожарной безопасности. Для дверей технических помещений предусмотрен предел огнестойкости EI 60.</p>
+            <div class="refs">
+              <span>АР, лист 48</span>
+              <span>ПБ, лист 17</span>
+              <span>Спецификация дверей, лист 6</span>
+            </div>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-title">Релевантные страницы</div>
+            <div class="highlight-lines">
+              <div></div>
+              <div class="active"></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section muted" id="problem">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Проблема рынка</div>
+      <h2>Инженеры теряют время не на анализ, а на поиск информации</h2>
+      <p>В реальном проекте информация по одному вопросу часто разбросана между разделами АР, КР, ОВ, ВК, ЭОМ, спецификациями и пояснительными записками. Даже если документы уже есть, найти нужный ответ быстро сложно.</p>
+    </div>
+    <div class="cards-3">
+      <article class="card reveal">
+        <h3>Слишком большой объём</h3>
+        <p>Проектная и рабочая документация — это сотни и тысячи страниц PDF, которые невозможно просматривать вручную при каждом уточнении.</p>
+      </article>
+      <article class="card reveal delay-1">
+        <h3>Разрозненные данные</h3>
+        <p>Материалы, требования, узлы, оборудование и примечания находятся в разных томах, листах и приложениях.</p>
+      </article>
+      <article class="card reveal delay-2">
+        <h3>Цена ошибки высокая</h3>
+        <p>Неполный поиск приводит к неверным решениям, задержкам согласования, лишним запросам и риску пропустить критичное требование.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="solution">
+  <div class="container two-col">
+    <div class="reveal">
+      <div class="eyebrow">Решение</div>
+      <h2>Один интерфейс для вопросов по документации проекта</h2>
+      <p>Сервис индексирует загруженную ПД/РД и позволяет искать информацию не по названию файла или листа, а по смыслу вопроса. Пользователь формулирует задачу так, как привык в рабочем процессе.</p>
+      <ul class="check-list">
+        <li>Поиск по всем загруженным PDF в рамках проекта</li>
+        <li>Ответ на естественном языке</li>
+        <li>Ссылки на конкретные страницы</li>
+        <li>Подсветка релевантных фрагментов</li>
+        <li>Основа для связки документации и IFC моделей</li>
+      </ul>
+    </div>
+    <div class="feature-panel reveal delay-1">
+      <div class="panel-item">
+        <span>Что получает пользователь</span>
+        <strong>Быстрый ответ по проекту</strong>
+      </div>
+      <div class="panel-item">
+        <span>Что получает компания</span>
+        <strong>Снижение потерь времени на поиск и перепроверку</strong>
+      </div>
+      <div class="panel-item">
+        <span>Что важно для внедрения</span>
+        <strong>Работа с уже существующей PDF документацией</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section muted" id="workflow">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Как работает сервис</div>
+      <h2>Понятный процесс без сложного обучения</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><span>01</span><h3>Загрузка проекта</h3><p>Пользователь загружает PDF документацию в отдельный проект организации.</p></div>
+      <div class="step reveal delay-1"><span>02</span><h3>Индексация</h3><p>Документы преобразуются в структурированный индекс для поиска по содержанию.</p></div>
+      <div class="step reveal delay-2"><span>03</span><h3>Вопрос на обычном языке</h3><p>Инженер задаёт вопрос без ручного поиска по папкам и листам.</p></div>
+      <div class="step reveal delay-3"><span>04</span><h3>Ответ с подтверждением</h3><p>Система возвращает ответ, показывает страницы и подсвечивает нужные фрагменты.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cases">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Демонстрация кейсов</div>
+      <h2>Какие вопросы можно задавать системе</h2>
+      <p>Ниже примеры запросов, близких к реальной работе ПТО, ГИПов, BIM и проектных команд.</p>
+    </div>
+    <div class="cases-grid">
+      <article class="case-card reveal"><div class="case-q">Где указана толщина утеплителя фасада по секции 3?</div><div class="case-a">Система находит раздел АР, ведомость отделки и узлы фасада, показывает конкретные листы и упоминания толщины.</div></article>
+      <article class="case-card reveal delay-1"><div class="case-q">Какие двери предусмотрены для электрощитовых и какой у них предел огнестойкости?</div><div class="case-a">Сервис сопоставляет планы, спецификацию дверей и требования пожарной безопасности в одном ответе.</div></article>
+      <article class="case-card reveal delay-2"><div class="case-q">Где в проекте указан расход воздуха для венткамеры В-2?</div><div class="case-a">AI находит данные в разделе ОВ, выдаёт параметр и страницы с таблицей и схемой.</div></article>
+      <article class="case-card reveal"><div class="case-q">Какие кабели предусмотрены для системы аварийного освещения?</div><div class="case-a">Система собирает ответ из ЭОМ, кабельного журнала и спецификации оборудования.</div></article>
+      <article class="case-card reveal delay-1"><div class="case-q">Где указаны требования к гидроизоляции мокрых помещений?</div><div class="case-a">Возвращаются листы с узлами, примечаниями и ссылками на применяемые материалы.</div></article>
+      <article class="case-card reveal delay-2"><div class="case-q">Есть ли в документации требования по шумоизоляции перегородок между квартирами?</div><div class="case-a">AI показывает нужный раздел, фрагмент таблицы и страницы с нормативными требованиями в составе проекта.</div></article>
+    </div>
+
+    <div class="questions-box reveal delay-2">
+      <h3>Дополнительные примеры вопросов</h3>
+      <div class="question-tags">
+        <span>Где расположен узел примыкания кровли к парапету?</span>
+        <span>Какая марка бетона предусмотрена для фундаментной плиты?</span>
+        <span>Какие насосы заложены в ИТП?</span>
+        <span>Где указаны требования к антикоррозионной защите металлоконструкций?</span>
+        <span>Какой класс функциональной пожарной опасности указан по объекту?</span>
+        <span>Есть ли в проекте требования к резервному питанию серверной?</span>
+        <span>Какие отделочные материалы предусмотрены в МОП?</span>
+        <span>Где указаны отметки чистого пола для технических помещений?</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section muted" id="gallery">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Интерфейс</div>
+      <h2>Экраны сервиса</h2>
+      <p>В проект уже встроены ваши изображения экранов. Блок оформлен в новом визуальном стиле и остаётся подключённым к текущей структуре проекта.</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="shot reveal"><img src="/public/screens/screen1.png" alt="Экран 1" loading="lazy"><figcaption>Поиск по загруженной документации</figcaption></figure>
+      <figure class="shot reveal delay-1"><img src="/public/screens/screen2.png" alt="Экран 2" loading="lazy"><figcaption>Ответ AI с источниками</figcaption></figure>
+      <figure class="shot reveal delay-2"><img src="/public/screens/screen3.png" alt="Экран 3" loading="lazy"><figcaption>Просмотр релевантных страниц</figcaption></figure>
+      <figure class="shot reveal"><img src="/public/screens/screen4.png" alt="Экран 4" loading="lazy"><figcaption>Работа с проектом и запросами</figcaption></figure>
+      <figure class="shot reveal delay-1"><img src="/public/screens/screen5.png" alt="Экран 5" loading="lazy"><figcaption>Подготовка к связке с IFC</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="audience">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Кому подходит продукт</div>
+      <h2>Для команд, которые постоянно работают с ПД/РД</h2>
+    </div>
+    <div class="audience-grid">
+      <div class="audience-card reveal"><h3>Генподрядчики</h3><p>Быстрый доступ к требованиям, объёмам, материалам и техническим решениям при строительстве и согласованиях.</p></div>
+      <div class="audience-card reveal delay-1"><h3>Проектные бюро</h3><p>Ускорение внутренней проверки, ответов на вопросы смежников и работы с архивом проектных решений.</p></div>
+      <div class="audience-card reveal delay-2"><h3>BIM отделы</h3><p>База для будущей связи модели с документацией и быстрого поиска подтверждающих данных по элементам проекта.</p></div>
+      <div class="audience-card reveal"><h3>Технические заказчики</h3><p>Быстрая навигация по документации без полного погружения во все разделы и тома.</p></div>
+      <div class="audience-card reveal delay-1"><h3>Инженеры ПТО</h3><p>Сокращение времени на поиск проектных решений, спецификаций и требований перед производством работ.</p></div>
+      <div class="audience-card reveal delay-2"><h3>ГИПы</h3><p>Быстрое получение ответов по спорным вопросам и контроль полноты решений по документации.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="advantages">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Преимущества</div>
+      <h2>Что даёт сервис команде и проекту</h2>
+    </div>
+    <div class="cards-3">
+      <article class="card reveal"><h3>Меньше ручной рутины</h3><p>Команда тратит меньше времени на поиск по папкам, томам и листам.</p></article>
+      <article class="card reveal delay-1"><h3>Быстрее ответы внутри проекта</h3><p>Проще отвечать на вопросы ПТО, стройки, техзаказчика и смежников по одному интерфейсу.</p></article>
+      <article class="card reveal delay-2"><h3>Проверяемость результата</h3><p>Каждый ответ можно быстро перепроверить по странице и фрагменту документа.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section muted" id="compare">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">До / после</div>
+      <h2>Сравнение рабочего процесса</h2>
+    </div>
+    <div class="compare-grid">
+      <article class="compare-card reveal">
+        <h3>До внедрения</h3>
+        <ul>
+          <li>Ручной поиск по PDF и папкам проекта</li>
+          <li>Повторяющиеся вопросы в чатах и письмах</li>
+          <li>Риск пропустить важное требование</li>
+          <li>Долгая перепроверка ответов</li>
+        </ul>
+      </article>
+      <article class="compare-card reveal delay-1">
+        <h3>После внедрения</h3>
+        <ul>
+          <li>Один поиск по всему проекту</li>
+          <li>Ответ за секунды с указанием страниц</li>
+          <li>Меньше ручных уточнений</li>
+          <li>Быстрее демонстрация и запуск пилота</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="security">
+  <div class="container two-col">
+    <div class="reveal">
+      <div class="eyebrow">Безопасность данных</div>
+      <h2>Контроль доступа и работа в B2B контуре</h2>
+      <p>Для строительных компаний важно не только качество поиска, но и то, как изолированы проекты, кто имеет доступ к документам и где размещается сервис.</p>
+      <ul class="check-list">
+        <li>Разделение по организациям и проектам</li>
+        <li>Ролевая модель доступа</li>
+        <li>Работа под NDA</li>
+        <li>Обсуждение облачного или on-prem контура</li>
+      </ul>
+    </div>
+    <div class="feature-panel reveal delay-1">
+      <div class="panel-item"><span>Изоляция данных</span><strong>Проекты и документы не пересекаются между организациями</strong></div>
+      <div class="panel-item"><span>Контроль доступа</span><strong>Можно ограничивать загрузку, просмотр и администрирование</strong></div>
+      <div class="panel-item"><span>Формат внедрения</span><strong>Подбирается под требования ИБ и инфраструктуры заказчика</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="section muted" id="pilot">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Пилотный запуск</div>
+      <h2>Как проходит пилот</h2>
+      <p>Пилот нужен не для красивой презентации, а для проверки на реальных документах и сценариях команды.</p>
+    </div>
+    <div class="steps pilot-steps">
+      <div class="step reveal"><span>01</span><h3>Выбираем проект</h3><p>Один комплект документации, по которому уже есть реальные рабочие вопросы.</p></div>
+      <div class="step reveal delay-1"><span>02</span><h3>Фиксируем сценарии</h3><p>Собираем 6–10 типовых запросов от ПТО, ГИПа, BIM или техзаказчика.</p></div>
+      <div class="step reveal delay-2"><span>03</span><h3>Показываем результат</h3><p>Проводим демонстрацию на ваших PDF и измеряем пользу по скорости и качеству ответов.</p></div>
+      <div class="step reveal delay-3"><span>04</span><h3>Переходим к внедрению</h3><p>Определяем доработки, контур развертывания и формат расширения на другие проекты.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cta">
+  <div class="container">
+    <div class="cta-box reveal">
+      <div>
+        <div class="eyebrow">Следующий шаг</div>
+        <h2>Запросите демонстрацию на ваших сценариях</h2>
+        <p>Покажем, как сервис отвечает на реальные вопросы по ПД/РД, и обсудим формат пилота под вашу команду.</p>
+      </div>
+      <div class="cta-actions">
+        <button class="btn btn-primary" type="button" data-open-modal data-cta="Запросить демонстрацию">Запросить демонстрацию</button>
+        <button class="btn btn-secondary" type="button" data-open-modal data-cta="Обсудить пилот">Обсудить пилот</button>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

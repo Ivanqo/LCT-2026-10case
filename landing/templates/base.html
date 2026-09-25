@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="AI сервис для поиска и анализа проектной и рабочей документации. Ответы по ПД/РД за секунды с привязкой к страницам и релевантным фрагментам." />
+  <title>{{ brand }} — AI поиск по проектной документации</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/styles.css" />
+  <link rel="icon" href="/public/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <header class="header">
+    <div class="container nav">
+      <a href="/" class="logo">{{ brand }}<span> AI</span></a>
+      <nav class="menu">
+        <a href="#solution">Решение</a>
+        <a href="#cases">Кейсы</a>
+        <a href="#audience">Для кого</a>
+        <a href="#security">Безопасность</a>
+        <button class="btn btn-sm btn-outline" type="button" data-open-modal data-cta="Запросить демо">Запросить демо</button>
+      </nav>
+      <button class="burger" id="burger" aria-label="Открыть меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#solution">Решение</a>
+      <a href="#cases">Кейсы</a>
+      <a href="#audience">Для кого</a>
+      <a href="#security">Безопасность</a>
+      <button class="btn btn-primary btn-block" type="button" data-open-modal data-cta="Запросить демо">Запросить демо</button>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">{{ brand }}</div>
+        <p>AI сервис для поиска по ПД/РД. Работаем с пилотами, NDA и закрытыми контурами.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/privacy">Политика обработки данных</a>
+        <button type="button" class="footer-btn" data-open-modal data-cta="Обсудить пилот">Обсудить пилот</button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" id="leadModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle">
+      <button class="modal-close" type="button" aria-label="Закрыть" data-close-modal>×</button>
+      <div class="modal-grid">
+        <div class="modal-copy">
+          <div class="eyebrow">Запросить демонстрацию</div>
+          <h2 id="leadModalTitle">Покажем сервис на ваших сценариях</h2>
+          <p class="modal-lead">Оставьте контакты. Обсудим пилот, примеры вопросов к документации, контур размещения и формат демонстрации.</p>
+          <div class="modal-points">
+            <div class="modal-point"><strong>Что обсуждаем</strong><span>Тип документации, ключевые боли, реальные запросы инженеров.</span></div>
+            <div class="modal-point"><strong>Что покажем</strong><span>Ответы по PDF с указанием страниц и релевантных фрагментов.</span></div>
+            <div class="modal-point"><strong>Что на выходе</strong><span>План пилота, критерии оценки и следующий шаг по внедрению.</span></div>
+          </div>
+        </div>
+
+        <form class="form-card" method="post" action="/api/lead" data-lead-form>
+          <input type="hidden" name="cta" value="" data-cta-field />
+          <label>
+            <span>Имя *</span>
+            <input name="name" required minlength="2" maxlength="80" autocomplete="name" placeholder="Иван" />
+          </label>
+          <label>
+            <span>Компания *</span>
+            <input name="company" required minlength="2" maxlength="120" autocomplete="organization" placeholder="Название компании" />
+          </label>
+          <div class="form-row">
+            <label>
+              <span>Роль *</span>
+              <input name="role" required minlength="2" maxlength="80" placeholder="ГИП / ПТО / BIM / техзаказчик" />
+            </label>
+            <label>
+              <span>Email *</span>
+              <input name="email" type="email" required maxlength="120" autocomplete="email" placeholder="name@company.ru" />
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              <span>Телефон</span>
+              <input name="phone" maxlength="40" autocomplete="tel" placeholder="+7 (___) ___-__-__" />
+            </label>
+            <label class="hp-field" aria-hidden="true">
+              <span>Website</span>
+              <input name="website" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+          <label>
+            <span>Комментарий</span>
+            <textarea name="comment" maxlength="1000" rows="4" placeholder="Какие разделы ПД/РД хотите проверять? Нужен ли закрытый контур или NDA?"></textarea>
+          </label>
+          <label class="check-line">
+            <input type="checkbox" name="consent" required />
+            <span>Согласен(на) на обработку персональных данных. <a href="/privacy">Политика</a>.</span>
+          </label>
+          <div class="form-actions">
+            <button class="btn btn-primary btn-block-mobile" type="submit">Отправить заявку</button>
+            <div class="form-hint">Только связь по демонстрации и пилоту.</div>
+          </div>
+          <div class="form-error" data-form-error></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" data-toast role="status" aria-live="polite"></div>
+  <script src="/public/main.js" defer></script>
+</body>
+</html>
