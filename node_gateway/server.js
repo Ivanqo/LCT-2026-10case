@@ -73,6 +73,10 @@ const allowedRoutes = [
   ["GET", /^\/api\/case10\/processes\/[^/]+\/verification\/timing$/],
   ["GET", /^\/api\/case10\/document-versions\/[^/]+\/pages\/[^/]+\/geometry$/],
   ["GET", /^\/api\/case10\/document-versions\/[^/]+\/pages\/[^/]+\.(png|pdf)$/],
+  // S6 server-side packages (routes_batch.py)
+  ["POST", /^\/api\/case10\/batch-runs$/],
+  ["GET", /^\/api\/case10\/batch-runs\/[^/]+$/],
+  ["GET", /^\/api\/case10\/batch-runs\/[^/]+\/result$/],
   ["GET", /^\/api\/entities$/],
   ["GET", /^\/api\/entities\/[^/]+\/portrait$/],
   ["POST", /^\/api\/issues\/[^/]+\/decisions$/],
