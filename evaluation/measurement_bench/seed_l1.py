@@ -340,6 +340,7 @@ def evaluate_protocol_pair(ctx: dict, case: dict) -> dict:
             out.update(label="NO_CHECK", reason="no_group_for_parameter")
         else:
             c = mine[0]
+            out["check"] = c                      # the full exported check (Phase 12 grader_sim scores set D from it)
             out["label"] = c["violation_label"]
             out["protocol_status"] = c["protocol_status"]
             out["location"] = c["location"]
@@ -540,7 +541,9 @@ def main() -> int:
         for variant in (("SINGLE",) if c["family"] == "TABLE_COUNT" or c["mutation"] == "IDENTITY" else ("SINGLE", "ALL_COPIES")):
             r = run_case_observation_level(ctxs[c["obj"]], c, mut, variant)
             r["case_id"] = f"{c['case_id']}::{variant}"
-            rows.append({**{k: c[k] for k in ("obj", "code", "family", "mutation", "must_catch", "split", "base_kind")}, **r})
+            rows.append({**{k: c[k] for k in ("obj", "code", "family", "mutation", "must_catch", "split", "base_kind")}, **r,
+                         # the seeded (truth) pair, as gold evidence for Phase 12 grader_sim set D
+                         "seed_pair": {s: {"file_id": c[f"{s}_obs"]["file_id"], "page": c[f"{s}_obs"]["page"]} for s in ("pd", "rd")}})
             print(r["case_id"], r.get("label"), r.get("mutation_applied"), r.get("pages_edited"), flush=True)
     summary = summarize(rows, "extractor+legacy_compare")
     proto_rows = [{**r, **{k: r["protocol"].get(k) for k in ("label", "evidence_ok", "location_ok")}} for r in rows if r.get("protocol", {}).get("available")]
