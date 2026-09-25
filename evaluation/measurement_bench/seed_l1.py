@@ -334,7 +334,7 @@ def evaluate_protocol_pair(ctx: dict, case: dict) -> dict:
             gd = {"id": g.id, "parameter": {"code": param.code, "criticality": getattr(param, "criticality", None)}, "delta": g.delta or {}, "entity_name": None,
                   "object_id": g.object_id, "finding_status": g.finding_status, "review_priority": g.review_priority,
                   "fragments": [{"stage": f.stage, "dataset_stage": None, "file_id": f.dataset_file_id, "page": f.page, "extracted_value": f.extracted_value} for f in frs]}
-            checks.append(evidence_group_to_submission_check(gd))
+            checks.append(evidence_group_to_submission_check(gd, code_style="legacy"))  # matched against case["code"] (internal)
         mine = [c for c in checks if c["parameter_code"] == case["code"]]
         if not mine:
             out.update(label="NO_CHECK", reason="no_group_for_parameter")

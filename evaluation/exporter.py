@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from typing import Any
+import hashlib
 import json
 from pathlib import Path
+from app.domain import matrix_v11
 from .fixtures import LeakageGuardError
 
 
@@ -20,6 +22,22 @@ DATASET_STAGE_BY_INTERNAL = {"project": "PD", "working": "RD", "as_built": "ID"}
 # `delta.reason` values that mean "a required document is absent" (-> MISSING_DOCUMENT + X_MISSING status).
 # `missing_discipline_document`: the stage has files, but none of the section the catalog names (Phase 10, B).
 MISSING_DOCUMENT_REASONS = {"missing_stage", "missing_discipline_document"}
+
+# GOLD schema 1.1 (sheet «СХЕМА GOLD» of Матрица_параметров_редакция1.1.xlsx): enums of the fields added to every
+# check on top of submission_schema.json. An internal abstention status is not a finding status there -- it is
+# carried by completeness_status, and finding_status is null (the internal status stays in finding_status_internal).
+GOLD11_FINDING_STATUSES = {"NEGATIVE_VERIFIED", "CANDIDATE", "CONFIRMED_VIOLATION", "SUSPICION"}
+GOLD11_COMPLETENESS_BY_STATUS = {
+    "MISSING_EVIDENCE": "MISSING_EVIDENCE",
+    "NOT_APPLICABLE": "NOT_APPLICABLE",
+    "NOT_COMPARABLE": "NOT_COMPARABLE",
+    "LOW_QUALITY": "NOT_COMPARABLE",
+    "CLARIFICATION_REQUIRED": "CLARIFICATION_REQUIRED",
+}
+GOLD11_REVIEW_PRIORITIES = {"HIGH", "MEDIUM", "LOW"}
+STAGE_ORDER = ("PD", "RD", "ID")
+EXPORT_BBOX_FORMAT = "xyxy_top_left_origin_normalized"
+VERSION_CONTEXT_KEYS = ("dataset_version", "matrix_version", "model_version", "input_manifest_hash")
 
 
 def protocol_to_evaluation_predictions(protocol: dict[str, Any]) -> dict[str, Any]:
@@ -48,9 +66,13 @@ def protocol_to_evaluation_predictions(protocol: dict[str, Any]) -> dict[str, An
     }
 
 
-def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool = False) -> dict[str, Any]:
+def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool = False, code_style: str | None = None) -> dict[str, Any]:
+    """`code_style` overrides CASE10_PARAMETER_CODE_STYLE (tools keyed by internal codes pass "legacy")."""
     payload = protocol.get("payload") if isinstance(protocol.get("payload"), dict) else protocol
     object_id = payload.get("object_id") or protocol.get("object_id")
+    context = {"object_id": object_id}
+    context.update({key: payload.get(key) or protocol.get(key) for key in VERSION_CONTEXT_KEYS})
+    style = code_style or matrix_v11.export_code_style()
     checks: list[dict[str, Any]] = []
     duplicate_of, dropped_files = _integrity_maps(payload)
     for group in payload.get("findings") or []:
@@ -60,10 +82,20 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
         delta = group.get("delta") if isinstance(group.get("delta"), dict) else {}
         if str(delta.get("matrix_scope") or "MATRIX").upper() != "MATRIX" and not include_suspicions:
             continue
-        item = evidence_group_to_submission_check(_canonical_evidence(group, duplicate_of, dropped_files))
+        item = evidence_group_to_submission_check(_canonical_evidence(group, duplicate_of, dropped_files), context=context, code_style=style)
         if item.get("parameter_code"):
             checks.append(item)
-    return {"object_id": object_id, "checks": checks}
+    return {
+        "object_id": object_id,
+        "checks": checks,
+        # extra top-level key (the schema allows it): how to read the GOLD 1.1 fields of every check
+        "export_conventions": {
+            "parameter_code_style": style,
+            "matrix_table_version": matrix_v11.table_metadata().get("matrix_version"),
+            "bbox_format": EXPORT_BBOX_FORMAT,
+            **{key: context.get(key) for key in VERSION_CONTEXT_KEYS},
+        },
+    }
 
 
 def _integrity_maps(payload: dict[str, Any]) -> tuple[dict[str, str], set[str]]:
@@ -161,9 +193,17 @@ def evidence_group_to_prediction(group: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def evidence_group_to_submission_check(group: dict[str, Any]) -> dict[str, Any]:
+def evidence_group_to_submission_check(
+    group: dict[str, Any],
+    *,
+    context: dict[str, Any] | None = None,
+    code_style: str | None = None,
+) -> dict[str, Any]:
+    """One `checks[]` item: the submission_schema.json fields plus the GOLD 1.1 fields (extra keys, the schema
+    stays valid). `context` carries protocol-level versions (dataset/matrix/model, input_manifest_hash)."""
     parameter = group.get("parameter") if isinstance(group.get("parameter"), dict) else {}
     delta = group.get("delta") if isinstance(group.get("delta"), dict) else {}
+    internal_code = str(delta.get("parameter_code") or parameter.get("code") or "")
     fragments = []
     for fragment in group.get("fragments") or []:
         if not isinstance(fragment, dict):
@@ -172,15 +212,25 @@ def evidence_group_to_submission_check(group: dict[str, Any]) -> dict[str, Any]:
         page = _optional_int(fragment.get("page"))
         if not file_id or not page:
             continue
+        stage = _dataset_stage(fragment.get("stage"), fragment.get("dataset_stage"))
         fragments.append(
             {
-                "stage": _dataset_stage(fragment.get("stage"), fragment.get("dataset_stage")),
+                "stage": stage,
                 "file_id": str(file_id),
                 "pdf_page_number": page,
+                # GOLD 1.1 evidence fields
+                "page": page,
+                "sha256": fragment.get("file_sha256") or fragment.get("sha256"),
+                "document_code": fragment.get("document_code"),
+                "revision": fragment.get("revision"),
+                "approval_status": fragment.get("approval_status"),
+                "bbox_norm": _bbox_norm(fragment),
+                "coordinate_space": fragment.get("coordinate_space"),
+                "role": fragment.get("role"),
             }
         )
-    return {
-        "parameter_code": str(delta.get("parameter_code") or parameter.get("code") or ""),
+    check = {
+        "parameter_code": matrix_v11.export_parameter_code(internal_code, code_style),
         "location": str(delta.get("location") or group.get("entity_name") or group.get("object_id") or ""),
         "pd_value": _value_by_stage(group, "PD"),
         "rd_value": _value_by_stage(group, "RD"),
@@ -190,6 +240,119 @@ def evidence_group_to_submission_check(group: dict[str, Any]) -> dict[str, Any]:
         "criticality": parameter.get("criticality") or delta.get("criticality"),
         "evidence": fragments,
     }
+    check.update(_gold11_fields(group, check, internal_code, context or {}))
+    return check
+
+
+def _gold11_fields(group: dict[str, Any], check: dict[str, Any], internal_code: str, context: dict[str, Any]) -> dict[str, Any]:
+    """GOLD 1.1 fields of one check. Identifiers are content hashes (no DB ids), so the export stays byte-identical
+    across runs: finding_id = object + code + location (stable while the evidence changes); evidence_group_id also
+    covers the cited (stage, file, page) set."""
+    parameter = group.get("parameter") if isinstance(group.get("parameter"), dict) else {}
+    delta = group.get("delta") if isinstance(group.get("delta"), dict) else {}
+    row = matrix_v11.lookup(internal_code)
+    matrix_code = row["matrix_code"] if row else None
+    object_id = str(group.get("object_id") or context.get("object_id") or "")
+    code_key = matrix_code or internal_code.strip().upper()
+    citations = sorted({f"{item['stage']}:{item['file_id']}:{item['pdf_page_number']}" for item in check["evidence"]})
+    status = str(group.get("finding_status") or "").upper()
+    stage_values = {"PD": check["pd_value"], "RD": check["rd_value"], "ID": check["id_value"]}
+    present = [stage for stage in STAGE_ORDER if stage_values[stage] is not None]
+    expected_stage = present[0] if present else None
+    actual_stage = present[1] if len(present) > 1 else None
+    evidence = sorted(check["evidence"], key=_stage_rank)
+    source_expected = _pick_source(evidence, expected_stage, "expected")
+    after_expected = [item for item in evidence if source_expected is not None and _stage_rank(item) > _stage_rank(source_expected)]
+    source_actual = _pick_source(after_expected, actual_stage, "actual")
+    priority = str(group.get("review_priority") or parameter.get("review_priority") or "").upper()
+    if priority not in GOLD11_REVIEW_PRIORITIES:
+        priority = (row or {}).get("review_priority")
+    model_version = group.get("model_version") or context.get("model_version")
+    fields: dict[str, Any] = {
+        "object_id": object_id,
+        "parameter_id": int(row["parameter_id"]) if row else None,
+        "parameter_code_legacy": row["legacy_code"] if row else internal_code,
+        "matrix_code": matrix_code,
+        "rule_version": "/".join(str(part) for part in (delta.get("source"), model_version) if part) or None,
+        "evidence_group_id": "EG-" + _short_hash(object_id, code_key, check["location"], *citations),
+        "finding_id": "F-" + _short_hash(object_id, code_key, check["location"]),
+        "expected_value": stage_values[expected_stage] if expected_stage else None,
+        "actual_value": stage_values[actual_stage] if actual_stage else None,
+        "expected_stage": expected_stage,
+        "actual_stage": actual_stage,
+    }
+    for prefix, source in (("source_expected", source_expected), ("source_actual", source_actual)):
+        source = source or {}
+        fields.update({
+            f"{prefix}_file_id": source.get("file_id"),
+            f"{prefix}_sha256": source.get("sha256"),
+            f"{prefix}_stage": source.get("stage"),
+            f"{prefix}_code": source.get("document_code"),
+            f"{prefix}_revision": source.get("revision"),
+            f"{prefix}_approval": source.get("approval_status"),
+            f"{prefix}_page": source.get("page"),
+            f"{prefix}_bbox_polygon": source.get("bbox_norm"),
+        })
+    fields.update({
+        "approved_change_ref": "NONE",
+        "completeness_status": "COMPLETE" if status in GOLD11_FINDING_STATUSES else GOLD11_COMPLETENESS_BY_STATUS.get(status, "NOT_COMPARABLE"),
+        "finding_status": status if status in GOLD11_FINDING_STATUSES else None,
+        "finding_status_internal": status or None,
+        "review_priority": priority,
+        "confidence": group.get("confidence"),
+        "dataset_version": group.get("dataset_version") or context.get("dataset_version"),
+        "matrix_version": group.get("matrix_version") or context.get("matrix_version"),
+        "model_version": model_version,
+        "input_manifest_hash": context.get("input_manifest_hash") or group.get("input_manifest_hash"),
+    })
+    return fields
+
+
+def _pick_source(evidence: list[dict[str, Any]], stage: str | None, role: str) -> dict[str, Any] | None:
+    """The evidence item behind the expected/actual value. `evidence` is in PD, RD, ID order. With the value's stage
+    known: an item of that stage, preferring the one the pipeline tagged with `role`. Without a value (e.g. a gated or
+    missing-evidence group that still cites pages): the item tagged with `role`, else the earliest cited stage."""
+    candidates = [item for item in evidence if item["stage"] == stage] if stage else evidence
+    for item in candidates:
+        if item.get("role") == role:
+            return item
+    return candidates[0] if candidates else None
+
+
+def _stage_rank(item: dict[str, Any]) -> int:
+    return STAGE_ORDER.index(item["stage"]) if item.get("stage") in STAGE_ORDER else len(STAGE_ORDER)
+
+
+def _bbox_norm(fragment: dict[str, Any]) -> list[float] | None:
+    """Normalized [x0, y0, x1, y1] in [0;1], top-left origin. Pixel/point boxes are normalized by the page size when
+    it is known; anything else is dropped rather than guessed."""
+    raw = fragment.get("bbox_normalized") or fragment.get("bbox")
+    try:
+        values = [float(value) for value in raw] if isinstance(raw, (list, tuple)) and len(raw) == 4 else None
+    except (TypeError, ValueError):
+        values = None
+    if values is None:
+        return None
+    if max(values) > 1.0 + 1e-6:
+        width = _optional_float(fragment.get("page_width"))
+        height = _optional_float(fragment.get("page_height"))
+        if not width or not height:
+            return None
+        values = [values[0] / width, values[1] / height, values[2] / width, values[3] / height]
+    x0, x1 = sorted((values[0], values[2]))
+    y0, y1 = sorted((values[1], values[3]))
+    return [round(min(max(value, 0.0), 1.0), 6) for value in (x0, y0, x1, y1)]
+
+
+def _short_hash(*parts: object) -> str:
+    return hashlib.sha256("\x1f".join(str(part) for part in parts).encode("utf-8")).hexdigest()[:16]
+
+
+def _optional_float(value: Any) -> float | None:
+    try:
+        return float(value) if value not in (None, "") else None
+    except (TypeError, ValueError):
+        return None
 
 
 def validate_submission_basic(submission: dict[str, Any]) -> list[str]:

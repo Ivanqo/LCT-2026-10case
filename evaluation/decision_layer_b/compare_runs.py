@@ -35,7 +35,8 @@ def _groups(path: Path) -> list[dict]:
 
 
 def _key(check: dict, seen: Counter) -> tuple:
-    base = (check["parameter_code"], check["location"])
+    # internal code: runs exported before Phase 12 carry it in parameter_code, later ones in parameter_code_legacy
+    base = (check.get("parameter_code_legacy") or check["parameter_code"], check["location"])
     seen[base] += 1
     return (*base, seen[base])
 

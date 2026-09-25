@@ -1,0 +1,1204 @@
+{
+ "matrix_version": "1.1",
+ "generated_by": "evaluation/phase12/build_matrix_v11_table.py",
+ "sources": {
+  "matrix_xlsx": {
+   "name": "Матрица_параметров_редакция1.1.xlsx",
+   "sha256": "b32adc45b02b7315808b3bb6591c318a48dd22640321b17c52c65d1c52cf0da6"
+  },
+  "catalog_jsonl": {
+   "name": "parameter_catalog_132.jsonl",
+   "sha256": "c6b73dffbea6bb366fc50f08392522c390bdf7b19420051802bd0bcbd32b4e4f"
+  }
+ },
+ "rows": [
+  {
+   "parameter_id": 1,
+   "matrix_code": "M-001",
+   "legacy_code": "PZ-001",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Площадь застройки",
+   "unit": "м²"
+  },
+  {
+   "parameter_id": 2,
+   "matrix_code": "M-002",
+   "legacy_code": "PZ-002",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Общая площадь здания",
+   "unit": "м²"
+  },
+  {
+   "parameter_id": 3,
+   "matrix_code": "M-003",
+   "legacy_code": "PZ-003",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Полезная / Расчетная площадь",
+   "unit": "м²"
+  },
+  {
+   "parameter_id": 4,
+   "matrix_code": "M-004",
+   "legacy_code": "PZ-004",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Строительный объем (Общий)",
+   "unit": "м³"
+  },
+  {
+   "parameter_id": 5,
+   "matrix_code": "M-005",
+   "legacy_code": "PZ-005",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Строительный объем (Подземный)",
+   "unit": "м³"
+  },
+  {
+   "parameter_id": 6,
+   "matrix_code": "M-006",
+   "legacy_code": "PZ-006",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Строительный объем (Надземный)",
+   "unit": "м³"
+  },
+  {
+   "parameter_id": 7,
+   "matrix_code": "M-007",
+   "legacy_code": "PZ-007",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Этажность (надземная)",
+   "unit": "ед."
+  },
+  {
+   "parameter_id": 8,
+   "matrix_code": "M-008",
+   "legacy_code": "PZ-008",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Высота здания",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 9,
+   "matrix_code": "M-009",
+   "legacy_code": "PZ-009",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Абсолютная отметка 0.000",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 10,
+   "matrix_code": "M-010",
+   "legacy_code": "PZ-010",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Количество квартир",
+   "unit": "шт."
+  },
+  {
+   "parameter_id": 11,
+   "matrix_code": "M-011",
+   "legacy_code": "PZ-011",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Квартирография",
+   "unit": "шт."
+  },
+  {
+   "parameter_id": 12,
+   "matrix_code": "M-012",
+   "legacy_code": "PZ-012",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Количество машино-мест (подземных)",
+   "unit": "шт."
+  },
+  {
+   "parameter_id": 13,
+   "matrix_code": "M-013",
+   "legacy_code": "PZ-013",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Технологическая мощность / Вместимость",
+   "unit": "ед."
+  },
+  {
+   "parameter_id": 14,
+   "matrix_code": "M-014",
+   "legacy_code": "PZ-014",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Расчетная электрическая мощность",
+   "unit": "кВт"
+  },
+  {
+   "parameter_id": 15,
+   "matrix_code": "M-015",
+   "legacy_code": "PZ-015",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Категория надежности электроснабжения",
+   "unit": "Кат."
+  },
+  {
+   "parameter_id": 16,
+   "matrix_code": "M-016",
+   "legacy_code": "PZ-016",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Суточный расход водопотребления",
+   "unit": "м³/сут"
+  },
+  {
+   "parameter_id": 17,
+   "matrix_code": "M-017",
+   "legacy_code": "PZ-017",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Суммарная тепловая нагрузка",
+   "unit": "Гкал/ч"
+  },
+  {
+   "parameter_id": 18,
+   "matrix_code": "M-018",
+   "legacy_code": "PZ-018",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Максимальный часовой расход газа",
+   "unit": "м³/ч"
+  },
+  {
+   "parameter_id": 19,
+   "matrix_code": "M-019",
+   "legacy_code": "PZ-019",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Коэффициент застройки (КЗ)",
+   "unit": "%"
+  },
+  {
+   "parameter_id": 20,
+   "matrix_code": "M-020",
+   "legacy_code": "PZ-020",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Коэффициент использования территории (КИТ)",
+   "unit": "%"
+  },
+  {
+   "parameter_id": 21,
+   "matrix_code": "M-021",
+   "legacy_code": "PZ-021",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Класс энергетической эффективности",
+   "unit": "Буква"
+  },
+  {
+   "parameter_id": 22,
+   "matrix_code": "M-022",
+   "legacy_code": "PZ-022",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Степень огнестойкости здания",
+   "unit": "Степень"
+  },
+  {
+   "parameter_id": 23,
+   "matrix_code": "M-023",
+   "legacy_code": "PZ-023",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 1. ПЗ",
+   "parameter_name": "Класс конструктивной пожарной опасности",
+   "unit": "Класс (С0, С1)"
+  },
+  {
+   "parameter_id": 24,
+   "matrix_code": "M-024",
+   "legacy_code": "SPZU-024",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Объем грунта (выемка/насыпь)",
+   "unit": "м³"
+  },
+  {
+   "parameter_id": 25,
+   "matrix_code": "M-025",
+   "legacy_code": "SPZU-025",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Площадь асфальтобетонного покрытия",
+   "unit": "м²"
+  },
+  {
+   "parameter_id": 26,
+   "matrix_code": "M-026",
+   "legacy_code": "SPZU-026",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Площадь тротуарного плиточного покрытия",
+   "unit": "м²"
+  },
+  {
+   "parameter_id": 27,
+   "matrix_code": "M-027",
+   "legacy_code": "SPZU-027",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Площадь озеленения и газонов",
+   "unit": "м²"
+  },
+  {
+   "parameter_id": 28,
+   "matrix_code": "M-028",
+   "legacy_code": "SPZU-028",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Площадь детских и спортивных площадок",
+   "unit": "м²"
+  },
+  {
+   "parameter_id": 29,
+   "matrix_code": "M-029",
+   "legacy_code": "SPZU-029",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Спецификация МАФ",
+   "unit": "шт. / компл."
+  },
+  {
+   "parameter_id": 30,
+   "matrix_code": "M-030",
+   "legacy_code": "SPZU-030",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Ширина внутриплощадочных дорог и проездов",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 31,
+   "matrix_code": "M-031",
+   "legacy_code": "SPZU-031",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Радиусы поворота дорог и пожарных проездов",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 32,
+   "matrix_code": "M-032",
+   "legacy_code": "SPZU-032",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Конструкция дорожной одежды",
+   "unit": "мм (слои)"
+  },
+  {
+   "parameter_id": 33,
+   "matrix_code": "M-033",
+   "legacy_code": "SPZU-033",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Уклоны дорог и проездов",
+   "unit": "‰"
+  },
+  {
+   "parameter_id": 34,
+   "matrix_code": "M-034",
+   "legacy_code": "SPZU-034",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Точки и координаты подключения внешних сетей",
+   "unit": "Коорд."
+  },
+  {
+   "parameter_id": 35,
+   "matrix_code": "M-035",
+   "legacy_code": "SPZU-035",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Охранные зоны существующих коммуникаций",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 36,
+   "matrix_code": "M-036",
+   "legacy_code": "SPZU-036",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Тип и высотные параметры ограждения территории",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 37,
+   "matrix_code": "M-037",
+   "legacy_code": "SPZU-037",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Количество и разметка парковочных мест на участке",
+   "unit": "шт."
+  },
+  {
+   "parameter_id": 38,
+   "matrix_code": "M-038",
+   "legacy_code": "SPZU-038",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Количество парковочных мест для МГН на участке",
+   "unit": "шт."
+  },
+  {
+   "parameter_id": 39,
+   "matrix_code": "M-039",
+   "legacy_code": "SPZU-039",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 2. СПЗУ",
+   "parameter_name": "Мероприятия по инженерной подготовке (дренажи)",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 40,
+   "matrix_code": "M-040",
+   "legacy_code": "AR-040",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Ширина магистральных эвакуационных коридоров",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 41,
+   "matrix_code": "M-041",
+   "legacy_code": "AR-041",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Ширина эвакуационных выходов (дверей)",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 42,
+   "matrix_code": "M-042",
+   "legacy_code": "AR-042",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Высота путей эвакуации и проемов",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 43,
+   "matrix_code": "M-043",
+   "legacy_code": "AR-043",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Направление открывания эвакуационных дверей",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 44,
+   "matrix_code": "M-044",
+   "legacy_code": "AR-044",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Послойный состав пирога кровли",
+   "unit": "мм (слои)"
+  },
+  {
+   "parameter_id": 45,
+   "matrix_code": "M-045",
+   "legacy_code": "AR-045",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Уклоны кровли и система водостока",
+   "unit": "% / °"
+  },
+  {
+   "parameter_id": 46,
+   "matrix_code": "M-046",
+   "legacy_code": "AR-046",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Общее количество и габариты оконных блоков",
+   "unit": "шт. / м²"
+  },
+  {
+   "parameter_id": 47,
+   "matrix_code": "M-047",
+   "legacy_code": "AR-047",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Габариты и глубина тамбуров входных групп",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 48,
+   "matrix_code": "M-048",
+   "legacy_code": "AR-048",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Количество и параметры лестничных маршей и ступеней",
+   "unit": "шт. / мм"
+  },
+  {
+   "parameter_id": 49,
+   "matrix_code": "M-049",
+   "legacy_code": "AR-049",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Высота и тип ограждений лестниц, балкона, кровли",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 50,
+   "matrix_code": "M-050",
+   "legacy_code": "AR-050",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Спецификация и типы внутренней отделки помещений",
+   "unit": "Класс (КМ)"
+  },
+  {
+   "parameter_id": 51,
+   "matrix_code": "M-051",
+   "legacy_code": "AR-051",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Параметры естественного освещения (КЕО)",
+   "unit": "%"
+  },
+  {
+   "parameter_id": 52,
+   "matrix_code": "M-052",
+   "legacy_code": "AR-052",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Цветовое решение и материалы облицовки фасадов",
+   "unit": "RAL / Артикул"
+  },
+  {
+   "parameter_id": 53,
+   "matrix_code": "M-053",
+   "legacy_code": "AR-053",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 3. АР",
+   "parameter_name": "Конструктивные мероприятия по защите от шума",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 54,
+   "matrix_code": "M-054",
+   "legacy_code": "KR-054",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Шаг и привязка координационных осей несущего каркаса",
+   "unit": "мм"
+  },
+  {
+   "parameter_id": 55,
+   "matrix_code": "M-055",
+   "legacy_code": "KR-055",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Класс прочности бетона монолитных конструкций",
+   "unit": "Марка (B)"
+  },
+  {
+   "parameter_id": 56,
+   "matrix_code": "M-056",
+   "legacy_code": "KR-056",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Марка стали и класс прочности металлопроката",
+   "unit": "Марка (С)"
+  },
+  {
+   "parameter_id": 57,
+   "matrix_code": "M-057",
+   "legacy_code": "KR-057",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Марка и класс прочности рабочей арматуры",
+   "unit": "Класс (А)"
+  },
+  {
+   "parameter_id": 58,
+   "matrix_code": "M-058",
+   "legacy_code": "KR-058",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Толщина монолитной фундаментной плиты / ростверка",
+   "unit": "мм"
+  },
+  {
+   "parameter_id": 59,
+   "matrix_code": "M-059",
+   "legacy_code": "KR-059",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Толщина монолитных плит перекрытий и покрытия",
+   "unit": "мм"
+  },
+  {
+   "parameter_id": 60,
+   "matrix_code": "M-060",
+   "legacy_code": "KR-060",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Геометрические сечения несущих колонн и пилонов",
+   "unit": "мм²"
+  },
+  {
+   "parameter_id": 61,
+   "matrix_code": "M-061",
+   "legacy_code": "KR-061",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Толщина несущих монолитных стен (ядра жесткости)",
+   "unit": "мм"
+  },
+  {
+   "parameter_id": 62,
+   "matrix_code": "M-062",
+   "legacy_code": "KR-062",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Диаметр продольной (рабочей) арматуры в колоннах/пилонах",
+   "unit": "мм"
+  },
+  {
+   "parameter_id": 63,
+   "matrix_code": "M-063",
+   "legacy_code": "KR-063",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Наличие и конструктивное исполнение деформационных швов",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 64,
+   "matrix_code": "M-064",
+   "legacy_code": "KR-064",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Привязки и габариты лифтовых шахт",
+   "unit": "мм"
+  },
+  {
+   "parameter_id": 65,
+   "matrix_code": "M-065",
+   "legacy_code": "KR-065",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Схемы расположения и площади технологических проемов",
+   "unit": "м²"
+  },
+  {
+   "parameter_id": 66,
+   "matrix_code": "M-066",
+   "legacy_code": "KR-066",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Антикоррозионная и огнезащитная обработка конструкций",
+   "unit": "Марка / Толщина"
+  },
+  {
+   "parameter_id": 67,
+   "matrix_code": "M-067",
+   "legacy_code": "KR-067",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 4. КР",
+   "parameter_name": "Ведомости расхода материалов (бетон, сталь)",
+   "unit": "м³ / т"
+  },
+  {
+   "parameter_id": 68,
+   "matrix_code": "M-068",
+   "legacy_code": "IOS1-068",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 5. ИОС1",
+   "parameter_name": "Номинальная аппаратная защита ВРУ/ГРЩ",
+   "unit": "А (Ампер)"
+  },
+  {
+   "parameter_id": 69,
+   "matrix_code": "M-069",
+   "legacy_code": "IOS1-069",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 5. ИОС1",
+   "parameter_name": "Сечение жил и маркировка распределительных кабелей",
+   "unit": "мм²"
+  },
+  {
+   "parameter_id": 70,
+   "matrix_code": "M-070",
+   "legacy_code": "IOS1-070",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 5. ИОС1",
+   "parameter_name": "Параметры и контуры заземления и молниезащиты",
+   "unit": "Ом / мм²"
+  },
+  {
+   "parameter_id": 71,
+   "matrix_code": "M-071",
+   "legacy_code": "IOS2-071",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 5. ИОС2",
+   "parameter_name": "Диаметры стояков и разводящих трубопроводов В1/Т3",
+   "unit": "мм"
+  },
+  {
+   "parameter_id": 72,
+   "matrix_code": "M-072",
+   "legacy_code": "IOS2-072",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 5. ИОС2",
+   "parameter_name": "Материал и класс давления напорных труб В1/Т3",
+   "unit": "Марка"
+  },
+  {
+   "parameter_id": 73,
+   "matrix_code": "M-073",
+   "legacy_code": "IOS2-073",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 5. ИОС2",
+   "parameter_name": "Характеристики насосных станций хоз-питьевого водоснабжения",
+   "unit": "м³/ч / м / кВт"
+  },
+  {
+   "parameter_id": 74,
+   "matrix_code": "M-074",
+   "legacy_code": "IOS3-074",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 5. ИОС3",
+   "parameter_name": "Диаметры выпусков и магистралей К1/К2",
+   "unit": "мм"
+  },
+  {
+   "parameter_id": 75,
+   "matrix_code": "M-075",
+   "legacy_code": "IOS3-075",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 5. ИОС3",
+   "parameter_name": "Материал и тип канализационных труб и фасонных частей",
+   "unit": "Марка"
+  },
+  {
+   "parameter_id": 76,
+   "matrix_code": "M-076",
+   "legacy_code": "IOS4-076",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 5. ИОС4",
+   "parameter_name": "Диаметры магистралей и стояков отопления (Т1, Т2)",
+   "unit": "мм"
+  },
+  {
+   "parameter_id": 77,
+   "matrix_code": "M-077",
+   "legacy_code": "IOS4-077",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 5. ИОС4",
+   "parameter_name": "Технические параметры отопительных приборов (радиаторов)",
+   "unit": "Вт / шт."
+  },
+  {
+   "parameter_id": 78,
+   "matrix_code": "M-078",
+   "legacy_code": "IOS4-078",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 5. ИОС4",
+   "parameter_name": "Сечения и геометрия воздуховодов общеобменной вентиляции",
+   "unit": "мм²"
+  },
+  {
+   "parameter_id": 79,
+   "matrix_code": "M-079",
+   "legacy_code": "IOS4-079",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 5. ИОС4",
+   "parameter_name": "Характеристики вентиляторов общеобменной вентиляции",
+   "unit": "м³/ч / Па / кВт"
+  },
+  {
+   "parameter_id": 80,
+   "matrix_code": "M-080",
+   "legacy_code": "IOS5-080",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 5. ИОС5",
+   "parameter_name": "Состав и емкость систем пожарной сигнализации (АПС)",
+   "unit": "шт. / зоны"
+  },
+  {
+   "parameter_id": 81,
+   "matrix_code": "M-081",
+   "legacy_code": "POS-081",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 6. ПОС",
+   "parameter_name": "Границы опасных зон работы грузоподъемных кранов",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 82,
+   "matrix_code": "M-082",
+   "legacy_code": "POS-082",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 6. ПОС",
+   "parameter_name": "Продолжительность этапов строительства (Календарный график)",
+   "unit": "дни"
+  },
+  {
+   "parameter_id": 83,
+   "matrix_code": "M-083",
+   "legacy_code": "POS-083",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 6. ПОС",
+   "parameter_name": "Посадка и габариты временных зданий и сооружений",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 84,
+   "matrix_code": "M-084",
+   "legacy_code": "POS-084",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 6. ПОС",
+   "parameter_name": "Схемы движения и ширина временных автодорог",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 85,
+   "matrix_code": "M-085",
+   "legacy_code": "POS-085",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 6. ПОС",
+   "parameter_name": "Места размещения площадок складирования материалов",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 86,
+   "matrix_code": "M-086",
+   "legacy_code": "POS-086",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 6. ПОС",
+   "parameter_name": "Потребность в кадрах (Максимальная численность)",
+   "unit": "чел."
+  },
+  {
+   "parameter_id": 87,
+   "matrix_code": "M-087",
+   "legacy_code": "POS-087",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 6. ПОС",
+   "parameter_name": "Технологическая последовательность возведения",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 88,
+   "matrix_code": "M-088",
+   "legacy_code": "POS-088",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 6. ПОС",
+   "parameter_name": "Точки подключения и мощности временных ресурсов",
+   "unit": "кВт / м³"
+  },
+  {
+   "parameter_id": 89,
+   "matrix_code": "M-089",
+   "legacy_code": "POS-089",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 6. ПОС",
+   "parameter_name": "Расположение пунктов мойки колес и выездов",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 90,
+   "matrix_code": "M-090",
+   "legacy_code": "POD-090",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 7. ПОД",
+   "parameter_name": "Границы опасных зон развала и обрушения конструкций",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 91,
+   "matrix_code": "M-091",
+   "legacy_code": "POD-091",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 7. ПОД",
+   "parameter_name": "Методы и технологическая последовательность демонтажа",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 92,
+   "matrix_code": "M-092",
+   "legacy_code": "POD-092",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 7. ПОД",
+   "parameter_name": "Мероприятия по защите действующих коммуникаций",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 93,
+   "matrix_code": "M-093",
+   "legacy_code": "POD-093",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 7. ПОД",
+   "parameter_name": "Общие объемы демонтируемых конструкций (по типам)",
+   "unit": "м³"
+  },
+  {
+   "parameter_id": 94,
+   "matrix_code": "M-094",
+   "legacy_code": "POD-094",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 7. ПОД",
+   "parameter_name": "Масса и класс опасности образующихся отходов",
+   "unit": "т / Класс"
+  },
+  {
+   "parameter_id": 95,
+   "matrix_code": "M-095",
+   "legacy_code": "POD-095",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 7. ПОД",
+   "parameter_name": "Мероприятия по пылеподавлению и снижению шума",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 96,
+   "matrix_code": "M-096",
+   "legacy_code": "POD-096",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 7. ПОД",
+   "parameter_name": "Узлы временного расчленения сохраняемых конструкций",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 97,
+   "matrix_code": "M-097",
+   "legacy_code": "POD-097",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 7. ПОД",
+   "parameter_name": "Места и габариты площадок временного складирования лома",
+   "unit": "м²"
+  },
+  {
+   "parameter_id": 98,
+   "matrix_code": "M-098",
+   "legacy_code": "OOS-098",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 8. ООС",
+   "parameter_name": "Регистрация лимитов в АИС \"ОСИГ\"",
+   "unit": "Статус"
+  },
+  {
+   "parameter_id": 99,
+   "matrix_code": "M-099",
+   "legacy_code": "OOS-099",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 8. ООС",
+   "parameter_name": "Верфикация транспортных средств (ГЛОНАСС)",
+   "unit": "Статус"
+  },
+  {
+   "parameter_id": 100,
+   "matrix_code": "M-100",
+   "legacy_code": "OOS-100",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 8. ООС",
+   "parameter_name": "Фиксация рейсов через мобильный КПТС",
+   "unit": "Статус"
+  },
+  {
+   "parameter_id": 101,
+   "matrix_code": "M-101",
+   "legacy_code": "OOS-101",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 8. ООС",
+   "parameter_name": "Сверка легитимности полной утилизации",
+   "unit": "Статус"
+  },
+  {
+   "parameter_id": 102,
+   "matrix_code": "M-102",
+   "legacy_code": "PPM-102",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Деление здания на пожарные отсеки",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 103,
+   "matrix_code": "M-103",
+   "legacy_code": "PPM-103",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Пределы огнестойкости противопожарных дверей и ворот (EI)",
+   "unit": "мин"
+  },
+  {
+   "parameter_id": 104,
+   "matrix_code": "M-104",
+   "legacy_code": "PPM-104",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Ширина и высота эвакуационных проходов",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 105,
+   "matrix_code": "M-105",
+   "legacy_code": "PPM-105",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Ширина эвакуационных дверей наружных выходов",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 106,
+   "matrix_code": "M-106",
+   "legacy_code": "PPM-106",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Направление открывания дверей на путях эвакуации",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 107,
+   "matrix_code": "M-107",
+   "legacy_code": "PPM-107",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Класс пожарной опасности отделочных материалов",
+   "unit": "Класс (КМ)"
+  },
+  {
+   "parameter_id": 108,
+   "matrix_code": "M-108",
+   "legacy_code": "PPM-108",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Количество и расстановка извещателей АПС",
+   "unit": "шт. / м"
+  },
+  {
+   "parameter_id": 109,
+   "matrix_code": "M-109",
+   "legacy_code": "PPM-109",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Пожарная маркировка кабелей систем ПЗ (СПЗ)",
+   "unit": "Марка"
+  },
+  {
+   "parameter_id": 110,
+   "matrix_code": "M-110",
+   "legacy_code": "PPM-110",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Количество и расстановка оповещателей СОУЭ",
+   "unit": "шт."
+  },
+  {
+   "parameter_id": 111,
+   "matrix_code": "M-111",
+   "legacy_code": "PPM-111",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Расположение и пределы огнестойкости клапанов (ОЗК)",
+   "unit": "мин (EI)"
+  },
+  {
+   "parameter_id": 112,
+   "matrix_code": "M-112",
+   "legacy_code": "PPM-112",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Производительность вентиляторов ДУ и подпора воздуха",
+   "unit": "м³/ч / Па"
+  },
+  {
+   "parameter_id": 113,
+   "matrix_code": "M-113",
+   "legacy_code": "PPM-113",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Расход воды и количество струй внутреннего пожаротушения (ВПВ)",
+   "unit": "л/с / шт."
+  },
+  {
+   "parameter_id": 114,
+   "matrix_code": "M-114",
+   "legacy_code": "PPM-114",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 9. ППМ",
+   "parameter_name": "Расход воды на наружное пожаротушение (НПВ)",
+   "unit": "л/с"
+  },
+  {
+   "parameter_id": 115,
+   "matrix_code": "M-115",
+   "legacy_code": "ODI-115",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 10. ОДИ",
+   "parameter_name": "Технические параметры и наличие инвалидных подъемников",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 116,
+   "matrix_code": "M-116",
+   "legacy_code": "ODI-116",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 10. ОДИ",
+   "parameter_name": "Ширина коридоров на путях движения МГН",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 117,
+   "matrix_code": "M-117",
+   "legacy_code": "ODI-117",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 10. ОДИ",
+   "parameter_name": "Ширина дверных проемов на путях движения МГН",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 118,
+   "matrix_code": "M-118",
+   "legacy_code": "ODI-118",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 10. ОДИ",
+   "parameter_name": "Высота порогов в дверных проемах на путях МГН",
+   "unit": "м"
+  },
+  {
+   "parameter_id": 119,
+   "matrix_code": "M-119",
+   "legacy_code": "ODI-119",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 10. ОДИ",
+   "parameter_name": "Габариты и планировка санузлов для инвалидов (универсальные кабины)",
+   "unit": "м² / м"
+  },
+  {
+   "parameter_id": 120,
+   "matrix_code": "M-120",
+   "legacy_code": "ODI-120",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 10. ОДИ",
+   "parameter_name": "Спецификация опорных стационарных и откидных поручней",
+   "unit": "шт."
+  },
+  {
+   "parameter_id": 121,
+   "matrix_code": "M-121",
+   "legacy_code": "ODI-121",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 10. ОДИ",
+   "parameter_name": "Количество и габариты парковочных мест для инвалидов",
+   "unit": "шт. / м"
+  },
+  {
+   "parameter_id": 122,
+   "matrix_code": "M-122",
+   "legacy_code": "ODI-122",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 10. ОДИ",
+   "parameter_name": "Наличие и расстановка тактильно-контрастных указателей",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 123,
+   "matrix_code": "M-123",
+   "legacy_code": "ODI-123",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 10. ОДИ",
+   "parameter_name": "Состав систем двухсторонней связи и вызова помощника",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 124,
+   "matrix_code": "M-124",
+   "legacy_code": "ZU-124",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 11. ЗУ",
+   "parameter_name": "Класс энергетической эффективности здания",
+   "unit": "Буква"
+  },
+  {
+   "parameter_id": 125,
+   "matrix_code": "M-125",
+   "legacy_code": "ZU-125",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 11. ЗУ",
+   "parameter_name": "Толщина теплоизоляционного слоя наружных стен",
+   "unit": "мм"
+  },
+  {
+   "parameter_id": 126,
+   "matrix_code": "M-126",
+   "legacy_code": "ZU-126",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 11. ЗУ",
+   "parameter_name": "Коэффициент теплопроводности (λ) утеплителя стен",
+   "unit": "Вт/(м·С)"
+  },
+  {
+   "parameter_id": 127,
+   "matrix_code": "M-127",
+   "legacy_code": "ZU-127",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 11. ЗУ",
+   "parameter_name": "Коэффициент сопротивления теплопередаче окон (Ro)",
+   "unit": "м²·С/Вт"
+  },
+  {
+   "parameter_id": 128,
+   "matrix_code": "M-128",
+   "legacy_code": "ZU-128",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 11. ЗУ",
+   "parameter_name": "Толщина утеплителя чердачных перекрытий / кровли",
+   "unit": "мм"
+  },
+  {
+   "parameter_id": 129,
+   "matrix_code": "M-129",
+   "legacy_code": "ZU-129",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 11. ЗУ",
+   "parameter_name": "Наличие приборов учета расхода энергоресурсов",
+   "unit": "шт."
+  },
+  {
+   "parameter_id": 130,
+   "matrix_code": "M-130",
+   "legacy_code": "ZU-130",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 11. ЗУ",
+   "parameter_name": "Установка энергосберегающего осветительного оборудования",
+   "unit": "—"
+  },
+  {
+   "parameter_id": 131,
+   "matrix_code": "M-131",
+   "legacy_code": "ZU-131",
+   "review_priority": "HIGH",
+   "pd_section": "Раздел 11. ЗУ",
+   "parameter_name": "Удельный годовой расход тепловой энергии на отопление",
+   "unit": "кВт·ч/м²"
+  },
+  {
+   "parameter_id": 132,
+   "matrix_code": "M-132",
+   "legacy_code": "SM-132",
+   "review_priority": "MEDIUM",
+   "pd_section": "Раздел 12. СМ",
+   "parameter_name": "Итоговая стоимость по Сводному сметному расчету (ССР)",
+   "unit": "тыс. руб."
+  }
+ ]
+}

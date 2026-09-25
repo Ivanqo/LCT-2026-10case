@@ -66,7 +66,7 @@ def run_object(obj: str) -> dict:
     run_process(db, process_id=process.id)
     protocol = latest_protocol(db, project_id=1, organization_id=1, process_id=process.id)
     pd = protocol_to_dict(protocol)
-    submission = protocol_to_submission(pd)
+    submission = protocol_to_submission(pd, code_style="legacy")  # keyed by internal codes below (groups, location_ok)
     groups = pd["payload"]["findings"]
     out = {
         "object": obj, "seconds": round(time.monotonic() - t0, 1), "n_checks": len(submission["checks"]),
