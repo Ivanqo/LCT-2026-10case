@@ -1,7 +1,38 @@
+/** Backend timestamps are naive UTC ("2026-09-25T12:31:18"); read them as UTC, not as local time. */
+export function parseUtc(value) {
+  if (!value) return null;
+  if (value instanceof Date) return value;
+  const text = String(value);
+  const d = new Date(/(?:[zZ]|[+-]\d\d:?\d\d)$/.test(text) ? text : `${text.replace(' ', 'T')}Z`);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
 export function fmtDate(value) {
   if (!value) return '—';
-  const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? String(value) : d.toLocaleString('ru-RU');
+  const d = parseUtc(value);
+  return d ? d.toLocaleString('ru-RU') : String(value);
+}
+
+export function fmtDuration(seconds) {
+  if (seconds === null || seconds === undefined || !Number.isFinite(Number(seconds))) return '—';
+  const total = Math.max(0, Math.round(Number(seconds)));
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  const mm = String(m).padStart(2, '0');
+  const ss = String(s).padStart(2, '0');
+  return h ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+}
+
+export function fmtConfidence(value) {
+  if (value === null || value === undefined || !Number.isFinite(Number(value))) return '—';
+  return Number(value).toFixed(2);
+}
+
+export function isTypingTarget(target) {
+  if (!target) return false;
+  const tag = String(target.tagName || '').toUpperCase();
+  return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable;
 }
 
 export function formatValue(value) {

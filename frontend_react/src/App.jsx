@@ -151,7 +151,7 @@ export default function App() {
             </button>
           </div>
 
-          <div className="content">
+          <div className={`content${view === 'process' ? ' wide' : ''}`}>
             {error && <div className="error-banner"><span>{error}</span><button onClick={() => setError('')}>×</button></div>}
             {view === 'documents' && (
               <DocumentsPanel projectId={projectId} onProcessStarted={handleProcessStarted} />

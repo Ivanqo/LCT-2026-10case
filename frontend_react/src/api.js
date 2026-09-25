@@ -61,6 +61,8 @@ async function request(path, opts = {}) {
   return data;
 }
 
+const openCalls = new Map();
+
 export const api = {
   login: (login, password) => request('/api/auth/login', { method: 'POST', body: { login, password } }),
   logout: () => request('/api/auth/logout', { method: 'POST' }),
@@ -84,12 +86,80 @@ export const api = {
   unfinalizeProtocol: (protocolId, reason) =>
     request(`/api/case10/protocols/${protocolId}/unfinalize`, { method: 'POST', body: { reason } }),
 
-  evidenceDecision: (evidenceGroupId, decision, reasonCode, comment) =>
+  evidenceDecision: (evidenceGroupId, decision, reasonCode, comment, uiMetrics) =>
     request(`/api/case10/evidence-groups/${evidenceGroupId}/decisions`, {
       method: 'POST',
-      body: { decision, reason_code: reasonCode || null, comment: comment || null },
+      body: { decision, reason_code: reasonCode || null, comment: comment || null, ui_metrics: uiMetrics || null },
     }),
+
+  // --- S5 inspector workbench ---
+  workbench: (processId) => request(`/api/case10/processes/${processId}/workbench`),
+  groupWorkbench: (groupId) => request(`/api/case10/evidence-groups/${groupId}/workbench`),
+  addFragment: (groupId, body) => request(`/api/case10/evidence-groups/${groupId}/fragments`, { method: 'POST', body }),
+  refineFragment: (groupId, key, body) =>
+    request(`/api/case10/evidence-groups/${groupId}/fragments/${encodeURIComponent(key)}/refine`, { method: 'POST', body }),
+  removeFragment: (groupId, key, reason) =>
+    request(`/api/case10/evidence-groups/${groupId}/fragments/${encodeURIComponent(key)}/remove`, { method: 'POST', body: { reason } }),
+  restoreFragment: (groupId, key, reason) =>
+    request(`/api/case10/evidence-groups/${groupId}/fragments/${encodeURIComponent(key)}/restore`, { method: 'POST', body: { reason } }),
+  bulkDecisions: (body) => request('/api/case10/evidence-groups/bulk-decisions', { method: 'POST', body }),
+  revisions: (processId) => request(`/api/case10/processes/${processId}/revisions`),
+  chooseRevision: (processId, body) => request(`/api/case10/processes/${processId}/revision-choices`, { method: 'POST', body }),
+  completeness: (processId) => request(`/api/case10/processes/${processId}/completeness`),
+  verificationOpen: (processId) => {
+    // One in-flight call per process: a double-mounted effect (React StrictMode) must not start two clocks.
+    if (!openCalls.has(processId)) {
+      const call = request(`/api/case10/processes/${processId}/verification/open`, { method: 'POST' });
+      openCalls.set(processId, call);
+      call.finally(() => openCalls.delete(processId)).catch(() => {});
+    }
+    return openCalls.get(processId);
+  },
+  verificationTiming: (processId) => request(`/api/case10/processes/${processId}/verification/timing`),
+  pageGeometry: (docId, page) => request(`/api/case10/document-versions/${docId}/pages/${page}/geometry`),
 };
+
+const pageImageCache = new Map();
+
+/** A page of the original (no highlight) as a blob URL; cached per document/page for the session. */
+export function fetchPageImage(docId, page, maxSide = 1800) {
+  const key = `${docId}:${page}:${maxSide}`;
+  if (!pageImageCache.has(key)) {
+    const promise = fetch(`${API_BASE}/api/case10/document-versions/${docId}/pages/${page}.png?max_side=${maxSide}`, {
+      headers: authHeaders(),
+    }).then(async (res) => {
+      if (!res.ok) {
+        let detail = `HTTP ${res.status}`;
+        try {
+          const data = await res.json();
+          detail = data.detail || detail;
+        } catch {
+          /* ignore */
+        }
+        throw new ApiError(detail, res.status);
+      }
+      return URL.createObjectURL(await res.blob());
+    });
+    promise.catch(() => pageImageCache.delete(key));
+    pageImageCache.set(key, promise);
+  }
+  return pageImageCache.get(key);
+}
+
+/** Go to source: the original page (vector PDF, text layer) opened in a new browser tab. */
+export async function openSourcePage(docId, page) {
+  const win = window.open('', '_blank');
+  try {
+    const res = await fetch(`${API_BASE}/api/case10/document-versions/${docId}/pages/${page}.pdf`, { headers: authHeaders() });
+    if (!res.ok) throw new ApiError(`Не удалось открыть источник (HTTP ${res.status})`, res.status);
+    const url = URL.createObjectURL(await res.blob());
+    if (win) win.location.href = url;
+    else window.open(url, '_blank');
+  } catch (err) {
+    if (win) win.close();
+    throw err;
+  }
+}
 
 export function uploadFile(projectId, file, onProgress) {
   return new Promise((resolve, reject) => {

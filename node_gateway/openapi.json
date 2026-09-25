@@ -110,11 +110,22 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": ["project_id", "file"],
+                "required": [
+                  "project_id",
+                  "file"
+                ],
                 "properties": {
-                  "project_id": { "type": "integer" },
-                  "file_type": { "type": "string", "default": "auto" },
-                  "file": { "type": "string", "format": "binary" }
+                  "project_id": {
+                    "type": "integer"
+                  },
+                  "file_type": {
+                    "type": "string",
+                    "default": "auto"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
                 }
               }
             }
@@ -150,7 +161,9 @@
             "name": "document_id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer" }
+            "schema": {
+              "type": "integer"
+            }
           },
           {
             "$ref": "#/components/parameters/ProjectIdQuery"
@@ -159,7 +172,10 @@
             "name": "source_type",
             "in": "query",
             "required": false,
-            "schema": { "type": "string", "default": "rag" }
+            "schema": {
+              "type": "string",
+              "default": "rag"
+            }
           }
         ],
         "responses": {
@@ -580,7 +596,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["reason"],
+                "required": [
+                  "reason"
+                ],
                 "properties": {
                   "reason": {
                     "type": "string"
@@ -696,6 +714,599 @@
         "responses": {
           "200": {
             "description": "Retraining log entries"
+          }
+        }
+      }
+    },
+    "/api/case10/processes/{process_id}/workbench": {
+      "get": {
+        "summary": "S5: candidate queue (one row per evidence group, quality flags)",
+        "parameters": [
+          {
+            "name": "process_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Queue"
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/{evidence_group_id}/workbench": {
+      "get": {
+        "summary": "S5: evidence card (§14) + ПД/РД/ИД panels + decision/edit history",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/EvidenceGroupId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Card"
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/{evidence_group_id}/edits": {
+      "get": {
+        "summary": "S5: versioned inspector edits of the group's evidence",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/EvidenceGroupId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "History"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/{evidence_group_id}/fragments": {
+      "post": {
+        "summary": "S5: add an evidence fragment (new version, machine output untouched)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/EvidenceGroupId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "document_version_id": {
+                    "type": "integer"
+                  },
+                  "page": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "bbox_norm": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  },
+                  "extracted_value": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "expected",
+                      "actual",
+                      "context"
+                    ]
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 3
+                  }
+                },
+                "required": [
+                  "document_version_id",
+                  "page",
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Edit + refreshed card"
+          },
+          "409": {
+            "$ref": "#/components/responses/PythonError"
+          },
+          "422": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/{evidence_group_id}/fragments/{fragment_key}/refine": {
+      "post": {
+        "summary": "S5: refine a fragment (page/bbox/value/role/note) as a new version",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/EvidenceGroupId"
+          },
+          {
+            "name": "fragment_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "machine:<evidence_fragment_id> | manual:<inspector_edit_id>"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "integer"
+                  },
+                  "bbox_norm": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  },
+                  "extracted_value": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 3
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Edit + refreshed card"
+          },
+          "409": {
+            "$ref": "#/components/responses/PythonError"
+          },
+          "422": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/{evidence_group_id}/fragments/{fragment_key}/remove": {
+      "post": {
+        "summary": "S5: exclude a fragment from the evidence (new version)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/EvidenceGroupId"
+          },
+          {
+            "name": "fragment_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "machine:<evidence_fragment_id> | manual:<inspector_edit_id>"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 3
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Edit"
+          },
+          "409": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/{evidence_group_id}/fragments/{fragment_key}/restore": {
+      "post": {
+        "summary": "S5: restore an excluded fragment (new version)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/EvidenceGroupId"
+          },
+          {
+            "name": "fragment_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "machine:<evidence_fragment_id> | manual:<inspector_edit_id>"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 3
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Edit"
+          },
+          "409": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/bulk-decisions": {
+      "post": {
+        "summary": "S5: bulk decision for same-type candidates (shared comment; bulk reject needs confirm_bulk_reject=true)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "evidence_group_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "decision": {
+                    "type": "string",
+                    "enum": [
+                      "Confirm",
+                      "Reject",
+                      "Clarification Required"
+                    ]
+                  },
+                  "reason_code": {
+                    "type": "string"
+                  },
+                  "comment": {
+                    "type": "string",
+                    "minLength": 3
+                  },
+                  "confirm_bulk_reject": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "evidence_group_ids",
+                  "decision",
+                  "comment"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Applied"
+          },
+          "409": {
+            "$ref": "#/components/responses/PythonError"
+          },
+          "422": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/processes/{process_id}/revisions": {
+      "get": {
+        "summary": "S5/S3: revision scopes (conflicts, chains) with the inspector's choices",
+        "parameters": [
+          {
+            "name": "process_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Scopes"
+          }
+        }
+      }
+    },
+    "/api/case10/processes/{process_id}/revision-choices": {
+      "post": {
+        "summary": "S5/S3: inspector chooses the authoritative edition with a justification (new version)",
+        "parameters": [
+          {
+            "name": "process_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "scope_key": {
+                    "type": "string"
+                  },
+                  "document_version_id": {
+                    "type": "integer"
+                  },
+                  "justification": {
+                    "type": "string",
+                    "minLength": 3
+                  }
+                },
+                "required": [
+                  "scope_key",
+                  "document_version_id",
+                  "justification"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Choice + effect + scopes"
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
+          },
+          "422": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/processes/{process_id}/completeness": {
+      "get": {
+        "summary": "S5/S3: completeness against the expected manifest (uploaded / expected / basis)",
+        "parameters": [
+          {
+            "name": "process_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Completeness"
+          }
+        }
+      }
+    },
+    "/api/case10/processes/{process_id}/verification/open": {
+      "post": {
+        "summary": "S5: protocol opened in the workbench -- starts the verification clock (once per cycle)",
+        "parameters": [
+          {
+            "name": "process_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Timing"
+          }
+        }
+      }
+    },
+    "/api/case10/processes/{process_id}/verification/timing": {
+      "get": {
+        "summary": "S5: verification time (open -> finalize), decisions, actions per decision",
+        "parameters": [
+          {
+            "name": "process_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Timing"
+          }
+        }
+      }
+    },
+    "/api/case10/document-versions/{document_version_id}/pages/{page}/geometry": {
+      "get": {
+        "summary": "S5: visible page size/rotation (frame of bbox_norm)",
+        "parameters": [
+          {
+            "name": "document_version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Geometry"
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/document-versions/{document_version_id}/pages/{page}.png": {
+      "get": {
+        "summary": "S5: original page rendered without highlight (client draws overlays)",
+        "parameters": [
+          {
+            "name": "document_version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "max_side",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 600,
+              "maximum": 3200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PNG",
+            "content": {
+              "image/png": {}
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/document-versions/{document_version_id}/pages/{page}.pdf": {
+      "get": {
+        "summary": "S5: go to source -- the original page cut from the original PDF",
+        "parameters": [
+          {
+            "name": "document_version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PDF",
+            "content": {
+              "application/pdf": {}
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/PythonError"
           }
         }
       }
@@ -882,6 +1493,10 @@
           "comment": {
             "type": "string",
             "nullable": true
+          },
+          "ui_metrics": {
+            "type": "object",
+            "description": "S5: {actions, elapsed_ms, via} measured by the workbench; audit only"
           }
         }
       },

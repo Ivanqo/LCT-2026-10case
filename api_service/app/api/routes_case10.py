@@ -77,6 +77,7 @@ from evaluation.fixtures import LeakageGuardError
 from .auth import get_current_user, require_admin, require_ml_engineer, require_supervisor
 from .utils import get_project_for_org
 from ..domain.dataset_sources import render_evidence_page
+from ..domain import inspector_workbench as workbench
 
 router = APIRouter(tags=["case10"])
 
@@ -133,6 +134,46 @@ class EvidenceDecisionIn(BaseModel):
     decision: str = Field(pattern="^(Confirm|Reject|Clarification Required)$")
     reason_code: str | None = Field(default=None, max_length=64)
     comment: str | None = Field(default=None, max_length=5000)
+    # S5: what the workbench measured for this decision (conscious actions and ms from opening the candidate);
+    # written to the audit log as DECISION_UI_METRICS, never used to decide anything.
+    ui_metrics: dict[str, Any] | None = None
+
+
+class BulkDecisionIn(BaseModel):
+    evidence_group_ids: list[int] = Field(min_length=1, max_length=200)
+    decision: str = Field(pattern="^(Confirm|Reject|Clarification Required)$")
+    reason_code: str | None = Field(default=None, max_length=64)
+    comment: str = Field(min_length=1, max_length=5000)
+    confirm_bulk_reject: bool = False
+
+
+class FragmentAddIn(BaseModel):
+    document_version_id: int
+    page: int = Field(ge=1)
+    bbox_norm: list[float] | None = None
+    extracted_value: str | None = Field(default=None, max_length=2000)
+    role: str | None = Field(default="context", max_length=32)
+    note: str | None = Field(default=None, max_length=2000)
+    reason: str = Field(min_length=1, max_length=2000)
+
+
+class FragmentRefineIn(BaseModel):
+    page: int | None = Field(default=None, ge=1)
+    bbox_norm: list[float] | None = None
+    extracted_value: str | None = Field(default=None, max_length=2000)
+    role: str | None = Field(default=None, max_length=32)
+    note: str | None = Field(default=None, max_length=2000)
+    reason: str = Field(min_length=1, max_length=2000)
+
+
+class FragmentStatusIn(BaseModel):
+    reason: str = Field(min_length=1, max_length=2000)
+
+
+class RevisionChoiceIn(BaseModel):
+    scope_key: str = Field(min_length=1, max_length=255)
+    document_version_id: int
+    justification: str = Field(min_length=1, max_length=2000)
 
 
 class UnfinalizeIn(BaseModel):
@@ -604,6 +645,14 @@ def create_evidence_decision(
         comment=payload.comment,
         user_id=int(user.id),
     )
+    if payload.ui_metrics:
+        workbench.record_decision_ui_metrics(
+            db,
+            db.get(InspectionProcess, str(group.process_id)),
+            evidence_group_id=int(group.id),
+            metrics={**payload.ui_metrics, "decision": payload.decision},
+            user_id=int(user.id),
+        )
     return {
         "id": int(decision.id),
         "evidence_group_id": int(decision.evidence_group_id),
@@ -662,6 +711,162 @@ def create_dispute_log(
         "opened_by_user_id": row.opened_by_user_id,
         "created_at": row.created_at,
     }
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# S5: inspector workbench (expert session §13-17, §19, §35). Logic in domain/inspector_workbench.py.
+# ---------------------------------------------------------------------------------------------------------------
+def _org_process(db: Session, process_id: str, user: User) -> InspectionProcess:
+    process = db.get(InspectionProcess, str(process_id))
+    if not process or int(process.organization_id) != _require_org(user):
+        raise HTTPException(status_code=404, detail="Inspection process not found")
+    return process
+
+
+def _org_group(db: Session, evidence_group_id: int, user: User) -> EvidenceGroup:
+    group = db.get(EvidenceGroup, int(evidence_group_id))
+    if not group or int(group.organization_id) != _require_org(user):
+        raise HTTPException(status_code=404, detail="Evidence group not found")
+    return group
+
+
+def _org_document(db: Session, document_version_id: int, user: User) -> DocumentVersion:
+    document = db.get(DocumentVersion, int(document_version_id))
+    if not document or int(document.organization_id) != _require_org(user):
+        raise HTTPException(status_code=404, detail="Document not found")
+    return document
+
+
+def _document_error(exc: Exception) -> HTTPException:
+    if isinstance(exc, FileNotFoundError):
+        return HTTPException(status_code=404, detail=str(exc) or "Original document is not available")
+    return HTTPException(status_code=422, detail=str(exc))
+
+
+@router.get("/case10/processes/{process_id}/workbench")
+def case10_workbench(process_id: str, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """The candidate queue of the single candidate window: one light row per evidence group."""
+    return workbench.workbench_summary(db, _org_process(db, process_id, user))
+
+
+@router.get("/case10/evidence-groups/{evidence_group_id}/workbench")
+def case10_evidence_group_workbench(evidence_group_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """The §14 evidence card + ПД/РД/ИД panels (effective evidence, page-normalized boxes) + decision/edit history."""
+    return workbench.workbench_group(db, _org_group(db, evidence_group_id, user))
+
+
+@router.get("/case10/evidence-groups/{evidence_group_id}/edits")
+def case10_evidence_group_edits(evidence_group_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    return workbench.group_edit_history(db, _org_group(db, evidence_group_id, user))
+
+
+@router.post("/case10/evidence-groups/{evidence_group_id}/fragments")
+def case10_add_fragment(evidence_group_id: int, payload: FragmentAddIn, db: Session = Depends(get_db),
+                        user: User = Depends(get_current_user)):
+    group = _org_group(db, evidence_group_id, user)
+    edit = workbench.add_fragment(db, group, document_version_id=payload.document_version_id, page=payload.page,
+                                  bbox_norm=payload.bbox_norm, extracted_value=payload.extracted_value, role=payload.role,
+                                  note=payload.note, reason=payload.reason, user_id=int(user.id))
+    return {"edit": workbench.edit_to_dict(edit), "evidence_group": workbench.workbench_group(db, group)}
+
+
+@router.post("/case10/evidence-groups/{evidence_group_id}/fragments/{fragment_key}/refine")
+def case10_refine_fragment(evidence_group_id: int, fragment_key: str, payload: FragmentRefineIn,
+                           db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    group = _org_group(db, evidence_group_id, user)
+    changes = payload.model_dump(exclude_unset=True)
+    changes.pop("reason", None)
+    edit = workbench.refine_fragment(db, group, fragment_key, changes=changes, reason=payload.reason, user_id=int(user.id))
+    return {"edit": workbench.edit_to_dict(edit), "evidence_group": workbench.workbench_group(db, group)}
+
+
+@router.post("/case10/evidence-groups/{evidence_group_id}/fragments/{fragment_key}/remove")
+def case10_remove_fragment(evidence_group_id: int, fragment_key: str, payload: FragmentStatusIn,
+                           db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    group = _org_group(db, evidence_group_id, user)
+    edit = workbench.set_fragment_status(db, group, fragment_key, remove=True, reason=payload.reason, user_id=int(user.id))
+    return {"edit": workbench.edit_to_dict(edit), "evidence_group": workbench.workbench_group(db, group)}
+
+
+@router.post("/case10/evidence-groups/{evidence_group_id}/fragments/{fragment_key}/restore")
+def case10_restore_fragment(evidence_group_id: int, fragment_key: str, payload: FragmentStatusIn,
+                            db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    group = _org_group(db, evidence_group_id, user)
+    edit = workbench.set_fragment_status(db, group, fragment_key, remove=False, reason=payload.reason, user_id=int(user.id))
+    return {"edit": workbench.edit_to_dict(edit), "evidence_group": workbench.workbench_group(db, group)}
+
+
+@router.post("/case10/evidence-groups/bulk-decisions")
+def case10_bulk_decisions(payload: BulkDecisionIn, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """§17: same-type candidates only, a shared comment, explicit confirmation for a bulk rejection."""
+    return workbench.bulk_decide(db, group_ids=payload.evidence_group_ids, organization_id=_require_org(user),
+                                 decision=payload.decision, reason_code=payload.reason_code, comment=payload.comment,
+                                 confirm_bulk_reject=payload.confirm_bulk_reject, user_id=int(user.id))
+
+
+@router.get("/case10/processes/{process_id}/revisions")
+def case10_revision_scopes(process_id: str, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    return workbench.revision_scopes(db, _org_process(db, process_id, user))
+
+
+@router.post("/case10/processes/{process_id}/revision-choices")
+def case10_choose_revision(process_id: str, payload: RevisionChoiceIn, db: Session = Depends(get_db),
+                           user: User = Depends(get_current_user)):
+    process = _org_process(db, process_id, user)
+    result = workbench.choose_revision(db, process, scope_key=payload.scope_key, document_version_id=payload.document_version_id,
+                                       justification=payload.justification, user_id=int(user.id))
+    return {**result, "revisions": workbench.revision_scopes(db, process)}
+
+
+@router.get("/case10/processes/{process_id}/completeness")
+def case10_completeness(process_id: str, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    return workbench.completeness_panel(db, _org_process(db, process_id, user))
+
+
+@router.post("/case10/processes/{process_id}/verification/open")
+def case10_verification_open(process_id: str, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """The protocol was opened in the workbench: starts the §35 verification clock (once per verification cycle)."""
+    return workbench.open_verification(db, _org_process(db, process_id, user), user_id=int(user.id))
+
+
+@router.get("/case10/processes/{process_id}/verification/timing")
+def case10_verification_timing(process_id: str, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    return workbench.verification_timing(db, _org_process(db, process_id, user))
+
+
+@router.get("/case10/document-versions/{document_version_id}/pages/{page}/geometry")
+def case10_page_geometry(document_version_id: int, page: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    document = _org_document(db, document_version_id, user)
+    try:
+        return {"document_version_id": int(document.id), **workbench.page_geometry(document, page)}
+    except (FileNotFoundError, ValueError, RuntimeError) as exc:
+        raise _document_error(exc) from exc
+
+
+@router.get("/case10/document-versions/{document_version_id}/pages/{page}.png")
+def case10_page_png(document_version_id: int, page: int, max_side: int = Query(1800, ge=600, le=3200),
+                    db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """A page of the original as rendered for the side-by-side panels, without any highlight (the client draws the
+    overlays from bbox_norm in the same visible frame)."""
+    document = _org_document(db, document_version_id, user)
+    try:
+        data = workbench.render_page_png(document, page, max_side=max_side)
+    except (FileNotFoundError, ValueError, RuntimeError) as exc:
+        raise _document_error(exc) from exc
+    return Response(data, media_type="image/png", headers={"Cache-Control": "private, max-age=600"})
+
+
+@router.get("/case10/document-versions/{document_version_id}/pages/{page}.pdf")
+def case10_page_pdf(document_version_id: int, page: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """Go to source: the original page cut out of the original PDF (vector content and text layer intact)."""
+    document = _org_document(db, document_version_id, user)
+    try:
+        data = workbench.extract_page_pdf(document, page)
+    except (FileNotFoundError, ValueError, RuntimeError) as exc:
+        raise _document_error(exc) from exc
+    return Response(data, media_type="application/pdf",
+                    headers={"Cache-Control": "private, max-age=600",
+                             "Content-Disposition": f'inline; filename="doc{int(document.id)}_p{int(page)}.pdf"'})
 
 
 @router.get("/case10/protocols/current")
@@ -772,6 +977,10 @@ async def finalize_case10_protocol(
     if not protocol or int(protocol.organization_id) != organization_id:
         raise HTTPException(status_code=404, detail="Protocol not found")
     finalized = finalize_protocol(db, protocol_id=int(protocol.id), user_id=int(user.id))
+    # S5 / expert session 35: "from opening the protocol to finalization" -> VERIFICATION_TIME_MEASURED in the audit log.
+    workbench.record_verification_time(
+        db, db.get(InspectionProcess, str(finalized.process_id)), protocol_id=int(finalized.id), user_id=int(user.id)
+    )
     # ТЗ 9.6: send the finalized protocol to ИАИС РИН, on the same request/DB
     # session that finalized it (deliberately not a fire-and-forget background
     # task: that would need its own DB session, which in a test harness that

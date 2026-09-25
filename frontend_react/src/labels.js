@@ -74,7 +74,10 @@ export const FRAGMENT_ROLE_LABELS = {
 
 export const APPROVAL_STATUS_LABELS = {
   APPROVED: 'Утверждён',
+  FOR_CONSTRUCTION: 'В производство работ',
   DRAFT: 'Черновик',
+  SUPERSEDED: 'Заменён',
+  CANCELLED: 'Аннулирован',
   UNKNOWN: 'Статус не указан',
 };
 
@@ -96,3 +99,55 @@ export function label(map, value, fallback) {
   if (value === null || value === undefined) return fallback ?? '—';
   return map[value] || value || fallback || '—';
 }
+
+export const STAGE_TITLES = { PD: 'ПД', RD: 'РД', ID: 'ИД' };
+export const STAGE_FULL = { PD: 'Проектная документация', RD: 'Рабочая документация', ID: 'Исполнительная документация' };
+
+export const EDIT_ACTION_LABELS = {
+  ADD: 'Добавлен',
+  REFINE: 'Уточнён',
+  REMOVE: 'Исключён',
+  RESTORE: 'Восстановлен',
+  CHOOSE: 'Выбрана редакция',
+};
+
+export const FRAGMENT_STATUS_LABELS = { ACTIVE: 'в доказательстве', REMOVED: 'исключён', ORPHANED: 'машинный фрагмент пересчитан' };
+
+export const ROLE_LABELS = { expected: 'эталон (ПД)', actual: 'фактическое', context: 'контекст' };
+
+export const REVISION_SCOPE_TYPES = {
+  MIXED_PROJECT_BASELINES: 'Разные серии шифров в одной стадии',
+  UNORDERED_REVISIONS: 'Редакции не упорядочены',
+  SUPERSEDED_BY_NEWER_REVISION: 'Есть более новая редакция',
+  PREDECESSOR_CHAIN: 'Цепочка редакций (predecessor/successor)',
+};
+
+export const REVISION_STATUS_LABELS = {
+  CLARIFICATION_REQUIRED: 'Требуется уточнение',
+  RESOLVED: 'Определена системой',
+  RESOLVED_BY_INSPECTOR: 'Выбрана инспектором',
+};
+
+export const COMPLETENESS_STATUS_LABELS = {
+  COMPLETE: 'Комплект полный',
+  INCOMPLETE: 'Комплект неполный',
+  CLARIFICATION_REQUIRED: 'Требуется уточнение',
+  UPLOADED: 'Загружено',
+  MISSING_EVIDENCE: 'Нет документа',
+  NOT_APPLICABLE: 'Неприменимо',
+  NOT_COMPARABLE: 'Нечитаемо',
+  UNCERTAIN: 'Неопределённость',
+};
+
+export const COMPLETENESS_TONE = {
+  COMPLETE: 'ok', UPLOADED: 'ok', INCOMPLETE: 'critical', MISSING_EVIDENCE: 'critical',
+  CLARIFICATION_REQUIRED: 'warn', UNCERTAIN: 'warn', NOT_APPLICABLE: 'neutral', NOT_COMPARABLE: 'warn',
+};
+
+export const DECISION_OPTIONS = [
+  { key: 'Confirm', hotkey: 'C', label: 'Подтвердить', status: 'CONFIRMED_VIOLATION', tone: 'critical' },
+  { key: 'Reject', hotkey: 'R', label: 'Отклонить', status: 'NEGATIVE_VERIFIED', tone: 'ok' },
+  { key: 'Clarification Required', hotkey: 'U', label: 'Уточнить', status: 'CLARIFICATION_REQUIRED', tone: 'warn' },
+];
+
+export const DECIDABLE_STATUSES = new Set(['CANDIDATE', 'CONFIRMED_VIOLATION', 'NEGATIVE_VERIFIED', 'CLARIFICATION_REQUIRED']);

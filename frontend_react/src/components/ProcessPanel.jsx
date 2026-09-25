@@ -1,27 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
 import { api, protocolPdfUrl, protocolSubmissionUrl, downloadProtectedFile } from '../api.js';
 import Badge from './Badge.jsx';
-import EvidenceCard from './EvidenceCard.jsx';
+import Workbench from './Workbench.jsx';
+import RevisionsPanel from './RevisionsPanel.jsx';
+import CompletenessPanel from './CompletenessPanel.jsx';
+import VerificationTimer from './VerificationTimer.jsx';
 import { PROCESS_STATUS_LABELS, PROCESS_TONE, label } from '../labels.js';
 import { fmtDate } from '../utils.js';
 
 const POLL_STATUSES = new Set(['QUEUED', 'PROCESSING', 'PARSING']);
 const LOADED_STATUSES = new Set(['READY', 'VERIFYING', 'COMPLETED', 'FINALIZED']);
-const ACTIONABLE_STATUSES = ['CANDIDATE', 'CONFIRMED_VIOLATION', 'NEGATIVE_VERIFIED', 'CLARIFICATION_REQUIRED', 'MISSING_EVIDENCE'];
-const NEEDS_ATTENTION = new Set(['CANDIDATE', 'CLARIFICATION_REQUIRED']);
-
-const FILTER_OPTIONS = [
-  { key: 'ALL', label: 'Все' },
-  { key: 'CANDIDATE', label: 'Кандидаты' },
-  { key: 'CONFIRMED_VIOLATION', label: 'Подтверждено' },
-  { key: 'NEGATIVE_VERIFIED', label: 'Нарушения нет' },
-  { key: 'CLARIFICATION_REQUIRED', label: 'Уточнение' },
-  { key: 'MISSING_EVIDENCE', label: 'Нет доказательств' },
+const SECTIONS = [
+  { key: 'workbench', label: 'Кандидаты и доказательства' },
+  { key: 'revisions', label: 'Редакции' },
+  { key: 'completeness', label: 'Комплектность' },
 ];
-
-function isSuspicion(finding) {
-  return finding.finding_status === 'SUSPICION' || (finding.delta && finding.delta.matrix_scope === 'FREE_SEARCH');
-}
 
 const SUPERVISOR_ROLES = new Set(['ADMIN', 'SUPERVISOR']);
 
@@ -37,10 +30,8 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
   const [unfinalizing, setUnfinalizing] = useState(false);
   const [showUnfinalizeConfirm, setShowUnfinalizeConfirm] = useState(false);
   const [unfinalizeReason, setUnfinalizeReason] = useState('');
-  const [findingFilter, setFindingFilter] = useState('ALL');
-  const [findingPage, setFindingPage] = useState(1);
-  const [suspicionPage, setSuspicionPage] = useState(1);
-  const PAGE_SIZE = 10;
+  const [section, setSection] = useState('workbench');
+  const [timerKey, setTimerKey] = useState(0);
   const canUnfinalize = Boolean(me?.is_admin || SUPERVISOR_ROLES.has(String(me?.role || '').toUpperCase()));
 
   const refreshHistory = useCallback(() => {
@@ -49,6 +40,12 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
   }, [projectId]);
 
   useEffect(() => { refreshHistory(); }, [refreshHistory, processId]);
+
+  // A browser that has never opened this project has no remembered process: open the latest one instead of an
+  // empty screen (the inspector should land on the protocol, not on a picker).
+  useEffect(() => {
+    if (!processId && history.length) onProcessIdChange(history[0].process_id);
+  }, [processId, history, onProcessIdChange]);
 
   const loadProtocol = useCallback(async () => {
     try {
@@ -125,11 +122,6 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
     }
   }
 
-  async function handleDecide(evidenceGroupId, decision, reasonCode, comment) {
-    await api.evidenceDecision(evidenceGroupId, decision, reasonCode, comment);
-    await refreshAfterAction();
-  }
-
   async function confirmFinalize() {
     if (!protocol) return;
     setFinalizing(true);
@@ -138,6 +130,7 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
       await api.finalizeProtocol(protocol.id);
       await refreshAfterAction();
       setShowFinalizeConfirm(false);
+      setTimerKey((k) => k + 1);
     } catch (err) {
       setStatusError(err.message || 'Не удалось финализировать протокол');
     } finally {
@@ -166,14 +159,8 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
   const locked = process?.status === 'FINALIZED';
   const completeness = process?.completeness || {};
   const hasCompleteness = Object.keys(completeness).length > 0;
-  const findings = protocol?.payload?.findings || [];
   const sections = protocol?.payload?.sections || {};
-  const suspicions = findings.filter(isSuspicion);
-  const mainFindings = findings.filter((f) => !isSuspicion(f) && ACTIONABLE_STATUSES.includes(f.finding_status));
-  const filtered = findingFilter === 'ALL' ? mainFindings : mainFindings.filter((f) => f.finding_status === findingFilter);
-  const sortedFindings = [...filtered].sort(
-    (a, b) => (NEEDS_ATTENTION.has(a.finding_status) ? 0 : 1) - (NEEDS_ATTENTION.has(b.finding_status) ? 0 : 1),
-  );
+  const loaded = process && LOADED_STATUSES.has(process.status);
 
   return (
     <div>
@@ -216,10 +203,14 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
               )}
             </div>
             <div className="status-grid">
+              <div className="stat-tile wide-tile"><div className="n obj">{process.object_id || '—'}</div><div className="l">Объект</div></div>
               <div className="stat-tile"><div className="n">{process.upload_scenario || '—'}</div><div className="l">Сценарий загрузки</div></div>
-              <div className="stat-tile"><div className="n">{process.matrix_version || '—'}</div><div className="l">Матрица</div></div>
               {protocol && <div className="stat-tile"><div className="n">v{protocol.version}</div><div className="l">Версия протокола</div></div>}
+              <div className="stat-tile"><div className="n">{sections.candidates ?? process.pending_candidates ?? 0}</div><div className="l">Кандидатов без решения</div></div>
+              <div className="stat-tile"><div className="n">{sections.confirmed_violations || 0}</div><div className="l">Подтверждено</div></div>
+              <div className="stat-tile"><div className="n">{sections.negative_verified || 0}</div><div className="l">Нарушения нет</div></div>
             </div>
+            {loaded && <VerificationTimer processId={process.process_id} status={process.status} refreshKey={timerKey} />}
           </div>
 
           {hasCompleteness && (
@@ -348,61 +339,21 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
         </div>
       )}
 
-      {protocol && (
-        <section className="card">
-          <h2>Результаты проверки</h2>
-          <div className="status-grid">
-            <div className="stat-tile"><div className="n">{sections.candidates || 0}</div><div className="l">Кандидаты</div></div>
-            <div className="stat-tile"><div className="n">{sections.confirmed_violations || 0}</div><div className="l">Подтверждено</div></div>
-            <div className="stat-tile"><div className="n">{sections.negative_verified || 0}</div><div className="l">Нарушения нет</div></div>
-            <div className="stat-tile"><div className="n">{sections.clarification_required || 0}</div><div className="l">Уточнение</div></div>
-            <div className="stat-tile"><div className="n">{sections.missing_evidence || 0}</div><div className="l">Нет доказательств</div></div>
-          </div>
-
-          <div className="row wrap top-gap" style={{ gap: 6 }}>
-            {FILTER_OPTIONS.map((opt) => (
-              <button
-                key={opt.key}
-                className="btn small"
-                style={findingFilter === opt.key ? { borderColor: 'var(--brand)', color: 'var(--brand)' } : undefined}
-                type="button"
-                onClick={() => { setFindingFilter(opt.key); setFindingPage(1); }}
-              >
-                {opt.label}
+      {protocol && loaded && (
+        <>
+          <div className="subtabs">
+            {SECTIONS.map((item) => (
+              <button key={item.key} type="button" className={`subtab${section === item.key ? ' active' : ''}`} onClick={() => setSection(item.key)}>
+                {item.label}
               </button>
             ))}
           </div>
-
-          <div className="evidence-list top-gap">
-            {sortedFindings.length === 0 && <div className="empty-state">Карточек с этим статусом нет.</div>}
-            {sortedFindings.slice(0, findingPage * PAGE_SIZE).map((group) => (
-              <EvidenceCard key={group.id} group={group} locked={locked} onDecide={handleDecide} />
-            ))}
-          </div>
-          {sortedFindings.length > findingPage * PAGE_SIZE && (
-            <button className="btn small top-gap" type="button" onClick={() => setFindingPage((p) => p + 1)}>
-              Показать ещё ({sortedFindings.length - findingPage * PAGE_SIZE})
-            </button>
+          {section === 'workbench' && (
+            <Workbench projectId={projectId} processId={process.process_id} locked={locked} onChanged={refreshAfterAction} />
           )}
-        </section>
-      )}
-
-      {protocol && (
-        <section className="card">
-          <h2>Подозрения ИИ ({sections.suspicions || suspicions.length})</h2>
-          <div className="muted small">Находки вне штатной матрицы параметров — требуют отдельной оценки инспектора.</div>
-          <div className="evidence-list top-gap">
-            {suspicions.length === 0 && <div className="empty-state">Подозрений не обнаружено.</div>}
-            {suspicions.slice(0, suspicionPage * PAGE_SIZE).map((group) => (
-              <EvidenceCard key={group.id} group={group} locked={locked} onDecide={handleDecide} />
-            ))}
-          </div>
-          {suspicions.length > suspicionPage * PAGE_SIZE && (
-            <button className="btn small top-gap" type="button" onClick={() => setSuspicionPage((p) => p + 1)}>
-              Показать ещё ({suspicions.length - suspicionPage * PAGE_SIZE})
-            </button>
-          )}
-        </section>
+          {section === 'revisions' && <RevisionsPanel processId={process.process_id} locked={locked} />}
+          {section === 'completeness' && <CompletenessPanel processId={process.process_id} />}
+        </>
       )}
     </div>
   );

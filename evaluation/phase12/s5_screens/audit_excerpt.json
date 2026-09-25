@@ -1,0 +1,165 @@
+[
+ {
+  "id": 10,
+  "action": "VERIFICATION_OPENED",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:56:44",
+  "details": {
+   "at": "2026-09-25T15:56:44.082774",
+   "pending_candidates": 6
+  }
+ },
+ {
+  "id": 14,
+  "action": "DECISION_UI_METRICS",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:56:49",
+  "details": {
+   "evidence_group_id": 25,
+   "at": "2026-09-25T15:56:49.739671",
+   "actions": 3,
+   "elapsed_ms": 4549,
+   "via": "keyboard",
+   "decision": "Confirm"
+  }
+ },
+ {
+  "id": 18,
+  "action": "DECISION_UI_METRICS",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:56:52",
+  "details": {
+   "evidence_group_id": 26,
+   "at": "2026-09-25T15:56:52.178765",
+   "actions": 3,
+   "elapsed_ms": 1610,
+   "via": "keyboard",
+   "decision": "Reject"
+  }
+ },
+ {
+  "id": 25,
+  "action": "BULK_DECISION",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:56:58",
+  "details": {
+   "decision": "Clarification Required",
+   "evidence_group_ids": [
+    28,
+    29
+   ],
+   "count": 2,
+   "type_key": "M-078",
+   "reason_code": null,
+   "comment": "Нужна сверка с аксонометрией: в РД изм.4 перераспределены ветви",
+   "confirmed_bulk_reject": false
+  }
+ },
+ {
+  "id": 26,
+  "action": "EVIDENCE_FRAGMENT_REFINED",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:57:02",
+  "details": {
+   "inspector_edit_id": 1,
+   "entity_key": "machine:34",
+   "version": 1,
+   "evidence_group_id": 27,
+   "reason": "Рамка захватывала соседнее помещение — сужена до зоны помещения"
+  }
+ },
+ {
+  "id": 27,
+  "action": "EVIDENCE_FRAGMENT_ADDED",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:57:05",
+  "details": {
+   "inspector_edit_id": 2,
+   "entity_key": "manual:2",
+   "version": 1,
+   "evidence_group_id": 27,
+   "reason": "В ПД система подписана ещё и на схеме — второе доказательство"
+  }
+ },
+ {
+  "id": 28,
+  "action": "EVIDENCE_FRAGMENT_REMOVED",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:57:06",
+  "details": {
+   "inspector_edit_id": 3,
+   "entity_key": "manual:2",
+   "version": 2,
+   "evidence_group_id": 27,
+   "reason": "Дублирует машинный фрагмент ПД на той же странице"
+  }
+ },
+ {
+  "id": 29,
+  "action": "EVIDENCE_FRAGMENT_RESTORED",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:57:07",
+  "details": {
+   "inspector_edit_id": 4,
+   "entity_key": "manual:2",
+   "version": 3,
+   "evidence_group_id": 27,
+   "reason": "Проверено: другой фрагмент схемы — возвращён"
+  }
+ },
+ {
+  "id": 33,
+  "action": "DECISION_UI_METRICS",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:57:13",
+  "details": {
+   "evidence_group_id": 27,
+   "at": "2026-09-25T15:57:13.592890",
+   "actions": 3,
+   "elapsed_ms": 20369,
+   "via": "keyboard",
+   "decision": "Confirm"
+  }
+ },
+ {
+  "id": 37,
+  "action": "DECISION_UI_METRICS",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:57:16",
+  "details": {
+   "evidence_group_id": 31,
+   "at": "2026-09-25T15:57:16.400116",
+   "actions": 3,
+   "elapsed_ms": 1846,
+   "via": "keyboard",
+   "decision": "Confirm"
+  }
+ },
+ {
+  "id": 38,
+  "action": "PROTOCOL_FINALIZED",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:57:19",
+  "details": {
+   "protocol_id": 8,
+   "version": 7,
+   "input_manifest_hash": "4055318d58b670902a5e738d93403f84424f5ff90bd61fe6d485b608d370ad18"
+  }
+ },
+ {
+  "id": 39,
+  "action": "VERIFICATION_TIME_MEASURED",
+  "user_id": 1,
+  "timestamp": "2026-09-25T15:57:19",
+  "details": {
+   "protocol_id": 8,
+   "opened_at": "2026-09-25T15:56:44.082774",
+   "finalized_at": "2026-09-25T15:57:19.320739",
+   "duration_seconds": 35.2,
+   "decisions": 6,
+   "evidence_edits": 4,
+   "avg_actions_per_decision": 3,
+   "avg_seconds_per_decision": 7.1
+  }
+ }
+]

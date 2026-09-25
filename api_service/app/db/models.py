@@ -950,3 +950,49 @@ class MonitoringMetric(Base):
     service_name = Column(String(64), nullable=False, index=True)
     tags = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
+
+
+class InspectorEdit(Base):
+    """Phase 12 / S5 (expert session §13): append-only history of an inspector's manual changes.
+
+    One row == one new version of one entity; rows are never updated or deleted by the application. Machine output
+    (`EvidenceFragment`), source fragments/OCR and the original files are never written to -- the effective state
+    an inspector sees is the machine output with these versions replayed on top (see `inspector_workbench.py`).
+
+    entity_type
+        EVIDENCE_FRAGMENT  entity_key "machine:<evidence_fragments.id>" (a machine fragment the inspector
+                           refined / removed / restored) or "manual:<id of the ADD row>" (an inspector-added one)
+        REVISION_CHOICE    entity_key "revision:<scope key>" (which edition of a document is authoritative)
+    Each row carries the §13 fields: user_id, created_at, reason, a reference to the source entity
+    (`source_fragment_id` / `source_document_version_id` / `previous_edit_id`) and the previous value."""
+
+    __tablename__ = "inspector_edits"
+
+    id = Column(Integer, primary_key=True, index=True)
+    organization_id = Column(Integer, ForeignKey("organizations.id", ondelete="CASCADE"), nullable=False, index=True)
+    project_id = Column(Integer, ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
+    process_id = Column(String(64), ForeignKey("inspection_processes.id", ondelete="CASCADE"), nullable=False, index=True)
+    object_id = Column(String(64), nullable=True, index=True)
+    # SET NULL, not CASCADE: a recompute that sweeps a group must not take the inspector's history with it.
+    evidence_group_id = Column(Integer, ForeignKey("evidence_groups.id", ondelete="SET NULL"), nullable=True, index=True)
+
+    entity_type = Column(String(32), nullable=False, index=True)
+    entity_key = Column(String(160), nullable=False, index=True)
+    action = Column(String(32), nullable=False, index=True)
+    version = Column(Integer, nullable=False)
+
+    source_fragment_id = Column(Integer, ForeignKey("evidence_fragments.id", ondelete="SET NULL"), nullable=True, index=True)
+    source_document_version_id = Column(Integer, ForeignKey("document_versions.id", ondelete="SET NULL"), nullable=True, index=True)
+    previous_edit_id = Column(Integer, ForeignKey("inspector_edits.id", ondelete="SET NULL"), nullable=True, index=True)
+    previous_value = Column(JSON, nullable=True)
+    new_value = Column(JSON, nullable=True)
+    reason = Column(Text, nullable=False)
+
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    created_at = Column(DateTime, nullable=False, server_default=func.now())
+
+    user = relationship("User")
+
+    __table_args__ = (
+        UniqueConstraint("process_id", "entity_key", "version", name="uq_inspector_edit_entity_version"),
+    )

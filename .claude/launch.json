@@ -4,8 +4,39 @@
     {
       "name": "case10-react-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "frontend_react", "run", "dev", "--", "--host", "127.0.0.1", "--port", "5173"],
+      "runtimeArgs": [
+        "--prefix",
+        "frontend_react",
+        "run",
+        "dev",
+        "--",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "5173"
+      ],
       "port": 5173
+    },
+    {
+      "name": "case10-s5-backend",
+      "runtimeExecutable": "venv/Scripts/python.exe",
+      "runtimeArgs": [
+        "evaluation/phase12/s5_demo_serve.py",
+        "--data-dir",
+        "data/s5_demo"
+      ],
+      "port": 8080
+    },
+    {
+      "name": "case10-s5-backend-fresh",
+      "runtimeExecutable": "venv/Scripts/python.exe",
+      "runtimeArgs": [
+        "evaluation/phase12/s5_demo_serve.py",
+        "--data-dir",
+        "data/s5_demo",
+        "--reset"
+      ],
+      "port": 8080
     }
   ]
 }
