@@ -84,7 +84,7 @@ cgroup, пик VRAM, покрытие тэггера.
 реестр `packages/s6-smoke.registry.json`; `POST /api/case10/batch-runs` импортировал все 3 файла со статусом
 `ACCEPTED`, без проблем. Процесс `754cc179dce4471ab3f2aa0a6c226157` перешёл в `READY`;
 `GET …/{process_id}/result` вернул результат, проверенный сервером по `submission_schema.json`, сохранён в
-`packages/s6-smoke-result.json` (251 341 Б, SHA-256 `7cd7cbeb561aa2f7d1c777f27ef2b5219194433c10a37747bf952e6dab04a603`).
+`packages/result.json` (251 341 Б, SHA-256 `7cd7cbeb561aa2f7d1c777f27ef2b5219194433c10a37747bf952e6dab04a603`).
 Стенд доступен на `http://127.0.0.1:3100`, вход `admin` прошёл; снимок главной страницы снят через browser preview.
 
 ## 3. Лицензии (пункт 2)
