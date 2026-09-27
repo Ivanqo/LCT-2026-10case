@@ -19,7 +19,7 @@ from ..clients.rag_client import RagClient
 from ..db.models import AuditLog, DocumentVersion, InspectionProcess, SourceFragment, UploadJob, User
 from ..db.session import SessionLocal, get_db
 from ..domain.document_versions import ensure_document_version_for_upload_job
-from ..domain.v3_jobs import enqueue_process_job, publish_job_message
+from ..domain.v3_jobs import enqueue_process_job, execute_process_job, publish_job_message
 from ..domain.v3_pipeline import get_or_create_open_process, impact_scope_for_documents
 from ..request_context import get_client_ip
 from ..schemas import UploadResponse
@@ -452,7 +452,17 @@ async def _process_upload_job(job_id: int) -> None:
         db.add(job)
         db.commit()
         if case10_job is not None:
-            publish_job_message(case10_job)
+            published = publish_job_message(case10_job)
+            if settings.OFFLINE_DELIVERY and not published:
+                try:
+                    result = await asyncio.to_thread(_execute_case10_job_inline, dict(case10_job.payload_json or {}))
+                    logger.info("CASE10 offline inline execution | job=%s process=%s outcome=%s",
+                                case10_job.id, case10_job.process_id, result.outcome)
+                except Exception as exc:
+                    logger.exception("CASE10 offline inline execution failed | job=%s: %s", case10_job.id, exc)
+                    job.detail = f"{job.detail or ''} CASE10 inline failed: {type(exc).__name__}: {exc}".strip()
+                    db.add(job)
+                    db.commit()
         logger.info(
             "Upload indexed | job=%s source=%s object_id=%s file=%s",
             job.id,
@@ -480,6 +490,15 @@ async def _process_upload_job(job_id: int) -> None:
 
 def _recompute_case10_for_uploaded_document(db: Session, job: UploadJob, doc_version):
     return _recompute_case10_for_uploaded_documents(db, job, [doc_version])
+
+
+def _execute_case10_job_inline(payload: dict):
+    """Run the queued job in a worker thread when offline demo mode has no broker/consumer."""
+    db = SessionLocal()
+    try:
+        return execute_process_job(db, payload)
+    finally:
+        db.close()
 
 
 def _recompute_case10_for_uploaded_documents(db: Session, job: UploadJob, documents: list[DocumentVersion]):

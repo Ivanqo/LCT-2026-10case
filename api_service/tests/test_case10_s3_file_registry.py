@@ -45,12 +45,14 @@ class S3RegistryTestBase(unittest.TestCase):
         self._settings = {
             "OFFLINE_DELIVERY": settings.OFFLINE_DELIVERY,
             "AUTO_PROCESS_UPLOADS": settings.AUTO_PROCESS_UPLOADS,
+            "RABBITMQ_URL": settings.RABBITMQ_URL,
             "BATCH_PACKAGES_ROOT": settings.BATCH_PACKAGES_ROOT,
             "DATA_DIR": settings.DATA_DIR,
             "TEMP_UPLOADS_DIR": settings.TEMP_UPLOADS_DIR,
         }
         settings.OFFLINE_DELIVERY = True
         settings.AUTO_PROCESS_UPLOADS = True
+        settings.RABBITMQ_URL = ""
         settings.BATCH_PACKAGES_ROOT = self.root / "packages"
         settings.DATA_DIR = self.root / "data"
         settings.TEMP_UPLOADS_DIR = self.root / "temp"
@@ -266,7 +268,8 @@ class OfflineUploadTests(S3RegistryTestBase):
         filename = "ПД 01-АР.pdf"
         digest = hashlib.sha256(pdf_bytes).hexdigest()
 
-        with patch.object(routes_upload, "RagClient", side_effect=AssertionError("RAG must not be constructed")):
+        with (patch.object(routes_upload, "RagClient", side_effect=AssertionError("RAG must not be constructed")),
+              patch.object(routes_upload, "_execute_case10_job_inline", return_value=type("Result", (), {"outcome": "ready"})()) as inline_run):
             uploaded = client.post("/api/upload", data={"project_id": str(self.project_id), "file_type": "auto"},
                                    files={"file": (filename, pdf_bytes, "application/pdf")})
             self.assertEqual(uploaded.status_code, 200, uploaded.text)
@@ -280,6 +283,7 @@ class OfflineUploadTests(S3RegistryTestBase):
             registry = client.post("/api/upload", data={"project_id": str(self.project_id), "file_type": "auto"},
                                    files={"file": ("Перечень.csv", registry_text.encode("utf-8"), "text/csv")})
             self.assertEqual(registry.status_code, 200, registry.text)
+        self.assertGreaterEqual(inline_run.call_count, 1)
 
         document = self.db.query(DocumentVersion).filter(DocumentVersion.dataset_file_id == "FILE-1").one()
         manifest = document.dataset_metadata["document_manifest"]
