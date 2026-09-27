@@ -110,7 +110,7 @@ Artifex или замена на pypdfium2. CUDA-библиотеки NVIDIA (2,
   JSON, схема) и отвергает сборку, если внутрь попали PDF/архивы/базы, `case_data`, `.claude`, память, отчёты
   `CASE10_*.md`/`*REPORT*.md`, SILVER-метки, `.env`, легаси-сервисы, неизвестные файлы данных или содержимое с
   признаками файлов памяти. Предварительный комплект с текущего HEAD создан командой
-  `python deploy/make_delivery.py bundle --out E:/case10_phase12/s6/dist`: 315 файлов, 2,6 МБ, проблем 0;
+  `python deploy/make_delivery.py bundle --out E:/case10_phase12/s6/dist`: 318 файлов, 2,8 МБ, проблем 0;
   архив `case10-delivery-<HEAD>.zip` в `E:\case10_phase12\s6\dist`. Это ещё не Д5: комплект собран до интеграции I.
 
 ## 5. Время по ТЗ §11 (пункт 4)
