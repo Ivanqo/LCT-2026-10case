@@ -65,7 +65,7 @@ ALLOWED_DATA = (
 FORBIDDEN_CONTENT = (
     re.compile(r'"violation_label"\s*:\s*"VIOLATION_PRESENT".*"gold', re.I),
     re.compile(r"^---\s*\nname:\s*case10", re.M),                      # memory file front matter
-    re.compile(r"originSessionId"),
+    re.compile("origin" + "SessionId"),                                # memory metadata (split: no self-match)
 )
 # Literals naming the development corpus: objects, organizer file ids, package-specific paths.
 CORPUS_LITERALS = re.compile(

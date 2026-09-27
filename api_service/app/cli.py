@@ -265,10 +265,18 @@ class _StageClock:
         self.wrap(official_evidence, "tag_live_candidates", "tagging", sink=diagnostics.append)
         self.wrap(v3_pipeline, "create_official_evidence_groups", "compare_132")
         self.wrap(v3_pipeline, "create_protocol_version", "protocol")
-        for module_name in ("dataset_sources", "official_rule_packs", "cross_stage_localization", "live_candidate_tagger"):
+        # Parsing/OCR outside the tagger. `live_candidate_tagger.extract_original_pages` is deliberately NOT wrapped:
+        # the tagger treats a replaced page source as a test fixture and then scans in-process without the pool or
+        # the SHA-256 cache (`_page_source_replaced`) -- wrapping it would change how fast the run is, not what it
+        # measures. The tagger reports its own parse+OCR+match time (`scan_seconds`, `scan_cpu_seconds`).
+        for module_name in ("dataset_sources", "official_rule_packs", "cross_stage_localization"):
             module = importlib.import_module(f"app.domain.{module_name}")
             for attribute in ("extract_original_pages", "ocr_page_snapshot", "ocr_original_clip"):
                 self.wrap(module, attribute, "parse_ocr")
+        from .domain import live_candidate_tagger
+
+        if live_candidate_tagger._page_source_replaced():
+            raise RuntimeError("timing instrumentation replaced the live tagger's page source")
         return diagnostics
 
     def report(self) -> dict[str, float]:
