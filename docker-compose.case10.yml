@@ -1,0 +1,119 @@
+# CASE10 delivery stand: the offline inspection service and its UI, nothing else.
+#
+#   docker compose -f docker-compose.case10.yml up -d --build
+#   UI  http://127.0.0.1:3100   (login/password: CASE10_ADMIN_LOGIN / CASE10_ADMIN_PASSWORD, see README_GRADER.md)
+#   API http://127.0.0.1:8000/docs, external contract via the gateway http://127.0.0.1:8080/openapi.json
+#
+# Compared with docker-compose.yml (development): no RAG / IFC / Postgres / Redis / landing / legacy frontend, the
+# api image is the `delivery` target (CASE10_OFFLINE_DELIVERY=1: no chat, no Qwen proxy, models baked in, no
+# download at runtime). With a GPU add `-f docker-compose.case10.gpu.yml`. Server-side packages for
+# POST /api/case10/batch-runs go into ./packages (CASE10_PACKAGES_DIR).
+name: case10
+
+x-case10-env: &case10-env
+  API_DATA_DIR: /data
+  API_LOG_DIR: /logs
+  RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/%2F
+  REDIS_URL: ""
+  ENABLE_METRICS: ${ENABLE_METRICS:-true}
+  CASE10_JOB_MAX_ATTEMPTS: ${CASE10_JOB_MAX_ATTEMPTS:-3}
+  CASE10_JOB_STALE_SECONDS: ${CASE10_JOB_STALE_SECONDS:-900}
+  CASE10_EXPECT_GPU: ${CASE10_EXPECT_GPU:-0}
+  CASE10_GPU_MEMORY_FRACTION: ${CASE10_GPU_MEMORY_FRACTION:-0.2}
+  CASE10_OCR_ENGINE: tesseract
+  CASE10_LIVE_TAGGER_WORKERS: ${CASE10_LIVE_TAGGER_WORKERS:-0}
+  CASE10_LIVE_TAGGER_MAX_WORKERS: ${CASE10_LIVE_TAGGER_MAX_WORKERS:-24}
+  CASE10_LIVE_TAGGER_CACHE_ENABLED: ${CASE10_LIVE_TAGGER_CACHE_ENABLED:-1}
+  CASE10_LLM_VERIFIER_ENABLED: ${CASE10_LLM_VERIFIER_ENABLED:-0}
+  IAIS_RIN_BASE_URL: ${IAIS_RIN_BASE_URL:-}
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api_service/Dockerfile
+      target: delivery
+    image: case10-api:${CASE10_IMAGE_TAG:-latest}
+    environment:
+      <<: *case10-env
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+      DEFAULT_ADMIN_LOGIN: ${CASE10_ADMIN_LOGIN:-admin}
+      DEFAULT_ADMIN_PASSWORD: ${CASE10_ADMIN_PASSWORD:-Case10-Demo-2026}
+      DEFAULT_ADMIN_EMAIL: ${CASE10_ADMIN_EMAIL:-admin@case10.local}
+      DEFAULT_ADMIN_ORG: ${CASE10_ADMIN_ORG:-Мосгосстройнадзор (демо)}
+      DEFAULT_ADMIN_API_KEY: ${CASE10_ADMIN_API_KEY:-}
+    volumes:
+      - case10_data:/data
+      - case10_logs:/logs
+      - ${CASE10_PACKAGES_DIR:-./packages}:/data/packages
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${API_HOST_PORT:-8000}:8000"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5).read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    restart: unless-stopped
+
+  case10_worker:
+    image: case10-api:${CASE10_IMAGE_TAG:-latest}
+    command: ["python", "-m", "app.worker_case10"]
+    environment:
+      <<: *case10-env
+      CASE10_WORKER_RECONNECT_SECONDS: ${CASE10_WORKER_RECONNECT_SECONDS:-5}
+    volumes:
+      - case10_data:/data
+      - case10_logs:/logs
+      - ${CASE10_PACKAGES_DIR:-./packages}:/data/packages
+    depends_on:
+      api:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  node_gateway:
+    build:
+      context: .
+      dockerfile: node_gateway/Dockerfile
+    image: case10-gateway:${CASE10_IMAGE_TAG:-latest}
+    environment:
+      PYTHON_API_BASE_URL: http://api:8000
+      PORT: 8080
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${GATEWAY_HOST_PORT:-8080}:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  react_frontend:
+    build:
+      context: ./frontend_react
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE: ${REACT_FRONTEND_API_BASE:-}
+    image: case10-ui:${CASE10_IMAGE_TAG:-latest}
+    ports:
+      - "${DOCKER_BIND_IP:-127.0.0.1}:${UI_HOST_PORT:-3100}:80"
+    depends_on:
+      - node_gateway
+    restart: unless-stopped
+
+volumes:
+  case10_data:
+  case10_logs:

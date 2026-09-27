@@ -1,0 +1,184 @@
+[
+ {
+  "file": "api_service/app/config.py",
+  "line": 81,
+  "kind": "comment",
+  "literal": "LOS3A",
+  "text": "# box LOS3A got 65/103 RD documents scanned and PZ-004 regressed; unbounded,"
+ },
+ {
+  "file": "api_service/app/config.py",
+  "line": 89,
+  "kind": "comment",
+  "literal": "DOO25",
+  "text": "# the largest real object in this corpus (DOO25) has 1750 files, of which"
+ },
+ {
+  "file": "api_service/app/domain/anchor_search.py",
+  "line": 100,
+  "kind": "comment",
+  "literal": "LOS3A",
+  "text": "# almost never repeats that qualifier verbatim (real LOS3A RD table row:"
+ },
+ {
+  "file": "api_service/app/domain/anchor_search.py",
+  "line": 157,
+  "kind": "docstring",
+  "literal": "LOS3A",
+  "text": "\"\"\"Among every position where `anchor_words` occurs, in order, as a\n    subsequence of `norm_words` with at most `max_gap` extra words between\n    any two conse"
+ },
+ {
+  "file": "api_service/app/domain/anchor_search.py",
+  "line": 157,
+  "kind": "docstring",
+  "literal": "LOS3A",
+  "text": "\"\"\"Among every position where `anchor_words` occurs, in order, as a\n    subsequence of `norm_words` with at most `max_gap` extra words between\n    any two conse"
+ },
+ {
+  "file": "api_service/app/domain/anchor_search.py",
+  "line": 410,
+  "kind": "comment",
+  "literal": "LOS3A",
+  "text": "# Real forensic finding (LOS3A PD-stage document, PZ-002 \"Общая площадь"
+ },
+ {
+  "file": "api_service/app/domain/anchor_vocab/__init__.py",
+  "line": 1,
+  "kind": "docstring",
+  "literal": "DOO25",
+  "text": "\"\"\"Anchor vocabulary: extra wordings under which a matrix parameter appears in real documents.\n\nThe catalog name (`Param.parameter_name`) stays the FIRST anchor"
+ },
+ {
+  "file": "api_service/app/domain/anchor_vocab/__init__.py",
+  "line": 1,
+  "kind": "docstring",
+  "literal": "LOS3A",
+  "text": "\"\"\"Anchor vocabulary: extra wordings under which a matrix parameter appears in real documents.\n\nThe catalog name (`Param.parameter_name`) stays the FIRST anchor"
+ },
+ {
+  "file": "api_service/app/domain/anchor_vocab/__init__.py",
+  "line": 1,
+  "kind": "docstring",
+  "literal": "LOS3A",
+  "text": "\"\"\"Anchor vocabulary: extra wordings under which a matrix parameter appears in real documents.\n\nThe catalog name (`Param.parameter_name`) stays the FIRST anchor"
+ },
+ {
+  "file": "api_service/app/domain/cross_stage_localization.py",
+  "line": 1,
+  "kind": "docstring",
+  "literal": "LOS3A",
+  "text": "\"\"\"Shared cross-stage page-localization engine for the four generic\n(data-driven, not per-code) extraction mechanisms (`generic_matrix_\nextraction.py`, `generic"
+ },
+ {
+  "file": "api_service/app/domain/dataset_sources.py",
+  "line": 82,
+  "kind": "comment",
+  "literal": "F0172",
+  "text": "# Deliberately NOT included: 0xF8E5-0xF8F8 (seen in F0172), which are stacked bracket"
+ },
+ {
+  "file": "api_service/app/domain/dataset_sources.py",
+  "line": 118,
+  "kind": "comment",
+  "literal": "F0146",
+  "text": "# OCR_GOLD_REVIEW_PASS1_REPORT.md finding #2, confirmed on real pages F0146/F0150/F0153):"
+ },
+ {
+  "file": "api_service/app/domain/dataset_sources.py",
+  "line": 118,
+  "kind": "comment",
+  "literal": "F0150",
+  "text": "# OCR_GOLD_REVIEW_PASS1_REPORT.md finding #2, confirmed on real pages F0146/F0150/F0153):"
+ },
+ {
+  "file": "api_service/app/domain/dataset_sources.py",
+  "line": 118,
+  "kind": "comment",
+  "literal": "F0153",
+  "text": "# OCR_GOLD_REVIEW_PASS1_REPORT.md finding #2, confirmed on real pages F0146/F0150/F0153):"
+ },
+ {
+  "file": "api_service/app/domain/dataset_sources.py",
+  "line": 127,
+  "kind": "comment",
+  "literal": "F0146",
+  "text": "# F0146 (e.g. \"Содержание\" -> \"%>45D64=<5\") that uses only ordinary printable ASCII --"
+ },
+ {
+  "file": "api_service/app/domain/dataset_sources.py",
+  "line": 270,
+  "kind": "comment",
+  "literal": "LOS3A",
+  "text": "# LOS3A RD sheet: literal anchor-phrase matching"
+ },
+ {
+  "file": "api_service/app/domain/dataset_sources.py",
+  "line": 287,
+  "kind": "comment",
+  "literal": "F0150",
+  "text": "# drops them, so a page like F0150 that is genuinely garbled shows *zero*"
+ },
+ {
+  "file": "api_service/app/domain/document_facts.py",
+  "line": 1,
+  "kind": "docstring",
+  "literal": "Речников",
+  "text": "\"\"\"Deterministic, metadata-only facts about the documents of ONE object: what section a file belongs to,\r\nwhich project series / revision it carries, whether it"
+ },
+ {
+  "file": "api_service/app/domain/generic_matrix_extraction.py",
+  "line": 254,
+  "kind": "comment",
+  "literal": "LOS3A",
+  "text": "# forensic findings, LOS3A PZ-001/PZ-002. A value that reads as exactly"
+ },
+ {
+  "file": "api_service/app/domain/generic_matrix_extraction.py",
+  "line": 264,
+  "kind": "comment",
+  "literal": "LOS3A",
+  "text": "# the real LOS3A PD document) against the parameter's own"
+ },
+ {
+  "file": "api_service/app/domain/live_candidate_tagger.py",
+  "line": 1,
+  "kind": "docstring",
+  "literal": "LOS3A",
+  "text": "\"\"\"Live candidate tagger -- ТЗ 9.1 item 2, Phase A/B.\r\n\r\nEvery extraction mechanism in this pipeline (the 4 generic-tier mechanisms\r\nvia `official_evidence.infe"
+ },
+ {
+  "file": "api_service/app/domain/live_candidate_tagger.py",
+  "line": 664,
+  "kind": "comment",
+  "literal": "LOS3A",
+  "text": "# forensic counter-example (LOS3A RD page 11, see the live-candidate-"
+ },
+ {
+  "file": "api_service/app/domain/official_dataset.py",
+  "line": 23,
+  "kind": "code",
+  "literal": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+  "text": "PUBLIC_OBJECT_IDS = (\"OBJ-TYUMENSKAYA-5-GOLD-SEED\", \"OBJ-NOVOSLOBODSKAYA\")"
+ },
+ {
+  "file": "api_service/app/domain/official_dataset.py",
+  "line": 23,
+  "kind": "code",
+  "literal": "OBJ-NOVOSLOBODSKAYA",
+  "text": "PUBLIC_OBJECT_IDS = (\"OBJ-TYUMENSKAYA-5-GOLD-SEED\", \"OBJ-NOVOSLOBODSKAYA\")"
+ },
+ {
+  "file": "api_service/app/domain/official_dataset.py",
+  "line": 24,
+  "kind": "code",
+  "literal": "OBJ-RECHNIKOV-7-7",
+  "text": "HIDDEN_OBJECT_IDS = (\"OBJ-RECHNIKOV-7-7\",)"
+ },
+ {
+  "file": "api_service/app/domain/official_rule_packs.py",
+  "line": 483,
+  "kind": "code",
+  "literal": "РД-ОВ1",
+  "text": "return \"РД-ОВ1\" in normalized or \"RD-OV1\" in normalized"
+ }
+]

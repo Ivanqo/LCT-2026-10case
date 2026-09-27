@@ -1,0 +1,35 @@
+# Public CASE10 stand: nginx (+ Let's Encrypt) in front of docker-compose.case10.yml.
+#   docker compose -f docker-compose.case10.yml -f deploy/case10/docker-compose.stand.yml up -d --build
+# CASE10_NGINX_TEMPLATE selects plain HTTP (default, first start) or HTTPS once bootstrap.sh obtained a certificate.
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:-localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/case10/${CASE10_NGINX_TEMPLATE:-nginx.http.conf.template}:/etc/nginx/templates/default.conf.template:ro
+      - certbot_www:/var/www/certbot:ro
+      - certbot_conf:/etc/letsencrypt:ro
+    depends_on:
+      - node_gateway
+      - react_frontend
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot:v2.11.0
+    profiles: ["tls"]
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+    entrypoint: /bin/sh
+    command: >
+      -c "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet;
+      sleep 12h & wait $${!}; done"
+    restart: unless-stopped
+
+volumes:
+  certbot_www:
+  certbot_conf:

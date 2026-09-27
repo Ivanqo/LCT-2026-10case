@@ -1,186 +1,95 @@
-# Production deployment for docaibuild.ru
+# Развёртывание стенда CASE10
 
-Эта схема поднимает:
+Стенд — это офлайн-сервис проверки ПД/РД/ИД и его интерфейс инспектора. Внешние сервисы не нужны: модели лежат в
+образе, во время работы нет обращений в интернет (подробно — `README_GRADER.md`, лицензии — `LICENSES_MODELS.md`).
 
-- `https://landing.docaibuild.ru/` -> лендинг;
-- `https://app.docaibuild.ru/` -> основное приложение;
-- `https://app.docaibuild.ru/api/*` -> backend API; для CASE10-внешнего контракта используйте Node gateway (`node_gateway`, порт `8080`) и его `/openapi.json`;
-- `https://landing.docaibuild.ru/api/lead` -> форма заявки лендинга;
-- `https://docaibuild.ru/` -> редирект на лендинг;
-- Nginx reverse proxy + Certbot для SSL;
-- автообновление сертификата через контейнер `certbot`;
-- GitHub Actions CD: pull на VPS и `docker compose up --build -d`.
+| Сервис | Что делает | Порт (по умолчанию только 127.0.0.1) |
+|---|---|---|
+| `api` | FastAPI: загрузка, процессы, доказательства, решения, протокол, JSON; серверный пакетный путь | 8000 (`/docs`) |
+| `case10_worker` | выполняет прогоны из очереди (тот же образ) | — |
+| `rabbitmq` | очередь заданий между `api` и воркером | не публикуется |
+| `node_gateway` | внешний контракт API (`/openapi.json`), прокси к `api` | 8080 |
+| `react_frontend` | рабочее место инспектора | 3100 |
+| `nginx` (+ `certbot`) | только для публичного стенда: один домен, `/` → интерфейс, `/api/` → шлюз | 80 / 443 |
 
-## 1. DNS
+Файлы: `docker-compose.case10.yml` (стенд), `docker-compose.case10.gpu.yml` (GPU), `deploy/case10/` (nginx, TLS,
+bootstrap, шаблон `.env`). Старый `docker-compose.yml` — среда разработки (RAG, IFC, Postgres, чат), в поставку не
+входит.
 
-В панели домена создай A-записи:
+## 1. Локально или на сервере, одна команда
 
-```text
-docaibuild.ru -> IP_ТВОЕГО_VPS
-landing.docaibuild.ru -> IP_ТВОЕГО_VPS
-app.docaibuild.ru -> IP_ТВОЕГО_VPS
-```
-
-Перед выпуском SSL проверь, что домены уже резолвятся на сервер:
+Требования: Docker 24+ с Compose v2; 4+ ядра, 8+ ГБ RAM (16 ГБ для объектов на тысячи страниц), 20 ГБ диска под
+образ. GPU не обязателен.
 
 ```bash
-dig +short docaibuild.ru
-dig +short landing.docaibuild.ru
-dig +short app.docaibuild.ru
+docker compose -f docker-compose.case10.yml up -d --build
 ```
 
-## 2. Первый запуск на Ubuntu VPS
-
-Подключись к серверу:
+Первая сборка скачивает зависимости (≈ 3–4 ГБ, в основном PyTorch с CUDA-библиотеками) и модель эмбеддингов;
+дальше стенду интернет не нужен. Проверка:
 
 ```bash
-ssh administrator@IP_ТВОЕГО_VPS
+docker compose -f docker-compose.case10.yml ps
+curl -s http://127.0.0.1:8000/health
 ```
 
-Установи git, если его нет:
+Интерфейс: http://127.0.0.1:3100, вход `admin` / `Case10-Demo-2026` (меняется переменными `CASE10_ADMIN_LOGIN`,
+`CASE10_ADMIN_PASSWORD` в `.env`, см. `deploy/case10/case10.env.example`). Пароль задаётся при **первом** старте,
+когда создаётся база; чтобы сменить его, остановите стенд и удалите том `case10_data` (`down -v`).
+
+С GPU (нужен NVIDIA Container Toolkit):
 
 ```bash
-sudo apt-get update
-sudo apt-get install -y git
+docker compose -f docker-compose.case10.yml -f docker-compose.case10.gpu.yml up -d --build
 ```
 
-Склонируй проект:
+## 2. Публичный стенд на Ubuntu
 
 ```bash
-mkdir -p /home/administrator
-cd /home/administrator
-git clone <URL_ТВОЕГО_GIT_РЕПОЗИТОРИЯ> pd_rd
-cd pd_rd
+git clone <repo> case10 && cd case10
+APP_DOMAIN=case10.example.ru LETSENCRYPT_EMAIL=ops@example.ru bash deploy/case10/bootstrap.sh
 ```
 
-Запусти bootstrap. Он установит Docker, если Docker ещё не установлен, создаст `.env`, сгенерирует секреты, поднимет временный HTTP Nginx, выпустит Let's Encrypt сертификат и переключит проект на HTTPS:
+Скрипт ставит Docker (если его нет), создаёт `.env` из `deploy/case10/case10.env.example` со случайными паролем
+администратора и API-ключом, собирает и поднимает стенд за nginx, получает сертификат Let's Encrypt и
+переключает nginx на HTTPS. Без `APP_DOMAIN` стенд работает по HTTP на порту 80. `GPU=1` добавляет GPU-оверлей.
+Учётные данные печатаются в конце и лежат в `.env`. В файрволе достаточно открыть 22, 80, 443.
+
+## 3. Большие пакеты: серверный путь
+
+Интерфейс принимает файлы до 50 МБ и пакеты до 200 МБ (ТЗ 9.1). Реальные комплекты — гигабайты, они загружаются
+на сервер и обрабатываются без этих лимитов:
+
+1. Положить папку или ZIP пакета (и реестр файлов по Перечню ИД 1.1) в `./packages` на хосте
+   (`CASE10_PACKAGES_DIR`), например `packages/obj-17/…` и `packages/obj-17.registry.csv`.
+2. `POST /api/case10/batch-runs` с `{"project_id": 1, "package": "obj-17", "registry": "obj-17.registry.csv"}`
+   (роль администратора или руководителя). Пакет импортируется, процесс ставится в очередь воркеру и виден в
+   интерфейсе; результат — `GET /api/case10/batch-runs/{process_id}/result`.
+
+Или без стенда, одной командой в контейнере: `python -m app.cli run` (см. `README_GRADER.md`, раздел 2).
+
+## 4. Эксплуатация
 
 ```bash
-LETSENCRYPT_EMAIL=admin@docaibuild.ru bash deploy/bootstrap-ubuntu.sh
+docker compose -f docker-compose.case10.yml logs -f api case10_worker
+docker compose -f docker-compose.case10.yml restart api case10_worker
+docker compose -f docker-compose.case10.yml down          # данные (том case10_data) сохраняются
+docker compose -f docker-compose.case10.yml down -v       # полностью очистить базу и кэш
 ```
 
-После успешного запуска будут доступны:
+Данные: SQLite-база, кэш тэггера и распакованные ZIP — в томе `case10_data` (`/data`), журналы — `case10_logs`.
+Обновление кода: `git pull && docker compose -f docker-compose.case10.yml up -d --build`. Кэш тэггера при смене
+версий tesseract/PyMuPDF/torch в образе нужно очистить (`docker volume rm case10_case10_data` или
+`CASE10_LIVE_TAGGER_CACHE_DIR`), см. `evaluation/LIVE_TAGGER_SCALE_DETERMINISM_REPORT.md` §3.
 
-```text
-https://docaibuild.ru/
-https://landing.docaibuild.ru/
-https://app.docaibuild.ru/
-```
+## 5. Комплект сдачи
 
-## 3. Настройка `.env`
+`python deploy/make_delivery.py bundle` собирает из закоммиченных файлов только код, Dockerfile, compose, эту
+инструкцию, `README_GRADER.md` и `LICENSES_MODELS.md` (без внутренних отчётов, данных организатора и служебных
+файлов) и проверяет результат; `python deploy/make_delivery.py check-image case10-api:latest` проверяет содержимое
+образа.
 
-Bootstrap создаёт `.env` из `.env.example`. Перед реальной эксплуатацией проверь:
+---
 
-```bash
-nano .env
-```
-
-Особенно важны:
-
-```text
-ROOT_DOMAIN=docaibuild.ru
-LANDING_DOMAIN=landing.docaibuild.ru
-APP_DOMAIN=app.docaibuild.ru
-CERT_NAME=docaibuild.ru
-LETSENCRYPT_EMAIL=admin@docaibuild.ru
-DEFAULT_ADMIN_LOGIN=admin
-DEFAULT_ADMIN_PASSWORD=...
-DEFAULT_ADMIN_API_KEY=...
-POSTGRES_PASSWORD=...
-CORS_ORIGINS=https://app.docaibuild.ru
-QWEN_PROXY_BASE_URL=...
-TELEGRAM_BOT_TOKEN=...
-TELEGRAM_CHAT_ID=...
-```
-
-Если `.env` менялся после запуска:
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d --remove-orphans
-```
-
-## 4. Полезные команды на сервере
-
-Статус:
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.prod.yml ps
-```
-
-Логи всех сервисов:
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f --tail=200
-```
-
-Логи конкретного сервиса:
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f api
-docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f nginx
-docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f certbot
-```
-
-Ручное продление SSL:
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.prod.yml run --rm --entrypoint certbot certbot renew --webroot -w /var/www/certbot
-docker compose -f docker-compose.yml -f docker-compose.prod.yml exec nginx nginx -s reload
-```
-
-## 5. GitHub Actions CI/CD
-
-В репозитории добавлены workflow:
-
-- `.github/workflows/ci.yml` проверяет compose-конфиг и Python-синтаксис;
-- `.github/workflows/deploy.yml` деплоит `master` на VPS по SSH.
-
-В GitHub открой `Settings -> Secrets and variables -> Actions`.
-
-Добавь secret:
-
-```text
-DEPLOY_SSH_KEY
-```
-
-Это приватный SSH-ключ, которым GitHub Actions сможет зайти на VPS.
-
-Добавь variables:
-
-```text
-DEPLOY_HOST=IP_ТВОЕГО_VPS
-DEPLOY_PORT=22
-DEPLOY_USER=administrator
-DEPLOY_PATH=/home/administrator/pd_rd
-DEPLOY_BRANCH=master
-```
-
-На VPS добавь публичный ключ в `authorized_keys` пользователя `administrator`:
-
-```bash
-mkdir -p ~/.ssh
-nano ~/.ssh/authorized_keys
-chmod 700 ~/.ssh
-chmod 600 ~/.ssh/authorized_keys
-```
-
-После этого каждый push в `master` выполнит:
-
-```bash
-git pull --ff-only origin master
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d --remove-orphans
-```
-
-## 6. Firewall
-
-Открой только SSH, HTTP и HTTPS:
-
-```bash
-sudo ufw allow OpenSSH
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw enable
-sudo ufw status
-```
-
-Внутренние порты API/RAG/IFC/Postgres/Redis в compose привязаны к `127.0.0.1`, поэтому снаружи они не публикуются.
+Прежняя схема `docaibuild.ru` (лендинг, RAG-приложение: `docker-compose.prod.yml`, `deploy/bootstrap-ubuntu.sh`,
+`deploy/nginx/templates/`) к CASE10 не относится и в поставку не входит.

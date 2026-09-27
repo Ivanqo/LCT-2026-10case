@@ -1,29 +1,32 @@
-.git
-.gitignore
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.log
+# Whitelist build context for every image built from the repository root (api/worker delivery + dev targets,
+# rag, ifc, node_gateway). Everything is excluded, then only what a Dockerfile COPYs is let back in: organizer data
+# (case_data, learning_data, New_data), internal reports (*.md, evaluation/), agent memory (.claude), local
+# databases, logs, venv and secrets can never reach an image or the build context. A new COPY needs a line here.
+*
 
-# Runtime data
-logs/
-log/
-*.db
-*.sqlite
-*.sqlite3
-uploads/
-data/
-vectorstore/
+!api_service/requirements.txt
+!api_service/app
+!api_service/alembic
+!api_service/alembic.ini
+!evaluation/__init__.py
+!evaluation/metrics.py
+!evaluation/exporter.py
+!evaluation/fixtures.py
+!evaluation/candidate_coverage.py
 
-# Frontend build artefacts (если появятся)
-node_modules/
-frontend/node_modules/
-dist/
-build/
+# dev target / legacy services only (docker-compose.yml)
+!shared
+!rag_service/requirements.txt
+!rag_service/app
+!ifc_service/requirements.txt
+!ifc_service/app
+!node_gateway/package.json
+!node_gateway/server.js
+!node_gateway/openapi.json
 
-# OS/editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.db
+**/*.sqlite
+**/*.log

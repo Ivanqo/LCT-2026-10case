@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: api_service/Dockerfile
+      target: dev
     environment:
       RAG_SERVICE_URL: http://rag:8001
       IFC_SERVICE_URL: http://ifc:8002
@@ -85,6 +86,7 @@ services:
     build:
       context: .
       dockerfile: api_service/Dockerfile
+      target: dev
     command: ["python", "-m", "app.worker_case10"]
     environment:
       RAG_SERVICE_URL: http://rag:8001

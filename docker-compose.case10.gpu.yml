@@ -1,0 +1,25 @@
+# GPU override for the CASE10 stand (NVIDIA Container Toolkit on the host):
+#   docker compose -f docker-compose.case10.yml -f docker-compose.case10.gpu.yml up -d
+# The image is the same; without this file everything runs on CPU. CASE10_EXPECT_GPU=1 turns a missing GPU into a
+# loud startup warning instead of a silent CPU fallback (app/domain/gpu.py).
+services:
+  api:
+    environment:
+      CASE10_EXPECT_GPU: "1"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+  case10_worker:
+    environment:
+      CASE10_EXPECT_GPU: "1"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
