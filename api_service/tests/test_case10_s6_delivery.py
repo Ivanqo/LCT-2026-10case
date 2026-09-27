@@ -167,6 +167,32 @@ class PackageOnDiskTests(unittest.TestCase):
         self.assertEqual([f.relative_path for f in files], ["a/1.pdf", "b/2.pdf"])
         self.assertEqual(files[0].sha256, hashlib.sha256(b"a/1.pdf").hexdigest())
 
+    def test_pdf_page_count_reaches_the_manifest_row_the_tagger_budgets_from(self):
+        """Without `pdf_pages` every document counts as 60 pages in the live tagger's plan: long documents are cut
+        at page 60 and a package of 500+ PDFs exhausts the 30 000-page budget (found on DOO25 in Docker)."""
+        import fitz
+
+        from app.domain.dataset_sources import document_page_count_hint
+
+        root = self.tmp / "pkg"
+        root.mkdir()
+        doc = fitz.open()
+        for _ in range(75):
+            doc.new_page()
+        doc.save(root / "long.pdf")
+        (root / "broken.pdf").write_bytes(b"%PDF-1.4 not really")
+        files = bp.scan_package(root)
+        self.assertEqual({f.relative_path: f.pdf_pages for f in files}, {"broken.pdf": None, "long.pdf": 75})
+        plan = bp.build_plan(files, None, package_name="p")
+        row = next(r for r in plan.rows if r["package_path"] == "long.pdf")
+
+        class _Doc:
+            dataset_metadata = {"document_manifest": row}
+
+        self.assertEqual(document_page_count_hint(_Doc()), 75)
+        self.assertEqual(plan.report["pdf_pages_total"], 75)
+        self.assertEqual(plan.report["pdf_unreadable"], ["broken.pdf"])
+
     def test_zip_slip_members_are_dropped_and_unpack_is_reused(self):
         archive_path = self.tmp / "p.zip"
         with zipfile.ZipFile(archive_path, "w") as archive:

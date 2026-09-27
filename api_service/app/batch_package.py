@@ -77,6 +77,7 @@ class PackageFile:
     relative_path: str   # POSIX, relative to the package root
     size: int
     sha256: str
+    pdf_pages: int | None = None   # page count of a readable PDF (None: not a PDF, or unreadable)
 
     @property
     def is_pdf(self) -> bool:
@@ -166,7 +167,24 @@ def scan_package(root: Path) -> list[PackageFile]:
                 continue
             found.append(full.relative_to(root).as_posix())
     found.sort(key=_path_sort_key)
-    return [PackageFile(rel, (root / rel).stat().st_size, sha256_file(root / rel)) for rel in found]
+    return [PackageFile(rel, (root / rel).stat().st_size, sha256_file(root / rel), pdf_page_count(root / rel))
+            for rel in found]
+
+
+def pdf_page_count(path: Path) -> int | None:
+    """Page count of a PDF (PyMuPDF reads the xref only), recorded in the manifest row as `pdf_pages`. The live
+    tagger and the rule-pack fallback size their page ranges and the deterministic page budget from it
+    (`dataset_sources.document_page_count_hint`); without it every document counts as 60 pages -- longer ones would
+    be cut at page 60 and a package of more than 500 PDFs would exhaust the 30 000-page budget early."""
+    if not str(path).lower().endswith(".pdf"):
+        return None
+    try:
+        import fitz
+
+        with fitz.open(path) as document:
+            return int(document.page_count)
+    except Exception:  # noqa: BLE001 -- unreadable/encrypted PDF: the pipeline reports it, the scan must not stop
+        return None
 
 
 def sha256_file(path: Path) -> str:
@@ -433,6 +451,7 @@ def build_plan(
             "stage_source": stage_source,
             "sha256": item.sha256,
             "size_bytes": item.size,
+            "pdf_pages": item.pdf_pages,
             "relative_path": f"{originals_prefix.strip('/')}/{item.relative_path}".lstrip("/"),
             "package_path": item.relative_path,
             "registry": registry_view or None,
@@ -480,10 +499,12 @@ def build_plan(
         "files_imported": len(rows),
         "files_pdf": sum(1 for item in files if item.is_pdf),
         "bytes_total": sum(item.size for item in files),
+        "pdf_pages_total": sum(item.pdf_pages or 0 for item in files),
+        "pdf_unreadable": sorted(item.relative_path for item in files if item.is_pdf and item.pdf_pages is None),
         "documents_by_stage": dict(sorted(stages.items())),
         "files": [
             {"file_id": row["file_id"], "relative_path": row["package_path"], "sha256": row["sha256"],
-             "stage": row["stage"], "stage_source": row["stage_source"]}
+             "stage": row["stage"], "stage_source": row["stage_source"], "pdf_pages": row["pdf_pages"]}
             for row in rows
         ],
         "issues": sorted(issues, key=lambda entry: (entry["file"], entry["issues"])),

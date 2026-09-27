@@ -146,7 +146,7 @@ def _run(args: argparse.Namespace) -> int:
         report = {
             "result_sha256": digest,
             "object_id": plan.object_id,
-            "package": {key: plan.report[key] for key in ("files_total", "files_pdf", "bytes_total", "documents_by_stage",
+            "package": {key: plan.report[key] for key in ("files_total", "files_pdf", "bytes_total", "pdf_pages_total", "documents_by_stage",
                                                           "registry_status")},
             "wall_seconds_total": round(time.perf_counter() - started, 2),
             "stages_seconds": clock.report(),
