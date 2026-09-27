@@ -191,6 +191,7 @@ class PairResult:
     notes: list[str]
     pd_copies: list[TableRef] = field(default_factory=list)
     rd_copies: list[TableRef] = field(default_factory=list)
+    zones: dict[str, list[float]] = field(default_factory=dict)
 
     @property
     def finding_group(self) -> str:
@@ -436,10 +437,10 @@ def compare_tables(pd: TableRef, rd: TableRef, alternatives: Iterable[TableRef] 
                             confidence=base_conf), key, role, rv[role])
     # an excerpt of a schedule (a fragment sheet repeating a few rooms) is not a schedule without the other rooms:
     # rooms present in one stage only are reported only while they are few
-    if len(only_pd) > max(PARTIAL_MAX_ROWS, PARTIAL_SHARE * len(pd_rows)) or len(rd_rows) < PARTIAL_SIZE_RATIO * len(pd_rows):
+    if len(only_pd) > max(PARTIAL_MAX_ROWS, PARTIAL_SHARE * len(pd_rows)) or (len(rd_rows) < PARTIAL_SIZE_RATIO * len(pd_rows) and len(pd_rows) - len(rd_rows) >= 2):
         notes.append(f"RD table is partial: {len(only_pd)} PD rooms absent, not reported one by one")
         only_pd = []
-    if len(only_rd) > max(PARTIAL_MAX_ROWS, PARTIAL_SHARE * len(rd_rows)) or len(pd_rows) < PARTIAL_SIZE_RATIO * len(rd_rows):
+    if len(only_rd) > max(PARTIAL_MAX_ROWS, PARTIAL_SHARE * len(rd_rows)) or (len(pd_rows) < PARTIAL_SIZE_RATIO * len(rd_rows) and len(rd_rows) - len(pd_rows) >= 2):
         notes.append(f"PD table is partial: {len(only_rd)} RD rooms absent, not reported one by one")
         only_rd = []
     for key in only_pd:
@@ -716,6 +717,7 @@ def collect_explication_groups(db: Any, process: Any, params: list[Any], docs: l
     produced: dict[int, set[str]] = {}
     for result in results:
         diagnostics["suppressed"] += len(result.suppressed)
+        result.zones = changed_zones(result)
         room_level = [d for d in result.discrepancies if d.type != TYPE_TOTAL]
         items = list(result.discrepancies)
         if not room_level:
@@ -764,6 +766,19 @@ def _reconcile(db: Any, process: Any, params_by_code: dict[str, Any], produced: 
     sweep_orphaned_evidence_groups(db, process, param_ids, keep, user_id=user_id)
 
 
+def changed_zones(result: PairResult) -> dict[str, list[float]]:
+    """Per stage, the union box of the rows that changed in this table pair (>= 2 rows): the zone an expert marks
+    around a changed block of a schedule («помещения пищеблока 135-150»), cited next to the row and the table."""
+    zones: dict[str, list[float]] = {}
+    for stage, rows in (("PD", [d.pd_row for d in result.discrepancies if d.violation and d.pd_row is not None]),
+                        ("RD", [d.rd_row for d in result.discrepancies if d.violation and d.rd_row is not None])):
+        unique = {id(r): r for r in rows}.values()
+        if len(unique) >= 2:
+            boxes = [r.bbox for r in unique]
+            zones[stage] = [min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes)]
+    return zones
+
+
 def _fragment(ref: TableRef, *, bbox_pdf: list[float], role: str, value: str | None, context: str, confidence: float) -> dict[str, Any]:
     doc = ref.document
     table = ref.table
@@ -806,6 +821,11 @@ def _upsert_group(db: Any, process: Any, param: Any, result: PairResult, d: Disc
         absent = row is None and d.type in (TYPE_ONLY_PD, TYPE_ONLY_RD)
         specs.append(_fragment(ref, bbox_pdf=ref.table.bbox, role="table", value="нет строки" if absent else None,
                                context=f"{ref.table.title or 'таблица'} ({len(ref.table.rows)} строк)", confidence=d.confidence))
+    if d.violation and d.type != TYPE_TOTAL:
+        for ref, stage in ((pd, "PD"), (rd, "RD")):
+            if stage in result.zones:
+                specs.append(_fragment(ref, bbox_pdf=result.zones[stage], role="zone", value=None,
+                                       context="изменённые строки таблицы (зона)", confidence=d.confidence))
     confidence = d.confidence - (0.1 if result.alternatives else 0.0) - (0.1 if not (pd.table.scope.floor and rd.table.scope.floor) else 0.0)
     status = "CANDIDATE" if d.violation else "NEGATIVE_VERIFIED"
     delta = {

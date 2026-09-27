@@ -566,6 +566,11 @@ def _parse_block(columns: list[Column], header_words: list[dict[str, Any]], word
                                 bbox=union_bbox([w["bbox"] for w in line]) or []))
             end_y = line_cy
             break
+        apartment = _apartment_header(line)
+        if apartment is not None:
+            groups.append(apartment)                 # «Квартира 2» sub-header row: the rooms below belong to it
+            last_y = line_cy
+            continue
         if key_word is not None and len(line) == 1 and _GROUP_KEY_RE.match(str(key_word.get("text") or "").strip()):
             groups.append(key_word)                  # «1.1.2» alone on its line: the apartment the next rooms belong to
             last_y = line_cy
@@ -605,7 +610,7 @@ def _parse_block(columns: list[Column], header_words: list[dict[str, Any]], word
         box = union_bbox([key_word["bbox"], *[w["bbox"] for w in members]]) or _box(key_word)
         key = str(key_word["text"]).strip()
         group = next((g for g in reversed(groups) if _cy(g) < _cy(key_word)), None)
-        if group is not None and not _GROUP_KEY_RE.match(key):
+        if group is not None and (str(group["text"]).startswith("кв. ") or not _GROUP_KEY_RE.match(key)):
             key = f"{str(group['text']).strip()} пом. {key}"       # room numbers restart in every apartment
         rows.append(Row(key=key, cells=text_cells, bbox=box, key_bbox=_box(key_word)))
     rows = _valid_rows(rows, columns)
@@ -613,6 +618,14 @@ def _parse_block(columns: list[Column], header_words: list[dict[str, Any]], word
         return [], totals, header_bottom
     table_bottom = max([r.bbox[3] for r in rows] + [t.bbox[3] for t in totals if t.bbox])
     return rows, totals, table_bottom
+
+
+def _apartment_header(line: list[dict[str, Any]]) -> dict[str, Any] | None:
+    tokens = [norm(w.get("text")).strip(" .,:") for w in line]
+    if len(tokens) in (2, 3) and tokens[0] in ("квартира", "кв") and re.match(r"^[\dа-я.\-]{1,8}$", tokens[1]) \
+            and not any(parse_decimal(t) is not None for t in tokens[2:]):
+        return {"text": f"кв. {str(line[1]['text']).strip()}", "bbox": union_bbox([w["bbox"] for w in line])}
+    return None
 
 
 def _is_unlabelled_total(line: list[dict[str, Any]], columns: list[Column]) -> bool:
