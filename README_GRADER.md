@@ -42,6 +42,9 @@ docker run --rm --network none -v /path/to/package:/in:ro -v /path/to/out:/out c
 - **Пакет** — папка или ZIP с PDF (выгрузки САПР, сканы). Размер не ограничен: лимиты 50 МБ на файл и 200 МБ на
   пакет относятся только к загрузке через интерфейс (ТЗ 9.1, экспертная сессия §9). Большие комплекты подаются
   серверным путём — CLI выше или `POST /api/case10/batch-runs` (пакет лежит в `./packages` стенда).
+- В офлайн-стенде PDF и реестр, загруженные через UI, сохраняются локально в `./packages/_uploads/` и проходят
+  через тот же `batch_package` без RAG; для таких загрузок сохраняются UI-лимиты 50/200 МБ. Без реестра пакет
+  остаётся в статусе `CLARIFICATION_REQUIRED`.
 - **Реестр файлов** (Перечень ИД 1.1) — CSV (`;` или `,`), XLSX или JSON с полями `object_id`,
   `file_id` / `file_name` / `sha256`, `doc_stage` (PD/RD/ID), `discipline`, `document_code`, `revision`,
   `approval_status` (DRAFT/APPROVED/FOR_CONSTRUCTION/SUPERSEDED/CANCELLED), `approval_date`, `sheet_page_range`,
@@ -62,7 +65,7 @@ docker run --rm --network none -v /path/to/package:/in:ro -v /path/to/out:/out c
 | `POST /api/case10/batch-runs` | серверный пакет + реестр → документы → прогон в очереди (`project_id`, `package`, `registry`, `object_id`) |
 | `GET /api/case10/batch-runs/{process_id}` | состояние прогона и отчёт о пакете (реестр, стадии, проблемы) |
 | `GET /api/case10/batch-runs/{process_id}/result` | итоговый JSON (тот же формат, что у CLI) |
-| `POST /api/upload` | загрузка файла через интерфейс (лимиты 50/200 МБ) |
+| `POST /api/upload` | загрузка файла через интерфейс; в offline delivery PDF/реестр локально проходят через `batch_package` (лимиты 50/200 МБ) |
 | `POST /api/case10/projects/{id}/processes`, `POST /api/case10/processes/{id}/run`, `GET …/status` | процесс проверки |
 | `GET /api/case10/evidence-groups?process_id=…`, `GET /api/case10/evidence-groups/{id}` | находки и доказательства |
 | `GET /api/case10/evidence-fragments/{id}/page.png` | страница-первоисточник с выделением |

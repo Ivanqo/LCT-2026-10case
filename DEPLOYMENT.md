@@ -60,6 +60,10 @@ APP_DOMAIN=case10.example.ru LETSENCRYPT_EMAIL=ops@example.ru bash deploy/case10
 Интерфейс принимает файлы до 50 МБ и пакеты до 200 МБ (ТЗ 9.1). Реальные комплекты — гигабайты, они загружаются
 на сервер и обрабатываются без этих лимитов:
 
+В офлайн-поставке PDF и реестр, загруженные через UI, сохраняются в `./packages/_uploads/<project>/<process>/`
+и регистрируются локальным `batch_package`; запросы к RAG для PDF не выполняются. UI-путь сохраняет лимиты 50/200 МБ.
+Для крупных комплектов используйте серверный `batch-runs` ниже.
+
 1. Положить папку или ZIP пакета (и реестр файлов по Перечню ИД 1.1) в `./packages` на хосте
    (`CASE10_PACKAGES_DIR`), например `packages/obj-17/…` и `packages/obj-17.registry.csv`.
 2. `POST /api/case10/batch-runs` с `{"project_id": 1, "package": "obj-17", "registry": "obj-17.registry.csv"}`
