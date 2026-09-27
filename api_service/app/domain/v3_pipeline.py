@@ -40,6 +40,7 @@ from .official_dataset import DATASET_VERSION_OFFICIAL, MATRIX_VERSION_OFFICIAL,
 from .v3_extractors import ExtractionResult, _normalize_bbox, default_extractors
 from .v3_messaging import publish_process_event, redis_get_json, redis_set_json
 from .evidence_groups import compute_basis_hash, sweep_orphaned_evidence_groups, upsert_evidence_group
+from .explication_compare import collect_explication_groups, explication_compare_enabled
 from .live_candidate_tagger import live_tagger_coverage
 from .official_evidence import create_official_evidence_groups
 from .comparison_gate import GateContext
@@ -620,6 +621,10 @@ def run_process(db: Session, *, process_id: str, user_id: int | None = None, aff
             fallback_diagnostics = create_official_evidence_groups(db, process, params, extraction_docs, user_id=user_id)
             if fallback_diagnostics:
                 add_audit(db, action="RULE_FALLBACK_DISCOVERY", user_id=user_id, process=process, details={"attempts": fallback_diagnostics})
+            if explication_compare_enabled():
+                # Phase 12 / S1: PD <-> RD room and apartment schedules (explication_compare.py), behind its flag
+                explication = collect_explication_groups(db, process, params, extraction_docs, user_id=user_id)
+                add_audit(db, action="EXPLICATION_COMPARE", user_id=user_id, process=process, details=explication)
         else:
             current_docs = current_applicable_documents(extraction_docs)
             entities = _entities_for_process(db, process)

@@ -697,39 +697,71 @@ def build_table_refs(docs: list[Any], gate: Any) -> tuple[dict[str, list[TableRe
     return refs, diagnostics
 
 
-def collect_explication_groups(db: Any, process: Any, params: list[Any], docs: list[Any], *, gate: Any, touched_keys: dict[int, set[str]],
-                               user_id: int | None = None) -> dict[str, Any]:
-    """Writes the explication evidence groups of this run; returns diagnostics (also stored nowhere else)."""
+def collect_explication_groups(db: Any, process: Any, params: list[Any], docs: list[Any], *, gate: Any = None,
+                               touched_keys: dict[int, set[str]] | None = None, user_id: int | None = None) -> dict[str, Any]:
+    """Writes this run's explication evidence groups and reconciles the previous run's; returns diagnostics
+    (recorded in the audit log). `touched_keys` (when the caller runs its own sweep afterwards) receives the keys."""
     params_by_code = {str(p.code): p for p in params if str(p.code) in S1_CODES}
     if not params_by_code:
         return {"skipped": "no_s1_params_in_scope"}
+    if gate is None:
+        from .comparison_gate import GateContext
+
+        gate = GateContext(docs)
     candidates = candidate_documents(docs, gate)
     refs, diagnostics = build_table_refs(candidates, gate)
     results = compare_pairs(refs["PD"], refs["RD"], conflicting=_conflicts(gate, candidates), policy=revision_policy())
-    diagnostics.update({"pairs": len(results), "groups": 0, "violations": 0, "suppressed": 0})
+    diagnostics.update({"version": EXPLICATION_COMPARE_VERSION, "pairs": len(results), "groups": 0, "violations": 0, "suppressed": 0,
+                        "candidate_files": [str(getattr(d, "dataset_file_id", None) or d.id) for d in candidates]})
+    produced: dict[int, set[str]] = {}
     for result in results:
         diagnostics["suppressed"] += len(result.suppressed)
-        written = 0
-        for discrepancy in result.discrepancies:
+        room_level = [d for d in result.discrepancies if d.type != TYPE_TOTAL]
+        items = list(result.discrepancies)
+        if not room_level:
+            code = CODE_ROOMS if result.pd.table.kind == KIND_ROOMS else CODE_APARTMENT_COMPOSITION
+            items.append(Discrepancy(type=TYPE_TABLE_EQUAL, code=code, location=result.rd.table.scope.label() or result.rd.table.title or "экспликация",
+                                     field=None, expected=f"{len(result.pd.table.rows)} строк", actual=f"{len(result.rd.table.rows)} строк",
+                                     pd_row=None, rd_row=None, violation=False, confidence=0.7,
+                                     details={"compared_rows": result.compared_rows, "suppressed": len(result.suppressed), "notes": result.notes}))
+        for discrepancy in items:
             param = params_by_code.get(discrepancy.code)
             if param is None:
                 continue
             key = _upsert_group(db, process, param, result, discrepancy, user_id=user_id)
-            touched_keys.setdefault(int(param.id), set()).add(key)
+            produced.setdefault(int(param.id), set()).add(key)
             diagnostics["groups"] += 1
             diagnostics["violations"] += int(discrepancy.violation)
-            written += int(discrepancy.type != TYPE_TOTAL)
-        if written == 0 and not any(d.type != TYPE_TOTAL for d in result.discrepancies):
-            param = params_by_code.get(CODE_ROOMS if result.pd.table.kind == KIND_ROOMS else CODE_APARTMENT_COMPOSITION)
-            if param is not None:
-                equal = Discrepancy(type=TYPE_TABLE_EQUAL, code=str(param.code), location=result.rd.table.scope.label() or result.rd.table.title or "экспликация",
-                                    field=None, expected=f"{len(result.pd.table.rows)} строк", actual=f"{len(result.rd.table.rows)} строк",
-                                    pd_row=None, rd_row=None, violation=False, confidence=0.7,
-                                    details={"compared_rows": result.compared_rows, "suppressed": len(result.suppressed)})
-                key = _upsert_group(db, process, param, result, equal, user_id=user_id)
-                touched_keys.setdefault(int(param.id), set()).add(key)
-                diagnostics["groups"] += 1
+    _reconcile(db, process, params_by_code, produced, user_id=user_id)
+    if touched_keys is not None:
+        for param_id, keys in produced.items():
+            touched_keys.setdefault(param_id, set()).update(keys)
     return diagnostics
+
+
+def _reconcile(db: Any, process: Any, params_by_code: dict[str, Any], produced: dict[int, set[str]], *, user_id: int | None) -> None:
+    """Groups of this mechanism from an earlier run that were not produced now go through the standard sweep
+    (delete, or keep+flag when an inspector decided); a group produced again with an unchanged basis that a sweep
+    run before this mechanism had flagged as 'no longer found' is restored."""
+    from ..db.models import EvidenceGroup
+    from .evidence_groups import sweep_orphaned_evidence_groups
+
+    param_ids = {int(p.id) for p in params_by_code.values()}
+    keep: dict[int, set[str]] = {}
+    for group in db.query(EvidenceGroup).filter(EvidenceGroup.process_id == process.id, EvidenceGroup.param_id.in_(param_ids)).all():
+        key = str(group.group_key or "")
+        if not key.startswith("explication:"):
+            keep.setdefault(int(group.param_id), set()).add(key)          # other mechanisms' groups are not ours to sweep
+            continue
+        if key in produced.get(int(group.param_id), set()) and isinstance(group.delta, dict) and group.delta.get("evidence_no_longer_found"):
+            delta = dict(group.delta)
+            delta.pop("evidence_no_longer_found", None)
+            group.delta = delta
+            group.needs_reverification = False
+            db.add(group)
+    for param_id, keys in produced.items():
+        keep.setdefault(param_id, set()).update(keys)
+    sweep_orphaned_evidence_groups(db, process, param_ids, keep, user_id=user_id)
 
 
 def _fragment(ref: TableRef, *, bbox_pdf: list[float], role: str, value: str | None, context: str, confidence: float) -> dict[str, Any]:
