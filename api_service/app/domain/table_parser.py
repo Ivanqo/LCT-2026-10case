@@ -566,6 +566,9 @@ def _parse_block(columns: list[Column], header_words: list[dict[str, Any]], word
                                 bbox=union_bbox([w["bbox"] for w in line]) or []))
             end_y = line_cy
             break
+        if len(line) <= 3 and norm(line[0].get("text")).strip(" .,:") in ("секция", "корпус", "этаж", "блок"):
+            last_y = line_cy if keys else last_y
+            continue                                 # «Секция 1» sub-header inside a schedule, not a room
         apartment = _apartment_header(line)
         if apartment is not None:
             groups.append(apartment)                 # «Квартира 2» sub-header row: the rooms below belong to it

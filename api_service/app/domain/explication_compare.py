@@ -443,6 +443,11 @@ def compare_tables(pd: TableRef, rd: TableRef, alternatives: Iterable[TableRef] 
     if len(only_rd) > max(PARTIAL_MAX_ROWS, PARTIAL_SHARE * len(rd_rows)) or (len(pd_rows) < PARTIAL_SIZE_RATIO * len(rd_rows) and len(rd_rows) - len(pd_rows) >= 2):
         notes.append(f"PD table is partial: {len(only_rd)} RD rooms absent, not reported one by one")
         only_rd = []
+    # a whole apartment block absent on the other side is a table split / block not found, not N removed rooms
+    only_pd, missing_pd = _drop_whole_groups(only_pd, pd_rows)
+    only_rd, missing_rd = _drop_whole_groups(only_rd, rd_rows)
+    if missing_pd or missing_rd:
+        notes.append(f"apartment blocks without a counterpart, not reported room by room: PD {missing_pd} RD {missing_rd}")
     for key in only_pd:
         row = pd_rows[key]
         add(Discrepancy(type=TYPE_ONLY_PD, code=_code_for(kind, TYPE_ONLY_PD, None), location=row.key, field=None,
@@ -455,6 +460,22 @@ def compare_tables(pd: TableRef, rd: TableRef, alternatives: Iterable[TableRef] 
                         details={"note": "нет в экспликации ПД"}, confidence=0.7), key, None, row)
     return PairResult(pd=pd, rd=rd, score=0.0, alternatives=alternatives, discrepancies=discrepancies,
                       compared_rows=compared, suppressed=suppressed, notes=notes)
+
+
+def _group_of(row: Row) -> str | None:
+    match = re.match(r"^(кв\. \S+) пом\. ", row.key)
+    return match.group(1) if match else None
+
+
+def _drop_whole_groups(keys: list[str], rows: dict[str, Row]) -> tuple[list[str], list[str]]:
+    by_group: dict[str, list[str]] = {}
+    for key, row in rows.items():
+        group = _group_of(row)
+        if group:
+            by_group.setdefault(group, []).append(key)
+    missing = sorted(group for group, members in by_group.items() if set(members) <= set(keys))
+    dropped = {key for group in missing for key in by_group[group]}
+    return [key for key in keys if key not in dropped], missing
 
 
 def _row_summary(table: RoomTable, row: Row) -> str:

@@ -1,0 +1,401 @@
+{
+ "B_base": {
+  "recall": {
+   "k": 0,
+   "n": 19,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.1682
+   ]
+  },
+  "precision_closed": {
+   "k": 0,
+   "n": 0,
+   "rate": null,
+   "wilson95": null
+  },
+  "precision_open": {
+   "k": 0,
+   "n": 0,
+   "rate": null,
+   "wilson95": null
+  },
+  "f1_closed": null,
+  "fpr": {
+   "k": 0,
+   "n": 9,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.2992
+   ]
+  },
+  "negatives_confirmed": {
+   "k": 0,
+   "n": 9,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.2992
+   ]
+  },
+  "found": [],
+  "negatives_flagged": [],
+  "outcomes": {},
+  "key_only_found": [],
+  "strict_recall": {
+   "k": 0,
+   "n": 8,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.3244
+   ]
+  },
+  "strict_found": [],
+  "predictions_positive": 0
+ },
+ "B_s1": {
+  "recall": {
+   "k": 2,
+   "n": 19,
+   "rate": 0.1053,
+   "wilson95": [
+    0.0294,
+    0.3139
+   ]
+  },
+  "precision_closed": {
+   "k": 38,
+   "n": 39,
+   "rate": 0.9744,
+   "wilson95": [
+    0.8682,
+    0.9955
+   ]
+  },
+  "precision_open": {
+   "k": 38,
+   "n": 89,
+   "rate": 0.427,
+   "wilson95": [
+    0.3293,
+    0.5307
+   ]
+  },
+  "f1_closed": 0.1901,
+  "fpr": {
+   "k": 0,
+   "n": 9,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.2992
+   ]
+  },
+  "negatives_confirmed": {
+   "k": 1,
+   "n": 9,
+   "rate": 0.1111,
+   "wilson95": [
+    0.0199,
+    0.435
+   ]
+  },
+  "found": [
+   "ALT79B-V01",
+   "DOO25-V01"
+  ],
+  "negatives_flagged": [],
+  "outcomes": {
+   "fp_unlabelled": 50,
+   "tp": 38,
+   "fp_labelled_positive_key": 1
+  },
+  "key_only_found": [
+   "ALT79B-V01",
+   "DOO25-V01"
+  ],
+  "strict_recall": {
+   "k": 2,
+   "n": 8,
+   "rate": 0.25,
+   "wilson95": [
+    0.0715,
+    0.5907
+   ]
+  },
+  "strict_found": [
+   "ALT79B-V01",
+   "DOO25-V01"
+  ],
+  "predictions_positive": 89
+ },
+ "B_on_disk_base": {
+  "recall": {
+   "k": 0,
+   "n": 16,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.1936
+   ]
+  },
+  "precision_closed": {
+   "k": 0,
+   "n": 0,
+   "rate": null,
+   "wilson95": null
+  },
+  "precision_open": {
+   "k": 0,
+   "n": 0,
+   "rate": null,
+   "wilson95": null
+  },
+  "f1_closed": null,
+  "fpr": {
+   "k": 0,
+   "n": 9,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.2992
+   ]
+  },
+  "negatives_confirmed": {
+   "k": 0,
+   "n": 9,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.2992
+   ]
+  },
+  "found": [],
+  "negatives_flagged": [],
+  "outcomes": {},
+  "key_only_found": [],
+  "strict_recall": {
+   "k": 0,
+   "n": 5,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.4345
+   ]
+  },
+  "strict_found": [],
+  "predictions_positive": 0
+ },
+ "B_on_disk_s1": {
+  "recall": {
+   "k": 2,
+   "n": 16,
+   "rate": 0.125,
+   "wilson95": [
+    0.035,
+    0.3602
+   ]
+  },
+  "precision_closed": {
+   "k": 38,
+   "n": 39,
+   "rate": 0.9744,
+   "wilson95": [
+    0.8682,
+    0.9955
+   ]
+  },
+  "precision_open": {
+   "k": 38,
+   "n": 89,
+   "rate": 0.427,
+   "wilson95": [
+    0.3293,
+    0.5307
+   ]
+  },
+  "f1_closed": 0.2216,
+  "fpr": {
+   "k": 0,
+   "n": 9,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.2992
+   ]
+  },
+  "negatives_confirmed": {
+   "k": 1,
+   "n": 9,
+   "rate": 0.1111,
+   "wilson95": [
+    0.0199,
+    0.435
+   ]
+  },
+  "found": [
+   "ALT79B-V01",
+   "DOO25-V01"
+  ],
+  "negatives_flagged": [],
+  "outcomes": {
+   "fp_unlabelled": 50,
+   "tp": 38,
+   "fp_labelled_positive_key": 1
+  },
+  "key_only_found": [
+   "ALT79B-V01",
+   "DOO25-V01"
+  ],
+  "strict_recall": {
+   "k": 2,
+   "n": 5,
+   "rate": 0.4,
+   "wilson95": [
+    0.1176,
+    0.7693
+   ]
+  },
+  "strict_found": [
+   "ALT79B-V01",
+   "DOO25-V01"
+  ],
+  "predictions_positive": 89
+ },
+ "explication_cases_base": {
+  "recall": {
+   "k": 0,
+   "n": 4,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.4899
+   ]
+  },
+  "precision_closed": {
+   "k": 0,
+   "n": 0,
+   "rate": null,
+   "wilson95": null
+  },
+  "precision_open": {
+   "k": 0,
+   "n": 0,
+   "rate": null,
+   "wilson95": null
+  },
+  "f1_closed": null,
+  "fpr": {
+   "k": 0,
+   "n": 1,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.7935
+   ]
+  },
+  "negatives_confirmed": {
+   "k": 0,
+   "n": 1,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.7935
+   ]
+  },
+  "found": [],
+  "negatives_flagged": [],
+  "outcomes": {},
+  "key_only_found": [],
+  "strict_recall": {
+   "k": 0,
+   "n": 4,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.4899
+   ]
+  },
+  "strict_found": [],
+  "predictions_positive": 0
+ },
+ "explication_cases_s1": {
+  "recall": {
+   "k": 2,
+   "n": 4,
+   "rate": 0.5,
+   "wilson95": [
+    0.15,
+    0.85
+   ]
+  },
+  "precision_closed": {
+   "k": 38,
+   "n": 39,
+   "rate": 0.9744,
+   "wilson95": [
+    0.8682,
+    0.9955
+   ]
+  },
+  "precision_open": {
+   "k": 38,
+   "n": 87,
+   "rate": 0.4368,
+   "wilson95": [
+    0.3374,
+    0.5415
+   ]
+  },
+  "f1_closed": 0.6609,
+  "fpr": {
+   "k": 0,
+   "n": 1,
+   "rate": 0.0,
+   "wilson95": [
+    0.0,
+    0.7935
+   ]
+  },
+  "negatives_confirmed": {
+   "k": 1,
+   "n": 1,
+   "rate": 1.0,
+   "wilson95": [
+    0.2065,
+    1.0
+   ]
+  },
+  "found": [
+   "ALT79B-V01",
+   "DOO25-V01"
+  ],
+  "negatives_flagged": [],
+  "outcomes": {
+   "tp": 38,
+   "fp_labelled_positive_key": 1,
+   "fp_unlabelled": 48
+  },
+  "key_only_found": [
+   "ALT79B-V01",
+   "DOO25-V01"
+  ],
+  "strict_recall": {
+   "k": 2,
+   "n": 4,
+   "rate": 0.5,
+   "wilson95": [
+    0.15,
+    0.85
+   ]
+  },
+  "strict_found": [
+   "ALT79B-V01",
+   "DOO25-V01"
+  ],
+  "predictions_positive": 87
+ }
+}
