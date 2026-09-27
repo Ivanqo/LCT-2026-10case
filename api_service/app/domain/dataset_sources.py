@@ -198,12 +198,13 @@ def _original_document_bytes(relative: str, expected_hash: str) -> bytes:
         source = (root / relative).resolve()
         if not source.is_relative_to(root):
             raise ValueError("Source is outside participant package")
-        if not source.is_file():
-            raise FileNotFoundError("Original document is unavailable under CASE10_ORIGINALS_ROOT")
-        data = source.read_bytes()
-        if not expected_hash or hashlib.sha256(data).hexdigest() != expected_hash:
-            raise ValueError("Original document SHA-256 does not match manifest")
-        return data
+        if source.is_file():
+            data = source.read_bytes()
+            if not expected_hash or hashlib.sha256(data).hexdigest() != expected_hash:
+                raise ValueError("Original document SHA-256 does not match manifest")
+            return data
+        # A service can read a freshly uploaded package from CASE10_ORIGINALS_ROOT while its inspector demo also
+        # contains seeded corpus documents. Let those documents continue through the normal mounted-dataset path.
     manifest = find_dataset_paths().get("document_manifest")
     if not manifest:
         raise FileNotFoundError("Participant document manifest is not mounted")

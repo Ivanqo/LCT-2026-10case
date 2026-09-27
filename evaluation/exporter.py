@@ -74,12 +74,50 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
     context.update({key: payload.get(key) or protocol.get(key) for key in VERSION_CONTEXT_KEYS})
     style = code_style or matrix_v11.export_code_style()
     checks: list[dict[str, Any]] = []
+    quality_issues: dict[tuple[str, str, int], dict[str, Any]] = {}
+    source_selection: dict[tuple[str, str], dict[str, Any]] = {}
     duplicate_of, dropped_files = _integrity_maps(payload)
     for group in payload.get("findings") or []:
         if not isinstance(group, dict):
             continue
         _guard_prediction(group)
         delta = group.get("delta") if isinstance(group.get("delta"), dict) else {}
+        if str(delta.get("reason") or "").upper() == "LOW_QUALITY":
+            parameter = group.get("parameter") if isinstance(group.get("parameter"), dict) else {}
+            for issue in delta.get("pages") or []:
+                if not isinstance(issue, dict):
+                    continue
+                row = {
+                    "parameter_codes": [matrix_v11.export_parameter_code(
+                        str(parameter.get("code") or issue.get("code") or ""), style)],
+                    "file_id": issue.get("file_id"),
+                    "file": issue.get("file"),
+                    "stage": issue.get("stage"),
+                    "page": issue.get("page"),
+                    "quality_status": "LOW_QUALITY",
+                    "reasons": sorted({str(reason) for reason in issue.get("reasons") or []}),
+                    "rotation": issue.get("rotation"),
+                    "ocr_confidence": issue.get("ocr_confidence"),
+                }
+                key = (str(row["file_id"] or ""), str(row["stage"] or ""), int(row["page"] or 0))
+                prior = quality_issues.get(key)
+                if prior:
+                    prior["parameter_codes"] = sorted(set(prior["parameter_codes"]) | set(row["parameter_codes"]))
+                    prior["reasons"] = sorted(set(prior["reasons"]) | set(row["reasons"]))
+                else:
+                    quality_issues[key] = row
+        if str(delta.get("reason") or "").upper() == "CLARIFICATION_REQUIRED" and delta.get("source") == "file_registry":
+            for document in delta.get("documents") or []:
+                if not isinstance(document, dict):
+                    continue
+                key = (str(document.get("file_id") or ""), str(document.get("scope_key") or ""))
+                source_selection[key] = {
+                    "status": "CLARIFICATION_REQUIRED",
+                    "file_id": document.get("file_id"),
+                    "stage": document.get("stage"),
+                    "reason": document.get("reason"),
+                    "basis": document.get("basis") or delta.get("basis"),
+                }
         if str(delta.get("matrix_scope") or "MATRIX").upper() != "MATRIX" and not include_suspicions:
             continue
         item = evidence_group_to_submission_check(_canonical_evidence(group, duplicate_of, dropped_files), context=context, code_style=style)
@@ -88,6 +126,8 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
     return {
         "object_id": object_id,
         "checks": checks,
+        "quality_issues": [quality_issues[key] for key in sorted(quality_issues)],
+        "source_selection": [source_selection[key] for key in sorted(source_selection)],
         # extra top-level key (the schema allows it): how to read the GOLD 1.1 fields of every check
         "export_conventions": {
             "parameter_code_style": style,

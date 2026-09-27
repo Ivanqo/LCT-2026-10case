@@ -359,7 +359,7 @@ class RevisionChoiceTests(WorkbenchTestBase):
         self.seed()
         old = DocumentVersion(project_id=self.project.id, organization_id=self.org_id, object_id=None, filename="АР изм.1.pdf",
                               doc_stage="working", document_stage="working", document_code="OBJ-RD-AR", revision="1",
-                              approval_status="SUPERSEDED")
+                              approval_status="APPROVED")
         new = DocumentVersion(project_id=self.project.id, organization_id=self.org_id, object_id=None, filename="АР изм.2.pdf",
                               doc_stage="working", document_stage="working", document_code="OBJ-RD-AR", revision="2",
                               approval_status="APPROVED")
@@ -376,7 +376,7 @@ class RevisionChoiceTests(WorkbenchTestBase):
     def test_choice_is_versioned_with_justification_and_history(self):
         old, new = self._chain()
         scopes = self.client.get(f"/api/case10/processes/{self.process_id}/revisions").json()
-        self.assertEqual(scopes["source"], "s5_stub_document_facts")
+        self.assertEqual(scopes["source"], "file_registry")
         chain = next(s for s in scopes["scopes"] if s["type"] == "PREDECESSOR_CHAIN")
         self.assertEqual((chain["status"], chain["system_choice_id"], chain["effective_choice_id"]), ("RESOLVED", new.id, new.id))
         url = f"/api/case10/processes/{self.process_id}/revision-choices"
@@ -390,7 +390,8 @@ class RevisionChoiceTests(WorkbenchTestBase):
         choice = first.json()["choice"]
         self.assertEqual((choice["action"], choice["version"], choice["source_document_version_id"]), ("CHOOSE", 1, old.id))
         self.assertEqual(choice["previous_value"]["system_choice_id"], new.id)  # previous value = the system's choice
-        self.assertFalse(first.json()["effect"]["applied"])
+        self.assertEqual(first.json()["effect"]["status"], "RECOMPUTE_QUEUED")
+        self.assertTrue(first.json()["effect"]["applied"])
         scope = next(s for s in first.json()["revisions"]["scopes"] if s["scope_key"] == chain["scope_key"])
         self.assertEqual((scope["status"], scope["effective_choice_id"]), ("RESOLVED_BY_INSPECTOR", old.id))
 

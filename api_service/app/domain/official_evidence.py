@@ -3,11 +3,13 @@ from __future__ import annotations
 
 from collections import defaultdict
 from decimal import Decimal
+import hashlib
 
 from sqlalchemy.orm import Session
 
 from ..db.models import DocumentVersion, EvidenceFragment, InspectionProcess, Param, SourceFragment
 from . import trigger_policy as tp
+from . import file_registry
 from .anchor_search import GENERIC_SITE_LOCATION
 from .comparison_gate import REASON_MISSING_DISCIPLINE, GateContext, GateDecision
 from .dataset_sources import normalized_original_geometry
@@ -54,6 +56,7 @@ from .official_rule_packs import (
 
 STAGE_FIELDS = {"project": "source_pd", "working": "source_rd", "as_built": "source_id"}
 STAGE_CODES = {"project": "PD", "working": "RD", "as_built": "ID"}
+_QUALITY_PAGE_CACHE: dict[tuple[str, str, int], dict] = {}
 
 
 # Both the organizer-supplied training data (`learning_annotation`, imported
@@ -99,20 +102,34 @@ def create_official_evidence_groups(
     *,
     user_id: int | None = None,
 ) -> list[dict]:
-    by_id = {doc.id: doc for doc in docs}
+    selection = file_registry.selection_context(db, process, docs)
+    excluded_doc_ids = selection["excluded_document_ids"]
+    candidate_docs = [doc for doc in docs if int(doc.id) not in excluded_doc_ids]
+    by_id = {doc.id: doc for doc in candidate_docs}
     if by_id and params:
-        tag_live_candidates(db, docs, _full_catalog_params(db, params), budget=new_live_tagger_budget())
+        tag_live_candidates(db, candidate_docs, _full_catalog_params(db, params), budget=new_live_tagger_budget())
     by_code = defaultdict(list)
     fragments = []
+    low_quality_by_code: dict[str, list[dict]] = defaultdict(list)
     if by_id:
         fragments = db.query(SourceFragment).filter(SourceFragment.document_version_id.in_(by_id)).all()
         for fragment in fragments:
             if inference_annotation(fragment):
-                by_code[(fragment.metadata_json or {}).get("code")].append(fragment)
+                code = str((fragment.metadata_json or {}).get("code") or "")
+                doc = by_id.get(int(fragment.document_version_id))
+                if doc is None or not code:
+                    continue
+                quality = _quality_for_page(doc, int(fragment.page or 0)) if fragment.page else None
+                if quality and quality.get("quality_status") == "LOW_QUALITY":
+                    _mark_source_fragment_low_quality(db, fragment, quality)
+                    low_quality_by_code[code].append(_quality_issue(code, _stage_code(doc), doc, fragment.page,
+                                                                    quality, source_fragment=fragment))
+                else:
+                    by_code[code].append(fragment)
     # Decision layer (Phase 10, prompt B): document facts (byte duplicates / unreadable / service files,
     # ordered-vs-conflicting revisions, section inventory) computed once from metadata. The rule-pack tier is
     # untouched: it keeps seeing every document and every fragment exactly as before.
-    gate = GateContext(docs, rule_pack_codes=SUPPORTED_RULE_CODES)
+    gate = GateContext(candidate_docs, rule_pack_codes=SUPPORTED_RULE_CODES)
     if gate.excluded_doc_ids or gate.superseded_doc_ids:
         by_code = defaultdict(list, {
             code: rows if code in SUPPORTED_RULE_CODES else [f for f in rows if not gate.drop_from_generic_candidates(f.document_version_id)]
@@ -124,12 +141,30 @@ def create_official_evidence_groups(
     # is skipped entirely for rule packs outside this run's impact set.
     only_codes = {str(param.code) for param in params} & SUPPORTED_RULE_CODES
     rule_observations, extraction_context = extract_official_rule_observations(
-        docs, fragments, only_codes=only_codes,
+        candidate_docs, fragments, only_codes=only_codes,
     )
+    # Rule packs can locate evidence directly from the source PDF rather than a tagged fragment. Recheck each
+    # cited page before its value is allowed into comparison or the protocol.
+    for code, observations in list(rule_observations.items()):
+        accepted = []
+        for observation in observations:
+            quality = _quality_for_page(observation.document, int(observation.page))
+            if quality.get("quality_status") == "LOW_QUALITY":
+                source_fragment = getattr(observation, "source_fragment", None)
+                if source_fragment is not None:
+                    _mark_source_fragment_low_quality(db, source_fragment, quality)
+                low_quality_by_code[str(code)].append(_quality_issue(
+                    str(code), str(observation.stage), observation.document, observation.page, quality,
+                    source_fragment=source_fragment, bbox=getattr(observation, "bbox_normalized", None),
+                    confidence=getattr(observation, "confidence", None),
+                ))
+            else:
+                accepted.append(observation)
+        rule_observations[code] = accepted
     fallback_budget = new_fallback_budget()
     fallback_diagnostics: list[dict] = []
-    available_stages = {doc.doc_stage for doc in docs if doc.dataset_stage != "RD_ID_MIXED"}
-    has_mixed = any(doc.dataset_stage == "RD_ID_MIXED" for doc in docs)
+    available_stages = {doc.doc_stage for doc in candidate_docs if doc.dataset_stage != "RD_ID_MIXED"}
+    has_mixed = any(doc.dataset_stage == "RD_ID_MIXED" for doc in candidate_docs)
     # Generic anchor+number extraction: a single shared mechanism (see
     # generic_matrix_extraction.py) covering the class of parameters whose
     # catalog name is a plain physical-quantity table label, for the ~127
@@ -170,6 +205,29 @@ def create_official_evidence_groups(
     touched_keys: dict[int, set[str]] = {}
     for param in params:
         param_touched = touched_keys.setdefault(int(param.id), set())
+        quality_issues = _dedupe_quality_issues(low_quality_by_code.get(str(param.code), []))
+        if quality_issues:
+            clean_stages = _clean_stages_for_param(
+                param, by_code, by_id, rule_observations, generic_observations, enum_observations,
+                compound_observations, table_count_observations,
+            )
+            required = {stage for stage, field in (("PD", "source_pd"), ("RD", "source_rd"), ("ID", "source_id"))
+                        if bool(getattr(param, field, False))}
+            blocks_comparison = any(str(issue["stage"]) in required and str(issue["stage"]) not in clean_stages
+                                    for issue in quality_issues)
+            quality_key = _upsert_quality_warning_group(
+                db, process, param, quality_issues, blocks_comparison=blocks_comparison, user_id=user_id,
+            )
+            if quality_key:
+                param_touched.add(quality_key)
+            if blocks_comparison:
+                continue
+        source_block = file_registry.blocking_for_param(param, docs, selection)
+        if source_block:
+            key = _upsert_selection_clarification_group(db, process, param, source_block, user_id=user_id)
+            if key:
+                param_touched.add(key)
+            continue
         rule_keys = _upsert_rule_groups(
             db, process, param, rule_observations.get(param.code, []),
             documents=extraction_context["documents"],
@@ -280,6 +338,241 @@ def create_official_evidence_groups(
     run_logical_analysis_module(db, process, params, touched_keys, fragments=fragments, by_id=by_id, user_id=user_id)
     sweep_orphaned_evidence_groups(db, process, {int(p.id) for p in params}, touched_keys, user_id=user_id)
     return fallback_diagnostics
+
+
+def _stage_code(document) -> str:
+    raw = str(getattr(document, "dataset_stage", None) or "").upper()
+    if raw in {"PD", "RD", "ID"}:
+        return raw
+    return {"project": "PD", "working": "RD", "as_built": "ID"}.get(
+        str(getattr(document, "doc_stage", None) or getattr(document, "document_stage", None) or ""), "UNKNOWN",
+    )
+
+
+def _quality_for_page(document, page_number: int) -> dict:
+    """Assess only pages that became candidate evidence; include a deterministic OCR confidence reason when needed."""
+    if int(page_number) < 1:
+        return {"quality_status": "OK", "reasons": []}
+    from . import dataset_sources
+
+    metadata = document.dataset_metadata if isinstance(document.dataset_metadata, dict) else {}
+    manifest = metadata.get("document_manifest") or metadata.get("files_index") or {}
+    relative = str(manifest.get("relative_path") or manifest.get("source_relative_path") or "").replace("\\", "/")
+    sha256 = str(document.file_hash or document.content_hash or "")
+    if not relative.lower().endswith(".pdf") or not sha256:
+        return {"quality_status": "OK", "reasons": []}
+    cache_key = (relative, sha256, int(page_number))
+    if cache_key in _QUALITY_PAGE_CACHE:
+        return _QUALITY_PAGE_CACHE[cache_key]
+
+    reasons: list[str] = []
+    result: dict[str, Any] = {"page": int(page_number), "rotation": 0, "ocr_confidence": None, "reasons": reasons}
+    try:
+        import fitz
+
+        data = dataset_sources.original_document_bytes(document)
+        with fitz.open(stream=data, filetype="pdf") as pdf:
+            if page_number > len(pdf):
+                result["quality_status"] = "LOW_QUALITY"
+                result["reasons"] = ["PAGE_OUT_OF_RANGE"]
+            else:
+                page = pdf[page_number - 1]
+                rotation = int(page.rotation) % 360
+                result["rotation"] = rotation
+                if rotation:
+                    reasons.append("ROTATED_PAGE")
+
+                text = str(page.get_text("text") or "").strip()
+                words = page.get_text("words") or []
+                if not text and not words:
+                    try:
+                        ocr_words = dataset_sources._ocr_page_words(relative, sha256, int(page_number),
+                                                                     dataset_sources.settings.OCR_LANG)
+                    except Exception:  # OCR unavailable is itself a reason not to trust a textless page.
+                        ocr_words = ()
+                    confidences = [float(word.get("confidence")) for word in ocr_words
+                                   if isinstance(word.get("confidence"), (int, float))]
+                    mean_confidence = sum(confidences) / len(confidences) if confidences else 0.0
+                    result["ocr_confidence"] = round(mean_confidence, 1)
+                    if not confidences:
+                        reasons.append("NO_TEXT_LAYER_OCR_UNAVAILABLE")
+                    elif mean_confidence < 55.0:
+                        reasons.append("NO_TEXT_LAYER_LOW_OCR_CONFIDENCE")
+
+                word_rects = [fitz.Rect(word[:4]) for word in words if len(word) >= 5 and str(word[4]).strip()]
+                for annotation in page.annots() or ():
+                    annotation_name = str((annotation.type or (None, ""))[1]).casefold()
+                    if "stamp" not in annotation_name:
+                        continue
+                    if any(annotation.rect.intersects(rect) for rect in word_rects):
+                        reasons.append("STAMP_OVER_TEXT")
+                        break
+
+                page_area = max(1.0, float(page.rect.width) * float(page.rect.height))
+                if word_rects:
+                    for image in page.get_images(full=True):
+                        xref = int(image[0])
+                        for image_rect in page.get_image_rects(xref):
+                            if image_rect.is_empty or image_rect.get_area() / page_area >= 0.35:
+                                continue
+                            overlaps = 0
+                            for word_rect in word_rects:
+                                intersection = image_rect & word_rect
+                                if not intersection.is_empty and intersection.get_area() / max(1.0, word_rect.get_area()) >= 0.3:
+                                    overlaps += 1
+                            if overlaps >= 3:
+                                reasons.append("IMAGE_STAMP_OVER_TEXT")
+                                break
+                        if "IMAGE_STAMP_OVER_TEXT" in reasons:
+                            break
+                result["quality_status"] = "LOW_QUALITY" if reasons else "OK"
+                result["reasons"] = sorted(set(reasons))
+    except Exception as exc:
+        result["quality_status"] = "LOW_QUALITY"
+        result["reasons"] = [f"PAGE_QUALITY_READ_FAILED:{type(exc).__name__}"]
+    _QUALITY_PAGE_CACHE[cache_key] = result
+    return result
+
+
+def _mark_source_fragment_low_quality(db, fragment: SourceFragment, quality: dict) -> None:
+    metadata = dict(fragment.metadata_json) if isinstance(fragment.metadata_json, dict) else {}
+    metadata["quality_status"] = "LOW_QUALITY"
+    metadata["quality_flags"] = ["LOW_QUALITY"]
+    metadata["quality_reasons"] = list(quality.get("reasons") or [])
+    metadata["quality_details"] = {key: quality.get(key) for key in ("page", "rotation", "ocr_confidence")}
+    fragment.metadata_json = metadata
+    db.add(fragment)
+
+
+def _quality_issue(code: str, stage: str, document, page: int, quality: dict, *, source_fragment=None,
+                   bbox=None, confidence=None) -> dict:
+    return {
+        "code": str(code), "stage": str(stage), "document_version_id": int(document.id),
+        "file_id": document.dataset_file_id, "file": document.filename, "page": int(page),
+        "quality_status": "LOW_QUALITY", "reasons": list(quality.get("reasons") or []),
+        "rotation": quality.get("rotation"), "ocr_confidence": quality.get("ocr_confidence"),
+        "source_fragment": source_fragment, "bbox": bbox, "confidence": confidence,
+    }
+
+
+def _dedupe_quality_issues(issues: list[dict]) -> list[dict]:
+    seen: set[tuple[int, int, str]] = set()
+    result = []
+    for issue in sorted(issues, key=lambda row: (row["stage"], row["file_id"] or "", row["page"])):
+        key = (int(issue["document_version_id"]), int(issue["page"]), str(issue["stage"]))
+        if key not in seen:
+            seen.add(key)
+            result.append(issue)
+    return result
+
+
+def _clean_stages_for_param(param, by_code, by_id, rule_observations, generic_observations,
+                            enum_observations, compound_observations, table_count_observations) -> set[str]:
+    stages = {_stage_code(by_id[fragment.document_version_id]) for fragment in by_code.get(str(param.code), [])
+              if fragment.document_version_id in by_id}
+    stages.update(str(row.stage) for row in rule_observations.get(str(param.code), []))
+    for collection in (generic_observations.get(int(param.id)) or {}, enum_observations.get(int(param.id)) or {},
+                       compound_observations.get(int(param.id)) or {}, table_count_observations.get(int(param.id)) or {}):
+        stages.update(str(stage) for stage in collection)
+    return stages
+
+
+def _upsert_quality_warning_group(db, process, param, issues: list[dict], *, blocks_comparison: bool,
+                                 user_id: int | None = None) -> str | None:
+    group_key = "low_quality"
+    fragment_specs = []
+    for issue in issues:
+        document = db.get(DocumentVersion, int(issue["document_version_id"]))
+        if document is None:
+            continue
+        source_fragment = issue.get("source_fragment")
+        bbox = issue.get("bbox")
+        page_width = page_height = None
+        bbox_pdf = None
+        if source_fragment is not None:
+            geometry = normalized_original_geometry(document, source_fragment)
+            if geometry:
+                bbox, page_width, page_height = geometry
+                bbox_pdf = source_fragment.bbox_pdf
+        stage = str(issue["stage"])
+        internal_stage = {"PD": "project", "RD": "working", "ID": "as_built"}.get(stage, document.doc_stage)
+        fragment_specs.append({
+            "document_version_id": int(document.id),
+            "source_fragment_id": int(source_fragment.id) if source_fragment is not None else None,
+            "dataset_file_id": document.dataset_file_id,
+            "file_sha256": document.file_hash or document.content_hash,
+            "stage": internal_stage,
+            "discipline": document.discipline,
+            "document_code": document.document_code,
+            "revision": document.revision,
+            "approval_status": document.approval_status,
+            "page": int(issue["page"]),
+            "bbox": bbox,
+            "bbox_pdf": bbox_pdf,
+            "page_width": page_width,
+            "page_height": page_height,
+            "polygon": [[bbox[0], bbox[1]], [bbox[2], bbox[1]], [bbox[2], bbox[3]], [bbox[0], bbox[3]]] if bbox else None,
+            "role": "context",
+            "context": "LOW_QUALITY: " + "; ".join(issue.get("reasons") or []),
+            "extractor": "quality_assessment",
+            "confidence": (float(issue["ocr_confidence"]) / 100.0 if isinstance(issue.get("ocr_confidence"), (int, float))
+                           else issue.get("confidence")),
+        })
+    safe_issues = [{key: value for key, value in issue.items() if key not in {"source_fragment", "bbox", "confidence"}}
+                   for issue in issues]
+    group, should_write = upsert_evidence_group(
+        db, process, param, group_key,
+        fields={
+            "matrix_version": process.matrix_version,
+            "model_version": "page-quality-v1",
+            "dataset_version": process.dataset_version,
+            "comparison_scenario": process.upload_scenario,
+            "completeness_status": "PARTIALLY_LOADED" if blocks_comparison else "COMPLETE",
+            "comparability_status": "LOW_QUALITY",
+            "finding_status": "NOT_COMPARABLE",
+            "review_priority": param.review_priority,
+            "expected_value": None,
+            "actual_value": None,
+            "delta": {"source": "page_quality", "reason": "LOW_QUALITY", "gate": {"reason": "LOW_QUALITY"},
+                      "blocks_comparison": bool(blocks_comparison), "pages": safe_issues},
+        },
+        fragment_specs=fragment_specs,
+        user_id=user_id,
+    )
+    if group is not None and should_write:
+        for spec in fragment_specs:
+            db.add(EvidenceFragment(evidence_group_id=int(group.id), **spec))
+        db.flush()
+    return group_key
+
+
+def _upsert_selection_clarification_group(db, process, param, block: dict, *, user_id: int | None = None) -> str | None:
+    """Keep an unresolved registry/edition decision visible without exporting a violation or a guessed value."""
+    key = "file_registry_selection"
+    upsert_evidence_group(
+        db, process, param, key,
+        fields={
+            "matrix_version": process.matrix_version,
+            "model_version": "file-registry-v1",
+            "dataset_version": process.dataset_version,
+            "comparison_scenario": process.upload_scenario,
+            "completeness_status": "PARTIALLY_LOADED",
+            "comparability_status": "NOT_COMPARABLE",
+            "finding_status": "CLARIFICATION_REQUIRED",
+            "review_priority": param.review_priority,
+            "expected_value": None,
+            "actual_value": None,
+            "delta": {
+                "source": "file_registry",
+                "reason": "CLARIFICATION_REQUIRED",
+                "basis": block.get("basis"),
+                "documents": block.get("documents") or [],
+            },
+        },
+        fragment_specs=[],
+        user_id=user_id,
+    )
+    return key
 
 
 _STAGE_INTERNAL = {"PD": "project", "RD": "working", "ID": "as_built"}
