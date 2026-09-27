@@ -64,7 +64,12 @@ RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTr
 # runtime rather than merely avoiding one.
 ENV PYTHONPATH=/app \
     HF_HUB_OFFLINE=1 \
-    TRANSFORMERS_OFFLINE=1
+    TRANSFORMERS_OFFLINE=1 \
+    OMP_THREAD_LIMIT=1
+# OMP_THREAD_LIMIT=1: tesseract runs as one child process per OCR'd page while the live tagger already runs one scan
+# process per available CPU; letting every tesseract also start its own OpenMP pool oversubscribes the CPU quota.
+# Measured in this image on LOS3A (--cpus 3, 3 scan processes): tagging scan 642 s -> 269 s, tesseract per-page
+# timeouts 7 -> 0, result.json byte-identical (evaluation/phase12/S6_REPORT.md §5).
 EXPOSE 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 

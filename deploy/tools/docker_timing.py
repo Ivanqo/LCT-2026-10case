@@ -69,6 +69,7 @@ def main() -> None:
     ap.add_argument("--cache-volume", default=None)
     ap.add_argument("--fresh-cache", action="store_true")
     ap.add_argument("--network", default="none")
+    ap.add_argument("--env", action="append", default=[], help="KEY=VALUE passed to the container (repeatable)")
     args = ap.parse_args()
 
     out_dir = Path(args.out_dir).resolve()
@@ -79,7 +80,7 @@ def main() -> None:
     docs = Path(args.docs).resolve()
     docs_target = "/in/package" + (".zip" if docs.is_file() else "")
     summary = {"label": args.label, "image": args.image, "cpus": args.cpus, "memory": args.memory, "gpus": args.gpus,
-               "network": args.network, "runs": []}
+               "network": args.network, "env": args.env, "runs": []}
     image_id = subprocess.run(["docker", "image", "inspect", "-f", "{{.Id}}", args.image], capture_output=True, text=True).stdout.strip()
     summary["image_id"] = image_id
     for index in range(1, args.runs + 1):
@@ -91,6 +92,8 @@ def main() -> None:
                "-v", f"{docs}:{docs_target}:ro", "-v", f"{out_dir}:/out", "-v", f"{volume}:/data"]
         if args.gpus:
             cmd += ["--gpus", "all"]
+        for item in args.env:
+            cmd += ["-e", item]
         cli = ["python", "-m", "app.cli", "run", "--docs", docs_target, "--out", f"/out/run{index}/result.json",
                "--timings", f"/out/run{index}/timings.json", "--work-dir", "/tmp/case10_work",
                "--workers", str(args.workers or int(float(args.cpus)))]
