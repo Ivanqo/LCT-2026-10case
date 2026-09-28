@@ -2,7 +2,18 @@
  "code": "IOS4-079",
  "matrix_code": "M-079",
  "parameter_name": "Характеристики вентиляторов общеобменной вентиляции",
- "phrases": [],
+ "phrases": [
+  {
+   "text": "Принципиальная схема системы теплоснабжения приточных установок",
+   "stages": ["PD"],
+   "provenance": [{"object": "TYU", "file_id": "F0171", "page": 104}]
+  },
+  {
+   "text": "Венткамера",
+   "stages": ["PD", "RD"],
+   "provenance": [{"object": "TYU", "file_id": "F0171", "page": 104}]
+  }
+ ],
  "units": [],
  "notes": ""
 }

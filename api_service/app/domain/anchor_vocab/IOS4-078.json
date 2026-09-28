@@ -2,7 +2,18 @@
  "code": "IOS4-078",
  "matrix_code": "M-078",
  "parameter_name": "Сечения и геометрия воздуховодов общеобменной вентиляции",
- "phrases": [],
+ "phrases": [
+  {
+   "text": "Принципиальная схема систем общеобменной вентиляции",
+   "stages": ["PD"],
+   "provenance": [{"object": "TYU", "file_id": "F0171", "page": 88}]
+  },
+  {
+   "text": "местный отсос",
+   "stages": ["PD", "RD"],
+   "provenance": [{"object": "TYU", "file_id": "F0171", "page": 88}]
+  }
+ ],
  "units": [],
  "notes": ""
 }

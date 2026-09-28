@@ -2,7 +2,18 @@
  "code": "KR-055",
  "matrix_code": "M-055",
  "parameter_name": "Класс прочности бетона монолитных конструкций",
- "phrases": [],
+ "phrases": [
+  {
+   "text": "класс прочности бетона",
+   "stages": ["PD", "RD", "ID"],
+   "provenance": [{"object": "NOV", "file_id": "F0106", "page": 49}]
+  },
+  {
+   "text": "бетон класса",
+   "stages": ["PD", "RD", "ID"],
+   "provenance": [{"object": "NOV", "file_id": "F0140", "page": 7}]
+  }
+ ],
  "units": [],
  "notes": ""
 }

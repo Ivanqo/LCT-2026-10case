@@ -2,7 +2,18 @@
  "code": "KR-058",
  "matrix_code": "M-058",
  "parameter_name": "Толщина монолитной фундаментной плиты / ростверка",
- "phrases": [],
+ "phrases": [
+  {
+   "text": "толщина фундаментной плиты",
+   "stages": ["PD", "RD", "ID"],
+   "provenance": [{"object": "NOV", "file_id": "F0106", "page": 53}]
+  },
+  {
+   "text": "ростверк",
+   "stages": ["PD", "RD", "ID"],
+   "provenance": [{"object": "RECH", "file_id": "F0342", "page": 3}]
+  }
+ ],
  "units": [],
  "notes": ""
 }

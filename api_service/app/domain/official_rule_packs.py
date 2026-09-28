@@ -8,13 +8,37 @@ from __future__ import annotations
 from collections import defaultdict
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
+from html import unescape
+import os
+from pathlib import Path
 import re
+import subprocess
+import tempfile
 import time
 from typing import Any, Iterable
 
 from ..config import settings
 from ..db.models import DocumentVersion, SourceFragment
-from .dataset_sources import document_page_count_hint, extract_original_pages, ocr_original_clip, ocr_page_snapshot
+from .dataset_sources import document_page_count_hint, extract_original_pages, ocr_page_snapshot
+from .drawing_classifier import (
+    candidate_document_stage,
+    classify_ventilation_sheet,
+    classify_ventilation_text,
+    document_discovery_hints,
+    is_ventilation_drawing_page,
+    is_candidate_pdf,
+    registry_excludes_ventilation,
+)
+from .room_drawing_compare import (
+    compare_project_to_working,
+    extract_room_words,
+    normalize_system_label,
+    room_system_rows,
+    room_zone_for_location,
+    room_zones_for_snapshot,
+    warm_floor_rows,
+)
+from .anchor_vocab import anchor_phrases
 
 
 SUPPORTED_RULE_CODES = {"PZ-009", "KR-055", "KR-058", "IOS4-078", "IOS4-079"}
@@ -53,10 +77,163 @@ def is_inference_locator(fragment: SourceFragment) -> bool:
     meta = fragment.metadata_json or {}
     return (
         fragment.source_system in _INFERENCE_SOURCE_SYSTEMS
-        and meta.get("annotation_type") == "MATRIX_FIELD"
         and meta.get("status") == "AUTO_FIELD_CANDIDATE"
         and not meta.get("check_id")
+        and bool(meta.get("code"))
     )
+
+
+def _drawing_scan_enabled() -> bool:
+    return str(os.environ.get("CASE10_ROOM_DRAWING_COMPARE_ENABLED", "0")).strip().lower() in {
+        "1", "true", "yes", "on",
+    }
+
+
+def _plan_ventilation_pages(
+    documents: dict[int, DocumentVersion],
+    candidates: dict[tuple[int, str], dict[int, list[SourceFragment]]],
+) -> tuple[dict[int, set[int]], dict[int, set[int]]]:
+    """Return (known-document scans, first-page probes) within a fixed page budget.
+
+    A registry discipline, a positive organizer section and sheet-code/name
+    hints prioritize a PDF, but only page content authorizes a drawing match.
+    Unhinted PD/RD files get a small content probe so neutral file names still
+    have a route into the classifier.
+    """
+    full_scans: dict[int, set[int]] = {}
+    probes: dict[int, set[int]] = {}
+    ranked: list[tuple[int, int, DocumentVersion, tuple[str, ...]]] = []
+    for document_id, document in documents.items():
+        stage = effective_dataset_stage(document)
+        if stage not in {"PD", "RD"} or not is_candidate_pdf(document) or registry_excludes_ventilation(document):
+            continue
+        hints = document_discovery_hints(document)
+        has_locator = any(
+            pages for (candidate_id, code), pages in candidates.items()
+            if candidate_id == document_id and code in {"IOS4-078", "IOS4-079"}
+        )
+        if "registry_discipline" in hints:
+            rank = 0
+        elif "organizer_section" in hints:
+            rank = 1
+        elif "file_code" in hints:
+            rank = 2
+        elif "file_title" in hints:
+            rank = 3
+        elif has_locator:
+            rank = 4
+        else:
+            rank = 5
+        ranked.append((rank, document_id, document, hints))
+
+    page_budget = 660
+    for rank, document_id, document, _hints in sorted(ranked, key=lambda item: (item[0], item[1])):
+        page_count = max(0, document_page_count_hint(document, default=0))
+        if page_count <= 0:
+            continue
+        if rank < 5:
+            count = min(page_count, 220, page_budget)
+            if count:
+                full_scans[document_id] = set(range(1, count + 1))
+                page_budget -= count
+        else:
+            # Bounded first pages probe for documents with neutral filenames and
+            # no discipline metadata. A positive content classification expands
+            # this document in `_discover_classified_drawing_pages`.
+            probes[document_id] = set(range(1, min(page_count, 2) + 1))
+    return full_scans, probes
+
+
+def _discover_classified_drawing_pages(
+    documents: dict[int, DocumentVersion],
+    full_scans: dict[int, set[int]],
+    probes: dict[int, set[int]],
+) -> tuple[dict[int, set[int]], int]:
+    """Use lightweight text extraction to pick pages before loading word geometry.
+
+    The former implementation materialized word boxes for every discovery page
+    (up to 660) before discarding almost all of them. This scans the same bounded
+    page ranges for text, then asks the geometry extractor for classified sheets
+    only. It keeps page-content classification independent from organizer tags.
+    """
+    selected_scores: dict[int, dict[int, tuple[int, bool]]] = {}
+    text_pages_scanned = 0
+
+    def inspect(document_id: int, pages: set[int]) -> dict[int, tuple[int, bool]]:
+        nonlocal text_pages_scanned
+        document = documents[document_id]
+        try:
+            import fitz
+            from .dataset_sources import original_document_bytes
+
+            data = original_document_bytes(document)
+            hits: dict[int, tuple[int, bool]] = {}
+            with fitz.open(stream=data, filetype="pdf") as pdf:
+                for page_number in sorted(pages):
+                    if page_number < 1 or page_number > len(pdf):
+                        continue
+                    text_pages_scanned += 1
+                    page_text = pdf[page_number - 1].get_text("text")
+                    classification = classify_ventilation_text(page_text, document)
+                    if classification is None or not is_ventilation_drawing_page(page_text, document):
+                        continue
+                    signals = set(classification.signals)
+                    titled = bool(signals & {"ventilation_title", "heating_title"})
+                    # Explicit plan/scheme titles are strong enough for geometry
+                    # extraction. Generic room+system co-occurrence is common in
+                    # schedules and legends, so it has a smaller per-file fallback.
+                    score = (
+                        (100 if titled else 0)
+                        + (30 if "discipline_stamp" in signals else 0)
+                        + (20 if "ventilation_terms" in signals else 0)
+                        + (10 if "warm_floor_terms" in signals else 0)
+                        + (5 if "room_system_layout" in signals else 0)
+                    )
+                    hits[page_number] = (score, titled)
+            return hits
+        except (FileNotFoundError, ValueError, RuntimeError):
+            return {}
+
+    for document_id, pages in full_scans.items():
+        hits = inspect(document_id, pages)
+        if hits:
+            selected_scores[document_id] = hits
+
+    for document_id, pages in probes.items():
+        probe_hits = inspect(document_id, pages)
+        # A neutral filename is expanded only when its first pages contain an
+        # explicit HVAC stamp, ventilation/heating title, or HVAC term. A vague
+        # room/system coincidence on page 1 is not enough to scan 220 pages.
+        if not any(
+            titled or score >= 20
+            for score, titled in probe_hits.values()
+        ):
+            continue
+        document = documents[document_id]
+        page_count = max(0, document_page_count_hint(document, default=0))
+        expand = set(range(1, min(page_count, 220) + 1)) - set(pages)
+        hits = inspect(document_id, expand)
+        selected_scores.setdefault(document_id, {}).update(probe_hits | hits)
+
+    # Keep every explicit plan/scheme page (up to a safety ceiling), then a
+    # bounded layout-only fallback for older sheets without a searchable title.
+    # This is object-agnostic and prevents drawing stamps on legends/specs from
+    # turning a live run into hundreds of full geometry/OCR extractions.
+    selected: dict[int, set[int]] = {}
+    for document_id, scores in selected_scores.items():
+        titled_pages = sorted(
+            ((score, page) for page, (score, titled) in scores.items() if titled),
+            key=lambda row: (-row[0], row[1]),
+        )[:32]
+        titled_set = {page for _score, page in titled_pages}
+        fallback_pages = sorted(
+            ((score, page) for page, (score, titled) in scores.items() if not titled),
+            key=lambda row: (-row[0], row[1]),
+        )[:12]
+        pages = titled_set | {page for _score, page in fallback_pages}
+        if pages:
+            selected[document_id] = pages
+    return selected, text_pages_scanned
 
 
 def effective_dataset_stage(document: DocumentVersion) -> str:
@@ -94,19 +271,30 @@ def extract_official_rule_observations(
         if code in active_codes:
             candidates.setdefault((document_id, code), {}).setdefault(int(fragment.page), []).append(fragment)
 
-    for document_id, document in documents.items():
-        if str(document.dataset_section or "").upper() != "OV" or str(document.dataset_stage or "").upper() != "RD_ID_MIXED":
-            continue
-        meta = document.dataset_metadata or {}
-        row = meta.get("document_manifest") or meta.get("files_index") or {}
-        page_count = int(row.get("pdf_pages") or row.get("source_page_count") or 40)
-        for code in ("IOS4-078", "IOS4-079"):
-            if code not in active_codes:
-                continue
-            existing = candidates.get((document_id, code), {})
-            candidates[(document_id, code)] = {
-                page: existing.get(page, []) for page in range(1, min(page_count, 40) + 1)
-            }
+    drawing_full_scans: dict[int, set[int]] = {}
+    drawing_probes: dict[int, set[int]] = {}
+    drawing_text_pages_scanned = 0
+    if _drawing_scan_enabled() and active_codes & {"IOS4-078", "IOS4-079"}:
+        drawing_full_scans, drawing_probes = _plan_ventilation_pages(documents, candidates)
+        drawing_pages, drawing_text_pages_scanned = _discover_classified_drawing_pages(
+            documents, drawing_full_scans, drawing_probes,
+        )
+        # Upstream locators help discover source files, but their page hints may
+        # point to unrelated schedules/specifications. The room comparison reads
+        # only pages confirmed as plans/schemes by their content.
+        for document_id, code in list(candidates):
+            if code in {"IOS4-078", "IOS4-079"}:
+                selected_pages = drawing_pages.get(document_id, set())
+                candidates[(document_id, code)] = {
+                    page: rows for page, rows in candidates[(document_id, code)].items()
+                    if page in selected_pages
+                }
+        for document_id, pages in drawing_pages.items():
+            for code in ("IOS4-078", "IOS4-079"):
+                if code in active_codes:
+                    page_map = candidates.setdefault((document_id, code), {})
+                    for page in pages:
+                        page_map.setdefault(page, [])
 
     # A page pre-tagged for one structural/site value parameter often repeats other
     # such parameters in the same notes or legend (e.g. a general-notes page carries
@@ -170,9 +358,21 @@ def extract_official_rule_observations(
             continue
         output[code].extend(_extract_ventilation_observations(code, documents, candidates, snapshots))
 
+    warm_floor_status: dict[str, Any] = {"code": "FREE_SEARCH", "project_rooms": 0, "compared_rooms": 0, "rooms": []}
+    if active_codes & {"IOS4-078", "IOS4-079"}:
+        floor_observations, warm_floor_status = _extract_warm_floor_observations(documents, snapshots)
+        if floor_observations:
+            output["FREE_SEARCH"] = _deduplicate(floor_observations)
+
     for code, observations in output.items():
         output[code] = _deduplicate(observations)
-    return output, {"documents": documents, "scanned_pages": set(snapshots.keys())}
+    return output, {
+        "documents": documents,
+        "scanned_pages": set(snapshots.keys()),
+        "warm_floor_comparison": warm_floor_status,
+        "drawing_scan_enabled": _drawing_scan_enabled(),
+        "drawing_text_pages_scanned": drawing_text_pages_scanned,
+    }
 
 
 def new_fallback_budget() -> dict[str, int]:
@@ -316,7 +516,7 @@ def parse_rule_page(
     elif code == "KR-055":
         rows = _extract_concrete_classes(snapshot, page_fragments, document=document)
     elif code == "KR-058":
-        rows = _extract_foundation_thickness(snapshot)
+        rows = _extract_foundation_thickness(snapshot, stage=stage)
     else:
         return []
     return [
@@ -381,12 +581,10 @@ def _extract_ventilation_observations(
             continue
         for page_number in _prioritized_pages(pages, limit=220):
             snapshot = snapshots.get((document_id, page_number))
-            if not snapshot or not _is_relevant_pd_ventilation_sheet(code, snapshot):
+            if not snapshot or not _is_relevant_pd_ventilation_sheet(code, snapshot, document):
                 continue
             rows = _pd_exhaust_room_rows(snapshot) if code == "IOS4-078" else _pd_supply_room_rows(snapshot)
             for row in rows:
-                if code == "IOS4-078" and not _is_supported_exhaust_pd_row(row):
-                    continue
                 source_fragment = _best_fragment(pages.get(page_number, []))
                 previous = expected_rows.get(row["location"])
                 if previous is None or row["confidence"] > previous[0]["confidence"]:
@@ -397,19 +595,25 @@ def _extract_ventilation_observations(
 
     rd_pages = []
     expected_locations = set(expected_rows)
+    project_signatures = [value[0] for value in expected_rows.values()]
     for (document_id, page_number), snapshot in snapshots.items():
         document = documents[document_id]
-        if not _is_rd_ventilation_drawing_document(code, document):
+        if effective_dataset_stage(document) != "RD" or not _is_rd_ventilation_drawing_document(code, document, snapshot):
             continue
-        room_words = _drawing_room_words(snapshot)
+        room_words = extract_room_words(snapshot)
         locations = {room["room"] for room in room_words}
         overlap = locations & expected_locations
         if not overlap:
             continue
-        text = str(snapshot.get("text") or "").lower()
-        title_score = sum(token in text for token in ("план", "вентиляц", "воздуховод", "ов1"))
-        score = len(overlap) * 100 + title_score * 10 + min(len(locations), 50)
-        rd_pages.append((score, document, snapshot, room_words))
+        working_signatures = _pd_exhaust_room_rows(snapshot) if code == "IOS4-078" else _pd_supply_room_rows(snapshot)
+        changed_rooms = {
+            row["location"] for row in compare_project_to_working(project_signatures, working_signatures)
+        }
+        classification = classify_ventilation_sheet(snapshot, document)
+        score = len(overlap) * 100 + len(changed_rooms & overlap) * 40 + (classification.confidence if classification else 0) * 10 + min(len(locations), 50)
+        working_by_location = {row["location"]: row for row in working_signatures}
+        zones_by_location = room_zones_for_snapshot(snapshot)
+        rd_pages.append((score, document, snapshot, room_words, working_by_location, zones_by_location))
 
     observations = []
     for location, (row, document, source_fragment) in expected_rows.items():
@@ -417,31 +621,63 @@ def _extract_ventilation_observations(
             code, row, document, row["snapshot"], "PD", source_fragment,
             extractor=f"official_rule:{code.lower()}-layout",
         ))
-        matches = [item for item in rd_pages if location in {word["room"] for word in item[3]}]
+        matches = [item for item in rd_pages if location in item[4] or location in item[5]]
         if not matches:
             continue
-        _score, rd_document, rd_snapshot, room_words = max(
+        selected_page = max(
             matches,
             key=lambda item: (item[0], float(item[2]["width"]) * float(item[2]["height"]), -int(item[2]["page"])),
         )
-        room_word = min(
-            (word for word in room_words if word["room"] == location),
-            key=lambda word: (word["bbox"][1], word["bbox"][0]),
+        _score, rd_document, rd_snapshot, room_words, native_rows, zones_by_location = selected_page
+        room_zone = zones_by_location.get(location)
+        if not room_zone:
+            continue
+        room_box = room_zone["room_bbox"]
+        scan_clip = _centered_clip(
+            room_box, rd_snapshot["width"], rd_snapshot["height"],
+            max(260.0, float(rd_snapshot["width"]) * 0.11),
+            max(240.0, float(rd_snapshot["height"]) * 0.07),
         )
-        half_width, half_height = ((180.0, 160.0) if code == "IOS4-078" else (260.0, 240.0))
-        clip = _centered_clip(room_word["bbox"], rd_snapshot["width"], rd_snapshot["height"], half_width, half_height)
+        evidence_bbox = room_zone["bbox_pdf"]
         # Digit/dimension crops (duct sizes like "200x100") are calibrated against
         # English-only OCR; Cyrillic mode adds visually-similar letter/digit
         # confusions here without adding value, since there is no prose to read.
-        ocr_text = ocr_original_clip(rd_document, int(rd_snapshot["page"]), clip, lang="eng").strip()
-        if not ocr_text:
-            # OCR unavailability is an abstention, not proof of missing equipment.
-            continue
-        clip_text = _text_in_bbox(rd_snapshot, clip)
-        evidence_text = "\n".join(part for part in (ocr_text, clip_text) if part)
-        normalized = (_extract_exhaust_systems(evidence_text)
-                      if code == "IOS4-078" else _extract_supply_configuration(evidence_text))
+        clip_text = _text_in_bbox(rd_snapshot, scan_clip)
+        local_row = native_rows.get(location)
+        if local_row is None and code == "IOS4-078":
+            # Branch comparison must retain an explicitly printed trunk label
+            # (for example V3) as the actual value when PD lists V3.1/V3.2.
+            zone_systems = [
+                label for label in room_zone.get("systems", ())
+                if (normalized := normalize_system_label(str(label)))
+                and normalized[0] in {"branch", "exhaust_system"}
+            ]
+            if zone_systems:
+                local_row = {**room_zone, "systems": zone_systems}
+        ocr_text = ""
+        if local_row is None:
+            # OCR only when the page text layer did not attach a system to this
+            # room. Re-OCRing every already-readable room multiplied the number
+            # of external OCR calls by the number of rooms on a plan sheet.
+            ocr_words, ocr_text = _ocr_room_system_words(rd_document, int(rd_snapshot["page"]), scan_clip, code)
+            geometry_snapshot = {
+                **rd_snapshot,
+                "words": [*(rd_snapshot.get("words") or []), *ocr_words],
+            }
+            system_kinds = {"branch", "exhaust_system"} if code == "IOS4-078" else {"supply"}
+            local_rows = room_system_rows(geometry_snapshot, kinds=system_kinds)
+            local_row = next((candidate for candidate in local_rows if candidate["location"] == location), None)
+        evidence_text = "\n".join(part for part in (clip_text, ocr_text) if part)
+        if code == "IOS4-078":
+            normalized = ",".join(local_row["systems"]) if local_row else _extract_exhaust_systems(clip_text)
+        else:
+            normalized = ",".join(local_row["systems"]) if local_row else _extract_supply_configuration(evidence_text)
+        if local_row:
+            evidence_bbox = local_row["bbox_pdf"]
         if code == "IOS4-078" and not normalized:
+            if not evidence_text:
+                # Without readable room-zone text there is no source evidence to compare.
+                continue
             normalized = _MISSING_EXHAUST
             value = "Вытяжная система не распознана в зоне помещения"
             confidence = 0.72
@@ -454,9 +690,9 @@ def _extract_ventilation_observations(
             "location": location,
             "value": value,
             "normalized_value": normalized,
-            "bbox_pdf": clip,
+            "bbox_pdf": evidence_bbox,
             "confidence": confidence,
-            "context": f"Лист классифицирован как план ОВ по содержимому. OCR зоны помещения:\n{evidence_text[:1200]}",
+            "context": f"Лист ОВ классифицирован по содержимому; зона помещения {location}:\n{evidence_text[:1200]}",
         }
         observations.append(_ventilation_observation(
             code, actual, rd_document, rd_snapshot, "RD", None,
@@ -465,102 +701,199 @@ def _extract_ventilation_observations(
     return observations
 
 
-def _is_relevant_pd_ventilation_sheet(code: str, snapshot: dict[str, Any]) -> bool:
-    text = str(snapshot.get("text") or "").lower().replace("ё", "е")
-    if code == "IOS4-078":
-        return "принципиаль" in text and "общеобмен" in text and "вентиляц" in text
-    return "теплоснабжен" in text and "приточ" in text and "установ" in text
+def _ocr_room_system_words(
+    document: DocumentVersion,
+    page_number: int,
+    bbox_pdf: list[float],
+    code: str,
+) -> tuple[list[dict[str, Any]], str]:
+    """OCR a room clip with word boxes so system labels stay attached to rooms.
+
+    The crop is small and uses the same source-page frame as the room label.
+    hOCR works with both current Tesseract and older deployments that cannot
+    read image bytes from stdin.
+    """
+    if len(bbox_pdf) != 4:
+        return [], ""
+    try:
+        import fitz
+        from PIL import Image
+        from io import BytesIO
+        from .dataset_sources import original_document_bytes
+
+        data = original_document_bytes(document)
+        with fitz.open(stream=data, filetype="pdf") as pdf:
+            if page_number < 1 or page_number > len(pdf):
+                return [], ""
+            page = pdf[page_number - 1]
+            clip = fitz.Rect(bbox_pdf) & page.rect
+            if clip.is_empty:
+                return [], ""
+            png = page.get_pixmap(
+                matrix=fitz.Matrix(2, 2), clip=clip, alpha=False, annots=False,
+            ).tobytes("png")
+        image = Image.open(BytesIO(png)).convert("L")
+        image = image.point(lambda value: 0 if value < 190 else 255)
+        with tempfile.TemporaryDirectory(prefix="case10_room_ocr_") as tmp_dir:
+            image_path = Path(tmp_dir) / "room.png"
+            output_base = Path(tmp_dir) / "room"
+            image.save(image_path, format="PNG")
+            result = subprocess.run(
+                ["tesseract", str(image_path), str(output_base), "-l", "eng", "hocr"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
+                timeout=20,
+                check=False,
+            )
+            output_path = output_base.with_suffix(".html")
+            if result.returncode != 0 or not output_path.exists():
+                return [], ""
+            markup = output_path.read_text(encoding="utf-8", errors="replace")
+    except (FileNotFoundError, OSError, ValueError, RuntimeError, subprocess.TimeoutExpired):
+        return [], ""
+
+    clip_rect = clip
+    words = []
+    raw_tokens = []
+    word_spans = re.finditer(
+        r"<span\b[^>]*class=['\"]ocrx_word['\"][^>]*>.*?</span>", markup, re.IGNORECASE | re.DOTALL,
+    )
+    for match in word_spans:
+        span = match.group(0)
+        coords = re.search(
+            r"title=['\"]bbox\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)", span,
+            re.IGNORECASE,
+        )
+        if not coords:
+            continue
+        body = span[span.find(">") + 1:span.rfind("</span>")]
+        raw_text = unescape(re.sub(r"<[^>]+>", "", body)).strip()
+        if raw_text:
+            raw_tokens.append(raw_text)
+        labels: list[str] = []
+        if code == "IOS4-078":
+            labels = [label for label in _extract_exhaust_systems(raw_text).split(",") if label]
+            compact = re.fullmatch(r"(?:32|52|82)(\d{1,2})", re.sub(r"\D", "", raw_text))
+            if compact:
+                labels.append(f"V2.{int(compact.group(1))}")
+        elif code == "IOS4-079":
+            label = _normalize_supply_token(raw_text)
+            if label:
+                labels.append(label)
+        if not labels:
+            continue
+        x0, y0, x1, y1 = (int(value) / 2.0 for value in coords.groups())
+        box = [clip_rect.x0 + x0, clip_rect.y0 + y0, clip_rect.x0 + x1, clip_rect.y0 + y1]
+        for label in dict.fromkeys(labels):
+            words.append({"text": label, "bbox": box, "confidence": 0.68, "ocr_source_text": raw_text})
+    return words, " ".join(raw_tokens)
 
 
-def _is_rd_ventilation_drawing_document(code: str, document: DocumentVersion) -> bool:
-    if str(document.dataset_section or "").upper() != "OV" or str(document.dataset_stage or "").upper() != "RD_ID_MIXED":
+def _is_relevant_pd_ventilation_sheet(code: str, snapshot: dict[str, Any], document=None) -> bool:
+    return classify_ventilation_sheet(snapshot, document) is not None
+
+
+def _is_rd_ventilation_drawing_document(code: str, document: DocumentVersion, snapshot: dict[str, Any] | None = None) -> bool:
+    if registry_excludes_ventilation(document):
         return False
-    meta = document.dataset_metadata or {}
-    row = meta.get("files_index") or meta.get("document_manifest") or {}
-    path = " ".join(str(row.get(key) or "") for key in ("source_relative_path", "relative_path", "output_pdf"))
-    normalized = path.upper().replace(" ", "")
-    if code in {"IOS4-078", "IOS4-079"}:
-        return "РД-ОВ1" in normalized or "RD-OV1" in normalized
-    return True
+    if snapshot is None:
+        return bool(document_discovery_hints(document))
+    return classify_ventilation_sheet(snapshot, document) is not None
+
+
+def _extract_warm_floor_observations(
+    documents: dict[int, DocumentVersion],
+    snapshots: dict[tuple[int, int], dict[str, Any]],
+) -> tuple[list[RuleObservation], dict[str, Any]]:
+    project_by_room: dict[str, tuple[dict[str, Any], DocumentVersion]] = {}
+    working_by_room: dict[str, tuple[dict[str, Any], DocumentVersion]] = {}
+    working_room_zones: dict[str, tuple[dict[str, Any], DocumentVersion, dict[str, Any]]] = {}
+    for (document_id, _page_number), snapshot in snapshots.items():
+        document = documents[document_id]
+        stage = effective_dataset_stage(document)
+        if stage not in {"PD", "RD"} or not classify_ventilation_sheet(snapshot, document):
+            continue
+        rows = warm_floor_rows(snapshot)
+        if stage == "PD":
+            for row in rows:
+                current = project_by_room.get(row["location"])
+                if current is None or row["confidence"] > current[0]["confidence"]:
+                    project_by_room[row["location"]] = (row, document)
+        else:
+            for row in rows:
+                working_by_room.setdefault(row["location"], (row, document))
+
+    for location in project_by_room:
+        matches = []
+        for (document_id, _page_number), snapshot in snapshots.items():
+            document = documents[document_id]
+            if effective_dataset_stage(document) != "RD" or not classify_ventilation_sheet(snapshot, document):
+                continue
+            zone = room_zone_for_location(snapshot, location)
+            if zone:
+                matches.append((float(zone["confidence"]), document, snapshot, zone))
+        if matches:
+            _confidence, document, snapshot, zone = max(
+                matches, key=lambda item: (item[0], -int(item[2]["page"]), -int(item[1].id)),
+            )
+            working_room_zones[location] = (zone, document, snapshot)
+
+    observations: list[RuleObservation] = []
+    report_rows = []
+    for location, (project_row, project_document) in sorted(project_by_room.items()):
+        pd_snapshot = project_row["snapshot"]
+        observations.append(_ventilation_observation(
+            "FREE_SEARCH",
+            {**project_row, "value": "Контур теплого пола показан в ПД", "normalized_value": "WARM_FLOOR"},
+            project_document, pd_snapshot, "PD", None, extractor="room_drawing_compare:warm-floor",
+        ))
+        working = working_by_room.get(location)
+        zone_pair = working_room_zones.get(location)
+        if working:
+            actual_row, actual_document = working
+            actual_snapshot = actual_row["snapshot"]
+            actual_value, actual_norm, actual_bbox = "Контур теплого пола показан в РД", "WARM_FLOOR", actual_row["bbox_pdf"]
+            comparison = "PRESENT_IN_BOTH"
+        elif zone_pair:
+            actual_row, actual_document, actual_snapshot = zone_pair
+            actual_value, actual_norm, actual_bbox = "Контур теплого пола не распознан в зоне РД", "MISSING_WARM_FLOOR", actual_row["bbox_pdf"]
+            comparison = "ROOM_FOUND_FLOOR_MARKER_NOT_FOUND"
+        else:
+            report_rows.append({"location": location, "status": "NO_RD_ROOM_ZONE"})
+            continue
+        observations.append(_ventilation_observation(
+            "FREE_SEARCH",
+            {"location": location, "value": actual_value, "normalized_value": actual_norm,
+             "bbox_pdf": actual_bbox, "confidence": 0.75,
+             "context": f"Помещение {location}; статус распознавания контура теплого пола: {comparison}"},
+            actual_document, actual_snapshot, "RD", None, extractor="room_drawing_compare:warm-floor",
+        ))
+        report_rows.append({
+            "location": location, "status": comparison,
+            "PD": {"file_id": getattr(project_document, "dataset_file_id", None), "page": int(pd_snapshot["page"]),
+                   "bbox_pdf": project_row["bbox_pdf"]},
+            "RD": {"file_id": getattr(actual_document, "dataset_file_id", None), "page": int(actual_snapshot["page"]),
+                   "bbox_pdf": actual_bbox},
+        })
+    return observations, {
+        "code": "FREE_SEARCH", "project_rooms": len(project_by_room),
+        "compared_rooms": sum(row.get("status") != "NO_RD_ROOM_ZONE" for row in report_rows), "rooms": report_rows,
+    }
 
 
 def _pd_exhaust_room_rows(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
-    words = snapshot.get("words") or []
-    width, height = float(snapshot["width"]), float(snapshot["height"])
-    systems = []
-    for word in words:
-        system = _normalize_exhaust_token(str(word.get("text") or ""))
-        if system:
-            systems.append((system, word))
     output = []
-    for room in _drawing_room_words(snapshot):
-        room_x, room_y = _bbox_center(room["bbox"])
-        nearby = []
-        for system, word in systems:
-            system_x, system_y = _bbox_center(word["bbox"])
-            dx = abs(system_x - room_x) / width
-            dy = abs(system_y - room_y) / height
-            if dx <= 0.08 and dy <= 0.16:
-                nearby.append((system, word, (dx * dx + dy * dy) ** 0.5))
-        if not nearby:
-            continue
-        nearby.sort(key=lambda item: item[2])
-        cutoff = min(0.075, nearby[0][2] + 0.025)
-        selected = [item for item in nearby if item[2] <= cutoff][:4]
-        labels = sorted({item[0] for item in selected}, key=_natural_system_key)
-        if not labels:
-            continue
-        bbox = _union_bbox([room["bbox"], *(item[1]["bbox"] for item in selected)])
+    for row in room_system_rows(snapshot, kinds={"branch"}):
+        labels = row["systems"]
         output.append({
-            "location": room["room"],
+            "location": row["location"],
             "value": _ventilation_value("IOS4-078", ",".join(labels)),
             "normalized_value": ",".join(labels),
-            "bbox_pdf": bbox,
-            "confidence": 0.9,
-            "context": f"Помещение {room['room']}; проектные вытяжные системы: {', '.join(labels)}",
+            "bbox_pdf": row["bbox_pdf"],
+            "confidence": row["confidence"],
+            "linkage": row["linkage"],
+            "context": row["context"],
             "snapshot": snapshot,
-            "linkage": "primary_proximity",
-        })
-    output.extend(_pd_exhaust_same_row_fallback(snapshot, systems, {row["location"] for row in output}))
-    return output
-
-
-def _pd_exhaust_same_row_fallback(
-    snapshot: dict[str, Any],
-    systems: list[tuple[str, dict[str, Any]]],
-    existing_locations: set[str],
-) -> list[dict[str, Any]]:
-    width, height = float(snapshot["width"]), float(snapshot["height"])
-    output = []
-    for room in _drawing_room_words(snapshot):
-        location = room["room"]
-        if location in existing_locations or not _is_300_room(location):
-            continue
-        room_x, room_y = _bbox_center(room["bbox"])
-        nearby = []
-        for system, word in systems:
-            system_x, system_y = _bbox_center(word["bbox"])
-            dx = abs(system_x - room_x) / width
-            dy = abs(system_y - room_y) / height
-            if dx <= 0.13 and dy <= 0.055:
-                nearby.append((system, word, (dx * dx + dy * dy) ** 0.5))
-        if not nearby:
-            continue
-        nearby.sort(key=lambda item: item[2])
-        selected = [item for item in nearby if item[2] <= min(0.13, nearby[0][2] + 0.025)][:4]
-        labels = sorted({item[0] for item in selected}, key=_natural_system_key)
-        if len(labels) < 2:
-            continue
-        bbox = _union_bbox([room["bbox"], *(item[1]["bbox"] for item in selected)])
-        output.append({
-            "location": location,
-            "value": _ventilation_value("IOS4-078", ",".join(labels)),
-            "normalized_value": ",".join(labels),
-            "bbox_pdf": bbox,
-            "confidence": 0.84,
-            "context": f"Помещение {location}; проектные вытяжные системы по горизонтальной связке: {', '.join(labels)}",
-            "snapshot": snapshot,
-            "linkage": "same_row_fallback",
         })
     return output
 
@@ -568,6 +901,7 @@ def _pd_exhaust_same_row_fallback(
 def _pd_supply_room_rows(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
     words = snapshot.get("words") or []
     width, height = float(snapshot["width"]), float(snapshot["height"])
+    rooms = extract_room_words(snapshot)
     vent_rooms = [word for word in words if "венткамер" in str(word.get("text") or "").lower()]
     supply = []
     for word in words:
@@ -575,15 +909,14 @@ def _pd_supply_room_rows(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
         if token:
             supply.append((token, word))
     output = []
-    for room in _drawing_room_words(snapshot):
-        room_x, room_y = _bbox_center(room["bbox"])
-        labels = [
-            word for word in vent_rooms
-            if abs(_bbox_center(word["bbox"])[0] - room_x) <= width * 0.04
-            and abs(_bbox_center(word["bbox"])[1] - room_y) <= height * 0.04
-        ]
-        if not labels:
+    for vent_room in vent_rooms:
+        linked_rooms = sorted(
+            ((room, _normalized_distance(vent_room["bbox"], room["bbox"], width, height)) for room in rooms),
+            key=lambda item: (item[1], item[0]["room"]),
+        )
+        if not linked_rooms or linked_rooms[0][1] > 0.06:
             continue
+        room = linked_rooms[0][0]
         nearby = sorted(
             ((token, word, _normalized_distance(word["bbox"], room["bbox"], width, height))
              for token, word in supply),
@@ -592,7 +925,7 @@ def _pd_supply_room_rows(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
         if not nearby or nearby[0][2] > 0.08:
             continue
         token, system_word, _distance = nearby[0]
-        bbox = _union_bbox([room["bbox"], labels[0]["bbox"], system_word["bbox"]])
+        bbox = _union_bbox([room["bbox"], vent_room["bbox"], system_word["bbox"]])
         output.append({
             "location": room["room"],
             "value": _ventilation_value("IOS4-079", token),
@@ -608,8 +941,18 @@ def _pd_supply_room_rows(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
 def _extract_exhaust_systems(text: str) -> str:
     normalized = str(text).upper().replace(",", ".")
     systems = set()
-    for match in re.finditer(r"(?<![A-ZА-Я0-9])(?:V|B|В|3|5|8)\s*2\s*[.\s_-]+\s*(\d{1,2})(?!\d)", normalized):
-        systems.add(f"V2.{int(match.group(1))}")
+    pattern = r"(?<![A-ZА-Я0-9])(?P<prefix>V|B|В|8)?\s*(?P<system>\d{1,2})\s*[.\s_-]+\s*(?P<branch>\d{1,2})(?!\d)"
+    for match in re.finditer(pattern, normalized):
+        system = int(match.group("system"))
+        if not match.group("prefix") and system in {3, 5, 8, 32, 52, 82}:
+            # Common OCR substitution in a printed Cyrillic В2 branch mark.
+            system = 2
+        systems.add(f"V{system}.{int(match.group('branch'))}")
+    # A room may be labelled with a changed system trunk (e.g. В3) where
+    # the project drawing specifies branches В3.1 and В3.2. Preserve that
+    # system-level value so comparison can distinguish it from no label.
+    for match in re.finditer(r"(?<![A-ZА-Я0-9])[VВB]\s*(\d{1,2})(?![.\d])", normalized):
+        systems.add(f"V{int(match.group(1))}")
     return ",".join(sorted(systems, key=_natural_system_key))
 
 
@@ -639,6 +982,9 @@ def _is_exhaust_violation(expected: str, actual: str) -> bool | None:
     missing = expected_systems - actual_systems
     if not missing:
         return False
+    expected_trunks = {system.split(".", 1)[0] for system in expected_systems}
+    if any(system in expected_trunks for system in actual_systems):
+        return True
     if len(expected_systems) == len(actual_systems) == 1 and _single_system_ocr_alias(expected_systems, actual_systems):
         return False
     if not (expected_systems & actual_systems):
@@ -661,8 +1007,8 @@ def _is_supply_violation(expected: str, actual: str) -> bool | None:
 
 def _exhaust_system_set(value: str) -> set[str]:
     return {
-        f"V2.{int(match.group(1))}"
-        for match in re.finditer(r"V2[.](\d{1,2})(?!\d)", str(value).upper())
+        f"V{int(match.group(1))}" + (f".{int(match.group(2))}" if match.group(2) else "")
+        for match in re.finditer(r"V(\d{1,2})(?:[.](\d{1,2}))?(?!\d)", str(value).upper())
     }
 
 
@@ -686,23 +1032,6 @@ def _single_system_ocr_alias(expected_systems: set[str], actual_systems: set[str
     return expected.endswith("0") and expected[:-1] == actual
 
 
-def _is_supported_exhaust_pd_row(row: dict[str, Any]) -> bool:
-    location = str(row.get("location") or "")
-    if _is_100_room(location):
-        return True
-    if _is_300_room(location):
-        return row.get("linkage") == "same_row_fallback"
-    return False
-
-
-def _is_100_room(location: str) -> bool:
-    return location.isdigit() and 100 <= int(location) <= 199
-
-
-def _is_300_room(location: str) -> bool:
-    return location.isdigit() and 300 <= int(location) <= 399
-
-
 def _ventilation_observation(code, row, document, snapshot, stage, source_fragment, *, extractor):
     return RuleObservation(
         parameter_code=code,
@@ -724,14 +1053,7 @@ def _ventilation_observation(code, row, document, snapshot, stage, source_fragme
 
 
 def _drawing_room_words(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
-    height = float(snapshot["height"])
-    output = []
-    for word in snapshot.get("words") or []:
-        token = str(word.get("text") or "").strip(".,;:()")
-        bbox = list(map(float, word["bbox"]))
-        if re.fullmatch(r"\d{3}", token) and token != "000" and bbox[1] < height * 0.78:
-            output.append({"room": token, "bbox": bbox})
-    return output
+    return extract_room_words(snapshot)
 
 
 def _best_fragment(rows: list[SourceFragment]) -> SourceFragment | None:
@@ -768,8 +1090,7 @@ def _normalized_distance(left, right, width, height) -> float:
 
 
 def _normalize_exhaust_token(value: str) -> str | None:
-    match = re.fullmatch(r"[VВB8]\s*2[.,](\d{1,2})", value.strip(), re.IGNORECASE)
-    return f"V2.{int(match.group(1))}" if match else None
+    return _extract_exhaust_systems(value) or None
 
 
 def _normalize_supply_token(value: str) -> str | None:
@@ -795,6 +1116,8 @@ def _ventilation_value(code: str, normalized: str) -> str:
 
 def _extract_absolute_zero(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
     text = str(snapshot.get("text") or "")
+    if not _rule_anchor_present("PZ-009", text):
+        return []
     patterns = (
         r"(?:относительн\w*\s+отметк\w*|отметк\w*\s+нуля).{0,120}?(?:абсолютн\w*\s+отметк\w*|абс\.?\s*отм\.?)[^0-9+]{0,30}\+?(?P<value>\d{3}[.,]\d{2,3})",
         r"(?:абсолютн\w*\s+отметк\w*|абс\.?\s*отм\.?)[^0-9+]{0,30}\+?(?P<value>\d{3}[.,]\d{2,3})",
@@ -823,7 +1146,9 @@ def _extract_concrete_classes(
     document: DocumentVersion | None = None,
 ) -> list[dict[str, Any]]:
     text, words, offsets = _indexed_words(snapshot.get("words") or [])
-    page_codes = {str((row.metadata_json or {}).get("code") or "") for row in page_fragments}
+    # Candidate-page selection is vocabulary-driven; organizer field codes do
+    # not establish what an element on the source page is called.
+    del page_fragments
     out = []
     document_location: str | None = None
     document_location_checked = False
@@ -837,9 +1162,13 @@ def _extract_concrete_classes(
         if any(token in local_context.lower() for token in ("бетонная подготов", "тощего бетон", "подбетон")):
             continue
         excluded_fallback = any(token in local_context.lower() for token in ("лестниц", "форшах", "сваи", "свай"))
-        fallback = not location and "KR-058" in page_codes and "фунд" in text.lower() and not excluded_fallback
+        fallback = (
+            not location and _rule_anchor_present("KR-058", text)
+            and any(token in text.lower() for token in ("фунд", "ростверк"))
+            and not excluded_fallback
+        )
         if fallback:
-            location = "Фундаментная плита"
+            location = _foundation_element_name(text)
         if not location and document is not None and not excluded_fallback:
             # This page (e.g. a materials-quality registry attached to a hidden-works
             # act) states the concrete class without repeating the element name; the
@@ -898,14 +1227,17 @@ def _act_subject_location(document: DocumentVersion) -> str | None:
     return _concrete_location(window)
 
 
-_SLAB_MENTION_PATTERN = re.compile(r"фундамент\w*.{0,60}?плит\w*|плит\w*.{0,60}?фундамент\w*", re.IGNORECASE)
+_SLAB_MENTION_PATTERN = re.compile(
+    r"фундамент\w*.{0,60}?плит\w*|плит\w*.{0,60}?фундамент\w*|ростверк\w*",
+    re.IGNORECASE,
+)
 # "h=1200 мм" is a standard structural-drawing shorthand for element thickness,
 # used interchangeably with the word "толщина" — not specific to any one document.
 _THICKNESS_ANCHOR_PATTERN = re.compile(r"толщин\w*|(?<![a-zа-я])h\s*=", re.IGNORECASE)
 _THICKNESS_ANCHOR_CONTEXT_CHARS = 220
 
 
-def _extract_foundation_thickness(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
+def _extract_foundation_thickness(snapshot: dict[str, Any], *, stage: str | None = None) -> list[dict[str, Any]]:
     text, words, offsets = _indexed_words(snapshot.get("words") or [])
     # Find slab mentions first (order-agnostic, tolerant of words in between), then
     # look for a thickness anchor anywhere in a wider local window around each one,
@@ -934,23 +1266,44 @@ def _extract_foundation_thickness(snapshot: dict[str, Any]) -> list[dict[str, An
             if len(values) == 2:
                 break
         if values:
-            candidates.append((values, positions, window_start, window_end))
+            candidates.append((values, positions, window_start, window_end, slab.group(0)))
     if not candidates:
         return []
-    values, positions, start, end = max(candidates, key=lambda item: len(item[0]))
+    values, positions, start, end, element_text = max(candidates, key=lambda item: len(item[0]))
     indices = [index for position in positions if (index := _word_index_at(offsets, position)) is not None]
     bbox = _union_bbox([words[index]["bbox"] for index in indices])
     if not bbox:
         return []
     normalized = "/".join(str(value) for value in sorted(values))
     return [{
-        "location": "Фундаментная плита",
+        "location": _foundation_element_name(element_text),
         "value": f"{normalized} мм",
         "normalized_value": normalized,
         "bbox_pdf": bbox,
         "confidence": 0.9 if len(values) == 2 else 0.82,
         "context": text[start:end],
     }]
+
+
+def _foundation_element_name(source_text: str) -> str:
+    """Normalize the element noun actually found in the document text."""
+    return "Ростверк" if re.search(r"ростверк", str(source_text), re.IGNORECASE) else "Фундаментная плита"
+
+
+_RULE_PARAMETER_NAMES = {
+    "PZ-009": "Абсолютная отметка 0.000",
+    "KR-055": "Класс прочности бетона монолитных конструкций",
+    "KR-058": "Толщина монолитной фундаментной плиты / ростверка",
+}
+
+
+def _rule_anchor_present(code: str, text: str, *, stage: str | None = None) -> bool:
+    normalized = re.sub(r"\s+", " ", str(text or "")).casefold().replace("ё", "е")
+    phrases = anchor_phrases(code, _RULE_PARAMETER_NAMES.get(code), stage)
+    return any(
+        re.sub(r"\s+", " ", phrase).casefold().replace("ё", "е") in normalized
+        for phrase in phrases if phrase
+    )
 
 
 def _concrete_location(context: str) -> str | None:
