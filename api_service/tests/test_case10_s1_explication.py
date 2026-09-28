@@ -215,7 +215,11 @@ class PipelineGroupsTests(unittest.TestCase):
         from app.db.models import Base, DocumentVersion
         from app.domain.official_dataset import MATRIX_VERSION_OFFICIAL
         from app.domain.v3_pipeline import create_process, list_active_params
+        from unittest.mock import patch
 
+        self.worker_env = patch.dict(os.environ, {"CASE10_EXPLICATION_WORKERS": "1"})
+        self.worker_env.start()
+        self.addCleanup(self.worker_env.stop)
         engine = create_engine("sqlite+pysqlite:///:memory:")
         Base.metadata.create_all(engine)
         self.db = sessionmaker(bind=engine)()
@@ -281,6 +285,61 @@ class PipelineGroupsTests(unittest.TestCase):
         self.assertEqual(set(first), set(second))
         self.assertEqual(second[candidate["group_key"]]["id"], candidate["id"])
         self.assertEqual(second[candidate["group_key"]]["inspector_status"], "CONFIRMED")
+
+    def test_official_evidence_calls_explication_before_logical_analysis(self):
+        from unittest.mock import patch
+
+        from app.domain import official_evidence as oe
+        from app.domain.comparison_gate import GateContext
+
+        events = []
+        captured = {}
+
+        def collect(db, process, params, docs, **kwargs):
+            events.append("explication")
+            captured.update(docs=docs, **kwargs)
+            return {"pairs": 1}
+
+        def logical(db, process, params, touched_keys, **kwargs):
+            events.append("logical")
+            captured["logical_touched_keys"] = touched_keys
+
+        empty_extraction = ({}, {"documents": [], "scanned_pages": set()})
+        with (
+            patch.object(oe, "explication_compare_enabled", return_value=True),
+            patch.object(oe, "collect_explication_groups", side_effect=collect),
+            patch.object(oe, "extract_official_rule_observations", return_value=empty_extraction),
+            patch.object(oe, "collect_generic_observations", return_value={}),
+            patch.object(oe, "collect_enum_observations", return_value={}),
+            patch.object(oe, "collect_compound_observations", return_value={}),
+            patch.object(oe, "collect_table_count_observations", return_value={}),
+            patch.object(oe, "run_logical_analysis_module", side_effect=logical),
+        ):
+            oe.create_official_evidence_groups(self.db, self.process, [], self.docs)
+
+        self.assertEqual(events, ["explication", "logical"])
+        self.assertEqual(captured["docs"], self.docs)
+        self.assertIsInstance(captured["gate"], GateContext)
+        self.assertIs(captured["touched_keys"], captured["logical_touched_keys"])
+
+    def test_group_ids_survive_the_official_evidence_sweep(self):
+        from unittest.mock import patch
+        from app.domain.evidence_groups import sweep_orphaned_evidence_groups
+
+        param_ids = {int(param.id) for param in self.params}
+        first_touched = {}
+        with patch.object(ec, "scan_document_tables", side_effect=lambda doc: self.scans[doc.file_hash]):
+            ec.collect_explication_groups(self.db, self.process, self.params, self.docs, touched_keys=first_touched)
+        first = {g["group_key"]: g["id"] for g in self.groups()}
+        sweep_orphaned_evidence_groups(self.db, self.process, param_ids, first_touched)
+
+        second_touched = {}
+        with patch.object(ec, "scan_document_tables", side_effect=lambda doc: self.scans[doc.file_hash]):
+            ec.collect_explication_groups(self.db, self.process, self.params, self.docs, touched_keys=second_touched)
+        sweep_orphaned_evidence_groups(self.db, self.process, param_ids, second_touched)
+        second = {g["group_key"]: g["id"] for g in self.groups()}
+
+        self.assertEqual(first, second)
 
     def test_a_vanished_discrepancy_is_swept(self):
         self.run_once()

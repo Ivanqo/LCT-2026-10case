@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from collections.abc import Callable
 from decimal import Decimal
 import hashlib
 
@@ -14,6 +15,7 @@ from .anchor_search import GENERIC_SITE_LOCATION
 from .comparison_gate import REASON_MISSING_DISCIPLINE, GateContext, GateDecision
 from .dataset_sources import normalized_original_geometry
 from .evidence_groups import sweep_orphaned_evidence_groups, upsert_evidence_group
+from .explication_compare import collect_explication_groups, explication_compare_enabled
 from .generic_compound_extraction import (
     GENERIC_COMPOUND_EXTRACTOR_VERSION,
     CompoundObservation,
@@ -101,6 +103,7 @@ def create_official_evidence_groups(
     docs: list[DocumentVersion],
     *,
     user_id: int | None = None,
+    explication_audit: Callable[[dict], None] | None = None,
 ) -> list[dict]:
     selection = file_registry.selection_context(db, process, docs)
     excluded_doc_ids = selection["excluded_document_ids"]
@@ -330,6 +333,13 @@ def create_official_evidence_groups(
             for spec in fragment_specs:
                 db.add(EvidenceFragment(evidence_group_id=group.id, **spec))
             db.flush()
+    if explication_compare_enabled():
+        explication = collect_explication_groups(
+            db, process, params, candidate_docs, gate=gate, touched_keys=touched_keys, user_id=user_id,
+        )
+        if explication_audit is not None:
+            explication_audit(explication)
+
     # Module 5 (TZ 9.5, free hypothesis search): logical-analysis rules read
     # back the matrix comparisons this run just wrote above, so they must run
     # after that loop but before the sweep below, sharing its `touched_keys`

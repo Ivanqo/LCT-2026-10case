@@ -34,12 +34,13 @@ import re
 from statistics import median
 from typing import Any, Iterable
 
-from .anchor_search import cluster_rows, union_bbox
+from .anchor_search import anchor_word_variants, cluster_rows, normalize_word, numbers_after, to_decimal, union_bbox
 
 TABLE_PARSER_VERSION = "table-parser-v1"
 
 KIND_ROOMS = "ROOMS"
 KIND_APARTMENTS = "APARTMENTS"
+KIND_TEP = "TEP"
 
 ROLE_NUMBER = "NUMBER"
 ROLE_NAME = "NAME"
@@ -88,6 +89,27 @@ _TITLE_SEARCH_HEIGHTS = 9.0         # how far above the header a table title may
 _MAX_ROW_GAP_PITCHES = 3.2          # a vertical gap larger than this many row pitches ends the table
 _MAX_ROWS = 400
 _OVERPRINT_IOU = 0.6
+
+_TEP_TITLE_RE = re.compile(r"технико\s*[-–—]?\s*экономические\s+показатели", re.IGNORECASE)
+_TEP_PAGE_MARKER_RE = re.compile(r"\bтэп\b|технико", re.IGNORECASE)
+_TEP_ABBREVIATION_TITLE_RE = re.compile(r"^(?:основные\s+)?тэп(?:\s+(?:объекта|здания|сооружения))?$", re.IGNORECASE)
+_TEP_TITLE_SUFFIX_WORDS = frozenset({
+    "объекта", "объектов", "здания", "зданий", "сооружения", "сооружений",
+    "проектируемого", "проектируемых", "капитального", "строительства",
+})
+
+
+@dataclass(slots=True)
+class TepValueMatch:
+    """One numeric row value in a titled technical-economic-indicators table."""
+
+    title: str
+    row_text: str
+    value: str
+    decimal_value: Decimal
+    word_start: int
+    word_end: int
+    has_fraction: bool
 
 _FLOOR_NUMBER_RE = re.compile(r"(?<![\d.,])(\d{1,2}(?:\s*[-–]\s*\d{1,2})?)\s*-?\s*(?:го|ого|й|ой|м|ый|ий)?\s*(?:этаж|эт\.)", re.IGNORECASE)
 _FLOOR_WORDS = (
@@ -845,6 +867,182 @@ def table_text_is_garbled(table: RoomTable, *, share: float = 0.02) -> bool:
     text = "".join([table.title, *(v for r in table.rows for v in r.cells.values()), *(r.key for r in table.rows)])
     letters = [ch for ch in text if ch.isalpha()]
     return bool(letters) and len(_GARBLED_CHAR_RE.findall(text)) / len(letters) >= share
+
+
+def _canonical_unit_text(text: object) -> str:
+    value = norm(text).replace("²", "2").replace("³", "3").replace("^", "")
+    value = re.sub(r"кв\.?\s*м", "м2", value)
+    value = re.sub(r"куб\.?\s*м", "м3", value)
+    return re.sub(r"[\s.,]", "", value)
+
+
+def _anchor_span_in_row(row: list[dict[str, Any]], phrase: str) -> tuple[int, int] | None:
+    """Literal anchor span, with the shared small gap tolerance but no embedding fallback."""
+    normalized = [normalize_word(word.get("text")) for word in row]
+    qualifier = re.search(r"\(([^)]{1,40})\)\s*$", str(phrase or ""))
+    qualifier_words = [normalize_word(word) for word in qualifier.group(1).split()] if qualifier else []
+    for variant in anchor_word_variants(phrase):
+        for start, token in enumerate(normalized):
+            if token != variant[0]:
+                continue
+            position = start
+            matched = True
+            for target in variant[1:]:
+                stop = min(position + 2 + 2, len(normalized))
+                next_position = next((i for i in range(position + 1, stop) if normalized[i] == target), None)
+                if next_position is None:
+                    matched = False
+                    break
+                position = next_position
+            if not matched:
+                continue
+            if qualifier_words and not all(
+                any(word == q or (len(q) >= 4 and word.startswith(q[:max(3, len(q) - 2)])) for word in normalized)
+                for q in qualifier_words
+            ):
+                continue
+            prefix = normalized[:start]
+            if any(word and not re.fullmatch(r"\d{1,3}", word) for word in prefix):
+                continue
+            return start, position + 1
+    return None
+
+
+def _tep_title_rows(rows: list[list[dict[str, Any]]]) -> list[tuple[int, str]]:
+    titles = []
+    for row_index, row in enumerate(rows):
+        title = " ".join(str(word.get("text") or "") for word in row).strip()
+        title_for_match = re.sub(r"\s+\d{1,3}\s*$", "", title).strip(" \t.,;:")
+        match = _TEP_TITLE_RE.search(title)
+        is_expanded_title = False
+        if match:
+            prefix = re.sub(r"^\s*\d{1,3}[.)]?\s*", "", title[:match.start()]).strip(" \t.,;:-")
+            prefix_words = [normalize_word(word) for word in prefix.split() if normalize_word(word)]
+            raw_suffix = title[match.end():]
+            has_section_marker = bool(re.fullmatch(r"\s+\d{1,4}(?:\s*\([^)]{1,100}\))?\s*", raw_suffix))
+            suffix = re.sub(r"\s+\d{1,3}\s*$", "", raw_suffix)
+            suffix = re.sub(r"\s+\d{1,4}\s*\([^)]{1,100}\)\s*$", "", suffix)
+            suffix = re.sub(r"\(\s*тэп\s*\)", "", suffix, flags=re.IGNORECASE)
+            suffix_words = [normalize_word(word) for word in suffix.split() if normalize_word(word)]
+            normalized_prefix = [word.strip(".,;:()") for word in prefix_words]
+            prefix_is_heading = all(word == "основные" or len(word) == 1 for word in normalized_prefix)
+            prefix_has_heading_cue = bool(
+                normalized_prefix and normalized_prefix[-1] == "основные" and has_section_marker
+            )
+            is_expanded_title = (
+                (prefix_is_heading or prefix_has_heading_cue)
+                and all(word.strip(".,;:()") in _TEP_TITLE_SUFFIX_WORDS for word in suffix_words)
+            )
+        if is_expanded_title or _TEP_ABBREVIATION_TITLE_RE.fullmatch(title_for_match):
+            titles.append((row_index, title))
+    return titles
+
+
+def has_tep_table_title(snapshot: dict[str, Any]) -> bool:
+    """Whether a page contains a title row for a technical-economic-indicators table."""
+    has_title, _match = find_tep_value(snapshot, ())
+    return has_title
+
+
+def find_tep_value(
+    snapshot: dict[str, Any], anchor_phrases: Iterable[str], *, expected_units: Iterable[str] = (),
+) -> tuple[bool, TepValueMatch | None]:
+    """Read an anchor's value only from a row under a ТЭП table title.
+
+    The label and number must share one visual text row. If an expected unit
+    is present beside a number, that number wins over nearby numbered
+    normative citations (for example a СП year embedded in the label).
+    Returns `(has_titled_table, match)` so generic extraction can avoid a
+    second page parse when an anchor is absent from an already recognized ТЭП.
+    """
+    page_text = snapshot.get("text")
+    if page_text is not None and not (
+        _TEP_PAGE_MARKER_RE.search(str(page_text))
+    ):
+        word_text = " ".join(str(word.get("text") or "") for word in (snapshot.get("words") or []))
+        if not _TEP_PAGE_MARKER_RE.search(word_text):
+            return False, None
+    words = dedupe_overprint(snapshot.get("words") or [])
+    if not words:
+        return False, None
+    rows = cluster_rows(words)
+    titles = _tep_title_rows(rows)
+    if not titles:
+        return False, None
+
+    anchors = tuple(dict.fromkeys(" ".join(str(value or "").split()) for value in anchor_phrases if str(value or "").strip()))
+    if not anchors:
+        return True, None
+    units = tuple(filter(None, (_canonical_unit_text(value) for value in expected_units)))
+    index_by_identity = {id(word): index for index, word in enumerate(words)}
+
+    for title_pos, (row_index, title) in enumerate(titles):
+        next_title_row = titles[title_pos + 1][0] if title_pos + 1 < len(titles) else len(rows)
+        title_bottom = max(float(word["bbox"][3]) for word in rows[row_index] if word.get("bbox"))
+        page_height = float(snapshot.get("height") or 0)
+        max_y = min(page_height * 0.98, title_bottom + max(500.0, page_height * 0.62)) if page_height else float("inf")
+        for row in rows[row_index + 1:next_title_row]:
+            if not row or min(float(word["bbox"][1]) for word in row if word.get("bbox")) > max_y:
+                break
+            row_text = " ".join(str(word.get("text") or "") for word in row)
+            for phrase in anchors:
+                anchor_span = _anchor_span_in_row(row, phrase)
+                if anchor_span is None:
+                    continue
+                anchor_end = anchor_span[1]
+                numeric_values = numbers_after(row, anchor_end, max_lookahead=min(30, len(row) - anchor_end))
+                if not numeric_values:
+                    continue
+
+                candidates = []
+                for raw, first, last in numeric_values:
+                    value = to_decimal(raw)
+                    if value is not None:
+                        candidates.append((raw, first, last, value))
+                if not candidates:
+                    continue
+
+                unit_positions = []
+                if units:
+                    for start in range(len(row)):
+                        for end in range(start + 1, min(len(row), start + 4) + 1):
+                            if _canonical_unit_text(" ".join(str(word.get("text") or "") for word in row[start:end])) in units:
+                                unit_positions.append((start, end - 1))
+                unit_candidates = []
+                for candidate in candidates:
+                    raw, first, last, value = candidate
+                    distances = [
+                        min(abs(last - unit_start), abs(unit_end - first))
+                        for unit_start, unit_end in unit_positions
+                        if min(abs(last - unit_start), abs(unit_end - first)) <= 2
+                    ]
+                    if distances:
+                        unit_candidates.append((min(distances), first, candidate))
+                if unit_candidates:
+                    _, _, selected = min(unit_candidates)
+                else:
+                    fractional = [candidate for candidate in candidates if re.search(r"[.,]\d", candidate[0])]
+                    pool = fractional or candidates
+                    selected = max(pool, key=lambda candidate: candidate[1])
+
+                raw, first, last, value = selected
+                return True, TepValueMatch(
+                    title=title,
+                    row_text=row_text,
+                    value=raw,
+                    decimal_value=value,
+                    word_start=index_by_identity[id(row[first])],
+                    word_end=index_by_identity[id(row[last])],
+                    has_fraction=bool(re.search(r"[.,]\d", raw)),
+                )
+    return True, None
+
+
+def find_tep_value_match(
+    snapshot: dict[str, Any], anchor_phrases: Iterable[str], *, expected_units: Iterable[str] = (),
+) -> TepValueMatch | None:
+    """Return a numeric TEP-row match, if present."""
+    return find_tep_value(snapshot, anchor_phrases, expected_units=expected_units)[1]
 
 
 def total_value(total: Total) -> tuple[Decimal | None, list[Decimal], int]:

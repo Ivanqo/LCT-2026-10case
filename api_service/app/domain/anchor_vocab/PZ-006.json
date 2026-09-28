@@ -2,7 +2,12 @@
  "code": "PZ-006",
  "matrix_code": "M-006",
  "parameter_name": "Строительный объем (Надземный)",
- "phrases": [],
+ "phrases": [
+  {
+   "text": "выше отм",
+   "provenance": [{"object": "LOS3A", "file_id": "LOS3A-000003", "page": 14}]
+  }
+ ],
  "units": [],
  "notes": ""
 }

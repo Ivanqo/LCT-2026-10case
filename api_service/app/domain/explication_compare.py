@@ -37,13 +37,17 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from decimal import Decimal
 from difflib import SequenceMatcher
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures.process import BrokenProcessPool
 from functools import lru_cache
 import hashlib
 import json
 import logging
+import multiprocessing
 import os
 from pathlib import Path
 import re
+from types import SimpleNamespace
 from typing import Any, Iterable
 
 from . import table_parser as tpar
@@ -609,8 +613,7 @@ def _store_cache(sha256: str, record: dict[str, Any]) -> None:
         logger.warning("explication cache write failed: %s", exc)
 
 
-def scan_document_tables(document: Any) -> dict[str, Any]:
-    """{"pages_total", "candidate_pages", "tables": [RoomTable dict, ...]} of one PDF; pure function of the bytes."""
+def _scan_document_tables_uncached(document: Any) -> dict[str, Any]:
     from . import dataset_sources
 
     ref = dataset_sources.document_original_ref(document)
@@ -647,8 +650,101 @@ def scan_document_tables(document: Any) -> dict[str, Any]:
                     continue
                 tables.append(table.to_dict())
     result = {"pages_total": total, "candidate_pages": pages, "tables": tables, "low_quality": low_quality}
+    return result
+
+
+def scan_document_tables(document: Any) -> dict[str, Any]:
+    """{"pages_total", "candidate_pages", "tables": [RoomTable dict, ...]} of one PDF; pure function of the bytes."""
+    from . import dataset_sources
+
+    ref = dataset_sources.document_original_ref(document)
+    if ref is None:
+        return _scan_document_tables_uncached(document)
+    sha256 = ref[1]
+    cached = _load_cache(sha256)
+    if cached is not None:
+        return cached["result"]
+    result = _scan_document_tables_uncached(document)
     _store_cache(sha256, {"fingerprint": code_fingerprint(), "result": result})
     return result
+
+
+def _scan_document_tables_worker(task: dict[str, str]) -> dict[str, Any]:
+    """Spawn-safe document scan. The parent owns cache reads/writes and output ordering."""
+    from . import dataset_sources
+
+    document = SimpleNamespace(
+        dataset_metadata={"document_manifest": {"relative_path": task["relative"]}},
+        file_hash=task["sha256"],
+        content_hash=task["sha256"],
+    )
+    try:
+        return _scan_document_tables_uncached(document)
+    except Exception as exc:  # noqa: BLE001 -- one unreadable PDF must not sink the object's run
+        return {"pages_total": 0, "candidate_pages": [], "tables": [], "skipped": type(exc).__name__}
+    finally:
+        # The live-tagger pool clears these same source caches per document;
+        # one worker must not pin several complete PDFs from a drawing set.
+        dataset_sources._original_document_bytes.cache_clear()
+        dataset_sources._original_page_snapshots.cache_clear()
+
+
+def scan_documents_tables(documents: list[Any]) -> dict[int, dict[str, Any]]:
+    """Scan uncached PDFs in a bounded process pool, then return results in input order.
+
+    The caller plans documents and reads the on-disk cache in the parent; workers
+    only scan one PDF each. Completion order therefore never affects evidence order.
+    """
+    from . import dataset_sources
+
+    result_by_id: dict[int, dict[str, Any]] = {}
+    pending: list[tuple[Any, str, str]] = []
+    for document in documents:
+        ref = dataset_sources.document_original_ref(document)
+        if ref is None:
+            result_by_id[int(document.id)] = scan_document_tables(document)
+            continue
+        relative, sha256 = ref
+        cached = _load_cache(sha256)
+        if cached is not None:
+            result_by_id[int(document.id)] = cached["result"]
+        else:
+            pending.append((document, relative, sha256))
+
+    requested = os.getenv("CASE10_EXPLICATION_WORKERS")
+    if requested is None:
+        requested = os.getenv("CASE10_LIVE_TAGGER_WORKERS")
+    try:
+        requested_count = int(requested) if requested else 3
+    except (TypeError, ValueError):
+        requested_count = 3
+    worker_count = min(3, max(1, requested_count), len(pending))
+    remaining = {int(document.id): (document, relative, sha256) for document, relative, sha256 in pending}
+    if worker_count > 1:
+        try:
+            with ProcessPoolExecutor(max_workers=worker_count, mp_context=multiprocessing.get_context("spawn")) as pool:
+                futures = {
+                    pool.submit(_scan_document_tables_worker, {"relative": relative, "sha256": sha256}): int(document.id)
+                    for document, relative, sha256 in pending
+                }
+                for future in as_completed(futures):
+                    document_id = futures[future]
+                    try:
+                        scan_result = future.result()
+                    except (BrokenProcessPool, OSError, RuntimeError, ImportError):
+                        raise
+                    except Exception as exc:  # noqa: BLE001
+                        scan_result = {"pages_total": 0, "candidate_pages": [], "tables": [], "skipped": type(exc).__name__}
+                    document, _relative, sha256 = remaining.pop(document_id)
+                    result_by_id[document_id] = scan_result
+                    if not scan_result.get("skipped"):
+                        _store_cache(sha256, {"fingerprint": code_fingerprint(), "result": scan_result})
+        except (BrokenProcessPool, OSError, RuntimeError, ImportError) as exc:
+            logger.warning("explication_compare: worker pool failed (%s: %s); finishing %d documents in-process",
+                           type(exc).__name__, exc, len(remaining))
+    for document_id, (document, _relative, _sha256) in remaining.items():
+        result_by_id[document_id] = scan_document_tables(document)
+    return {int(document.id): result_by_id[int(document.id)] for document in documents}
 
 
 # ---------------------------------------------------------------- pipeline integration
@@ -700,8 +796,9 @@ def _conflicts(gate: Any, docs: list[Any]) -> dict[Any, set[Any]]:
 def build_table_refs(docs: list[Any], gate: Any) -> tuple[dict[str, list[TableRef]], dict[str, Any]]:
     refs: dict[str, list[TableRef]] = {stage: [] for stage in _STAGES}
     diagnostics: dict[str, Any] = {"documents": 0, "pages_total": 0, "candidate_pages": 0, "tables": 0, "skipped": {}}
+    scans = scan_documents_tables(docs)
     for doc in docs:
-        result = scan_document_tables(doc)
+        result = scans[int(doc.id)]
         diagnostics["documents"] += 1
         diagnostics["pages_total"] += int(result.get("pages_total") or 0)
         diagnostics["candidate_pages"] += len(result.get("candidate_pages") or [])

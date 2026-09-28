@@ -77,11 +77,11 @@
   },
   "precision_open": {
    "k": 38,
-   "n": 89,
-   "rate": 0.427,
+   "n": 57,
+   "rate": 0.6667,
    "wilson95": [
-    0.3293,
-    0.5307
+    0.5372,
+    0.7751
    ]
   },
   "f1_closed": 0.1901,
@@ -109,7 +109,7 @@
   ],
   "negatives_flagged": [],
   "outcomes": {
-   "fp_unlabelled": 50,
+   "fp_unlabelled": 18,
    "tp": 38,
    "fp_labelled_positive_key": 1
   },
@@ -130,7 +130,7 @@
    "ALT79B-V01",
    "DOO25-V01"
   ],
-  "predictions_positive": 89
+  "predictions_positive": 57
  },
  "B_on_disk_base": {
   "recall": {
@@ -210,11 +210,11 @@
   },
   "precision_open": {
    "k": 38,
-   "n": 89,
-   "rate": 0.427,
+   "n": 57,
+   "rate": 0.6667,
    "wilson95": [
-    0.3293,
-    0.5307
+    0.5372,
+    0.7751
    ]
   },
   "f1_closed": 0.2216,
@@ -242,7 +242,7 @@
   ],
   "negatives_flagged": [],
   "outcomes": {
-   "fp_unlabelled": 50,
+   "fp_unlabelled": 18,
    "tp": 38,
    "fp_labelled_positive_key": 1
   },
@@ -263,7 +263,7 @@
    "ALT79B-V01",
    "DOO25-V01"
   ],
-  "predictions_positive": 89
+  "predictions_positive": 57
  },
  "explication_cases_base": {
   "recall": {
@@ -343,11 +343,11 @@
   },
   "precision_open": {
    "k": 38,
-   "n": 87,
-   "rate": 0.4368,
+   "n": 55,
+   "rate": 0.6909,
    "wilson95": [
-    0.3374,
-    0.5415
+    0.5597,
+    0.7972
    ]
   },
   "f1_closed": 0.6609,
@@ -377,7 +377,7 @@
   "outcomes": {
    "tp": 38,
    "fp_labelled_positive_key": 1,
-   "fp_unlabelled": 48
+   "fp_unlabelled": 16
   },
   "key_only_found": [
    "ALT79B-V01",
@@ -396,6 +396,6 @@
    "ALT79B-V01",
    "DOO25-V01"
   ],
-  "predictions_positive": 87
+  "predictions_positive": 55
  }
 }

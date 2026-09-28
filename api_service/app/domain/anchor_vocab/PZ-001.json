@@ -2,7 +2,12 @@
  "code": "PZ-001",
  "matrix_code": "M-001",
  "parameter_name": "Площадь застройки",
- "phrases": [],
+ "phrases": [
+  {
+   "text": "Площадь застройки объекта",
+   "provenance": [{"object": "ALT79B", "file_id": "ALT79B-000001", "page": 10}]
+  }
+ ],
  "units": [],
  "notes": ""
 }

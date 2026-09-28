@@ -2,7 +2,30 @@
  "code": "PZ-004",
  "matrix_code": "M-004",
  "parameter_name": "Строительный объем (Общий)",
- "phrases": [],
+ "phrases": [
+  {
+   "text": "Строительный объем в т.ч.",
+   "provenance": [
+    {"object": "LOS3A", "file_id": "LOS3A-000003", "page": 15},
+    {"object": "LOS3A", "file_id": "LOS3A-000069", "page": 11}
+   ]
+  },
+  {
+   "text": "Общий строительный объем зданий",
+   "provenance": [{"object": "ALT79B", "file_id": "ALT79B-000001", "page": 10}]
+  },
+  {
+   "text": "Строительный объем здания",
+   "provenance": [{"object": "LOS3A", "file_id": "LOS3A-000147", "page": 61}]
+  },
+  {
+   "text": "Строительный объем",
+   "provenance": [
+    {"object": "ALT79B", "file_id": "ALT79B-000015", "page": 10},
+    {"object": "LOS3A", "file_id": "LOS3A-000003", "page": 15}
+   ]
+  }
+ ],
  "units": [],
  "notes": ""
 }

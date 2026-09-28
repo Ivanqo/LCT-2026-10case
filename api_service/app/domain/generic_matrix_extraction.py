@@ -24,6 +24,7 @@ import re
 from typing import Any, Iterable
 
 from ..db.models import DocumentVersion, Param, SourceFragment
+from .anchor_vocab import anchor_phrases, unit_spellings
 from .anchor_search import (
     GENERIC_SITE_LOCATION,
     build_semantic_query,
@@ -37,6 +38,7 @@ from .anchor_search import (
 )
 from .cross_stage_localization import resolve_stage_round
 from .matrix_unit_classifier import is_generic_anchor_eligible
+from .table_parser import find_tep_value
 from .value_plausibility import unit_evidence
 
 GENERIC_EXTRACTOR_VERSION = "generic-anchor-table-v1"
@@ -160,9 +162,11 @@ def extract_generic_observation_for_page(
     page_number: int,
     snapshot: dict[str, Any],
     source_fragment: SourceFragment | None,
+    *,
+    matched_anchor: AnchorMatch | None = None,
 ) -> GenericObservation | None:
     words = snapshot.get("words") or []
-    match = find_anchor_numeric_value(snapshot, parameter_name)
+    match = matched_anchor or find_anchor_numeric_value(snapshot, parameter_name)
     if match is None:
         return None
     bbox_pdf = _word_range_bbox(words, match.word_start, match.word_end)
@@ -240,10 +244,28 @@ def _bucket_by_stage(
 def _match_numeric(
     snapshot: dict[str, Any], fragment: SourceFragment, doc: DocumentVersion, page: int, param: Param,
 ) -> tuple[GenericObservation, Any, str | None, bool, bool] | None:
-    match = find_anchor_numeric_value(snapshot, str(param.parameter_name))
+    code = str(getattr(param, "code", "") or "")
+    name = str(param.parameter_name)
+    stage = getattr(doc, "dataset_stage", None)
+    anchors = anchor_phrases(code, name, stage)
+    units = (str(getattr(param, "unit", "") or ""), *unit_spellings(code))
+    has_tep_title, tep_match = find_tep_value(snapshot, anchors, expected_units=units)
+    if tep_match is not None:
+        match = AnchorMatch(
+            value=tep_match.value,
+            normalized_value=str(tep_match.decimal_value),
+            decimal_value=tep_match.decimal_value,
+            word_start=tep_match.word_start,
+            word_end=tep_match.word_end,
+            has_fraction=tep_match.has_fraction,
+        )
+    elif has_tep_title:
+        return None
+    else:
+        match = next((found for phrase in anchors if (found := find_anchor_numeric_value(snapshot, phrase)) is not None), None)
     if match is None:
         return None
-    observation = extract_generic_observation_for_page(str(param.parameter_name), doc, page, snapshot, fragment)
+    observation = extract_generic_observation_for_page(name, doc, page, snapshot, fragment, matched_anchor=match)
     if observation is None:
         return None
     words = snapshot.get("words") or []
