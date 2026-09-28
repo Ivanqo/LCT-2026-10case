@@ -49,3 +49,4 @@ initial_admin_credentials.txt
 
 # Windows path artifacts ("<dir>;C" folders created by a broken path join)
 *;C/
+/packages/
