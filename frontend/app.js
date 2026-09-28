@@ -727,7 +727,7 @@
 
   async function refreshCandidates(){
     if(!currentProjectId || !$('#candidateCards')) return;
-    const rows = await fetchJSON(`/api/case10/evidence-groups?project_id=${currentProjectId}`, {headers: authHeaders()});
+    const rows = await fetchJSON(`/api/case10/evidence-groups?project_id=${currentProjectId}&include_fragments=true`, {headers: authHeaders()});
     const root = $('#candidateCards');
     if(!rows.length){
       root.innerHTML = '<section class="card muted">Evidence groups пока нет. Загрузите ПД / РД / ИД и запустите проверку.</section>';

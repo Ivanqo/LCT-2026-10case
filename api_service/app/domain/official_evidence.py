@@ -394,20 +394,21 @@ def _quality_for_page(document, page_number: int) -> dict:
 
                 text = str(page.get_text("text") or "").strip()
                 words = page.get_text("words") or []
-                if not text and not words:
+                broken_text_layer = dataset_sources._looks_like_broken_cmap_text(text)
+                if broken_text_layer or (not text and not words):
                     try:
                         ocr_words = dataset_sources._ocr_page_words(relative, sha256, int(page_number),
                                                                      dataset_sources.settings.OCR_LANG)
                     except Exception:  # OCR unavailable is itself a reason not to trust a textless page.
-                        ocr_words = ()
+                        ocr_words = None
                     confidences = [float(word.get("confidence")) for word in ocr_words
-                                   if isinstance(word.get("confidence"), (int, float))]
+                                   if isinstance(word.get("confidence"), (int, float))] if ocr_words else []
                     mean_confidence = sum(confidences) / len(confidences) if confidences else 0.0
                     result["ocr_confidence"] = round(mean_confidence, 1)
                     if not confidences:
-                        reasons.append("NO_TEXT_LAYER_OCR_UNAVAILABLE")
+                        reasons.append("BROKEN_TEXT_LAYER_OCR_UNAVAILABLE" if broken_text_layer else "NO_TEXT_LAYER_OCR_UNAVAILABLE")
                     elif mean_confidence < 55.0:
-                        reasons.append("NO_TEXT_LAYER_LOW_OCR_CONFIDENCE")
+                        reasons.append("BROKEN_TEXT_LAYER_LOW_OCR_CONFIDENCE" if broken_text_layer else "NO_TEXT_LAYER_LOW_OCR_CONFIDENCE")
 
                 word_rects = [fitz.Rect(word[:4]) for word in words if len(word) >= 5 and str(word[4]).strip()]
                 for annotation in page.annots() or ():

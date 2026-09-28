@@ -325,6 +325,15 @@ def document_page_count_hint(document, default: int = 60) -> int:
         return default
 
 
+def _mark_ocr_page_low_quality(snapshot: dict, reason: str) -> None:
+    snapshot["cmap_corruption_suspected"] = True
+    snapshot["quality_status"] = "LOW_QUALITY"
+    snapshot["page_quality"] = "LOW_QUALITY"
+    reasons = set(snapshot.get("quality_reasons") or [])
+    reasons.add(reason)
+    snapshot["quality_reasons"] = sorted(reasons)
+
+
 def extract_original_pages(document, page_numbers) -> dict[int, dict]:
     ref = document_original_ref(document)
     pages = tuple(sorted({int(page) for page in page_numbers if page and int(page) > 0}))
@@ -333,8 +342,11 @@ def extract_original_pages(document, page_numbers) -> dict[int, dict]:
     relative, sha256 = ref
     snapshots = {row["page"]: row for row in _original_page_snapshots(relative, sha256, pages)}
     forced_ocr_budget = _MOJIBAKE_FORCED_OCR_MAX_PAGES_PER_CALL
-    for page_number, snapshot in list(snapshots.items()):
+    for page_number, snapshot in sorted(snapshots.items()):
         if forced_ocr_budget <= 0:
+            for skipped_page, skipped in sorted(snapshots.items()):
+                if skipped_page >= page_number and skipped.get("cmap_corrupted"):
+                    _mark_ocr_page_low_quality(skipped, "BROKEN_TEXT_LAYER_OCR_PAGE_BUDGET_EXCEEDED")
             break
         if not snapshot.get("cmap_corrupted"):
             continue
@@ -353,7 +365,7 @@ def extract_original_pages(document, page_numbers) -> dict[int, dict]:
                 logging.ERROR, "cmap_corruption_ocr_fallback_unavailable",
                 relative=relative, page=page_number,
             )
-            snapshot["cmap_corruption_suspected"] = True
+            _mark_ocr_page_low_quality(snapshot, "BROKEN_TEXT_LAYER_OCR_UNAVAILABLE")
     return snapshots
 
 
@@ -374,7 +386,8 @@ def _ocr_original_clip(relative: str, sha256: str, page_number: int, clip_values
         clip = fitz.Rect(clip_values) & page.rect
         if clip.is_empty:
             return ""
-        png = page.get_pixmap(matrix=fitz.Matrix(2, 2), clip=clip, alpha=False, annots=False).tobytes("png")
+        zoom = ocr_zoom_for_page_size(clip.width, clip.height)
+        png = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom), clip=clip, alpha=False, annots=False).tobytes("png")
     image = Image.open(BytesIO(png)).convert("L")
     image = image.point(lambda value: 0 if value < 190 else 255)
     prepared = BytesIO()
@@ -385,7 +398,7 @@ def _ocr_original_clip(relative: str, sha256: str, page_number: int, clip_values
             input=prepared.getvalue(),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            timeout=20,
+            timeout=_TESSERACT_EMERGENCY_TIMEOUT_SECONDS,
             check=False,
         )
     except (FileNotFoundError, subprocess.TimeoutExpired) as exc:
@@ -414,7 +427,7 @@ def _ocr_original_clip_via_tempfile(png: bytes, lang: str) -> str:
                 ["tesseract", str(image_path), str(output_base), "-l", lang, "--psm", "11"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.PIPE,
-                timeout=20,
+                timeout=_TESSERACT_EMERGENCY_TIMEOUT_SECONDS,
                 check=False,
             )
             output_path = output_base.with_suffix(".txt")
@@ -446,19 +459,28 @@ def ocr_original_clip(document, page_number: int, bbox_pdf, *, lang: str | None 
 
 
 _OCR_PAGE_ZOOM_MAX = 3.0
-_OCR_PAGE_ZOOM_MIN = 1.0
 _OCR_PAGE_MAX_PIXELS_SIDE = 3500.0
+_OCR_PAGE_MAX_PIXELS_AREA = _OCR_PAGE_MAX_PIXELS_SIDE * _OCR_PAGE_MAX_PIXELS_SIDE
+_TESSERACT_EMERGENCY_TIMEOUT_SECONDS = 600
 
 
 def ocr_zoom_for_page_size(width: float, height: float) -> float:
-    """Render zoom for full-page OCR, capped so an A0/A1 drawing sheet cannot
-    become a 40+ megapixel image (that made tesseract time out in practice)."""
-    longest_side = max(float(width), float(height), 1.0)
-    return max(_OCR_PAGE_ZOOM_MIN, min(_OCR_PAGE_ZOOM_MAX, _OCR_PAGE_MAX_PIXELS_SIDE / longest_side))
+    """Deterministic OCR zoom bounded by both raster side and total pixel area."""
+    width, height = max(float(width), 1.0), max(float(height), 1.0)
+    longest_side = max(width, height)
+    area = width * height
+    return max(
+        0.001,
+        min(
+            _OCR_PAGE_ZOOM_MAX,
+            _OCR_PAGE_MAX_PIXELS_SIDE / longest_side,
+            (_OCR_PAGE_MAX_PIXELS_AREA / area) ** 0.5,
+        ),
+    )
 
 
 @lru_cache(maxsize=128)
-def _ocr_page_words(relative: str, sha256: str, page_number: int, lang: str) -> tuple[dict, ...]:
+def _ocr_page_words(relative: str, sha256: str, page_number: int, lang: str) -> tuple[dict, ...] | None:
     """Full-page OCR fallback used only when the text layer has no match. Returns
     word boxes already converted to PDF point space (same frame as text-layer
     `page.get_text('words')`), never a guessed or synthetic bbox."""
@@ -481,6 +503,8 @@ def _ocr_page_words(relative: str, sha256: str, page_number: int, lang: str) -> 
         png = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom), alpha=False, annots=False).tobytes("png")
     image = Image.open(BytesIO(png)).convert("L")
     pixel_words = _ocr_words_pixel_space(image, lang)
+    if pixel_words is None:
+        return None
     words = []
     for word in pixel_words:
         px_left, px_top, px_right, px_bottom = word["bbox"]
@@ -497,7 +521,7 @@ def _ocr_page_words(relative: str, sha256: str, page_number: int, lang: str) -> 
     return tuple(words)
 
 
-def _ocr_words_pixel_space(image, lang: str) -> list[dict]:
+def _ocr_words_pixel_space(image, lang: str) -> list[dict] | None:
     """Dispatches to the configured OCR engine (`settings.OCR_ENGINE`), returning word
     boxes in the RAW PIXEL space of `image` -- `_ocr_page_words` alone knows the zoom
     factor needed to convert those into PDF points, so that conversion stays there and
@@ -518,8 +542,10 @@ def _ocr_words_pixel_space(image, lang: str) -> list[dict]:
     return _run_tesseract_words(image, lang)
 
 
-def _run_tesseract_words(image, lang: str) -> list[dict]:
+def _run_tesseract_words(image, lang: str) -> list[dict] | None:
     tsv_text = _run_tesseract_tsv(image, lang)
+    if tsv_text is None:
+        return None
     if not tsv_text:
         return []
     words = []
@@ -549,7 +575,7 @@ def _run_tesseract_words(image, lang: str) -> list[dict]:
     return words
 
 
-def _run_tesseract_tsv(image, lang: str) -> str:
+def _run_tesseract_tsv(image, lang: str) -> str | None:
     try:
         with tempfile.TemporaryDirectory(prefix="case10_ocr_page_") as tmp_dir:
             image_path = Path(tmp_dir) / "page.png"
@@ -559,7 +585,7 @@ def _run_tesseract_tsv(image, lang: str) -> str:
                 ["tesseract", str(image_path), str(output_base), "-l", lang, "--psm", "11", "tsv"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.PIPE,
-                timeout=60,
+                timeout=_TESSERACT_EMERGENCY_TIMEOUT_SECONDS,
                 check=False,
             )
             output_path = output_base.with_suffix(".tsv")
@@ -575,8 +601,8 @@ def _run_tesseract_tsv(image, lang: str) -> str:
     except (FileNotFoundError, subprocess.TimeoutExpired, OSError) as exc:
         ocr_tesseract_calls_total.labels(outcome=f"exception:{type(exc).__name__}").inc()
         _log_ocr_event(logging.WARNING, "ocr_page_tsv_invocation_failed", lang=lang, error=repr(exc))
-        return ""
-    return ""
+        return None
+    return None
 
 
 def ocr_page_snapshot(document, page_number: int, *, lang: str | None = None) -> dict | None:

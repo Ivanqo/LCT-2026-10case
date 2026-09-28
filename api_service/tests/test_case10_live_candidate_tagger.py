@@ -75,6 +75,17 @@ class DocumentStageAndDisciplineTests(unittest.TestCase):
 
 
 class ApplicableAnchorsTests(unittest.TestCase):
+    def setUp(self):
+        # These tests exercise the tagger's filtering and matching behavior.
+        # Keep the fixture independent of the production anchor vocabulary,
+        # which is allowed to grow as S1 adds evidence-backed variants.
+        loader = patch(
+            "app.domain.live_candidate_tagger.anchor_phrases",
+            side_effect=lambda code, parameter_name, stage=None: [parameter_name] if parameter_name else [],
+        )
+        loader.start()
+        self.addCleanup(loader.stop)
+
     def test_hint_less_param_applies_to_any_discipline(self):
         anchors = _build_param_anchors([_param("PZ-001", "Площадь застройки")])["RD"]
         self.assertEqual(len(_applicable_anchors(anchors, "АР")), 1)
@@ -105,6 +116,14 @@ class TagLiveCandidatesTests(unittest.TestCase):
         engine = create_engine("sqlite+pysqlite:///:memory:")
         Base.metadata.create_all(engine)
         self.db = sessionmaker(bind=engine)()
+        # The synthetic fixtures below specify their own parameter names and
+        # should not change when the production anchor vocabulary expands.
+        loader = patch(
+            "app.domain.live_candidate_tagger.anchor_phrases",
+            side_effect=lambda code, parameter_name, stage=None: [parameter_name] if parameter_name else [],
+        )
+        loader.start()
+        self.addCleanup(loader.stop)
 
     def tearDown(self):
         self.db.close()

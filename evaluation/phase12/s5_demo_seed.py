@@ -1,11 +1,11 @@
 """Phase 12 / S5: build a dedicated demo database for the inspector workbench (browser walkthrough, DEMO stream).
 
-Runs the REAL pipeline (`import_official_dataset` + `run_process`) for one official object into its own SQLite file,
-so the shared dev DB (`data/api.db`) and its admin credentials are never touched. No gold is imported
-(`include_gold=False`); organizer annotations are on by default (set A), `--live` switches them off (set B).
+Runs the REAL pipeline (`import_official_dataset` + `run_process`) for one explicitly selected object into its own
+SQLite file, so the shared dev DB (`data/api.db`) and its admin credentials are never touched. The importer reads
+document/file/page metadata only; it does not import organizer annotations or gold labels.
 
 Usage (repo root as CWD):
-    python evaluation/phase12/s5_demo_seed.py --data-dir data/s5_demo [--object TYU] [--live] [--workers 3]
+    python evaluation/phase12/s5_demo_seed.py --data-dir data/s5_demo [--object TYU] [--workers 3]
 Then start the API against the same data dir (see evaluation/phase12/S5_REPORT.md, "Как поднять демо").
 """
 from __future__ import annotations
@@ -31,7 +31,6 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", type=Path, required=True)
     parser.add_argument("--object", choices=sorted({**OFFICIAL, **NEW}), default="TYU")
-    parser.add_argument("--live", action="store_true", help="CASE10_DISABLE_ORGANIZER_ANNOTATIONS=1 (set B)")
     parser.add_argument("--workers", default="3")
     parser.add_argument("--admin-password", default=os.environ.get("DEFAULT_ADMIN_PASSWORD", "S5demo!2026"))
     args = parser.parse_args()
@@ -46,7 +45,6 @@ def main() -> None:
         "CASE10_LLM_VERIFIER_ENABLED": "0",
         "CASE10_LIVE_TAGGER_WORKERS": str(args.workers),
         "CASE10_LIVE_TAGGER_CACHE_DIR": os.environ.get("CASE10_LIVE_TAGGER_CACHE_DIR", str(BENCH_WORK / "tagger_cache")),
-        "CASE10_DISABLE_ORGANIZER_ANNOTATIONS": "1" if args.live else "0",
     })
     originals = (NEW_OBJECTS_ROOT / NEW[args.object]) if args.object in NEW else (BENCH_WORK / "public_docs" / args.object)
     if originals.is_dir():
@@ -62,7 +60,7 @@ def main() -> None:
     db = SessionLocal()
     admin = db.query(User).filter(User.login == os.environ["DEFAULT_ADMIN_LOGIN"]).one()
     org = db.get(Organization, int(admin.organization_id))
-    name = PROJECT_NAMES[args.object] + (" (живой режим)" if args.live else "")
+    name = PROJECT_NAMES[args.object]
     project = db.query(Project).filter(Project.organization_id == org.id, Project.name == name).first()
     if project is None:
         project = Project(name=name, description="S5 inspector workbench demo", organization_id=org.id)
@@ -72,7 +70,7 @@ def main() -> None:
     t0 = time.monotonic()
     if args.object in OFFICIAL:
         object_id = OFFICIAL[args.object]
-        summary = import_official_dataset(db, project_id=project.id, organization_id=org.id, object_ids=[object_id], include_gold=False)
+        summary = import_official_dataset(db, project_id=project.id, organization_id=org.id, object_ids=[object_id])
     else:  # SILVER new objects: our own manifest, no organizer annotations exist for them
         manifest = MANIFESTS / f"manifest_{args.object}.jsonl"
         object_id = json.loads(manifest.open(encoding="utf-8").readline())["object_id"]
@@ -90,7 +88,7 @@ def main() -> None:
         "documents": summary.get("document_manifest") or summary.get("files_index"),
         "originals_root": os.environ.get("CASE10_ORIGINALS_ROOT"),
     }
-    (data_dir / f"seed_{args.object}{'_live' if args.live else ''}.json").write_text(json.dumps(out, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+    (data_dir / f"seed_{args.object}.json").write_text(json.dumps(out, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
     print(json.dumps(out, ensure_ascii=False, default=str))
     db.close()
 

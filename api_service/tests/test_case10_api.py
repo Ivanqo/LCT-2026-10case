@@ -195,7 +195,12 @@ class Case10ApiTests(unittest.TestCase):
         groups = self.client.get(f"/api/case10/evidence-groups?project_id={self.project.id}&process_id={process_id}")
         self.assertEqual(groups.status_code, 200, groups.text)
         group_rows = groups.json()
-        candidate = next(row for row in group_rows if row["finding_status"] == "CANDIDATE")
+        candidate_summary = next(row for row in group_rows if row["finding_status"] == "CANDIDATE")
+        self.assertNotIn("fragments", candidate_summary)
+        groups_with_fragments = self.client.get(
+            f"/api/case10/evidence-groups?project_id={self.project.id}&process_id={process_id}&include_fragments=true"
+        )
+        candidate = next(row for row in groups_with_fragments.json() if row["id"] == candidate_summary["id"])
         self.assertTrue(candidate["expected"])
         self.assertTrue(candidate["actual"])
         self.assertTrue(candidate["fragments"])
@@ -526,7 +531,7 @@ class Case10ApiTests(unittest.TestCase):
                     raise AssertionError("Unexpected RAG export request")
                 return exported
 
-        with patch("app.api.routes_case10.RagClient", FakeRagClient):
+        with patch("app.clients.rag_client.RagClient", FakeRagClient):
             first = self.client.post(f"/api/case10/document-versions/{doc_version.id}/sync-source-fragments")
             second = self.client.post(f"/api/case10/document-versions/{doc_version.id}/sync-source-fragments")
 
@@ -584,7 +589,7 @@ class Case10ApiTests(unittest.TestCase):
                     raise AssertionError("Unexpected IFC export request")
                 return exported
 
-        with patch("app.api.routes_case10.IfcClient", FakeIfcClient):
+        with patch("app.clients.ifc_client.IfcClient", FakeIfcClient):
             first = self.client.post(f"/api/case10/document-versions/{doc_version.id}/sync-ifc-observations")
             second = self.client.post(f"/api/case10/document-versions/{doc_version.id}/sync-ifc-observations")
 

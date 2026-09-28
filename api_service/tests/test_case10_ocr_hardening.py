@@ -14,7 +14,7 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from app.domain import dataset_sources
+from app.domain import dataset_sources, official_evidence
 
 
 class NormalizePuaGlyphsTests(unittest.TestCase):
@@ -133,6 +133,8 @@ class ExtractOriginalPagesForcedOcrTests(unittest.TestCase):
         # Never silently dropped -- the original (garbled) text is still returned, but
         # flagged so a consumer can tell the difference from a page that was actually clean.
         self.assertTrue(pages[1].get("cmap_corruption_suspected"))
+        self.assertEqual(pages[1].get("quality_status"), "LOW_QUALITY")
+        self.assertIn("BROKEN_TEXT_LAYER_OCR_UNAVAILABLE", pages[1].get("quality_reasons", []))
         self.assertIn("(cid:", pages[1]["text"])
 
     def test_clean_page_never_triggers_an_ocr_call(self):
@@ -253,6 +255,56 @@ class TesseractObservabilityTests(unittest.TestCase):
         mocked_run.assert_called_once()
         mocked_tempfile.assert_called_once()
         self.assertEqual(result, "")
+
+    def test_full_page_timeout_uses_emergency_limit_and_returns_failure_sentinel(self):
+        from PIL import Image
+
+        image = Image.new("L", (40, 30), 255)
+        with patch("subprocess.run", side_effect=subprocess.TimeoutExpired("tesseract", 600)) as mocked_run, \
+                self.assertLogs(dataset_sources.logger, level="WARNING"):
+            result = dataset_sources._run_tesseract_tsv(image, "eng")
+        self.assertIsNone(result)
+        self.assertEqual(mocked_run.call_args.kwargs["timeout"], 600)
+
+
+class PageQualityOcrFailureTests(unittest.TestCase):
+    def test_broken_text_layer_with_unavailable_ocr_becomes_low_quality(self):
+        class FakePage:
+            rect = SimpleNamespace(width=600.0, height=800.0)
+            rotation = 0
+
+            def get_text(self, mode, sort=False):
+                return "garbled text" if mode == "text" else []
+
+            def annots(self):
+                return []
+
+        class FakePdf:
+            def __len__(self):
+                return 1
+
+            def __getitem__(self, index):
+                return FakePage()
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                return False
+
+        document = SimpleNamespace(
+            dataset_metadata={"document_manifest": {"relative_path": "case/broken.pdf"}},
+            file_hash="broken-sha", content_hash="broken-sha",
+        )
+        official_evidence._QUALITY_PAGE_CACHE.clear()
+        with patch.object(dataset_sources, "original_document_bytes", return_value=b"%PDF-fake"), \
+                patch("fitz.open", return_value=FakePdf()), \
+                patch.object(dataset_sources, "_looks_like_broken_cmap_text", return_value=True), \
+                patch.object(dataset_sources, "_ocr_page_words", return_value=None):
+            result = official_evidence._quality_for_page(document, 1)
+        self.assertEqual(result["quality_status"], "LOW_QUALITY")
+        self.assertIn("BROKEN_TEXT_LAYER_OCR_UNAVAILABLE", result["reasons"])
+        official_evidence._QUALITY_PAGE_CACHE.clear()
 
 
 class TesseractHealthCheckTests(unittest.TestCase):

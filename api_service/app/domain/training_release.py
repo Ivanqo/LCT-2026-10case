@@ -9,9 +9,6 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from ..db.models import GoldDraftItem, MLRetrainingLog
-from evaluation.fixtures import HIDDEN_OBJECT_IDS
-
-
 TRAINING_LABELS = {"CONFIRMED_VIOLATION", "NEGATIVE_VERIFIED"}
 FORBIDDEN_TRAINING_LABELS = {"CANDIDATE", "SUSPICION", "MISSING_EVIDENCE", "CLARIFICATION_REQUIRED", "NOT_COMPARABLE"}
 
@@ -43,7 +40,7 @@ def build_training_release(
         payload = row.payload_json if isinstance(row.payload_json, dict) else {}
         label = str(row.label or "")
         object_id = str(row.object_id or payload.get("object_id") or "")
-        if object_id in HIDDEN_OBJECT_IDS or str(payload.get("split") or "").upper() == "TEST_HIDDEN":
+        if str(payload.get("split") or "").upper() == "TEST_HIDDEN":
             excluded["hidden_or_organizer_only"] += 1
             continue
         if label in FORBIDDEN_TRAINING_LABELS or label not in TRAINING_LABELS:

@@ -120,8 +120,7 @@ def import_object(db, obj: str) -> str:
         _import_document_manifest(db, MANIFESTS / f"manifest_{obj}.jsonl", project_id=1, organization_id=1, object_ids={object_id})
     else:
         import_official_dataset(
-            db, project_id=1, organization_id=1, object_ids=[object_id], include_hidden=False, include_pages=False,
-            include_annotations=False, include_gold=False,
+            db, project_id=1, organization_id=1, object_ids=[object_id], include_pages=False,
         )
     db.flush()
     return object_id

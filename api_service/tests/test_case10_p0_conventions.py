@@ -1,4 +1,4 @@
-"""Phase 12 / P0: matrix 1.1 codes, GOLD 1.1 export fields, live mode (organizer annotations off), anchor vocabulary."""
+"""Phase 12 / P0: matrix 1.1 codes, export fields, runtime import boundary and anchor vocabulary."""
 from __future__ import annotations
 
 import json
@@ -17,11 +17,9 @@ for path in (REPO, REPO / "api_service"):
 
 from app.domain import anchor_vocab, matrix_v11  # noqa: E402
 from app.domain.official_dataset import (  # noqa: E402
-    ORGANIZER_ANNOTATIONS_ENV,
     _generated_matrix_v11,
     _live_index_row,
     _validate_matrix_v11,
-    organizer_annotations_disabled,
     stage_from_package_path,
 )
 from evaluation.exporter import evidence_group_to_submission_check, protocol_to_submission, validate_submission_schema  # noqa: E402
@@ -166,9 +164,14 @@ class Gold11ExportTest(unittest.TestCase):
                          json.dumps(protocol_to_submission(protocol), ensure_ascii=False, sort_keys=True))
 
     def test_submission_stays_valid_against_the_organizer_schema(self):
-        protocol = {"payload": {**CONTEXT, "findings": [_group(), _group(status="MISSING_EVIDENCE", fragments=[]), _group(code="FREE-HEATING-001")]}}
+        protocol = {"payload": {**CONTEXT, "completeness": {"overall_status": "COMPLETE"},
+                                "findings": [_group(), _group(status="MISSING_EVIDENCE", fragments=[]), _group(code="FREE-HEATING-001")]}}
         submission = protocol_to_submission(protocol, include_suspicions=True)
         self.assertEqual(validate_submission_schema(submission, SCHEMA), [])
+        self.assertEqual(submission["completeness"], {"overall_status": "COMPLETE"})
+        self.assertIn("quality_issues", submission)
+        self.assertTrue(all(code.startswith("M-") or code.startswith("FREE-") for code in
+                            (row["parameter_code"] for row in submission["checks"])))
         self.assertEqual(submission["export_conventions"]["input_manifest_hash"], "abc")
         broken = json.loads(json.dumps(submission))
         broken["checks"][0]["evidence"][0]["stage"] = "RD_ID_MIXED"
@@ -185,12 +188,7 @@ class Gold11ExportTest(unittest.TestCase):
             self.assertTrue(check["parameter_code"].startswith("M-") or check["matrix_code"] is None)
 
 
-class LiveModeTest(unittest.TestCase):
-    def test_flag(self):
-        for value, expected in (("1", True), ("true", True), ("0", False), ("", False)):
-            with mock.patch.dict(os.environ, {ORGANIZER_ANNOTATIONS_ENV: value}):
-                self.assertIs(organizer_annotations_disabled(), expected)
-
+class RuntimeDatasetImportTest(unittest.TestCase):
     def test_stage_comes_from_the_outermost_stage_folder(self):
         cases = {
             "Объект/Объект/Стадия П/Том 1.pdf": "PD",
@@ -220,7 +218,7 @@ class LiveModeTest(unittest.TestCase):
             self.assertNotIn(key, live)
         self.assertNotIn("stage", _live_index_row({"file_id": "F1", "stage": "PD", "matrix_codes": []}, with_stage=False))
 
-    def test_import_in_live_mode_has_no_organizer_annotations_sections_or_codes(self):
+    def test_official_import_never_loads_organizer_annotations_or_codes(self):
         from sqlalchemy import create_engine
         from sqlalchemy.orm import sessionmaker
 
@@ -230,28 +228,20 @@ class LiveModeTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             _write_toy_dataset(root)
-            results = {}
-            for flag in ("0", "1"):
-                find_dataset_paths.cache_clear()
-                engine = create_engine("sqlite+pysqlite:///:memory:")
-                Base.metadata.create_all(engine)
-                db = sessionmaker(bind=engine)()
-                with mock.patch.dict(os.environ, {ORGANIZER_ANNOTATIONS_ENV: flag}):
-                    summary = import_official_dataset(db, project_id=1, organization_id=1, object_ids=["OBJ-TOY"], include_gold=False, dataset_root=root)
-                docs = {doc.dataset_file_id: doc for doc in db.query(DocumentVersion).all()}
-                fragments = db.query(SourceFragment).all()
-                results[flag] = (summary, docs, fragments)
-                db.close()
             find_dataset_paths.cache_clear()
-        summary, docs, fragments = results["0"]
-        self.assertEqual(summary["organizer_annotations"], "ENABLED")
-        self.assertEqual(docs["T2"].dataset_section, "OV")
-        self.assertEqual(sum(f.source_system == "learning_annotation" for f in fragments), 1)
-        summary, docs, fragments = results["1"]
-        self.assertEqual(summary["organizer_annotations"], "DISABLED_LIVE_MODE")
+            engine = create_engine("sqlite+pysqlite:///:memory:")
+            Base.metadata.create_all(engine)
+            db = sessionmaker(bind=engine)()
+            summary = import_official_dataset(db, project_id=1, organization_id=1, object_ids=["OBJ-TOY"], dataset_root=root)
+            docs = {doc.dataset_file_id: doc for doc in db.query(DocumentVersion).all()}
+            fragments = db.query(SourceFragment).all()
+            db.close()
+            find_dataset_paths.cache_clear()
+        self.assertEqual(summary["organizer_annotations"], "NOT_IMPORTED")
+        self.assertFalse([f for f in fragments if f.source_system == "learning_annotation"])
+        self.assertIsNone(docs["T2"].dataset_section)
         self.assertEqual({fid: (doc.dataset_stage, doc.dataset_section) for fid, doc in docs.items()},
                          {"T1": ("PD", None), "T2": ("RD_ID_MIXED", None)})
-        self.assertFalse([f for f in fragments if f.source_system == "learning_annotation"])
         for doc in docs.values():
             for row in (doc.dataset_metadata or {}).values():
                 if isinstance(row, dict):

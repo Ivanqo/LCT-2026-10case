@@ -5,8 +5,8 @@ code (`--code-root <copy>`) and once against the working tree; `compare_runs.py`
 `submission.json` files check by check, so "rule-pack output is byte-identical" is an actual
 byte comparison and not a claim.
 
-Hidden-object labels are never loaded (`include_gold=False`, `allow_hidden_gold_labels=False`); a hidden object named
-in `--objects` runs as a BLIND measurement (documents/pages/tags only) and its output is never used to tune anything.
+Object selection belongs to this evaluation-only runner. The runtime importer accepts those IDs explicitly and
+never imports annotation or gold-label rows; a hidden object named in `--objects` runs as a blind measurement.
 
 Usage:
     python run_public_inprocess.py --out <dir> [--code-root <dir containing api_service/ and evaluation/>]
@@ -43,7 +43,8 @@ def main() -> None:
     from sqlalchemy.orm import sessionmaker
 
     from app.db.models import Base
-    from app.domain.official_dataset import HIDDEN_OBJECT_IDS, MATRIX_VERSION_OFFICIAL, PUBLIC_OBJECT_IDS, import_official_dataset
+    from app.domain.official_dataset import MATRIX_VERSION_OFFICIAL, import_official_dataset
+    from evaluation.fixtures import PUBLIC_OBJECT_IDS
     from app.domain.v3_pipeline import create_process, latest_protocol, protocol_to_dict, run_process
     from evaluation.exporter import protocol_to_submission
 
@@ -55,12 +56,9 @@ def main() -> None:
         Base.metadata.create_all(engine)
         db = sessionmaker(bind=engine)()
         started = time.monotonic()
-        # a hidden object is imported WITHOUT any label (blind measurement run, see smoke_hidden_blind.py): documents,
-        # pages and annotation tags only; `include_gold=False` and `allow_hidden_gold_labels=False` are both explicit
-        import_official_dataset(
-            db, project_id=1, organization_id=1, object_ids=[object_id], include_gold=False,
-            include_hidden=object_id in HIDDEN_OBJECT_IDS, allow_hidden_gold_labels=False,
-        )
+        # a hidden object is imported WITHOUT any label (blind measurement run, see smoke_hidden_blind.py): documents
+        # and pages only; the runtime importer has no annotation or gold-label import options.
+        import_official_dataset(db, project_id=1, organization_id=1, object_ids=[object_id])
         process = create_process(db, project_id=1, organization_id=1, object_id=object_id, matrix_version=MATRIX_VERSION_OFFICIAL)
         run_process(db, process_id=process.id)
         protocol = latest_protocol(db, project_id=1, organization_id=1, process_id=process.id)

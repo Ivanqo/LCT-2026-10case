@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import unittest
+import inspect
+from pathlib import Path
 from types import SimpleNamespace
 
 from app.db.models import SourceFragment
 from app.domain.official_evidence import inference_annotation
 from app.domain.official_dataset import (
     MATRIX_VERSION_OFFICIAL,
+    import_official_dataset,
     _approval_status_for_row,
     _load_matrix_v11,
     _review_priority_v11,
@@ -24,9 +27,36 @@ from app.domain.official_rule_packs import (
 from evaluation.exporter import protocol_to_submission, protocol_to_evaluation_predictions, validate_submission_schema
 from evaluation.fixtures import LeakageGuardError, leakage_decision, gold_checks_to_evaluation_fixture
 from evaluation.metrics import evaluate_case10
+from app.domain import official_dataset as official_dataset_module
+from app.domain import training_release as training_release_module
+from app.domain import v3_pipeline as v3_pipeline_module
+from app.api import routes_case10 as routes_case10_module
 
 
 class OfficialDataTests(unittest.TestCase):
+    def test_runtime_import_has_no_object_default_or_gold_label_path(self):
+        parameters = inspect.signature(import_official_dataset).parameters
+        self.assertIs(parameters["object_ids"].default, inspect.Parameter.empty)
+        self.assertNotIn("include_gold", parameters)
+        self.assertNotIn("allow_hidden_gold_labels", parameters)
+
+        runtime_sources = {
+            "official_dataset": Path(official_dataset_module.__file__).read_text(encoding="utf-8"),
+            "pipeline": Path(v3_pipeline_module.__file__).read_text(encoding="utf-8"),
+            "routes": Path(routes_case10_module.__file__).read_text(encoding="utf-8"),
+            "training": Path(training_release_module.__file__).read_text(encoding="utf-8"),
+        }
+        self.assertNotIn("PUBLIC_OBJECT_IDS", runtime_sources["official_dataset"])
+        self.assertNotIn("HIDDEN_OBJECT_IDS", runtime_sources["official_dataset"])
+        for label_path in ("public_gold_checks.jsonl", "all_gold_checks.jsonl"):
+            self.assertNotIn(label_path, runtime_sources["official_dataset"])
+        self.assertNotIn("GoldCheckFixture", runtime_sources["official_dataset"])
+        self.assertNotIn("GoldCheckFixture", runtime_sources["pipeline"])
+        self.assertNotIn("GoldCheckFixture", runtime_sources["routes"])
+        self.assertNotIn("/case10/gold-fixtures", runtime_sources["routes"])
+        self.assertNotIn("evaluation.fixtures", runtime_sources["training"])
+        self.assertNotIn("HIDDEN_OBJECT_IDS", runtime_sources["training"])
+
     @staticmethod
     def _snapshot(text):
         words = []

@@ -84,7 +84,7 @@ class WorkbenchTestBase(unittest.TestCase):
         resp = self.client.post(f"/api/case10/projects/{self.project.id}/synthetic-dataset")
         self.assertEqual(resp.status_code, 200, resp.text)
         self.process_id = resp.json()["process_id"]
-        groups = self.client.get(f"/api/case10/evidence-groups?project_id={self.project.id}&process_id={self.process_id}").json()
+        groups = self.client.get(f"/api/case10/evidence-groups?project_id={self.project.id}&process_id={self.process_id}&include_fragments=true").json()
         self.candidates = [g for g in groups if g["finding_status"] == "CANDIDATE" and g.get("fragments")]
         self.assertGreaterEqual(len(self.candidates), 2)
         return self.candidates[0]
@@ -163,6 +163,47 @@ class EvidenceVersioningTests(WorkbenchTestBase):
         actions = [row.action for row in self.db.query(AuditLog).filter(AuditLog.process_id == self.process_id).all()]
         for action in ("EVIDENCE_FRAGMENT_REFINED", "EVIDENCE_FRAGMENT_REMOVED", "EVIDENCE_FRAGMENT_RESTORED"):
             self.assertIn(action, actions)
+
+    def test_inspector_fragment_edit_is_in_protocol_and_submission_export(self):
+        group = self.seed()
+        fragment = group["fragments"][0]
+        original_page = fragment["page"]
+        edited_page = 2 if original_page != 2 else 1
+        self.attach_pdf(fragment["document_version_id"])
+        dataset_file_id = f"S5-TEST-{fragment['document_version_id']}"
+        self.db.get(DocumentVersion, fragment["document_version_id"]).dataset_file_id = dataset_file_id
+        self.db.get(EvidenceFragment, fragment["id"]).dataset_file_id = dataset_file_id
+        self.db.commit()
+        fragment["file_id"] = dataset_file_id
+
+        refined = self.post(
+            f"/api/case10/evidence-groups/{group['id']}/fragments/machine:{fragment['id']}/refine",
+            {"page": edited_page, "reason": "исправлена страница доказательства"},
+        )
+        self.assertEqual(refined.status_code, 200, refined.text)
+        response_group = self.client.get(f"/api/case10/evidence-groups/{group['id']}").json()
+        inspector_item = next(row for row in response_group["inspector_evidence"] if row["fragment_id"] == fragment["id"])
+        self.assertEqual(inspector_item["current"]["page"], edited_page)
+        self.assertEqual(response_group["fragments"][0]["page"], original_page)  # machine row stays immutable
+
+        decision = self.post(f"/api/case10/evidence-groups/{group['id']}/decisions", {"decision": "Confirm", "comment": "проверено"})
+        self.assertEqual(decision.status_code, 200, decision.text)
+        protocol = self.client.get(
+            f"/api/case10/protocols/current?project_id={self.project.id}&process_id={self.process_id}"
+        ).json()
+        protocol_group = next(row for row in protocol["payload"]["findings"] if row["id"] == group["id"])
+        self.assertEqual(
+            next(row for row in protocol_group["inspector_evidence"] if row["fragment_id"] == fragment["id"])["current"]["page"],
+            edited_page,
+        )
+
+        from evaluation.exporter import protocol_to_submission
+
+        one_group_protocol = {**protocol, "payload": {**protocol["payload"], "findings": [protocol_group]}}
+        check = protocol_to_submission(one_group_protocol)["checks"][0]
+        self.assertTrue(check["evidence"], f"submission lost effective evidence: {protocol_group!r}")
+        citation = next(row for row in check["evidence"] if row["file_id"] == fragment["file_id"])
+        self.assertEqual(citation["pdf_page_number"], edited_page)
 
     def test_add_fragment_with_bbox_on_real_pdf_computes_bbox_pdf_in_visible_frame(self):
         group = self.seed()

@@ -5,7 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 from app.domain import matrix_v11
-from .fixtures import LeakageGuardError
+from .errors import LeakageGuardError
 
 
 SUBMISSION_VIOLATION_LABELS = {"VIOLATION_PRESENT", "NO_VIOLATION", "MISSING_DOCUMENT", "COMPARISON_IMPOSSIBLE"}
@@ -52,7 +52,7 @@ def protocol_to_evaluation_predictions(protocol: dict[str, Any]) -> dict[str, An
         _guard_prediction(group)
         if str((group.get("delta") or {}).get("matrix_scope") or "MATRIX").upper() != "MATRIX":
             continue
-        prediction = evidence_group_to_prediction(group)
+        prediction = evidence_group_to_prediction(_with_inspector_evidence(group))
         out_findings.append(prediction["finding"])
         out_evidence.extend(prediction["evidence"])
         out_document_links.extend(prediction["document_links"])
@@ -72,6 +72,9 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
     object_id = payload.get("object_id") or protocol.get("object_id")
     context = {"object_id": object_id}
     context.update({key: payload.get(key) or protocol.get(key) for key in VERSION_CONTEXT_KEYS})
+    completeness = payload.get("completeness")
+    if not isinstance(completeness, dict):
+        completeness = {}
     style = code_style or matrix_v11.export_code_style()
     checks: list[dict[str, Any]] = []
     quality_issues: dict[tuple[str, str, int], dict[str, Any]] = {}
@@ -120,13 +123,15 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
                 }
         if str(delta.get("matrix_scope") or "MATRIX").upper() != "MATRIX" and not include_suspicions:
             continue
-        item = evidence_group_to_submission_check(_canonical_evidence(group, duplicate_of, dropped_files), context=context, code_style=style)
+        effective_group = _with_inspector_evidence(group)
+        item = evidence_group_to_submission_check(_canonical_evidence(effective_group, duplicate_of, dropped_files), context=context, code_style=style)
         if item.get("parameter_code"):
             checks.append(item)
     return {
         "object_id": object_id,
         "checks": checks,
         "quality_issues": [quality_issues[key] for key in sorted(quality_issues)],
+        "completeness": completeness,
         "source_selection": [source_selection[key] for key in sorted(source_selection)],
         # extra top-level key (the schema allows it): how to read the GOLD 1.1 fields of every check
         "export_conventions": {
@@ -150,6 +155,51 @@ def _integrity_maps(payload: dict[str, Any]) -> tuple[dict[str, str], set[str]]:
     }
     dropped = {str(item["file_id"]) for item in excluded if item.get("reason") != "EXACT_DUPLICATE_WITHIN_STAGE" and item.get("file_id")}
     return duplicate_of, dropped
+
+
+def _with_inspector_evidence(group: dict[str, Any]) -> dict[str, Any]:
+    """Apply versioned inspector edits to a protocol snapshot before producing citations.
+
+    The stored ``fragments`` remain the immutable machine output. Edited machine rows replace their
+    matching row, removed rows are omitted, and active inspector-added rows are appended.
+    """
+    edits = group.get("inspector_evidence")
+    if not isinstance(edits, list) or not edits:
+        return group
+    by_fragment_id = {
+        str(item.get("fragment_id")): item
+        for item in edits
+        if isinstance(item, dict) and item.get("fragment_id") is not None
+    }
+    fragments: list[dict[str, Any]] = []
+    for fragment in group.get("fragments") or []:
+        if not isinstance(fragment, dict):
+            fragments.append(fragment)
+            continue
+        edit = by_fragment_id.get(str(fragment.get("id")))
+        if edit is None:
+            fragments.append(fragment)
+            continue
+        if edit.get("status") != "ACTIVE":
+            continue
+        current = edit.get("current") if isinstance(edit.get("current"), dict) else {}
+        fragments.append({
+            **fragment,
+            **current,
+            "id": fragment.get("id"),
+            "bbox": current.get("bbox_norm", fragment.get("bbox")),
+            "bbox_normalized": current.get("bbox_norm", fragment.get("bbox_normalized")),
+        })
+    for edit in edits:
+        if not isinstance(edit, dict) or edit.get("origin") != "INSPECTOR" or edit.get("status") != "ACTIVE":
+            continue
+        current = edit.get("current") if isinstance(edit.get("current"), dict) else {}
+        fragments.append({
+            **current,
+            "bbox": current.get("bbox_norm"),
+            "bbox_normalized": current.get("bbox_norm"),
+        })
+    return {**group, "fragments": fragments}
 
 
 def _canonical_evidence(group: dict[str, Any], duplicate_of: dict[str, str], dropped: set[str]) -> dict[str, Any]:

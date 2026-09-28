@@ -1,10 +1,8 @@
 """Phase 12 / P0: run the REAL pipeline (`run_process`) per object and export the 1.1 submission, for grader_sim.
 
 One fresh interpreter per object (environment per object, no state leaking between objects), in-process sqlite,
-LLM verifier OFF, no gold imported. Modes:
-  organizer  official objects with the organizer's annotations/index labels (set A)
-  live       official objects with CASE10_DISABLE_ORGANIZER_ANNOTATIONS=1 (set B)
-  new        the six SILVER objects from our own manifests (no organizer annotations exist for them)
+LLM verifier OFF, no gold or organizer annotations imported. The former `organizer` and `live` modes both run blind
+after the runtime importer was hardened; their output is not comparable to historical set A/B.
 
 Usage (repo root as CWD, so dataset roots are discovered):
     python evaluation/phase12/run_baseline.py --mode organizer --out <dir> [--code-root <frozen tree>] [OBJ ...]
@@ -38,7 +36,7 @@ def child(obj: str, mode: str, out: Path) -> None:
     from sqlalchemy.orm import sessionmaker
 
     from app.db.models import Base
-    from app.domain.official_dataset import HIDDEN_OBJECT_IDS, _import_document_manifest, import_official_dataset
+    from app.domain.official_dataset import _import_document_manifest, import_official_dataset
     from app.domain.v3_pipeline import MATRIX_VERSION_OFFICIAL, create_process, latest_protocol, protocol_to_dict, run_process
     import app.domain.live_tagger_scan as scan
     from evaluation.exporter import protocol_to_submission
@@ -49,8 +47,7 @@ def child(obj: str, mode: str, out: Path) -> None:
     t0 = time.monotonic()
     if obj in OFFICIAL:
         object_id = OFFICIAL[obj]
-        import_summary = import_official_dataset(db, project_id=1, organization_id=1, object_ids=[object_id], include_gold=False,
-                                                 include_hidden=object_id in HIDDEN_OBJECT_IDS, allow_hidden_gold_labels=False)
+        import_summary = import_official_dataset(db, project_id=1, organization_id=1, object_ids=[object_id])
         import_summary = {k: import_summary.get(k) for k in ("organizer_annotations", "files_index", "page_index", "annotations", "document_manifest")}
     else:
         manifest = MANIFESTS / f"manifest_{obj}.jsonl"
@@ -76,7 +73,7 @@ def child(obj: str, mode: str, out: Path) -> None:
         "submission_sha256": hashlib.sha256(data).hexdigest(),
         "scan_code_fingerprint": scan.scan_code_fingerprint(),
         "live_tagger_coverage": (protocol["payload"].get("live_tagger_coverage") or {}).get("summary"),
-        "env": {key: os.environ.get(key) for key in ("CASE10_DISABLE_ORGANIZER_ANNOTATIONS", "CASE10_LIVE_TAGGER_WORKERS",
+        "env": {key: os.environ.get(key) for key in ("CASE10_LIVE_TAGGER_WORKERS",
                                                       "CASE10_PARAMETER_CODE_STYLE", "CASE10_LLM_VERIFIER_ENABLED")},
     }
     (out / f"{obj}.run.json").write_text(json.dumps(summary, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
@@ -105,7 +102,6 @@ def main() -> None:
             "HF_HUB_OFFLINE": "1", "CASE10_LLM_VERIFIER_ENABLED": "0", "PYTHONIOENCODING": "utf-8",
             "CASE10_LIVE_TAGGER_WORKERS": str(args.workers),
             "CASE10_LIVE_TAGGER_CACHE_DIR": env.get("CASE10_LIVE_TAGGER_CACHE_DIR", str(BENCH_WORK / "tagger_cache")),
-            "CASE10_DISABLE_ORGANIZER_ANNOTATIONS": "1" if args.mode == "live" else "0",
         })
         env.pop("CASE10_ORIGINALS_ROOT", None)
         if obj in NEW:

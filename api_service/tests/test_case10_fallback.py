@@ -166,6 +166,12 @@ class OcrZoomTests(unittest.TestCase):
         zoom = ocr_zoom_for_page_size(0.0, 0.0)
         self.assertGreaterEqual(zoom, 1.0)
 
+    def test_extreme_page_is_capped_by_deterministic_raster_area(self):
+        width, height = 20000.0, 12000.0
+        zoom = ocr_zoom_for_page_size(width, height)
+        self.assertLessEqual(width * height * zoom * zoom, 3500.0 * 3500.0 + 1e-6)
+        self.assertLessEqual(max(width, height) * zoom, 3500.0 + 1e-6)
+
 
 class MultiFragmentEvidenceTests(unittest.TestCase):
     """Multiple pages independently confirming the same value must all survive

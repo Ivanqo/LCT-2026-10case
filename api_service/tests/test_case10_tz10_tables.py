@@ -132,13 +132,12 @@ class Case10Tz10TablesTests(unittest.TestCase):
         self.assertIsNotNone(row.evidence_decision_id)
         self.assertEqual(row.project_id, self.project.id)
 
-    def test_rejection_log_falls_back_to_reason_code_when_comment_is_blank(self):
+    def test_reject_requires_comment_even_when_reason_code_is_present(self):
         _, by_status = self._seed_process()
         candidate = by_status["CANDIDATE"][0]
         response = self._decide(candidate["id"], "Reject", reason_code="NORM_NOT_APPLICABLE")
-        self.assertEqual(response.status_code, 200, response.text)
-        row = self.db.query(RejectionLog).filter_by(evidence_group_id=candidate["id"]).one()
-        self.assertEqual(row.rejection_reason, "NORM_NOT_APPLICABLE")
+        self.assertEqual(response.status_code, 422, response.text)
+        self.assertEqual(self.db.query(RejectionLog).filter_by(evidence_group_id=candidate["id"]).count(), 0)
 
     def test_confirming_a_finding_does_not_write_a_rejection_log(self):
         _, by_status = self._seed_process()

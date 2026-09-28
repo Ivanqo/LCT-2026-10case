@@ -58,7 +58,8 @@ RUN pip install -r requirements.txt
 # into the HF cache layout `sentence-transformers` reads at runtime, so the running
 # container never depends on huggingface.co. Before any code COPY, so a code change does
 # not re-download the model.
-RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')"
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')" \
+    && if [ -d /root/.cache/huggingface/xet/logs ]; then find /root/.cache/huggingface/xet/logs -type f -name '*.log' -delete; fi
 
 # Model is already cached in the image -- forbid any network call to huggingface.co at
 # runtime rather than merely avoiding one.
@@ -100,7 +101,7 @@ RUN pip install paddlepaddle==3.3.1 \
 COPY api_service/app ./app
 COPY api_service/alembic ./alembic
 COPY api_service/alembic.ini ./alembic.ini
-COPY evaluation/__init__.py evaluation/metrics.py evaluation/exporter.py evaluation/fixtures.py \
+COPY evaluation/__init__.py evaluation/metrics.py evaluation/exporter.py evaluation/errors.py \
      evaluation/candidate_coverage.py ./evaluation/
 
 # Pre-bake the PaddleOCR det+rec models and prove the CPU inference path runs (a broken
@@ -122,7 +123,7 @@ COPY api_service/alembic ./alembic
 COPY api_service/alembic.ini ./alembic.ini
 # Only the runtime part of `evaluation/` (the submission exporter and what it imports): the rest of that folder is
 # measurement code, internal reports and labels, which do not belong in the delivered image.
-COPY evaluation/__init__.py evaluation/metrics.py evaluation/exporter.py evaluation/fixtures.py \
+COPY evaluation/__init__.py evaluation/metrics.py evaluation/exporter.py evaluation/errors.py \
      evaluation/candidate_coverage.py ./evaluation/
 
 # Offline profile (app/config.py): legacy chat/RAG routers are not mounted, RAG/IFC/Qwen clients refuse to connect.
@@ -134,6 +135,12 @@ ENV CASE10_OFFLINE_DELIVERY=1 \
     CASE10_DATASET_ROOT=/app/app/reference_data/case_data \
     CASE10_BATCH_PACKAGES_ROOT=/data/packages \
     CASE10_ORIGINALS_ROOT=/data/packages \
+    CASE10_PARAMETER_CODE_STYLE=matrix11 \
+    CASE10_LIVE_TAGGER_CACHE_DIR=/data/live_tagger_cache \
+    CASE10_EXPLICATION_COMPARE=0 \
+    CASE10_ROOM_DRAWING_COMPARE_ENABLED=0 \
+    CASE10_EXPLICATION_CACHE_DIR=/data/live_tagger_cache/explication \
+    CASE10_LLM_VERIFIER_ENABLED=0 \
     API_DATA_DIR=/data \
     API_LOG_DIR=/logs \
     RABBITMQ_URL= \

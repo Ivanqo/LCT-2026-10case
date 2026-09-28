@@ -755,7 +755,7 @@ def workbench_summary(db: Session, process: InspectionProcess) -> dict[str, Any]
 def workbench_group(db: Session, group: EvidenceGroup) -> dict[str, Any]:
     """Everything the single candidate window shows: the §14 card, the ПД/РД/ИД panels (effective evidence with
     page-normalized boxes), the decision and edit history."""
-    base = evidence_group_to_dict(db, group, include_fragments=True)
+    base = evidence_group_to_dict(db, group, include_fragments=True, include_inspector_evidence=False)
     check = evidence_group_to_submission_check(base)
     param = group.param
     delta = group.delta if isinstance(group.delta, dict) else {}

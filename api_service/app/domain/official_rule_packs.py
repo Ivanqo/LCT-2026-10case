@@ -1116,8 +1116,9 @@ def _ventilation_value(code: str, normalized: str) -> str:
 
 def _extract_absolute_zero(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
     text = str(snapshot.get("text") or "")
-    if not _rule_anchor_present("PZ-009", text):
-        return []
+    # The extraction patterns below are the semantic anchor for this value;
+    # unlike a literal vocabulary check, they accept normal Russian case
+    # inflections such as "абсолютной отметке".
     patterns = (
         r"(?:относительн\w*\s+отметк\w*|отметк\w*\s+нуля).{0,120}?(?:абсолютн\w*\s+отметк\w*|абс\.?\s*отм\.?)[^0-9+]{0,30}\+?(?P<value>\d{3}[.,]\d{2,3})",
         r"(?:абсолютн\w*\s+отметк\w*|абс\.?\s*отм\.?)[^0-9+]{0,30}\+?(?P<value>\d{3}[.,]\d{2,3})",

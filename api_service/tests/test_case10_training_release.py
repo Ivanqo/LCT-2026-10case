@@ -76,7 +76,7 @@ class Case10TrainingReleaseTests(unittest.TestCase):
         self._draft("CONFIRMED_VIOLATION", "OBJ-TRAIN-A", "KR-055")
         self._draft("NEGATIVE_VERIFIED", "OBJ-TRAIN-B", "KR-058")
         self._draft("CANDIDATE", "OBJ-TRAIN-C", "PZ-009")
-        self._draft("CONFIRMED_VIOLATION", "OBJ-RECHNIKOV-7-7", "SPZU-027")
+        self._draft("CONFIRMED_VIOLATION", "OBJ-TRAIN-HIDDEN", "SPZU-027", split="TEST_HIDDEN")
 
         result = build_training_release(
             self.db,
@@ -178,7 +178,7 @@ class Case10TrainingReleaseTests(unittest.TestCase):
         self.assertNotIn("OBJ-NOVOSLOBODSKAYA", inspect.getsource(official_rule_packs))
         self.assertNotIn("OBJ-RECHNIKOV", inspect.getsource(official_rule_packs))
 
-    def _draft(self, label: str, object_id: str, code: str) -> None:
+    def _draft(self, label: str, object_id: str, code: str, *, split: str | None = None) -> None:
         group = EvidenceGroup(
             process_id=self.process.id,
             project_id=self.project.id,
@@ -220,6 +220,8 @@ class Case10TrainingReleaseTests(unittest.TestCase):
                 {"file_id": "F1", "stage": "project", "page": 1, "bbox_normalized": [0.1, 0.1, 0.2, 0.2], "role": "expected"}
             ],
         }
+        if split:
+            payload["split"] = split
         self.db.add(
             GoldDraftItem(
                 evidence_group_id=group.id,

@@ -26,7 +26,6 @@ from ..db.models import (
     EvidenceDecision,
     EvidenceFragment,
     EvidenceGroup,
-    GoldCheckFixture,
     GoldDraftItem,
     InspectionProcess,
     MatrixVersion,
@@ -739,8 +738,8 @@ def record_inspector_decision(
     if process.status == PROCESS_FINALIZED:
         raise HTTPException(status_code=409, detail="Finalized protocol cannot be changed")
     validate_finding_transition(str(group.finding_status), DECISION_TO_STATUS[decision_label])
-    if decision_label == "Reject" and not (str(reason_code or "").strip() or str(comment or "").strip()):
-        raise HTTPException(status_code=422, detail="Reject requires a reason or comment")
+    if decision_label == "Reject" and not str(comment or "").strip():
+        raise HTTPException(status_code=422, detail="Reject requires a comment")
     if decision_label == "Reject" and not str(reason_code or "").strip():
         reason_code = "OTHER"
 
@@ -1087,7 +1086,13 @@ def _job_to_dict(job: Case10ProcessJob | None) -> dict[str, Any] | None:
     }
 
 
-def evidence_group_to_dict(db: Session, group: EvidenceGroup, *, include_fragments: bool = True) -> dict[str, Any]:
+def evidence_group_to_dict(
+    db: Session,
+    group: EvidenceGroup,
+    *,
+    include_fragments: bool = True,
+    include_inspector_evidence: bool = True,
+) -> dict[str, Any]:
     param = group.param or (db.get(Param, int(group.param_id)) if group.param_id else None)
     entity = group.canonical_entity or (db.get(CanonicalEntity, str(group.canonical_entity_id)) if group.canonical_entity_id else None)
     decisions = sorted(group.decisions, key=lambda row: row.id)
@@ -1139,13 +1144,42 @@ def evidence_group_to_dict(db: Session, group: EvidenceGroup, *, include_fragmen
                        "comment": row.comment, "user_id": row.user_id, "created_at": row.created_at} for row in decisions],
     }
     if include_fragments:
-        fragments = (
-            db.query(EvidenceFragment)
-            .filter(EvidenceFragment.evidence_group_id == int(group.id))
-            .order_by(EvidenceFragment.role.asc(), EvidenceFragment.id.asc())
-            .all()
-        )
+        if "fragments" in group.__dict__:
+            fragments = sorted(group.fragments, key=lambda row: (str(row.role or ""), int(row.id)))
+        else:
+            fragments = (
+                db.query(EvidenceFragment)
+                .filter(EvidenceFragment.evidence_group_id == int(group.id))
+                .order_by(EvidenceFragment.role.asc(), EvidenceFragment.id.asc())
+                .all()
+            )
         payload["fragments"] = [evidence_fragment_to_dict(fragment) for fragment in fragments]
+        if include_inspector_evidence:
+            # Keep the immutable machine rows for UI compatibility, while carrying the inspector's
+            # effective versions in protocol snapshots and exports.
+            from .inspector_workbench import effective_fragments
+
+            inspector_evidence = []
+            for item in effective_fragments(db, group, with_view=False):
+                if not item["edited"] and item["origin"] != "INSPECTOR":
+                    continue
+                current = dict(item["current"])
+                current["bbox"] = current.get("bbox_norm")
+                current["bbox_normalized"] = current.get("bbox_norm")
+                current["coordinate_space"] = "SOURCE_PAGE"
+                inspector_evidence.append({
+                    "key": item["key"],
+                    "origin": item["origin"],
+                    "status": item["status"],
+                    "version": item["version"],
+                    "edited": item["edited"],
+                    "fragment_id": item["fragment_id"],
+                    "current": current,
+                    "machine": item["machine"],
+                    "last_edit": item["last_edit"],
+                })
+            if inspector_evidence:
+                payload["inspector_evidence"] = inspector_evidence
     payload["protocol_status"] = evidence_group_to_submission_check(payload)["protocol_status"]
     return payload
 
@@ -1592,269 +1626,6 @@ def _delete_existing_gold_fixture_groups(db: Session, process: InspectionProcess
             continue
         db.delete(group)
     db.flush()
-
-
-def _create_gold_fixture_groups(
-    db: Session,
-    process: InspectionProcess,
-    params_by_code: dict[str, Param],
-    *,
-    target_codes: set[str],
-) -> list[EvidenceGroup]:
-    fixtures = _gold_fixtures_for_process(db, process)
-    created: list[EvidenceGroup] = []
-    for fixture in fixtures:
-        parameter_code = str(fixture.parameter_code or "")
-        if target_codes and parameter_code not in target_codes:
-            continue
-        if str(fixture.matrix_scope or "").upper() == "MATRIX" and parameter_code not in params_by_code:
-            continue
-        payload = fixture.payload_json if isinstance(fixture.payload_json, dict) else {}
-        entity = _ensure_gold_fixture_entity(db, process, fixture)
-        param = params_by_code.get(parameter_code)
-        finding_status = _fixture_finding_status(fixture)
-        expected_value = payload.get("pd_value") or payload.get("rd_value")
-        actual_value = payload.get("rd_value") or payload.get("id_value")
-        group = EvidenceGroup(
-            process_id=str(process.id),
-            project_id=int(process.project_id),
-            organization_id=int(process.organization_id),
-            object_id=process.object_id,
-            canonical_entity_id=entity.id,
-            param_id=int(param.id) if param else None,
-            matrix_version=str(process.matrix_version or MATRIX_VERSION_OFFICIAL),
-            model_version=str(process.model_version or MODEL_VERSION_RULES),
-            dataset_version=str(process.dataset_version or DATASET_VERSION_OFFICIAL),
-            comparison_scenario=str(process.upload_scenario or "SINGLE_ONLY"),
-            completeness_status=str(payload.get("document_status") or "COMPLETE"),
-            comparability_status="COMPARABLE" if finding_status in {STATUS_CANDIDATE, STATUS_NEGATIVE_VERIFIED, STATUS_SUSPICION} else "NOT_COMPARABLE",
-            finding_status=finding_status,
-            expected_value=str(expected_value) if expected_value is not None else None,
-            actual_value=str(actual_value) if actual_value is not None else None,
-            delta={
-                "source": "gold_fixture",
-                "source_dataset": fixture.source_dataset,
-                "check_id": fixture.check_id,
-                "finding_group_id": fixture.finding_group_id,
-                "parameter_code": parameter_code,
-                "matrix_scope": fixture.matrix_scope,
-                "location_type": fixture.location_type,
-                "location": fixture.location,
-                "violation_label": fixture.violation_label,
-                "protocol_status": fixture.protocol_status,
-                "comparison_result": payload.get("comparison_result"),
-                "review_note": payload.get("review_note"),
-                "equal": str(fixture.violation_label or "").upper() == "NO_VIOLATION",
-            },
-            review_priority=_priority(param.review_priority if param else _priority_from_protocol_status(fixture.protocol_status)),
-            confidence=0.95 if str(fixture.gold_status or "").upper() == "FINAL_GOLD_EXISTENCE" else 0.75,
-        )
-        db.add(group)
-        db.flush()
-        _add_fixture_fragments(db, group, fixture)
-        created.append(group)
-    db.flush()
-    return created
-
-
-def _gold_fixtures_for_process(db: Session, process: InspectionProcess) -> list[GoldCheckFixture]:
-    rows = (
-        db.query(GoldCheckFixture)
-        .filter(
-            GoldCheckFixture.project_id == int(process.project_id),
-            GoldCheckFixture.organization_id == int(process.organization_id),
-            GoldCheckFixture.object_id == str(process.object_id or ""),
-            GoldCheckFixture.evaluation_allowed == True,  # noqa: E712
-        )
-        .order_by(GoldCheckFixture.source_dataset.asc(), GoldCheckFixture.check_id.asc())
-        .all()
-    )
-    preferred: dict[str, GoldCheckFixture] = {}
-    for row in rows:
-        existing = preferred.get(str(row.check_id))
-        if existing is None or existing.source_dataset != "public_gold":
-            preferred[str(row.check_id)] = row
-    return [preferred[key] for key in sorted(preferred)]
-
-
-def _ensure_gold_fixture_entity(db: Session, process: InspectionProcess, fixture: GoldCheckFixture) -> CanonicalEntity:
-    entity_id = _fixture_entity_id(fixture)
-    existing = db.get(CanonicalEntity, entity_id)
-    if existing:
-        return existing
-    location_type = str(fixture.location_type or "location").lower()
-    location = str(fixture.location or fixture.check_id)
-    entity = CanonicalEntity(
-        id=entity_id,
-        project_id=int(process.project_id),
-        organization_id=int(process.organization_id),
-        entity_type=location_type,
-        canonical_name=f"{fixture.object_id} {fixture.parameter_code} {location_type} {location}",
-        status="active",
-    )
-    db.add(entity)
-    db.flush()
-    alias = EntityAlias(
-        canonical_entity_id=entity.id,
-        alias=location,
-        normalized_alias=_normalize_compare_text(location),
-        alias_type=location_type,
-        confidence=1.0,
-        source="gold_fixture",
-    )
-    db.add(alias)
-    db.flush()
-    return entity
-
-
-def _fixture_entity_id(fixture: GoldCheckFixture) -> str:
-    base = f"{fixture.object_id}-{fixture.check_id}"
-    if len(base) <= 64:
-        return base
-    digest = hashlib.sha1(base.encode("utf-8")).hexdigest()[:12]
-    return f"{str(fixture.object_id)[:45]}-{digest}"
-
-
-def _fixture_finding_status(fixture: GoldCheckFixture) -> str:
-    scope = str(fixture.matrix_scope or "").upper()
-    label = str(fixture.violation_label or "").upper()
-    if scope != "MATRIX":
-        return STATUS_SUSPICION
-    if label == "VIOLATION_PRESENT":
-        return STATUS_CANDIDATE
-    if label == "NO_VIOLATION":
-        return STATUS_NEGATIVE_VERIFIED
-    if label == "MISSING_DOCUMENT":
-        return STATUS_MISSING_EVIDENCE
-    return STATUS_NOT_COMPARABLE
-
-
-def _priority_from_protocol_status(protocol_status: object) -> str:
-    status = str(protocol_status or "").upper()
-    if status == "CRITICAL":
-        return "HIGH"
-    if status in {"WARNING", "COMPARISON_IMPOSSIBLE"}:
-        return "MEDIUM"
-    return "LOW"
-
-
-def _add_fixture_fragments(db: Session, group: EvidenceGroup, fixture: GoldCheckFixture) -> None:
-    payload = fixture.payload_json if isinstance(fixture.payload_json, dict) else {}
-    evidence_rows = fixture.evidence_json if isinstance(fixture.evidence_json, list) else []
-    for index, evidence in enumerate(evidence_rows):
-        if not isinstance(evidence, dict):
-            continue
-        doc = _document_for_fixture_evidence(db, group, evidence)
-        if not doc:
-            continue
-        source_fragment = _best_source_fragment_for_fixture(db, doc, fixture, evidence)
-        stage = _stage_from_fixture_evidence(evidence, doc)
-        value = _value_for_fixture_stage(payload, evidence.get("stage"))
-        bbox = source_fragment.bbox if source_fragment and source_fragment.bbox else [0.0, 0.0, 1.0, 1.0]
-        fragment = EvidenceFragment(
-            evidence_group_id=int(group.id),
-            document_version_id=int(doc.id),
-            source_fragment_id=int(source_fragment.id) if source_fragment else None,
-            file_sha256=doc.file_hash or doc.content_hash,
-            dataset_file_id=getattr(doc, "dataset_file_id", None),
-            stage=stage,
-            discipline=doc.discipline,
-            document_code=doc.document_code,
-            revision=doc.revision,
-            approval_status=doc.approval_status,
-            page=_optional_int(evidence.get("pdf_page_number")) or (source_fragment.page if source_fragment else None),
-            bbox=_normalize_bbox(bbox),
-            bbox_pdf=getattr(source_fragment, "bbox_pdf", None) if source_fragment else None,
-            page_width=getattr(source_fragment, "page_width", None) if source_fragment else None,
-            page_height=getattr(source_fragment, "page_height", None) if source_fragment else None,
-            polygon=_bbox_to_polygon(_normalize_bbox(bbox)),
-            extracted_value=str(value) if value is not None else None,
-            role=_role_for_stage(evidence.get("stage"), index),
-            context=(source_fragment.text if source_fragment else None) or str(evidence.get("localization") or ""),
-            extractor="gold_fixture",
-            confidence=0.95,
-        )
-        db.add(fragment)
-    db.flush()
-
-
-def _document_for_fixture_evidence(db: Session, group: EvidenceGroup, evidence: dict[str, Any]) -> DocumentVersion | None:
-    file_id = str(evidence.get("file_id") or "")
-    query = db.query(DocumentVersion).filter(
-        DocumentVersion.project_id == int(group.project_id),
-        DocumentVersion.organization_id == int(group.organization_id),
-        DocumentVersion.object_id == str(group.object_id or ""),
-        DocumentVersion.dataset_file_id == file_id,
-    )
-    return query.first()
-
-
-def _best_source_fragment_for_fixture(
-    db: Session,
-    doc: DocumentVersion,
-    fixture: GoldCheckFixture,
-    evidence: dict[str, Any],
-) -> SourceFragment | None:
-    page = _optional_int(evidence.get("pdf_page_number"))
-    rows = (
-        db.query(SourceFragment)
-        .filter(SourceFragment.document_version_id == int(doc.id), SourceFragment.page == page)
-        .all()
-    )
-    if not rows:
-        return None
-
-    def score(fragment: SourceFragment) -> tuple[int, float]:
-        metadata = fragment.metadata_json if isinstance(fragment.metadata_json, dict) else {}
-        if fragment.source_system == "learning_annotation" and metadata.get("check_id") == fixture.check_id:
-            return (0, -float(fragment.confidence or 0))
-        if fragment.source_system == "learning_annotation" and metadata.get("code") == fixture.parameter_code:
-            return (1, -float(fragment.confidence or 0))
-        if fragment.source_system == "learning_page_index":
-            return (2, 0)
-        return (3, -float(fragment.confidence or 0))
-
-    return sorted(rows, key=score)[0]
-
-
-def _stage_from_fixture_evidence(evidence: dict[str, Any], doc: DocumentVersion) -> str:
-    stage = str(evidence.get("stage") or "").upper()
-    if stage == "PD":
-        return "project"
-    if stage == "RD":
-        return "working"
-    if stage == "ID":
-        return "as_built"
-    return _doc_stage(doc)
-
-
-def _role_for_stage(stage: object, index: int) -> str:
-    value = str(stage or "").upper()
-    if value == "PD" or index == 0:
-        return "expected"
-    if value in {"RD", "ID"}:
-        return "actual"
-    return "context"
-
-
-def _value_for_fixture_stage(payload: dict[str, Any], stage: object) -> Any:
-    value = str(stage or "").upper()
-    if value == "PD":
-        return payload.get("pd_value")
-    if value == "RD":
-        return payload.get("rd_value")
-    if value == "ID":
-        return payload.get("id_value")
-    return payload.get("pd_value") or payload.get("rd_value") or payload.get("id_value")
-
-
-def _optional_int(value: object) -> int | None:
-    if value is None:
-        return None
-    try:
-        return int(value)
-    except Exception:
-        return None
 
 
 def _set_process_status(

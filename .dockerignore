@@ -11,7 +11,7 @@
 !evaluation/__init__.py
 !evaluation/metrics.py
 !evaluation/exporter.py
-!evaluation/fixtures.py
+!evaluation/errors.py
 !evaluation/candidate_coverage.py
 
 # dev target / legacy services only (docker-compose.yml)

@@ -7,10 +7,8 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from pydantic import BaseModel, Field
 from sqlalchemy import func
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
-from ..clients.ifc_client import IfcClient
-from ..clients.rag_client import RagClient
 from ..db.models import (
     AttributeObservation,
     AuditLog,
@@ -21,7 +19,6 @@ from ..db.models import (
     DocumentVersion,
     EvidenceGroup,
     EvidenceFragment,
-    GoldCheckFixture,
     LogicalRuleRecord,
     MLRetrainingLog,
     MonitoringMetric,
@@ -43,7 +40,6 @@ from ..domain.source_fragment_sync import sync_exported_source_fragments
 from ..domain.synthetic_dataset import ensure_synthetic_case10_dataset
 from ..domain.official_dataset import (
     MATRIX_VERSION_OFFICIAL,
-    PUBLIC_OBJECT_IDS,
     import_official_dataset,
     find_dataset_paths,
 )
@@ -73,7 +69,7 @@ from ..domain.v3_jobs import enqueue_process_job, publish_job_message
 from ..domain.training_release import build_training_release, training_log_to_dict
 from ..domain.iais_rin_sync import retry_pending_iais_rin_syncs, sync_protocol_to_iais_rin, sync_state_of
 from evaluation.exporter import protocol_to_evaluation_predictions, protocol_to_submission, validate_submission_basic, validate_submission_schema
-from evaluation.fixtures import LeakageGuardError
+from evaluation.errors import LeakageGuardError
 from .auth import get_current_user, require_admin, require_ml_engineer, require_supervisor
 from .utils import get_project_for_org
 from ..domain.dataset_sources import render_evidence_page
@@ -218,12 +214,8 @@ class NormativeBaseUpdateIn(BaseModel):
 
 
 class OfficialDatasetImportIn(BaseModel):
-    object_ids: list[str] = Field(default_factory=lambda: list(PUBLIC_OBJECT_IDS))
-    include_hidden: bool = False
+    object_ids: list[str] = Field(min_length=1)
     include_pages: bool = True
-    include_annotations: bool = True
-    include_gold: bool = True
-    allow_hidden_gold_labels: bool = False
     run_processes: bool = False
 
 
@@ -545,23 +537,18 @@ def import_case10_matrix(
 @router.post("/case10/projects/{project_id}/official-dataset/import")
 def import_case10_official_dataset(
     project_id: int,
-    payload: OfficialDatasetImportIn | None = None,
+    payload: OfficialDatasetImportIn,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
     organization_id = _require_org(user)
     get_project_for_org(db, project_id, organization_id)
-    payload = payload or OfficialDatasetImportIn()
     summary = import_official_dataset(
         db,
         project_id=project_id,
         organization_id=organization_id,
         object_ids=payload.object_ids,
-        include_hidden=payload.include_hidden,
         include_pages=payload.include_pages,
-        include_annotations=payload.include_annotations,
-        include_gold=payload.include_gold,
-        allow_hidden_gold_labels=payload.allow_hidden_gold_labels,
     )
     processes = []
     jobs = []
@@ -587,16 +574,34 @@ def import_case10_official_dataset(
 def case10_evidence_groups(
     project_id: int = Query(...),
     process_id: str | None = Query(default=None),
+    include_fragments: bool = Query(default=False),
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
     organization_id = _require_org(user)
     get_project_for_org(db, project_id, organization_id)
-    query = db.query(EvidenceGroup).filter(EvidenceGroup.project_id == project_id, EvidenceGroup.organization_id == organization_id)
+    query = (
+        db.query(EvidenceGroup)
+        .options(
+            selectinload(EvidenceGroup.param),
+            selectinload(EvidenceGroup.canonical_entity),
+            selectinload(EvidenceGroup.decisions),
+            selectinload(EvidenceGroup.process),
+        )
+        .filter(EvidenceGroup.project_id == project_id, EvidenceGroup.organization_id == organization_id)
+    )
+    if include_fragments:
+        query = query.options(
+            selectinload(EvidenceGroup.fragments).selectinload(EvidenceFragment.document_version),
+            selectinload(EvidenceGroup.fragments).selectinload(EvidenceFragment.source_fragment),
+        )
     if process_id:
         query = query.filter(EvidenceGroup.process_id == process_id)
     rows = query.order_by(EvidenceGroup.created_at.desc(), EvidenceGroup.id.desc()).all()
-    return [evidence_group_to_dict(db, row, include_fragments=True) for row in rows]
+    return [
+        evidence_group_to_dict(db, row, include_fragments=include_fragments, include_inspector_evidence=False)
+        for row in rows
+    ]
 
 
 @router.get("/case10/evidence-groups/{evidence_group_id}")
@@ -1041,48 +1046,6 @@ async def case10_iais_rin_sync_sweep(db: Session = Depends(get_db), user: User =
     return {"retried": len(results), "results": results}
 
 
-@router.get("/case10/gold-fixtures")
-def case10_gold_fixtures(
-    project_id: int = Query(...),
-    object_id: str | None = Query(default=None),
-    training_allowed: bool | None = Query(default=None),
-    evaluation_allowed: bool | None = Query(default=None),
-    db: Session = Depends(get_db),
-    user: User = Depends(get_current_user),
-):
-    organization_id = _require_org(user)
-    get_project_for_org(db, project_id, organization_id)
-    query = db.query(GoldCheckFixture).filter(GoldCheckFixture.project_id == project_id, GoldCheckFixture.organization_id == organization_id)
-    if object_id:
-        query = query.filter(GoldCheckFixture.object_id == object_id)
-    if training_allowed is not None:
-        query = query.filter(GoldCheckFixture.training_allowed == training_allowed)
-    if evaluation_allowed is not None:
-        query = query.filter(GoldCheckFixture.evaluation_allowed == evaluation_allowed)
-    rows = query.order_by(GoldCheckFixture.object_id.asc(), GoldCheckFixture.check_id.asc(), GoldCheckFixture.source_dataset.asc()).all()
-    return [
-        {
-            "id": int(row.id),
-            "source_dataset": row.source_dataset,
-            "check_id": row.check_id,
-            "object_id": row.object_id,
-            "split": row.split,
-            "visibility": row.visibility,
-            "matrix_scope": row.matrix_scope,
-            "parameter_code": row.parameter_code,
-            "location_type": row.location_type,
-            "location": row.location,
-            "violation_label": row.violation_label,
-            "protocol_status": row.protocol_status,
-            "training_allowed": bool(row.training_allowed),
-            "evaluation_allowed": bool(row.evaluation_allowed),
-            "leakage_guard": row.leakage_guard,
-            "evidence": row.evidence_json or [],
-        }
-        for row in rows
-    ]
-
-
 @router.post("/case10/projects/{project_id}/training-release")
 def create_case10_training_release(
     project_id: int,
@@ -1316,6 +1279,8 @@ async def sync_document_source_fragments(
     if doc_version.source_type != "rag" or doc_version.source_document_id is None:
         raise HTTPException(status_code=400, detail="Source fragment sync is currently supported for RAG DocumentVersion only")
 
+    from ..clients.rag_client import RagClient
+
     exported = await RagClient(timeout=60.0, retries=1).export_source_fragments(
         document_id=int(doc_version.source_document_id),
         organization_id=organization_id,
@@ -1369,6 +1334,8 @@ async def sync_document_ifc_observations(
     get_project_for_org(db, int(doc_version.project_id), organization_id)
     if doc_version.source_type != "ifc" or doc_version.source_document_id is None:
         raise HTTPException(status_code=400, detail="IFC observation sync is supported for IFC DocumentVersion only")
+
+    from ..clients.ifc_client import IfcClient
 
     exported = await IfcClient(timeout=120.0).export_observations(
         model_id=int(doc_version.source_document_id),

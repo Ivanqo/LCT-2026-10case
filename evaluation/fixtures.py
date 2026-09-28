@@ -4,14 +4,13 @@ import json
 from pathlib import Path
 from typing import Any, Iterable
 
+from .errors import LeakageGuardError
+
 
 HIDDEN_SPLITS = {"TEST_HIDDEN"}
 HIDDEN_OBJECT_IDS = {"OBJ-RECHNIKOV-7-7"}
+PUBLIC_OBJECT_IDS = ("OBJ-TYUMENSKAYA-5-GOLD-SEED", "OBJ-NOVOSLOBODSKAYA")
 PUBLIC_TRAIN_VISIBILITY = "PUBLIC_TRAIN_LABEL"
-
-
-class LeakageGuardError(ValueError):
-    pass
 
 
 def load_gold_checks_jsonl(

@@ -30,8 +30,8 @@ REPO = Path(__file__).resolve().parents[1]
 INCLUDE = (
     "api_service/app/**", "api_service/alembic/**", "api_service/alembic.ini", "api_service/requirements.txt",
     "api_service/Dockerfile", "api_service/tests/**",
-    "evaluation/__init__.py", "evaluation/metrics.py", "evaluation/exporter.py", "evaluation/fixtures.py",
-    "evaluation/candidate_coverage.py", "evaluation/grader_sim.py",
+    "evaluation/__init__.py", "evaluation/metrics.py", "evaluation/exporter.py", "evaluation/errors.py",
+    "evaluation/candidate_coverage.py",
     "evaluation/phase12/example_submission_gold11.json", "evaluation/phase12/submission_schema.json",
     "frontend_react/**", "node_gateway/**",
     "deploy/**",
