@@ -32,7 +32,7 @@ INCLUDE = (
     "api_service/Dockerfile", "api_service/tests/**",
     "evaluation/__init__.py", "evaluation/metrics.py", "evaluation/exporter.py", "evaluation/errors.py",
     "evaluation/candidate_coverage.py",
-    "evaluation/phase12/example_submission_gold11.json", "evaluation/phase12/submission_schema.json",
+    "evaluation/phase12/example_submission_synthetic.json", "evaluation/phase12/submission_schema.json",
     "frontend_react/**", "node_gateway/**",
     "deploy/**",
     "docker-compose.case10.yml", "docker-compose.case10.gpu.yml", ".dockerignore", ".gitignore",
@@ -48,6 +48,7 @@ FORBIDDEN_PATHS = (
     "case_data/*", "learning_data/*", "New_data/*", "*.pdf", "*.zip", "*.rar", "*.7z", "*.db", "*.sqlite*",
     ".claude/*", "*/memory/*", "*MEMORY.md", "CASE10_*.md", "*REPORT*.md", "*BACKLOG*",
     "evaluation/silver*", "evaluation/reports/*", "evaluation/audits/*", "evaluation/measurement_bench/*",
+    "evaluation/phase12/*gold*",
     "*initial_admin_credentials*", "*.env", "FreeQwenApi/*", "shared/*", "rag_service/*", "ifc_service/*",
     "landing/*",
 )
@@ -57,13 +58,15 @@ ALLOWED_DATA = (
     "api_service/app/reference_data/case_data/submission_schema.json",
     "api_service/app/domain/matrix_v11_codes.json",
     "api_service/app/domain/anchor_vocab/*.json",
-    "evaluation/phase12/example_submission_gold11.json", "evaluation/phase12/submission_schema.json",
+    "evaluation/phase12/example_submission_synthetic.json", "evaluation/phase12/submission_schema.json",
     "node_gateway/openapi.json", "node_gateway/package.json", "frontend_react/package.json",
     "frontend_react/package-lock.json", "frontend_react/.eslintrc.json",
 )
 # Content markers of organizer answer files / closed materials and of agent memory.
 FORBIDDEN_CONTENT = (
     re.compile(r'"violation_label"\s*:\s*"VIOLATION_PRESENT".*"gold', re.I),
+    re.compile(r'"finding_status_internal"\s*:', re.I),
+    re.compile(r'"_note"\s*:\s*"[^"]*(?:organizer annotations|gold)', re.I),
     re.compile(r"^---\s*\nname:\s*case10", re.M),                      # memory file front matter
     re.compile("origin" + "SessionId"),                                # memory metadata (split: no self-match)
 )

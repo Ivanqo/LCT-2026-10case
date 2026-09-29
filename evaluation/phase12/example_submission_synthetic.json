@@ -1,0 +1,18 @@
+{
+  "object_id": "SYNTHETIC-EXAMPLE",
+  "quality_issues": [],
+  "completeness": {},
+  "checks": [
+    {
+      "parameter_code": "M-001",
+      "location": "synthetic example",
+      "pd_value": null,
+      "rd_value": null,
+      "id_value": null,
+      "violation_label": "COMPARISON_IMPOSSIBLE",
+      "protocol_status": "COMPARISON_IMPOSSIBLE",
+      "evidence": []
+    }
+  ],
+  "_note": "Synthetic schema example only; not a detector result."
+}
