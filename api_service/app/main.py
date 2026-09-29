@@ -113,9 +113,9 @@ app.include_router(case10_router, prefix="/api")
 app.include_router(batch_router, prefix="/api")
 app.include_router(admin_router, prefix="/api")
 
-# Legacy DocuRAG features that depend on services outside the closed circuit (chat through the external Qwen
-# proxy, RAG page/region assets). The offline CASE10 delivery (CASE10_OFFLINE_DELIVERY=1) neither imports nor
-# mounts them -- expert session §10: project documents must not leave the circuit.
+# Legacy DocuRAG features that depend on separate RAG/IFC services (chat and RAG page/region assets). The offline
+# CASE10 delivery (CASE10_OFFLINE_DELIVERY=1) neither imports nor mounts them -- expert session §10: project
+# documents must not leave the circuit.
 if not settings.OFFLINE_DELIVERY:
     from .api.routes_chat import router as chat_router
     from .api.routes_rag_assets import router as rag_assets_router

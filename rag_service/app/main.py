@@ -1028,9 +1028,7 @@ def _fallback_answer_from_chunks(question: str, chunks: list[dict], error: Excep
         seen.add(key)
         ref_lines.append(f"- {key[0]}, лист {key[1]}")
 
-    lines = [
-        "LLM-сервис сейчас недоступен, поэтому показываю найденный контекст без финальной генерации ответа.",
-    ]
+    lines = ["Автоматическая генерация ответа недоступна; показываю найденный контекст."]
     if excerpt:
         lines.append(f"\nНаиболее близкий найденный фрагмент:\n{excerpt}")
     if ref_lines:
@@ -1201,11 +1199,9 @@ def ask(payload: AskRequest, db: Session = Depends(get_db)):
             question=payload.question,
             chunks=structured_chunks,
             assets=[],
-            system_prompt=settings.SYSTEM_PROMPT,
-            model=settings.QWEN_MODEL,
         )
     except Exception as e:
-        logger.warning("llm_structured_answer_failed project_id=%s: %s", payload.project_id, e)
+        logger.warning("retrieval_answer_fallback_failed project_id=%s: %s", payload.project_id, e)
         answer, selected_chunk_ids = _fallback_answer_from_chunks(payload.question, structured_chunks, e)
 
     if not selected_chunk_ids:

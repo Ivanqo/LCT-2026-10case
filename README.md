@@ -18,7 +18,7 @@
 
 3) **rag** (FastAPI, порт `8001`)  
    - Инжест PDF/DOCX, чанкинг, эмбеддинги, Chroma persistence  
-   - Поиск контекста и вызов LLM (через `shared/llm.py` + `shared/llm_adapter.py`)
+   - Поиск контекста; ответ возвращает найденные фрагменты и ссылки без внешней генерации текста
 
 4) **ifc** (FastAPI, порт `8002`) + **ifc_worker** (Celery)  
    - Heavy/Indexed подход: `import → index → быстрые запросы из БД`
@@ -34,19 +34,6 @@ docker compose up --build
 
 - Все сервисы собираются на базе **Python 3.11**, чтобы на Ubuntu не уходить в компиляцию C-зависимостей (например, `ifcopenshell`).
 - Для `rag` PyTorch ставится **CPU-only** wheels (быстрее и меньше образ).
-- В `docker-compose.yml` добавлен `extra_hosts: host.docker.internal:host-gateway`, чтобы **на Ubuntu** работало обращение к сервисам на хосте по имени `host.docker.internal`.
-  - На Windows это обычно работает “из коробки”.
-  - В проде на Ubuntu лучше явно задать `QWEN_PROXY_BASE_URL` на адрес прокси/шлюза, который доступен из контейнеров.
-
-Переменные окружения для LLM (Qwen proxy) можно пробросить:
-- `QWEN_PROXY_BASE_URL` (например `http://host.docker.internal:3264/api`)
-- `QWEN_MODEL`
-- `QWEN_TIMEOUT`
-
-## Важное про LLM
-
-Файл `shared/llm.py` **не изменён** (скопирован как есть).  
-Для удобного использования из сервисов добавлен адаптер `shared/llm_adapter.py` (оборачивает `QwenProxyClient`).
 
 ## Эндпоинты фронта (API сервис, НЕ менялись по путям)
 
@@ -87,9 +74,8 @@ docker compose up --build
 Система представляет собой **микросервисную платформу обработки инженерной документации и IFC-моделей** с поддержкой:
 
 * загрузки PDF / DOCX / IFC
-* интеллектуального поиска по документации (RAG)
+* поиска по документации (RAG) с выдачей найденных фрагментов и источников
 * аналитических запросов к BIM-моделям (IFC heavy indexed)
-* LLM-ответов с использованием контекста
 * истории чатов и проектов
 * асинхронной индексации моделей
 
@@ -98,10 +84,9 @@ docker compose up --build
 | Сервис | Роль                       |
 | ------ | -------------------------- |
 | API    | Точка входа для клиента    |
-| RAG    | Работа с документами + LLM |
+| RAG    | Индексация документов, поиск фрагментов и источников |
 | IFC    | Индексация и аналитика BIM |
 | Worker | Фоновая обработка IFC      |
-| Shared | Общие компоненты           |
 
 ---
 
@@ -119,7 +104,7 @@ RAG Service   IFC Service
    |           |
    v           v
 Vector DB     PostgreSQL
-LLM           Redis Queue
+Redis Queue   CASE10 Worker
 ```
 
 ---
@@ -145,7 +130,7 @@ API ничего не вычисляет тяжёлого — он только:
 * chunking
 * embeddings
 * vector search
-* генерацию ответа LLM
+* детерминированную выдачу найденного контекста и ссылок на листы
 
 ### 3. IFC = structured analytics engine
 
@@ -201,9 +186,6 @@ ifc_service/
         db/
         main.py
 
-shared/
-    llm.py                  # Qwen proxy client
-    llm_adapter.py          # унификация вызова LLM
 ```
 
 ---
@@ -281,18 +263,10 @@ RAG search
   ↓
 retrieve top chunks
   ↓
-LLM prompt assembly
-  ↓
-LLM generation
-  ↓
-response
+return retrieved context and sources
 ```
 
-LLM получает:
-
-* пользовательский вопрос
-* релевантные chunks
-* метаданные документов
+Свободная генерация ответа отключена: API возвращает контекст и источники, найденные RAG.
 
 ---
 
@@ -356,21 +330,9 @@ POST /query/heavy
 
 ---
 
-## 🤖 LLM слой
+## Внешняя генерация текста
 
-LLM не встроен в сервисы напрямую.
-
-Используется адаптер:
-
-```
-shared/llm_adapter.py
-```
-
-Он:
-
-* оборачивает Qwen proxy
-* стандартизирует API
-* управляет timeout
+Qwen Proxy-клиент и его настройки удалены. CASE10-проверки не вызывают внешний LLM. RAG сохраняет поиск документов и показывает найденные фрагменты с источниками.
 
 ---
 
@@ -409,14 +371,6 @@ ifc_client.py
 ---
 
 ## ⚙️ Переменные окружения
-
-### LLM
-
-```
-QWEN_PROXY_BASE_URL
-QWEN_MODEL
-QWEN_TIMEOUT
-```
 
 ### инфраструктура
 
@@ -457,7 +411,7 @@ API
   ↓
 RAG retrieve
   ↓
-LLM
+retrieved context and sources
   ↓
 API
   ↓
@@ -514,8 +468,7 @@ PostgreSQL index
 
 * новые типы документов
 * новые метрики IFC
-* другой LLM
-* streaming ответы
+* новые retrieval strategies
 * semantic caching
 
 ---
@@ -541,8 +494,6 @@ PostgreSQL index
 knowledge platform
    +
 BIM analytics engine
-   +
-LLM reasoning layer
 ```
 
 
@@ -580,14 +531,13 @@ DEFAULT_ADMIN_EMAIL=admin@company.com DEFAULT_ADMIN_API_KEY=CHANGE_ME docker com
 
 1. API запрашивает релевантные фрагменты из документации через `rag`.
 2. API запрашивает релевантные сущности, свойства, количества и агрегаты из IFC через `ifc`.
-3. Оба контекста объединяются в один prompt.
-4. Итоговый инженерный ответ и заключение формируются через LLM.
+3. Оба контекста объединяются в ответ API без обращения к внешнему LLM.
 
 ### Новый IFC endpoint
 
 - `POST /query/context`
   - принимает: `{ project_id, organization_id, question, max_models, limit }`
-  - возвращает нормализованный текстовый контекст по элементам IFC, который пригоден для LLM/RAG orchestration
+  - возвращает нормализованный текстовый контекст по элементам IFC для показа и дальнейшей обработки API
 
 ### Что это даёт
 

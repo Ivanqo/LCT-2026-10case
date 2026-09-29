@@ -21,9 +21,6 @@ class Settings(BaseModel):
     CORS_ORIGINS: list[str] = os.getenv("CORS_ORIGINS", "*").split(",")
     ENABLE_METRICS: bool = os.getenv("ENABLE_METRICS", "true").lower() == "true"
     SESSION_TTL_HOURS: int = int(os.getenv("API_SESSION_TTL_HOURS", "168"))
-    QWEN_PROXY_BASE_URL: str = os.getenv("QWEN_PROXY_BASE_URL", "http://host.docker.internal:3264/api").rstrip("/")
-    QWEN_MODEL: str = os.getenv("QWEN_MODEL", "qwen3.7-max")
-    QWEN_TIMEOUT: float = float(os.getenv("QWEN_TIMEOUT", "900"))
     ENABLE_OPTIONAL_OCR: bool = os.getenv("ENABLE_OPTIONAL_OCR", "false").lower() == "true"
     OCR_LANG: str = os.getenv("OCR_LANG", "rus+eng")
     # Промпт 8.2 (CASE10_AGENT_PROMPTS_BACKLOG.md): alternative full-page OCR-fallback
@@ -137,8 +134,8 @@ class Settings(BaseModel):
     IAIS_RIN_PENDING_SYNC_RETRY_SECONDS: int = int(os.getenv("IAIS_RIN_PENDING_SYNC_RETRY_SECONDS", str(60 * 60)))
 
     # Offline delivery profile (Phase 12, S6; expert session §10): project documents never leave the closed
-    # circuit. 1 = the CASE10 delivery image: the legacy DocuRAG modules (chat through the external Qwen proxy,
-    # RAG assets) are not mounted, and the RAG/IFC service clients refuse to open a connection (HTTP 503) instead
+    # circuit. 1 = the CASE10 delivery image: legacy DocuRAG chat and RAG asset routes are not mounted, and the
+    # RAG/IFC service clients refuse to open a connection (HTTP 503) instead
     # of calling services the delivery does not ship. The Dockerfile sets 1; the dev compose (which still runs the
     # rag/ifc containers) sets 0.
     OFFLINE_DELIVERY: bool = os.getenv("CASE10_OFFLINE_DELIVERY", "0").strip().lower() in ("1", "true", "yes", "on")

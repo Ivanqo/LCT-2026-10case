@@ -349,8 +349,7 @@ class LlmAnswerContractIntegrationTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if os.getenv("RAG_SKIP_LLM_CONTRACT_TESTS", "0") in {"1", "true", "True", "yes", "YES"}:
-            raise unittest.SkipTest("RAG_SKIP_LLM_CONTRACT_TESTS is enabled")
+        raise unittest.SkipTest("External LLM answer generation was removed; this is a historical evaluation harness")
 
         cls.fixture_paths = _fixture_paths()
         missing = [str(path) for path in cls.fixture_paths if not path.exists()]
@@ -373,8 +372,7 @@ class LlmAnswerContractIntegrationTest(unittest.TestCase):
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "test_root": str(TEST_ROOT),
             "project_id": cls.project_id,
-            "llm_base_url": os.getenv("QWEN_PROXY_BASE_URL", "http://localhost:3264/api"),
-            "llm_model": os.getenv("QWEN_MODEL", "qwen3.7-max"),
+            "answer_mode": "retrieved-context-fallback",
             "fixtures": [str(path) for path in cls.fixture_paths],
             "ingestions": [],
             "cases": [],

@@ -3,7 +3,6 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-import os
 import re
 import uuid
 from datetime import datetime, timezone
@@ -11,8 +10,6 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-
-from shared.llm import DEFAULT_BASE_URL, DEFAULT_TIMEOUT, QwenProxyClient
 
 from ..clients.ifc_client import IfcClient
 from ..clients.rag_client import RagClient
@@ -51,74 +48,6 @@ async def _cleanup_chat_jobs() -> None:
                 stale.append(job_id)
         for job_id in stale:
             CHAT_JOBS.pop(job_id, None)
-
-
-def _extract_llm_text(response: Any) -> str:
-    if isinstance(response, dict):
-        choices = response.get("choices")
-        if isinstance(choices, list) and choices:
-            message = choices[0].get("message") or {}
-            content = message.get("content")
-            if isinstance(content, str) and content.strip():
-                return content.strip()
-        for key in ("answer", "text", "content", "response"):
-            value = response.get(key)
-            if isinstance(value, str) and value.strip():
-                return value.strip()
-    return str(response).strip()
-
-
-def _should_try_chat_endpoint(exc: Exception) -> bool:
-    text = str(exc).lower()
-    legacy_markers = (
-        "404 client error",
-        "405 client error",
-        "404 not found",
-        "405 method not allowed",
-        "cannot post",
-        "method not allowed",
-    )
-    return any(marker in text for marker in legacy_markers)
-
-
-def _build_ifc_prompt(question: str, rag_answer: str, ifc_context: str) -> str:
-    return (
-        "Ниже есть ответ по проектной документации и контекст из IFC-модели. "
-        "Собери единый ответ инженеру на русском языке. Не выдумывай данные. "
-        "Если IFC-контекст не отвечает на вопрос, так и напиши.\n\n"
-        f"ВОПРОС:\n{question}\n\n"
-        f"ОТВЕТ ПО RAG-ДОКУМЕНТАМ:\n{rag_answer or 'нет данных'}\n\n"
-        f"IFC-КОНТЕКСТ:\n{ifc_context or 'нет данных'}"
-    )
-
-
-def _call_llm_for_merged_answer(question: str, rag_answer: str, ifc_context: str) -> str:
-    client = QwenProxyClient(
-        base_url=os.getenv("QWEN_PROXY_BASE_URL", DEFAULT_BASE_URL),
-        timeout=float(os.getenv("QWEN_TIMEOUT", str(DEFAULT_TIMEOUT))),
-    )
-    messages = [
-        {
-            "role": "system",
-            "content": "Ты профессиональный BIM/RAG ассистент для проектной документации.",
-        },
-        {"role": "user", "content": _build_ifc_prompt(question, rag_answer, ifc_context)},
-    ]
-    try:
-        response, _ = client.chat_completions(
-            model=os.getenv("QWEN_MODEL", "qwen3.7-max"),
-            messages=messages,
-            extra={"temperature": 0.1, "stream": False},
-        )
-    except Exception as exc:
-        if not _should_try_chat_endpoint(exc):
-            raise
-        response, _ = client.chat(
-            model=os.getenv("QWEN_MODEL", "qwen3.7-max"),
-            messages=messages,
-            extra={"temperature": 0.1, "stream": False},
-        )
-    return _extract_llm_text(response)
 
 
 def _fallback_merged_answer(rag_answer: str, ifc_context: str) -> str:
@@ -181,16 +110,7 @@ async def _ask_rag_and_ifc(
     rag_answer = str(rag_result.get("answer") or "")
     ifc_context = str(ifc_result.get("context_text") or "")
     if ifc_context:
-        try:
-            answer = await asyncio.to_thread(
-                _call_llm_for_merged_answer,
-                question,
-                rag_answer,
-                ifc_context,
-            )
-        except Exception as exc:
-            logger.warning("merged_llm_failed project_id=%s: %s", project_id, exc)
-            answer = _fallback_merged_answer(rag_answer, ifc_context)
+        answer = _fallback_merged_answer(rag_answer, ifc_context)
     else:
         answer = rag_answer or _fallback_merged_answer("", "")
 

@@ -336,7 +336,7 @@ class CliEndToEndTests(unittest.TestCase):
 class OfflineDeliveryTests(unittest.TestCase):
     def test_delivery_app_does_not_mount_or_import_chat_and_refuses_services(self):
         code = textwrap.dedent("""
-            import asyncio, json, socket, sys
+            import json, socket, sys
             attempts = []
             def refuse(*a, **k):
                 attempts.append(repr(a)[:120]); raise OSError("network disabled by test")
@@ -345,11 +345,8 @@ class OfflineDeliveryTests(unittest.TestCase):
             from fastapi import HTTPException
             from app.clients.rag_client import RagClient
             from app.clients.ifc_client import IfcClient
-            from app.services import simple_documents
             refused = []
-            for make in (lambda: RagClient(), lambda: IfcClient(),
-                         lambda: asyncio.run(simple_documents._proxy_chat([{"role": "user", "content": "x"}])),
-                         lambda: asyncio.run(simple_documents._create_proxy_chat("x"))):
+            for make in (lambda: RagClient(), lambda: IfcClient()):
                 try:
                     make()
                 except HTTPException as exc:
@@ -369,7 +366,7 @@ class OfflineDeliveryTests(unittest.TestCase):
         out = json.loads(next(line for line in done.stdout.splitlines() if line.startswith("OUT "))[4:])
         self.assertEqual(out["chat_or_rag_routes"], [])
         self.assertEqual(out["qwen_modules"], [])
-        self.assertEqual(out["refused"], [503, 503, 503, 503])
+        self.assertEqual(out["refused"], [503, 503])
         self.assertEqual(out["attempts"], [])
         self.assertEqual(len(out["batch_routes"]), 3)
 

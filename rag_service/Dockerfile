@@ -45,7 +45,6 @@ RUN pip install --index-url https://download.pytorch.org/whl/cpu \
 RUN pip install -r requirements.txt
 
 COPY rag_service/app ./app
-COPY shared ./shared
 
 ENV PYTHONPATH=/app
 EXPOSE 8001

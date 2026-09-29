@@ -5,7 +5,7 @@
 #   API http://127.0.0.1:8000/docs, external contract via the gateway http://127.0.0.1:8080/openapi.json
 #
 # Compared with docker-compose.yml (development): no RAG / IFC / Postgres / Redis / landing / legacy frontend, the
-# api image is the `delivery` target (CASE10_OFFLINE_DELIVERY=1: no chat, no Qwen proxy, models baked in, no
+# api image is the `delivery` target (CASE10_OFFLINE_DELIVERY=1: no legacy chat, models baked in, no
 # download at runtime). With a GPU add `-f docker-compose.case10.gpu.yml`. Server-side packages for
 # POST /api/case10/batch-runs go into ./packages (CASE10_PACKAGES_DIR).
 name: case10

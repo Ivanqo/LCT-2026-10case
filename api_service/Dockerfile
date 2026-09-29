@@ -1,12 +1,12 @@
 # CASE10 API / worker / CLI image. One dependency stage, two targets:
 #
 #   delivery (default: the last stage) -- the offline CASE10 delivery: everything the inspection pipeline needs
-#            and nothing else. No external-service client code (Qwen proxy / chat), no PaddleOCR (evaluated and
+#            and nothing else. No Qwen Proxy client or external text generation, no PaddleOCR (evaluated and
 #            rejected as the default OCR engine: evaluation/OCR_PADDLEOCR_PILOT_REPORT.md), no organizer data, no
 #            internal reports. The embedding model is baked in and HF_HUB_OFFLINE=1, so the container runs with
 #            `--network none` (README_GRADER.md, LICENSES_MODELS.md).
-#   dev      -- the same dependencies plus the legacy pieces the development compose still runs (chat through the
-#            Qwen proxy, RAG/IFC services, the optional PaddleOCR engine). `docker-compose.yml` builds this target.
+#   dev      -- the same dependencies plus the optional RAG/IFC services and PaddleOCR engine used by the development
+#            compose. Chat composition uses retrieved context and does not call an external text-generation proxy.
 #
 # Digest-pinned (not just tag-pinned): the apt archive snapshot a Debian base image
 # resolves to moves with the image, so pinning only the tesseract-ocr package version
@@ -110,8 +110,6 @@ COPY evaluation/__init__.py evaluation/metrics.py evaluation/exporter.py evaluat
 # default oneDNN kernel for PP-OCRv5_server_det raises NotImplementedError under PIR.
 RUN HF_HUB_OFFLINE=0 python -c "from app.domain.ocr_paddle import check_paddleocr_health; result = check_paddleocr_health(); print(result); assert result['available'], result"
 
-# Qwen-proxy client used by the legacy chat routes only (never by the CASE10 pipeline).
-COPY shared ./shared
 ENV CASE10_OFFLINE_DELIVERY=0
 
 
@@ -126,7 +124,7 @@ COPY api_service/alembic.ini ./alembic.ini
 COPY evaluation/__init__.py evaluation/metrics.py evaluation/exporter.py evaluation/errors.py \
      evaluation/candidate_coverage.py ./evaluation/
 
-# Offline profile (app/config.py): legacy chat/RAG routers are not mounted, RAG/IFC/Qwen clients refuse to connect.
+# Offline profile (app/config.py): legacy chat/RAG routers are not mounted and RAG/IFC clients refuse to connect.
 # The parameter matrix and submission schema come from the reference data shipped with the code. Server-side
 # packages (POST /api/case10/batch-runs) live below /data/packages, which is also where the worker reads document
 # bytes from; `python -m app.cli run` sets its own originals root per run. No queue/cache server by default: the

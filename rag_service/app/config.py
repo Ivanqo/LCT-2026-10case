@@ -63,7 +63,6 @@ class Settings(BaseModel):
     EMBED_BATCH_SIZE: int = int(os.getenv("RAG_EMBED_BATCH_SIZE", "32"))
     ENABLE_VECTOR_SEARCH: bool = os.getenv("RAG_ENABLE_VECTOR_SEARCH", "0") in ("1", "true", "True", "yes", "YES")
     ENABLE_ASSET_SEARCH: bool = os.getenv("RAG_ENABLE_ASSET_SEARCH", "0") in ("1", "true", "True", "yes", "YES")
-    ENABLE_LLM_SUMMARY: bool = os.getenv("RAG_ENABLE_LLM_SUMMARY", "0") in ("1", "true", "True", "yes", "YES")
     INDEX_EMBEDDINGS: bool = os.getenv("RAG_INDEX_EMBEDDINGS", os.getenv("RAG_ENABLE_VECTOR_SEARCH", "0")) in (
         "1",
         "true",
@@ -71,14 +70,6 @@ class Settings(BaseModel):
         "yes",
         "YES",
     )
-
-    # LLM
-    QWEN_MODEL: str = os.getenv("QWEN_MODEL", "qwen3.7-max")
-    SYSTEM_PROMPT: str = os.getenv(
-        "RAG_SYSTEM_PROMPT",
-        "Ты — инженерный ассистент по проектной документации. Отвечай только по найденным данным из документов. Пиши простым профессиональным русским языком: сначала прямой вывод, затем где это найдено в документации, затем важные замечания или ограничения. Никогда не показывай пользователю служебные идентификаторы, слова chunk, region, asset, embedding, retriever, score и внутренние технические детали.",
-    )
-
 
 settings = Settings()
 for p in [settings.DATA_DIR, settings.UPLOADS_DIR, settings.VECTORSTORE_DIR, settings.LOG_DIR, settings.PAGES_DIR, settings.REGIONS_DIR]:

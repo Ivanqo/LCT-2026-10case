@@ -17,9 +17,6 @@ services:
       DEFAULT_ADMIN_EMAIL: ${DEFAULT_ADMIN_EMAIL:-admin@local}
       DEFAULT_ADMIN_ORG: ${DEFAULT_ADMIN_ORG:-Default}
       DEFAULT_ADMIN_API_KEY: ${DEFAULT_ADMIN_API_KEY:-}
-      QWEN_PROXY_BASE_URL: ${QWEN_PROXY_BASE_URL:-http://host.docker.internal:3264/api}
-      QWEN_MODEL: ${QWEN_MODEL:-qwen3.7-max}
-      QWEN_TIMEOUT: ${QWEN_TIMEOUT:-120}
       ENABLE_OPTIONAL_OCR: ${ENABLE_OPTIONAL_OCR:-false}
       OCR_LANG: ${OCR_LANG:-rus+eng}
       API_AUTO_PROCESS_UPLOADS: ${API_AUTO_PROCESS_UPLOADS:-false}
@@ -79,8 +76,6 @@ services:
       timeout: 5s
       retries: 12
       start_period: 10s
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   case10_worker:
     build:
@@ -95,9 +90,6 @@ services:
       API_LOG_DIR: /logs
       API_PROJECT_FILES_DIR: /data/project_files
       ENABLE_METRICS: ${ENABLE_METRICS:-true}
-      QWEN_PROXY_BASE_URL: ${QWEN_PROXY_BASE_URL:-http://host.docker.internal:3264/api}
-      QWEN_MODEL: ${QWEN_MODEL:-qwen3.7-max}
-      QWEN_TIMEOUT: ${QWEN_TIMEOUT:-120}
       ENABLE_OPTIONAL_OCR: ${ENABLE_OPTIONAL_OCR:-false}
       OCR_LANG: ${OCR_LANG:-rus+eng}
       RABBITMQ_URL: ${RABBITMQ_URL:-amqp://guest:guest@rabbitmq:5672/%2F}
@@ -131,8 +123,6 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   node_gateway:
     build:
@@ -172,9 +162,6 @@ services:
       HF_HOME: /data/huggingface
       SENTENCE_TRANSFORMERS_HOME: /data/huggingface/sentence_transformers
       TRANSFORMERS_CACHE: /data/huggingface/transformers
-      QWEN_PROXY_BASE_URL: ${QWEN_PROXY_BASE_URL:-http://host.docker.internal:3264/api}
-      QWEN_MODEL: ${QWEN_MODEL:-qwen3.7-max}
-      QWEN_TIMEOUT: ${QWEN_TIMEOUT:-120}
       RAG_ENABLE_OCR: ${RAG_ENABLE_OCR:-0}
       RAG_ENABLE_TABLE_DETECTION: ${RAG_ENABLE_TABLE_DETECTION:-0}
       RAG_RENDER_DPI: ${RAG_RENDER_DPI:-120}
@@ -183,7 +170,6 @@ services:
       RAG_EMBED_BATCH_SIZE: ${RAG_EMBED_BATCH_SIZE:-16}
       RAG_ENABLE_VECTOR_SEARCH: ${RAG_ENABLE_VECTOR_SEARCH:-0}
       RAG_ENABLE_ASSET_SEARCH: ${RAG_ENABLE_ASSET_SEARCH:-0}
-      RAG_ENABLE_LLM_SUMMARY: ${RAG_ENABLE_LLM_SUMMARY:-0}
       RAG_INDEX_EMBEDDINGS: ${RAG_INDEX_EMBEDDINGS:-0}
     volumes:
       - rag_data:/data
@@ -200,8 +186,6 @@ services:
       timeout: 5s
       retries: 12
       start_period: 15s
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   ifc:
     build:

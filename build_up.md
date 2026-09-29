@@ -83,19 +83,9 @@ docker compose up -d
 
 ---
 
-### Если LLM через Qwen proxy
+### Генерация ответов
 
-Если у тебя прокси живёт на хосте (вне Docker), часто нужно:
-
-* **Linux**: использовать IP хоста или проброс сети
-* **Windows/macOS**: обычно работает `host.docker.internal`
-
-Пример (если в compose/.env предусмотрено):
-
-```bash
-export QWEN_PROXY_BASE_URL="http://host.docker.internal:3264/api"
-docker compose up -d --build
-```
+Qwen Proxy не входит в проектный запуск. RAG возвращает найденные текстовые фрагменты и ссылки на документы без внешней генерации; CASE10-проверки работают отдельно и не требуют LLM.
 
 ---
 
