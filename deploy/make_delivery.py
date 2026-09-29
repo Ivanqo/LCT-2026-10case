@@ -65,7 +65,6 @@ ALLOWED_DATA = (
 # Content markers of organizer answer files / closed materials and of agent memory.
 FORBIDDEN_CONTENT = (
     re.compile(r'"violation_label"\s*:\s*"VIOLATION_PRESENT".*"gold', re.I),
-    re.compile(r'"finding_status_internal"\s*:', re.I),
     re.compile(r'"_note"\s*:\s*"[^"]*(?:organizer annotations|gold)', re.I),
     re.compile(r"^---\s*\nname:\s*case10", re.M),                      # memory file front matter
     re.compile("origin" + "SessionId"),                                # memory metadata (split: no self-match)
@@ -133,6 +132,8 @@ def scan_tree(root: Path, paths: list[str]) -> list[dict]:
             for pattern in FORBIDDEN_CONTENT:
                 if pattern.search(text):
                     problems.append({"path": path, "why": f"content matches {pattern.pattern[:40]!r}"})
+            if suffix in (".json", ".jsonl") and re.search(r'"finding_status_internal"\s*:', text, re.I):
+                problems.append({"path": path, "why": "internal finding-status field in JSON data"})
     return problems
 
 
