@@ -14,6 +14,7 @@ from . import file_registry
 from .anchor_search import GENERIC_SITE_LOCATION
 from .comparison_gate import REASON_MISSING_DISCIPLINE, GateContext, GateDecision
 from .dataset_sources import normalized_original_geometry
+from .document_order import document_order_key
 from .evidence_groups import sweep_orphaned_evidence_groups, upsert_evidence_group
 from .explication_compare import collect_explication_groups, explication_compare_enabled
 from .generic_compound_extraction import (
@@ -271,7 +272,9 @@ def create_official_evidence_groups(
         candidates = by_code.get(param.code, [])
         selected = {}
         # A keyword hit provides context, not a normalized value or proof of a violation.
-        for fragment in sorted(candidates, key=lambda f: (-(f.confidence or 0), f.document_version_id, f.page or 0, f.id)):
+        for fragment in sorted(candidates, key=lambda f: (
+            -(f.confidence or 0), document_order_key(by_id.get(f.document_version_id), f.document_version_id), f.page or 0, f.id,
+        )):
             doc = by_id[fragment.document_version_id]
             stage = doc.dataset_stage or STAGE_CODES.get(doc.doc_stage)
             if stage not in selected:
@@ -589,11 +592,27 @@ def _upsert_selection_clarification_group(db, process, param, block: dict, *, us
 _STAGE_INTERNAL = {"PD": "project", "RD": "working", "ID": "as_built"}
 
 
+def _add_alternatives(delta: dict, stage_observations: dict) -> dict:
+    """Adds `delta.alternatives` ({stage: [other distinct values that stage's candidate pages stated]}) -- only when a
+    competing value exists, so `delta` stays byte-identical to before for every single-candidate parameter. The
+    values are for the inspector (and a later suspicion tier); the comparison itself still uses the chosen value."""
+    alternatives = {
+        stage: list(obs.alternatives)
+        for stage, obs in sorted(stage_observations.items())
+        if getattr(obs, "alternatives", None)
+    }
+    if alternatives:
+        delta["alternatives"] = alternatives
+    return delta
+
+
 def _with_llm_verification(delta: dict, stage_observations: dict) -> dict:
     """Adds the optional LLM verifier's per-stage verdicts (see
     llm_candidate_verifier.py) to a generic-tier group's `delta` for the
     inspector's evidence card -- only when at least one exists, so `delta`
-    stays byte-identical to before whenever the verifier is disabled."""
+    stays byte-identical to before whenever the verifier is disabled.
+    Also adds the competing-value list (`_add_alternatives`), under the same only-when-present rule."""
+    _add_alternatives(delta, stage_observations)
     verdicts = {
         stage: obs.llm_verification
         for stage, obs in stage_observations.items()
@@ -732,6 +751,7 @@ def _upsert_gated_group(
         "gold_validated": False,
         **decision.to_delta(),
     }
+    _add_alternatives(delta, stage_observations)
     group, should_write_fragments = upsert_evidence_group(
         db, process, param, group_key,
         fields={
@@ -1156,6 +1176,36 @@ def _upsert_table_count_group(
     return group_key
 
 
+def _rule_row_order(row) -> tuple:
+    """Best observation first: confidence, then content order of its document (never the database id -- see
+    document_order.py), page, and the value itself so two readings on one page still order totally."""
+    return (-row.confidence, document_order_key(row.document), row.page, str(row.normalized_value))
+
+
+def _rule_alternatives(by_stage: dict, selected: dict) -> dict[str, list[dict]]:
+    """Other distinct values the stages' rows at this location stated (see cross_stage_localization.stage_alternatives)."""
+    out: dict[str, list[dict]] = {}
+    for stage in ("PD", "RD", "ID"):
+        if stage not in selected:
+            continue
+        chosen = selected[stage].normalized_value
+        seen = {chosen}
+        rows = []
+        for row in sorted(by_stage.get(stage, []), key=_rule_row_order):
+            if row.normalized_value in seen:
+                continue
+            seen.add(row.normalized_value)
+            rows.append({
+                "value": str(row.value),
+                "normalized_value": str(row.normalized_value),
+                "file_id": getattr(row.document, "dataset_file_id", None) or getattr(row.document, "filename", None),
+                "page": row.page,
+            })
+        if rows:
+            out[stage] = rows[:5]
+    return out
+
+
 def _upsert_rule_groups(
     db, process, param, observations, *, documents=None, exclude_pages=None, budget=None, fallback_diagnostics=None, user_id=None,
 ) -> set[str]:
@@ -1173,7 +1223,7 @@ def _upsert_rule_groups(
         if not by_stage.get("PD") or not by_stage.get("RD"):
             continue
         selected = {
-            stage: sorted(rows, key=lambda row: (-row.confidence, int(row.document.id), row.page))[0]
+            stage: sorted(rows, key=lambda row: _rule_row_order(row))[0]
             for stage, rows in by_stage.items()
             if stage in {"PD", "RD", "ID"} and rows
         }
@@ -1213,7 +1263,7 @@ def _upsert_rule_groups(
         supporting = {
             stage: sorted(
                 (row for row in rows if row.normalized_value == selected[stage].normalized_value),
-                key=lambda row: (-row.confidence, int(row.document.id), row.page),
+                key=lambda row: _rule_row_order(row),
             )
             for stage, rows in by_stage.items()
             if stage in selected
@@ -1246,6 +1296,18 @@ def _upsert_rule_groups(
                     "confidence": observation.confidence,
                 })
         group_key = f"loc:{location}"
+        delta = {
+            "source": "official_rule_pack",
+            "matrix_scope": "MATRIX",
+            "parameter_code": param.code,
+            "location": location,
+            "comparison_result": "TRIGGERED" if violation else "NON_TRIGGERING",
+            "values": {stage: row.normalized_value for stage, row in selected.items()},
+            "missing_stages": missing,
+        }
+        alternatives = _rule_alternatives(by_stage, selected)
+        if alternatives:
+            delta["alternatives"] = alternatives
         group, should_write_fragments = upsert_evidence_group(
             db, process, param, group_key,
             fields={
@@ -1260,15 +1322,7 @@ def _upsert_rule_groups(
                 "actual_value": actual.value,
                 "review_priority": param.review_priority,
                 "confidence": min(row.confidence for row in [expected, *later]),
-                "delta": {
-                    "source": "official_rule_pack",
-                    "matrix_scope": "MATRIX",
-                    "parameter_code": param.code,
-                    "location": location,
-                    "comparison_result": "TRIGGERED" if violation else "NON_TRIGGERING",
-                    "values": {stage: row.normalized_value for stage, row in selected.items()},
-                    "missing_stages": missing,
-                },
+                "delta": delta,
             },
             fragment_specs=fragment_specs,
             user_id=user_id,

@@ -129,6 +129,9 @@ class CompoundObservation:
     llm_verification: dict | None = None
     # See generic_matrix_extraction.GenericObservation.gate_facts.
     gate_facts: dict | None = None
+    # Other distinct values the same stage's candidate pages stated (see cross_stage_localization.stage_alternatives);
+    # None when there is no competing value. Never part of the compared value.
+    alternatives: list | None = None
 
     @property
     def display_value(self) -> str:

@@ -20,6 +20,7 @@ from typing import Any, Iterable
 from ..config import settings
 from ..db.models import DocumentVersion, SourceFragment
 from .dataset_sources import document_page_count_hint, extract_original_pages, ocr_page_snapshot
+from .document_order import document_order_key
 from .drawing_classifier import (
     candidate_document_stage,
     classify_ventilation_sheet,
@@ -428,7 +429,7 @@ def find_confirming_fallback_observation(
     if budget["documents"] > 0 and attempt_pages_remaining > 0:
         candidate_docs = sorted(
             (doc for doc in documents.values() if effective_dataset_stage(doc) == stage),
-            key=lambda doc: int(doc.id),
+            key=document_order_key,
         )
         for document in candidate_docs:
             if found or budget["documents"] <= 0 or attempt_pages_remaining <= 0:
@@ -1403,7 +1404,7 @@ def _deduplicate(rows: Iterable[RuleObservation]) -> list[RuleObservation]:
     deduplicated = list(best.values())
     return sorted(
         _suppress_duplicate_exhaust_findings(deduplicated),
-        key=lambda row: (row.parameter_code, row.location, row.stage, -row.confidence, int(row.document.id), row.page),
+        key=lambda row: (row.parameter_code, row.location, row.stage, -row.confidence, document_order_key(row.document), row.page),
     )
 
 

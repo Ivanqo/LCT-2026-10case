@@ -574,6 +574,7 @@ def _merge_item(db: Any, item: _PlanItem, diagnostics: dict[str, Any], existing:
     diagnostics["documents_scanned"] += 1
     diagnostics["pages_scanned"] += int(result.get("pages_scanned") or 0)
     anchor_by_code = {a.code: a for a in item.anchors}
+    written: set[tuple[int, str]] = set()
     for hit in result.get("hits") or []:
         anchor = anchor_by_code.get(hit["code"])
         if anchor is None:
@@ -590,6 +591,13 @@ def _merge_item(db: Any, item: _PlanItem, diagnostics: dict[str, Any], existing:
         page_number = int(hit["page"])
         external_id = f"LIVE:{page_number}:{anchor.code}"
         key = (int(document.id), external_id)
+        if key in written:
+            # A second phrase of the same code landed on the same page: the row is keyed by (document, page, code),
+            # so writing it would silently replace the first hit. Hits arrive in anchor order, the catalog name
+            # first -- the first one stays (final-round Step 1, H4).
+            diagnostics["fragments_duplicate_hit_skipped"] = diagnostics.get("fragments_duplicate_hit_skipped", 0) + 1
+            continue
+        written.add(key)
         fragment = existing.get(key)
         is_new = fragment is None
         if fragment is None:

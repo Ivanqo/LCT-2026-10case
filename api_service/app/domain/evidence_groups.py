@@ -11,8 +11,12 @@ place, so all three producers share the same rule:
   place (fields, fragments, hash).
 - different basis, but a decision exists -> the decision and its history are
   left exactly as they are; the row is flagged `needs_reverification` and the
-  freshly computed values are parked under `delta.pending_reverification` so
-  an inspector can see what changed without it being silently applied.
+  freshly computed values (and the fragments they came from) are parked under
+  `delta.pending_reverification` so an inspector can see what changed without it
+  being silently applied.
+- the evidence later returns to exactly the basis the decision was made on -> the
+  flag (and the parked values / `evidence_no_longer_found`) is cleared, so a stale
+  pending value can never be folded over the value the evidence shows.
 """
 from __future__ import annotations
 
@@ -59,6 +63,23 @@ def compute_basis_hash(*, expected_value: Any, actual_value: Any, delta: Any, fr
         ),
     }
     return _hash_json(fingerprint)
+
+
+def _json_safe_specs(fragment_specs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return json.loads(json.dumps(fragment_specs, ensure_ascii=False, sort_keys=True, default=str))
+
+
+def _clear_stale_flag(group: EvidenceGroup) -> bool:
+    """Drops `pending_reverification` / `evidence_no_longer_found` from a flagged row whose basis is back to the
+    reviewed one. Returns True when anything changed. A row nobody flagged is left strictly untouched."""
+    delta = group.delta if isinstance(group.delta, dict) else {}
+    if not (group.needs_reverification or "pending_reverification" in delta or "evidence_no_longer_found" in delta):
+        return False
+    cleaned = {key: value for key, value in delta.items() if key not in ("pending_reverification", "evidence_no_longer_found")}
+    group.delta = cleaned
+    group.needs_reverification = False
+    group.basis_changed_at = None
+    return True
 
 
 def _audit(db: Session, *, action: str, process: InspectionProcess, user_id: int | None, object_id: str | None, details: dict[str, Any]) -> None:
@@ -127,6 +148,14 @@ def upsert_evidence_group(
         return group, True
 
     if existing.evidence_basis_hash == new_hash:
+        # The stored hash is the basis the row's values (and any inspector decision) were made on; a flagged row
+        # never advances it. Finding exactly that basis again therefore means whatever flagged the row -- a changed
+        # basis parked under `pending_reverification`, or `evidence_no_longer_found` -- no longer applies. Leaving
+        # the flag would let the next decision fold a stale pending value over the value the evidence shows.
+        if _clear_stale_flag(existing):
+            db.add(existing)
+            db.flush()
+            return existing, False
         return None, False
 
     has_decision = (
@@ -142,12 +171,19 @@ def upsert_evidence_group(
             "delta": fields.get("delta"),
         }
         prior_pending = (existing.delta or {}).get("pending_reverification") if isinstance(existing.delta, dict) else None
+        prior_hash = prior_pending.get("basis_hash") if isinstance(prior_pending, dict) else None
         already_flagged_for_this = (
             bool(existing.needs_reverification)
             and isinstance(prior_pending, dict)
-            and prior_pending.get("expected_value") == new_pending["expected_value"]
-            and prior_pending.get("actual_value") == new_pending["actual_value"]
-            and prior_pending.get("delta") == new_pending["delta"]
+            and (
+                prior_hash == new_hash
+                if prior_hash is not None
+                else (
+                    prior_pending.get("expected_value") == new_pending["expected_value"]
+                    and prior_pending.get("actual_value") == new_pending["actual_value"]
+                    and prior_pending.get("delta") == new_pending["delta"]
+                )
+            )
         )
         if already_flagged_for_this:
             # Same mismatch already on record (e.g. a full rerun re-derived the
@@ -155,7 +191,15 @@ def upsert_evidence_group(
             # flag, so don't re-write the row or spam another audit entry.
             return existing, False
         merged_delta = dict(existing.delta or {})
-        merged_delta["pending_reverification"] = {**new_pending, "computed_at": datetime.utcnow().isoformat()}
+        merged_delta["pending_reverification"] = {
+            **new_pending,
+            # What the inspector will actually be shown after re-deciding: the pending values are folded in together
+            # with the fragments they were computed from (`_apply_pending_reverification`), so the card never pairs
+            # new values with old citations and the next unchanged run recognises the basis as already reviewed.
+            "basis_hash": new_hash,
+            "fragments": _json_safe_specs(fragment_specs),
+            "computed_at": datetime.utcnow().isoformat(),
+        }
         existing.delta = merged_delta
         existing.needs_reverification = True
         existing.basis_changed_at = datetime.utcnow()

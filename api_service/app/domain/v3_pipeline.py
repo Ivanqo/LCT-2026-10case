@@ -705,6 +705,25 @@ def _apply_pending_reverification(db: Session, group: EvidenceGroup) -> bool:
     group.delta = pending.get("delta") if pending.get("delta") is not None else merged_delta
     group.needs_reverification = False
     group.basis_changed_at = None
+    parked = pending.get("fragments")
+    columns = set(EvidenceFragment.__table__.columns.keys()) - {"id", "evidence_group_id", "created_at"}
+    # Fragment specs the official producers park are complete rows (stage, bbox, context ...); the demo producer
+    # parks only fingerprints, which cannot rebuild a row -- for it the fragments stay as they were (documented lag).
+    rebuildable = isinstance(parked, list) and bool(parked) and all(
+        isinstance(spec, dict) and {"stage", "document_version_id"} <= set(spec) for spec in parked
+    )
+    if rebuildable:
+        for fragment in list(group.fragments):
+            db.delete(fragment)
+        db.flush()
+        for spec in parked:
+            db.add(EvidenceFragment(evidence_group_id=int(group.id), **{key: value for key, value in spec.items() if key in columns}))
+        db.flush()
+        db.expire(group, ["fragments"])
+    if pending.get("basis_hash"):
+        # The basis the reviewed values were computed from: an unchanged rerun must not flag it a second time.
+        group.evidence_basis_hash = str(pending["basis_hash"])
+        return True
     existing_fragments = (
         db.query(EvidenceFragment)
         .filter(EvidenceFragment.evidence_group_id == int(group.id))

@@ -531,10 +531,24 @@ def _align_predictions(gold: dict[str, Any], predictions: dict[str, Any]) -> dic
     id_map = {}
     matched = set()
     aligned = []
-    for row in predictions.get("findings") or []:
+    rows = list(predictions.get("findings") or [])
+    targets = []
+    for row in rows:
         target = by_key.get(_finding_key(row)) if _finding_key(row) else gold_by_id.get(str(row.get("id")))
-        target_id = str(target["id"]) if target else None
-        if target_id and target_id not in matched:
+        targets.append(str(target["id"]) if target else None)
+    # Several predictions on one gold key: the gold row is represented by the strongest claim (a violation beats a
+    # verified negative), then by id -- never by position in the list, or the same findings in another order would
+    # score differently. The others stay in the result as unmatched rows.
+    winner: dict[str, int] = {}
+    for index, target_id in enumerate(targets):
+        if target_id is None:
+            continue
+        rank = (not _is_predicted_violation(rows[index]), str(rows[index].get("id")), index)
+        if target_id not in winner or rank < (not _is_predicted_violation(rows[winner[target_id]]), str(rows[winner[target_id]].get("id")), winner[target_id]):
+            winner[target_id] = index
+    for index, row in enumerate(rows):
+        target_id = targets[index]
+        if target_id and winner.get(target_id) == index and target_id not in matched:
             id_map[str(row["id"])] = target_id
             matched.add(target_id)
             aligned.append({**row, "id": target_id})

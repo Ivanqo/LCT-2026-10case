@@ -80,6 +80,7 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
     quality_issues: dict[tuple[str, str, int], dict[str, Any]] = {}
     source_selection: dict[tuple[str, str], dict[str, Any]] = {}
     duplicate_of, dropped_files = _integrity_maps(payload)
+    group_keys: list[str] = []
     for group in payload.get("findings") or []:
         if not isinstance(group, dict):
             continue
@@ -127,6 +128,8 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
         item = evidence_group_to_submission_check(_canonical_evidence(effective_group, duplicate_of, dropped_files), context=context, code_style=style)
         if item.get("parameter_code"):
             checks.append(item)
+            group_keys.append(str(group.get("group_key") or ""))
+    _disambiguate_identifiers(checks, group_keys)
     return {
         "object_id": object_id,
         "checks": checks,
@@ -141,6 +144,26 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
             **{key: context.get(key) for key in VERSION_CONTEXT_KEYS},
         },
     }
+
+
+def _disambiguate_identifiers(checks: list[dict[str, Any]], group_keys: list[str]) -> None:
+    """`finding_id` (object + code + location) and `evidence_group_id` (+ cited pages) are hashes of what a check says,
+    not of which evidence group produced it. Two groups of one parameter at one location -- a page-quality warning
+    next to the file-registry or fallback row, two table discrepancies of one room number, ... -- therefore shared
+    both ids, and a consumer that indexes checks by either silently kept one of them (final-round Step 1, H1/H5).
+    On a collision only, every row but the one whose group key sorts first gets a suffix from its group key (stable
+    while the evidence changes). A package without collisions exports byte-identically to before."""
+    for field in ("finding_id", "evidence_group_id"):
+        members: dict[str, list[int]] = {}
+        for index, check in enumerate(checks):
+            if check.get(field):
+                members.setdefault(check[field], []).append(index)
+        for identifier, indexes in members.items():
+            if len(indexes) < 2:
+                continue
+            ordered = sorted(indexes, key=lambda index: (group_keys[index], index))
+            for index in ordered[1:]:
+                checks[index][field] = f"{identifier}-{_short_hash(identifier, group_keys[index])[:8]}"
 
 
 def _integrity_maps(payload: dict[str, Any]) -> tuple[dict[str, str], set[str]]:

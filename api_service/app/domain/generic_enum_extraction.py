@@ -107,6 +107,9 @@ class EnumObservation:
     # cross_stage_localization.resolve_stage_round) -- None unless
     # CASE10_LLM_VERIFIER_ENABLED; inspector-facing evidence only.
     llm_verification: dict | None = None
+    # Other distinct values the same stage's candidate pages stated (see cross_stage_localization.stage_alternatives);
+    # None when there is no competing value. Never part of the compared value.
+    alternatives: list | None = None
 
 
 def extract_enum_observation_for_page(

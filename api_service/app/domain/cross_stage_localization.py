@@ -100,6 +100,7 @@ from ..db.models import DocumentVersion, SourceFragment
 from . import llm_candidate_verifier
 from .anchor_search import TableFingerprint, fingerprint_similarity
 from .dataset_sources import extract_original_pages
+from .document_order import document_order_key
 from .semantic_similarity import SEMANTIC_MIN_SIMILARITY, similarity as semantic_text_similarity
 
 # Match-and-fingerprint callback each mechanism supplies: given a rendered
@@ -131,8 +132,16 @@ MatchFn = Callable[
 StageEntry = tuple[Hashable, list[SourceFragment], DocumentVersion | None, TableFingerprint | None, Any, str | None]
 
 
-def _confidence_key(fragment: SourceFragment) -> tuple[float, int, int]:
-    return (-(fragment.confidence or 0), fragment.document_version_id, fragment.page or 0)
+def _confidence_key(fragment: SourceFragment, by_id: dict[int, DocumentVersion]) -> tuple:
+    """Confidence first; ties are broken by the document's CONTENT order (file id, hash), not by its database id --
+    the id is the position in the package's file list, so ranking by it made the chosen value depend on input
+    order (final-round Step 1, H2). The fragment id only separates rows on one page of one document."""
+    return (
+        -(fragment.confidence or 0),
+        document_order_key(by_id.get(fragment.document_version_id), fragment.document_version_id),
+        fragment.page or 0,
+        getattr(fragment, "id", None) or 0,
+    )
 
 
 def narrow_candidate_fragments(
@@ -147,7 +156,7 @@ def narrow_candidate_fragments(
     ahead of the rest (each half keeping its own confidence order), capped
     at `limit`. With no reference document/discipline, this is exactly the
     pre-existing `sorted(...)[:limit]` selection, unchanged."""
-    ranked = sorted(fragments, key=_confidence_key)
+    ranked = sorted(fragments, key=lambda fragment: _confidence_key(fragment, by_id))
     reference_discipline = getattr(reference_document, "discipline", None) if reference_document is not None else None
     if not reference_discipline:
         return ranked[:limit]
@@ -256,6 +265,57 @@ def pick_best_candidate(
     return survivors[best_index]
 
 
+def _value_identity(payload: Any) -> str | None:
+    """What makes two candidates "the same value" -- the mechanism's own normalized value (a number, an enum class,
+    the components of a compound, a row count), never the printed spelling."""
+    for attribute in ("canonical_value", "normalized_value", "row_count"):
+        value = getattr(payload, attribute, None)
+        if value is not None:
+            return str(value)
+    values = getattr(payload, "normalized_values", None)
+    if values is not None:
+        return "|".join(str(value) for value in values)
+    return None
+
+
+MAX_ALTERNATIVES = 5
+
+
+def stage_alternatives(candidates: list[StageCandidate], best: StageCandidate) -> list[dict[str, Any]]:
+    """The other distinct values this stage's candidate pages stated, when `best` was chosen among competing ones.
+
+    `resolve_stage_round` keeps ONE value per parameter and stage; before this, every other page that parsed to a
+    different value was dropped without a trace (final-round Step 1, H2), so a reviewer could never learn it
+    existed. Only candidates the ranking itself would have accepted count: semantically rejected pages and
+    flagged ones (empty placeholder, wrong normative document) are known-wrong readings, not alternatives. Equal
+    values on several pages are corroboration, not ambiguity. One entry per distinct value (its best-ranked
+    page), in ranking order -- which is content-derived, so the list is the same for any input order."""
+    chosen = _value_identity(best.payload)
+    seen = {chosen}
+    out: list[dict[str, Any]] = []
+    for candidate in candidates:
+        if candidate is best:
+            continue
+        if candidate.semantic_score is not None and candidate.semantic_score < SEMANTIC_MIN_SIMILARITY:
+            continue
+        if candidate.is_empty_value or candidate.normative_mismatch:
+            continue
+        identity = _value_identity(candidate.payload)
+        if identity is None or identity in seen:
+            continue
+        seen.add(identity)
+        payload = candidate.payload
+        out.append({
+            "value": str(getattr(payload, "display_value", None) or getattr(payload, "value", None) or identity),
+            "normalized_value": identity,
+            "file_id": getattr(candidate.document, "dataset_file_id", None) or getattr(candidate.document, "filename", None),
+            "page": candidate.page,
+        })
+        if len(out) >= MAX_ALTERNATIVES:
+            break
+    return out
+
+
 def resolve_stage_round(
     *,
     entries: list[StageEntry],
@@ -343,5 +403,8 @@ def resolve_stage_round(
         if verifier_enabled:
             best, _verified = llm_candidate_verifier.review_pick(candidates, best, extras.get(key))
         if best is not None:
+            alternatives = stage_alternatives(candidates, best)
+            if alternatives and hasattr(best.payload, "alternatives"):
+                best.payload.alternatives = alternatives
             result[key] = best
     return result

@@ -248,6 +248,23 @@ def criterion(variant: str, p: dict[str, Any], g: dict[str, Any]) -> bool | None
 # ------------------------------------------------------------------ scoring
 
 
+def _maximum_matching(edges: list[list[str]]) -> int:
+    """Size of a maximum one-to-one matching between predictions (each with the gold ids it hits) and gold rows."""
+    owner: dict[str, int] = {}
+
+    def augment(index: int, seen: set[str]) -> bool:
+        for gold_id in edges[index]:
+            if gold_id in seen:
+                continue
+            seen.add(gold_id)
+            if gold_id not in owner or augment(owner[gold_id], seen):
+                owner[gold_id] = index
+                return True
+        return False
+
+    return sum(1 for index in range(len(edges)) if augment(index, set()))
+
+
 def score_variant(golds: list[dict[str, Any]], preds: list[dict[str, Any]], variant: str = PRIMARY_VARIANT) -> dict[str, Any]:
     positives = [g for g in golds if g["label"] == POSITIVE]
     negatives = [g for g in golds if g["label"] == NEGATIVE]
@@ -257,11 +274,12 @@ def score_variant(golds: list[dict[str, Any]], preds: list[dict[str, Any]], vari
     evaluable_ids = {g["gold_id"] for g in evaluable}
     found: set[str] = set()
     outcome = Counter()
+    hit_edges: list[list[str]] = []
     for p in pos_preds:
         results = [(criterion(variant, p, g), g) for g in positives]
         hits = [g for result, g in results if result is True]
         if hits:
-            outcome["tp"] += 1
+            hit_edges.append(sorted(g["gold_id"] for g in hits))
             found.update(g["gold_id"] for g in hits)
         elif any(result is None and touches(p, g) for result, g in results):
             outcome["not_evaluable"] += 1
@@ -271,6 +289,14 @@ def score_variant(golds: list[dict[str, Any]], preds: list[dict[str, Any]], vari
             outcome["fp_labelled_negative_key"] += 1
         else:
             outcome["fp_unlabelled"] += 1
+    # One finding is one true positive. Predictions that hit a gold row some other prediction already accounts for
+    # (the same finding exported twice) neither add a TP nor count as a FP: the matching below is one-to-one and its
+    # SIZE does not depend on prediction order (recall still counts every gold row any prediction hit).
+    matched = _maximum_matching(hit_edges)
+    if matched:
+        outcome["tp"] = matched
+    if len(hit_edges) > matched:
+        outcome["duplicate_hits"] = len(hit_edges) - matched
     fp_closed = outcome["fp_labelled_positive_key"] + outcome["fp_labelled_negative_key"]
     recall = wilson(len(found & evaluable_ids), len(evaluable))
     precision_closed = wilson(outcome["tp"], outcome["tp"] + fp_closed)

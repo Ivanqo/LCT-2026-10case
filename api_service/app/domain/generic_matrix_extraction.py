@@ -154,6 +154,9 @@ class GenericObservation:
     # Word-level facts the comparability gate needs and only extraction can know (unit next to the number,
     # see value_plausibility.py / comparison_gate.py). Never part of the exported value.
     gate_facts: dict | None = None
+    # Other distinct values the same stage's candidate pages stated (see cross_stage_localization.stage_alternatives);
+    # None when there is no competing value. Never part of the compared value.
+    alternatives: list | None = None
 
 
 def extract_generic_observation_for_page(
