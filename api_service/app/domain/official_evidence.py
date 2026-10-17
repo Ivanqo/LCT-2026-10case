@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from ..db.models import DocumentVersion, EvidenceFragment, InspectionProcess, Param, SourceFragment
 from . import trigger_policy as tp
 from . import file_registry
+from . import page_quality_cache
 from .anchor_search import GENERIC_SITE_LOCATION
 from .comparison_gate import REASON_MISSING_DISCIPLINE, GateContext, GateDecision
 from .dataset_sources import normalized_original_geometry
@@ -117,6 +118,12 @@ def create_official_evidence_groups(
     low_quality_by_code: dict[str, list[dict]] = defaultdict(list)
     if by_id:
         fragments = db.query(SourceFragment).filter(SourceFragment.document_version_id.in_(by_id)).all()
+        # Assess the candidate pages document by document so each large PDF is read once (the original-bytes
+        # cache holds only a few documents); the page assessment is a pure function of (document, page).
+        for doc_id, page in sorted({(int(f.document_version_id), int(f.page)) for f in fragments
+                                    if f.page and int(f.document_version_id) in by_id and inference_annotation(f)
+                                    and (f.metadata_json or {}).get("code")}):
+            _quality_for_page(by_id[doc_id], page)
         for fragment in fragments:
             if inference_annotation(fragment):
                 code = str((fragment.metadata_json or {}).get("code") or "")
@@ -377,6 +384,11 @@ def _quality_for_page(document, page_number: int) -> dict:
     cache_key = (relative, sha256, int(page_number))
     if cache_key in _QUALITY_PAGE_CACHE:
         return _QUALITY_PAGE_CACHE[cache_key]
+    ocr_engine, ocr_lang = str(dataset_sources.settings.OCR_ENGINE), str(dataset_sources.settings.OCR_LANG)
+    cached = page_quality_cache.load(sha256, int(page_number), ocr_engine, ocr_lang)
+    if cached is not None:
+        _QUALITY_PAGE_CACHE[cache_key] = cached
+        return cached
 
     reasons: list[str] = []
     result: dict[str, Any] = {"page": int(page_number), "rotation": 0, "ocr_confidence": None, "reasons": reasons}
@@ -414,38 +426,74 @@ def _quality_for_page(document, page_number: int) -> dict:
                         reasons.append("BROKEN_TEXT_LAYER_LOW_OCR_CONFIDENCE" if broken_text_layer else "NO_TEXT_LAYER_LOW_OCR_CONFIDENCE")
 
                 word_rects = [fitz.Rect(word[:4]) for word in words if len(word) >= 5 and str(word[4]).strip()]
-                for annotation in page.annots() or ():
-                    annotation_name = str((annotation.type or (None, ""))[1]).casefold()
-                    if "stamp" not in annotation_name:
-                        continue
-                    if any(annotation.rect.intersects(rect) for rect in word_rects):
-                        reasons.append("STAMP_OVER_TEXT")
-                        break
+                if _stamp_annotation_over_text(page, word_rects):
+                    reasons.append("STAMP_OVER_TEXT")
 
                 page_area = max(1.0, float(page.rect.width) * float(page.rect.height))
                 if word_rects:
-                    for image in page.get_images(full=True):
-                        xref = int(image[0])
-                        for image_rect in page.get_image_rects(xref):
-                            if image_rect.is_empty or image_rect.get_area() / page_area >= 0.35:
-                                continue
-                            overlaps = 0
-                            for word_rect in word_rects:
-                                intersection = image_rect & word_rect
-                                if not intersection.is_empty and intersection.get_area() / max(1.0, word_rect.get_area()) >= 0.3:
-                                    overlaps += 1
-                            if overlaps >= 3:
-                                reasons.append("IMAGE_STAMP_OVER_TEXT")
-                                break
-                        if "IMAGE_STAMP_OVER_TEXT" in reasons:
-                            break
+                    if _image_stamp_over_text(page, word_rects, page_area):
+                        reasons.append("IMAGE_STAMP_OVER_TEXT")
                 result["quality_status"] = "LOW_QUALITY" if reasons else "OK"
                 result["reasons"] = sorted(set(reasons))
     except Exception as exc:
         result["quality_status"] = "LOW_QUALITY"
         result["reasons"] = [f"PAGE_QUALITY_READ_FAILED:{type(exc).__name__}"]
+    page_quality_cache.store(sha256, int(page_number), ocr_engine, ocr_lang, result)
     _QUALITY_PAGE_CACHE[cache_key] = result
     return result
+
+
+def _stamp_annotation_over_text(page, word_rects) -> bool:
+    """True when a Stamp annotation overlaps any word. `annot_xrefs()` lists the annotation types without loading
+    them, so only Stamp annotations are parsed (a drawing sheet can carry thousands of comment annotations)."""
+    import fitz
+
+    stamp_type = int(fitz.PDF_ANNOT_STAMP)
+    for entry in page.annot_xrefs() or ():
+        if int(entry[1]) != stamp_type:
+            continue
+        annotation = page.load_annot(int(entry[0]))
+        if annotation is None:
+            continue
+        annotation_name = str((annotation.type or (None, ""))[1]).casefold()
+        if "stamp" not in annotation_name:
+            continue
+        if any(annotation.rect.intersects(rect) for rect in word_rects):
+            return True
+    return False
+
+
+def _image_stamp_over_text(page, word_rects, page_area: float, chunk: int = 128) -> bool:
+    """True when one placed image (below 35% of the page) covers >= 3 words, a word counting as covered when the
+    intersection is non-empty and >= 30% of the word area. `get_image_info` returns each placement once; the former
+    `get_image_rects(xref)` matched placements by pixel digest and repeated them per duplicate xref (millions of
+    rectangles on drawing sheets with thousands of identical tiles)."""
+    import numpy as np
+
+    images = np.array([info["bbox"] for info in page.get_image_info(xrefs=True) if int(info.get("xref") or 0) > 0],
+                      dtype=np.float64).reshape(-1, 4)
+    if not len(images):
+        return False
+    image_area = (images[:, 2] - images[:, 0]) * (images[:, 3] - images[:, 1])
+    images = images[(images[:, 0] < images[:, 2]) & (images[:, 1] < images[:, 3]) & (image_area / page_area < 0.35)]
+    if not len(images):
+        return False
+    words = np.array([(rect.x0, rect.y0, rect.x1, rect.y1) for rect in word_rects], dtype=np.float64)
+    word_area = (words[:, 2] - words[:, 0]) * (words[:, 3] - words[:, 1])
+    word_area = np.maximum(1.0, word_area)
+    non_empty = (words[:, 0] < words[:, 2]) & (words[:, 1] < words[:, 3])
+    words, word_area = words[non_empty], word_area[non_empty]
+    if not len(words):
+        return False
+    for start in range(0, len(images), chunk):
+        block = images[start:start + chunk, None, :]
+        width = np.minimum(block[..., 2], words[:, 2]) - np.maximum(block[..., 0], words[:, 0])
+        height = np.minimum(block[..., 3], words[:, 3]) - np.maximum(block[..., 1], words[:, 1])
+        area = np.where((width > 0) & (height > 0), width * height, 0.0)
+        covered = (area > 0) & (area / word_area >= 0.3)
+        if bool((covered.sum(axis=1) >= 3).any()):
+            return True
+    return False
 
 
 def _mark_source_fragment_low_quality(db, fragment: SourceFragment, quality: dict) -> None:

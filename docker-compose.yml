@@ -46,6 +46,7 @@ services:
       CASE10_LIVE_TAGGER_WORKERS: ${CASE10_LIVE_TAGGER_WORKERS:-0}
       CASE10_LIVE_TAGGER_MAX_WORKERS: ${CASE10_LIVE_TAGGER_MAX_WORKERS:-24}
       CASE10_LIVE_TAGGER_CACHE_ENABLED: ${CASE10_LIVE_TAGGER_CACHE_ENABLED:-1}
+      CASE10_QUALITY_CACHE_DIR: ${CASE10_QUALITY_CACHE_DIR:-/data/live_tagger_cache/quality}
       # ТЗ 9.6 (Low priority): outbound sync to ИАИС "РиН". Empty by default --
       # no real target is deployed for this hackathon, which the client treats
       # as "sync disabled" (see app/domain/iais_rin_sync.py).
@@ -114,6 +115,7 @@ services:
       CASE10_LIVE_TAGGER_WORKERS: ${CASE10_LIVE_TAGGER_WORKERS:-0}
       CASE10_LIVE_TAGGER_MAX_WORKERS: ${CASE10_LIVE_TAGGER_MAX_WORKERS:-24}
       CASE10_LIVE_TAGGER_CACHE_ENABLED: ${CASE10_LIVE_TAGGER_CACHE_ENABLED:-1}
+      CASE10_QUALITY_CACHE_DIR: ${CASE10_QUALITY_CACHE_DIR:-/data/live_tagger_cache/quality}
       CASE10_WORKER_RECONNECT_SECONDS: ${CASE10_WORKER_RECONNECT_SECONDS:-5}
     volumes:
       - api_data:/data

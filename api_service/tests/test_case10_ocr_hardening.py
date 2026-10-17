@@ -279,6 +279,9 @@ class PageQualityOcrFailureTests(unittest.TestCase):
             def annots(self):
                 return []
 
+            def annot_xrefs(self):
+                return []
+
         class FakePdf:
             def __len__(self):
                 return 1
