@@ -5,6 +5,7 @@ from collections import defaultdict
 from collections.abc import Callable
 from decimal import Decimal
 import hashlib
+import json
 
 from sqlalchemy.orm import Session
 
@@ -239,6 +240,13 @@ def create_official_evidence_groups(
             if key:
                 param_touched.add(key)
             continue
+        # Room identity (expert review, Step A): a duplicated room key or an ambiguous room / system link
+        # is shown as a clarification request, never as a verdict and never as a silently picked room.
+        for room_key in _upsert_room_identity_groups(
+            db, process, param, (extraction_context.get("room_identity") or {}).get("issues") or [],
+            documents=extraction_context["documents"], user_id=user_id,
+        ):
+            param_touched.add(room_key)
         rule_keys = _upsert_rule_groups(
             db, process, param, rule_observations.get(param.code, []),
             documents=extraction_context["documents"],
@@ -606,6 +614,69 @@ def _upsert_quality_warning_group(db, process, param, issues: list[dict], *, blo
             db.add(EvidenceFragment(evidence_group_id=int(group.id), **spec))
         db.flush()
     return group_key
+
+
+def _upsert_room_identity_groups(db, process, param, issues: list[dict], *, documents: dict,
+                                 user_id: int | None = None) -> list[str]:
+    """One CLARIFICATION_REQUIRED group per unresolved room identity / linkage issue of this parameter.
+
+    Reasons: DUPLICATE_ROOM_KEY (one building+floor+number described twice), AMBIGUOUS_ROOM_MATCH (the
+    counterpart room cannot be chosen), AMBIGUOUS_SYSTEM_LINK (a system label sits between rooms).
+    """
+    keys: list[str] = []
+    stage_internal = {"PD": "project", "RD": "working", "ID": "as_built"}
+    for issue in issues:
+        if issue.get("code") != param.code:
+            continue
+        digest = hashlib.sha256(json.dumps(
+            [issue.get("reason"), issue.get("location"), issue.get("stage"),
+             [(s.get("stage"), s.get("document_id"), s.get("page"), s.get("systems")) for s in issue.get("sources") or []]],
+            sort_keys=True, default=str, ensure_ascii=False).encode("utf-8")).hexdigest()[:20]
+        group_key = f"room_identity:{digest}"
+        fragment_specs = []
+        for source in issue.get("sources") or []:
+            document = documents.get(source.get("document_id"))
+            bbox_pdf, width, height = source.get("bbox_pdf"), source.get("page_width"), source.get("page_height")
+            if document is None or not source.get("page") or not bbox_pdf or not width or not height:
+                continue
+            bbox = [max(0.0, min(1.0, bbox_pdf[0] / width)), max(0.0, min(1.0, bbox_pdf[1] / height)),
+                    max(0.0, min(1.0, bbox_pdf[2] / width)), max(0.0, min(1.0, bbox_pdf[3] / height))]
+            fragment_specs.append({
+                "document_version_id": int(document.id), "source_fragment_id": None,
+                "dataset_file_id": document.dataset_file_id,
+                "file_sha256": document.file_hash or document.content_hash,
+                "stage": stage_internal.get(str(source.get("stage")), document.doc_stage),
+                "discipline": document.discipline, "document_code": document.document_code,
+                "revision": document.revision, "approval_status": document.approval_status,
+                "page": int(source["page"]), "bbox": bbox, "bbox_pdf": bbox_pdf,
+                "page_width": float(width), "page_height": float(height),
+                "polygon": [[bbox[0], bbox[1]], [bbox[2], bbox[1]], [bbox[2], bbox[3]], [bbox[0], bbox[3]]],
+                "extracted_value": ",".join(source.get("systems") or []) or None,
+                "role": "context",
+                "context": f"{issue.get('reason')}: {issue.get('text')}",
+                "extractor": "room_identity", "confidence": None,
+            })
+        group, should_write = upsert_evidence_group(
+            db, process, param, group_key,
+            fields={
+                "matrix_version": process.matrix_version, "model_version": "room-identity-v1",
+                "dataset_version": process.dataset_version, "comparison_scenario": process.upload_scenario,
+                "completeness_status": "PARTIALLY_LOADED", "comparability_status": "NOT_COMPARABLE",
+                "finding_status": "CLARIFICATION_REQUIRED", "review_priority": param.review_priority,
+                "expected_value": None, "actual_value": None,
+                "delta": {"source": "room_identity", "reason": "CLARIFICATION_REQUIRED",
+                          "identity_reason": issue.get("reason"), "location": issue.get("location"),
+                          "text": issue.get("text"), "wall_check": "not_evaluated",
+                          "unresolved_systems": issue.get("unresolved_systems") or []},
+            },
+            fragment_specs=fragment_specs, user_id=user_id,
+        )
+        if group is not None and should_write:
+            for spec in fragment_specs:
+                db.add(EvidenceFragment(evidence_group_id=int(group.id), **spec))
+            db.flush()
+        keys.append(group_key)
+    return keys
 
 
 def _upsert_selection_clarification_group(db, process, param, block: dict, *, user_id: int | None = None) -> str | None:

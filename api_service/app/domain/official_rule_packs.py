@@ -31,12 +31,19 @@ from .drawing_classifier import (
     registry_excludes_ventilation,
 )
 from .room_drawing_compare import (
+    AMBIGUITY_MARGIN,
+    UNMEASURED_CONFIDENCE,
+    WALL_CHECK_STATUS,
     compare_project_to_working,
+    detect_sheet_context,
+    excluded_zone_rooms,
     extract_room_words,
+    group_by_identity,
+    keys_compatible,
+    match_room_rows,
     normalize_system_label,
-    room_system_rows,
-    room_zone_for_location,
-    room_zones_for_snapshot,
+    room_system_links,
+    room_zone_index,
     warm_floor_rows,
 )
 from .anchor_vocab import anchor_phrases
@@ -65,6 +72,10 @@ class RuleObservation:
     extractor: str
     context: str
     source_fragment: SourceFragment | None = None
+    # `confidence` stays the single legacy number (minimum of the measured ones);
+    # these keep recognition and linkage apart (None = not measured).
+    text_confidence: float | None = None
+    link_confidence: float | None = None
 
 
 # See official_evidence.py's identically-named `_INFERENCE_SOURCE_SYSTEMS`
@@ -354,14 +365,15 @@ def extract_official_rule_observations(
                 )
             )
 
+    room_identity = new_room_identity_report()
     for code in ("IOS4-078", "IOS4-079"):
         if code not in active_codes:
             continue
-        output[code].extend(_extract_ventilation_observations(code, documents, candidates, snapshots))
+        output[code].extend(_extract_ventilation_observations(code, documents, candidates, snapshots, room_identity))
 
     warm_floor_status: dict[str, Any] = {"code": "FREE_SEARCH", "project_rooms": 0, "compared_rooms": 0, "rooms": []}
     if active_codes & {"IOS4-078", "IOS4-079"}:
-        floor_observations, warm_floor_status = _extract_warm_floor_observations(documents, snapshots)
+        floor_observations, warm_floor_status = _extract_warm_floor_observations(documents, snapshots, room_identity)
         if floor_observations:
             output["FREE_SEARCH"] = _deduplicate(floor_observations)
 
@@ -371,6 +383,7 @@ def extract_official_rule_observations(
         "documents": documents,
         "scanned_pages": set(snapshots.keys()),
         "warm_floor_comparison": warm_floor_status,
+        "room_identity": room_identity,
         "drawing_scan_enabled": _drawing_scan_enabled(),
         "drawing_text_pages_scanned": drawing_text_pages_scanned,
     }
@@ -569,13 +582,98 @@ def _prioritized_pages(pages: dict[int, list[SourceFragment]], limit: int = 80) 
     return [page for page, _rows in sorted(pages.items(), key=priority)[:limit]]
 
 
+# Decision semantics per code (see the trigger texts in trigger_policy.py):
+#  IOS4-078 "Уменьшение площади сечения воздуховода в РД" -> a reduction: the
+#           comparison decides on systems that disappeared; additions are not a violation.
+#  IOS4-079 "Подмена установок на аналоги ..." -> a substitution: any change of the
+#           installation set is relevant, so missing and added are both reported.
+# In both modes the added and the missing systems are kept apart in the report.
+ROOM_COMPARISON_MODE = {"IOS4-078": "disappearance", "IOS4-079": "composition"}
+
+
+def new_room_identity_report() -> dict[str, Any]:
+    return {
+        "comparison_mode": dict(ROOM_COMPARISON_MODE),
+        "wall_check": WALL_CHECK_STATUS,
+        "issues": [], "added_systems": [], "ambiguous_links": [], "excluded_zone_rooms": [],
+        "pairs_compared": 0,
+    }
+
+
+def _location_labels(keys: Iterable[tuple[str, str, str, str]]) -> dict[tuple[str, str, str, str], str]:
+    """Observation location per room key: the printed number, extended only when
+    the same number belongs to several rooms (so groups downstream never collide)."""
+    keys = sorted(set(keys))
+    count: dict[str, int] = defaultdict(int)
+    for key in keys:
+        count[key[3]] += 1
+    labels = {}
+    for key in keys:
+        building, floor, scope, number = key
+        if count[number] == 1:
+            labels[key] = number
+            continue
+        parts = []
+        if building:
+            parts.append(f"корпус {building}")
+        if floor:
+            parts.append(f"этаж {floor}")
+        if not parts:
+            document_id, _, page = scope.partition("|")
+            parts.append(f"док. {document_id}, лист {page}" if document_id else f"лист {page}")
+        labels[key] = f"{number} ({', '.join(parts)})"
+    return labels
+
+
+def _issue_source(stage: str, document: DocumentVersion | None, row: dict[str, Any]) -> dict[str, Any]:
+    snapshot = row.get("snapshot") or {}
+    return {
+        "stage": stage,
+        "document_id": int(document.id) if document is not None else None,
+        "dataset_file_id": getattr(document, "dataset_file_id", None),
+        "page": int(row.get("sheet_page") or snapshot.get("page") or 0) or None,
+        "bbox_pdf": row.get("bbox_pdf"),
+        "page_width": snapshot.get("width"), "page_height": snapshot.get("height"),
+        "systems": list(row.get("systems") or ()),
+        "floor": row.get("floor"), "building": row.get("building"),
+    }
+
+
+def _room_issue(code, reason, location, sources, text, **extra) -> dict[str, Any]:
+    return {"code": code, "status": "CLARIFICATION_REQUIRED", "reason": reason, "location": location,
+            "sources": sources, "text": text, **extra}
+
+
+# Minimum number of shared room numbers (and the factor over the runner-up) for a project sheet to be
+# preferred over another project sheet that also carries the same room number but no determinable floor.
+_SHEET_OVERLAP_MIN = 3
+_SHEET_OVERLAP_FACTOR = 2.0
+
+
+def _sheet_room_numbers(snapshot: dict[str, Any]) -> set[str]:
+    """Room numbers of a sheet; tokens repeated more than twice are dimensions/axes, not rooms."""
+    counts: dict[str, int] = defaultdict(int)
+    for room in extract_room_words(snapshot):
+        counts[room["room"]] += 1
+    return {number for number, count in counts.items() if count <= 2}
+
+
+def _floors_known_equal(left: dict[str, Any], right: dict[str, Any]) -> bool:
+    return bool(left.get("floor")) and left.get("floor") == right.get("floor") and (
+        (left.get("building") or "") == (right.get("building") or ""))
+
+
 def _extract_ventilation_observations(
     code: str,
     documents: dict[int, DocumentVersion],
     candidates: dict[tuple[int, str], dict[int, list[SourceFragment]]],
     snapshots: dict[tuple[int, int], dict],
+    identity_report: dict[str, Any] | None = None,
 ) -> list[RuleObservation]:
-    expected_rows: dict[str, tuple[dict[str, Any], DocumentVersion, SourceFragment | None]] = {}
+    report = identity_report if identity_report is not None else new_room_identity_report()
+    mode = ROOM_COMPARISON_MODE.get(code, "disappearance")
+    pd_rows: list[dict[str, Any]] = []
+    pd_source: dict[int, tuple[DocumentVersion, SourceFragment | None]] = {}
     for (document_id, candidate_code), pages in candidates.items():
         document = documents[document_id]
         if candidate_code != code or effective_dataset_stage(document) != "PD":
@@ -584,55 +682,189 @@ def _extract_ventilation_observations(
             snapshot = snapshots.get((document_id, page_number))
             if not snapshot or not _is_relevant_pd_ventilation_sheet(code, snapshot, document):
                 continue
-            rows = _pd_exhaust_room_rows(snapshot) if code == "IOS4-078" else _pd_supply_room_rows(snapshot)
-            for row in rows:
-                source_fragment = _best_fragment(pages.get(page_number, []))
-                previous = expected_rows.get(row["location"])
-                if previous is None or row["confidence"] > previous[0]["confidence"]:
-                    expected_rows[row["location"]] = (row, document, source_fragment)
+            links = _pd_exhaust_room_links(snapshot) if code == "IOS4-078" else _pd_supply_room_links(snapshot)
+            source_fragment = _best_fragment(pages.get(page_number, []))
+            for row in links["rows"]:
+                row["sheet"] = str(document_id)
+                pd_rows.append(row)
+                pd_source[id(row)] = (document, source_fragment)
+            for item in links["ambiguous"]:
+                report["ambiguous_links"].append({"code": code, "stage": "PD", "document_id": document_id,
+                                                  "page": page_number, **{k: v for k, v in item.items() if k != "bbox"}})
+            if links["excluded_zone_rooms"]:
+                report["excluded_zone_rooms"].append({"code": code, "stage": "PD", "document_id": document_id,
+                                                      "page": page_number, "rooms": links["excluded_zone_rooms"]})
 
-    if not expected_rows:
+    if not pd_rows:
+        return []
+
+    pd_groups = group_by_identity(pd_rows)
+    labels = _location_labels(group["key"] for group in pd_groups)   # for issues; observations get their own labels
+    expected: dict[tuple[str, str, str, str], tuple[dict[str, Any], DocumentVersion, SourceFragment | None]] = {}
+    for group in pd_groups:
+        first_row = group["records"][0]
+        if group["conflict"]:
+            report["issues"].append(_room_issue(
+                code, "DUPLICATE_ROOM_KEY", labels[group["key"]],
+                [_issue_source("PD", pd_source[id(r)][0], r) for r in group["records"]],
+                f"В ПД помещение {first_row['location']} с одним и тем же ключом (корпус, этаж, номер) "
+                "описано разными наборами систем; сравнение не выполнялось.",
+                stage="PD", building=group["key"][0], floor=group["key"][1],
+            ))
+            continue
+        row = group["row"]
+        document, source_fragment = pd_source[id(row)]
+        expected[group["key"]] = (row, document, source_fragment)
+
+    if not expected:
         return []
 
     rd_pages = []
-    expected_locations = set(expected_rows)
-    project_signatures = [value[0] for value in expected_rows.values()]
+    expected_numbers = {key[3] for key in expected}
+    project_signatures = [value[0] for value in expected.values()]
     for (document_id, page_number), snapshot in snapshots.items():
         document = documents[document_id]
         if effective_dataset_stage(document) != "RD" or not _is_rd_ventilation_drawing_document(code, document, snapshot):
             continue
-        room_words = extract_room_words(snapshot)
-        locations = {room["room"] for room in room_words}
-        overlap = locations & expected_locations
+        zones = room_zone_index(snapshot)
+        overlap = {zone["location"] for zone in zones} & expected_numbers
         if not overlap:
             continue
-        working_signatures = _pd_exhaust_room_rows(snapshot) if code == "IOS4-078" else _pd_supply_room_rows(snapshot)
-        changed_rooms = {
-            row["location"] for row in compare_project_to_working(project_signatures, working_signatures)
-        }
+        links = _pd_exhaust_room_links(snapshot) if code == "IOS4-078" else _pd_supply_room_links(snapshot)
+        for row in links["rows"]:
+            row["sheet"] = str(document_id)
+        for zone in zones:
+            zone["sheet"] = str(document_id)
+        entries = compare_project_to_working(project_signatures, links["rows"], mode="composition")
+        changed_rooms = {entry["location"] for entry in entries
+                         if entry["status"] in {"MISSING", "ADDED", "MISSING_AND_ADDED"}}
         classification = classify_ventilation_sheet(snapshot, document)
-        score = len(overlap) * 100 + len(changed_rooms & overlap) * 40 + (classification.confidence if classification else 0) * 10 + min(len(locations), 50)
-        working_by_location = {row["location"]: row for row in working_signatures}
-        zones_by_location = room_zones_for_snapshot(snapshot)
-        rd_pages.append((score, document, snapshot, room_words, working_by_location, zones_by_location))
+        locations = {zone["location"] for zone in zones}
+        score = (len(overlap) * 100 + len(changed_rooms & overlap) * 40
+                 + (classification.confidence if classification else 0) * 10 + min(len(locations), 50))
+        rd_pages.append({"score": score, "document": document, "snapshot": snapshot, "zones": zones,
+                         "native": links["rows"], "links": links})
+        for item in links["ambiguous"]:
+            report["ambiguous_links"].append({"code": code, "stage": "RD", "document_id": document_id,
+                                              "page": page_number, **{k: v for k, v in item.items() if k != "bbox"}})
+        if links["excluded_zone_rooms"]:
+            report["excluded_zone_rooms"].append({"code": code, "stage": "RD", "document_id": document_id,
+                                                  "page": page_number, "rooms": links["excluded_zone_rooms"]})
 
+    # Pass 1: find, for every project room, the working sheet/room it can be compared with.
+    plans: dict[tuple[str, str, str, str], dict[str, Any]] = {}
+    for key in sorted(expected):
+        row, document, _source_fragment = expected[key]
+        number = key[3]
+        plan: dict[str, Any] = {"state": "go"}
+        plans[key] = plan
+        page_matches = []
+        for page in rd_pages:
+            same_number = [zone for zone in page["zones"] if zone["location"] == number and keys_compatible(row, zone)]
+            if same_number:
+                page_matches.append((page, same_number))
+        if not page_matches:
+            plan["state"] = "no_rd"
+            continue
+        known_places = {(z.get("building") or "", z.get("floor") or "") for _p, zs in page_matches for z in zs}
+        if (not key[1] or not key[0]) and len({place for place in known_places if place[1] or place[0]}) > 1:
+            report["issues"].append(_room_issue(
+                code, "AMBIGUOUS_ROOM_MATCH", labels[key],
+                [_issue_source("PD", document, row)] + [
+                    _issue_source("RD", page["document"], zs[0]) for page, zs in page_matches],
+                f"Помещение {number} в ПД без определённого этажа/корпуса совпадает по номеру с помещениями "
+                "разных этажей в РД; соответствие не выбиралось.",
+                stage="RD",
+            ))
+            plan["state"] = "issue"
+            continue
+        selected_page, room_zones = max(
+            page_matches,
+            key=lambda item: (item[0]["score"], float(item[0]["snapshot"]["width"]) * float(item[0]["snapshot"]["height"]),
+                              -int(item[0]["snapshot"]["page"])),
+        )
+        plan.update(selected_page=selected_page, room_zones=room_zones)
+        rd_document, rd_snapshot = selected_page["document"], selected_page["snapshot"]
+        # Another project room with the same number may claim the same working room (the same number on
+        # a sheet of another floor).  A floor known on both sides decides; otherwise the project sheet
+        # that shares clearly more room numbers with the working sheet; otherwise nobody is chosen.
+        competitors = [
+            other_key for other_key in sorted(expected)
+            if other_key != key and other_key[3] == number
+            and any(keys_compatible(expected[other_key][0], zone) for zone in room_zones)
+        ]
+        if not competitors:
+            continue
+        own_strong = any(_floors_known_equal(row, zone) for zone in room_zones)
+        rival_strong = [k for k in competitors
+                        if any(_floors_known_equal(expected[k][0], zone) for zone in room_zones)]
+        rd_numbers = _sheet_room_numbers(rd_snapshot) - {number}
+        own_overlap = len((_sheet_room_numbers(row["snapshot"]) - {number}) & rd_numbers)
+        rival_overlap = max((len((_sheet_room_numbers(expected[k][0]["snapshot"]) - {number}) & rd_numbers)
+                             for k in competitors), default=0)
+        no_floor_evidence = not own_strong and not rival_strong
+        if own_strong and not rival_strong:
+            resolution = "floor"
+        elif rival_strong and not own_strong:
+            resolution = "lost_to_floor"
+        elif no_floor_evidence and own_overlap >= _SHEET_OVERLAP_MIN                 and own_overlap >= _SHEET_OVERLAP_FACTOR * rival_overlap:
+            resolution = "sheet_overlap"
+        elif no_floor_evidence and rival_overlap >= _SHEET_OVERLAP_MIN                 and rival_overlap >= _SHEET_OVERLAP_FACTOR * max(own_overlap, 1):
+            resolution = "lost_to_overlap"
+        else:
+            resolution = "unresolved"
+        report.setdefault("room_resolutions", []).append({
+            "code": code, "location": labels[key], "resolution": resolution,
+            "own_overlap": own_overlap, "rival_overlap": rival_overlap,
+            "competitors": [labels[k] for k in competitors],
+        })
+        if resolution.startswith("lost_to"):
+            # the working room belongs to another project sheet, which compares it in its own pass
+            plan["state"] = "lost"
+        elif resolution == "unresolved":
+            report["issues"].append(_room_issue(
+                code, "AMBIGUOUS_ROOM_MATCH", labels[key],
+                [_issue_source("PD", document, row)]
+                + [_issue_source("PD", expected[k][1], expected[k][0]) for k in competitors]
+                + [_issue_source("RD", rd_document, zone) for zone in room_zones],
+                f"Помещение {number} есть на нескольких листах ПД, этаж которых не определён, и совпадает по "
+                "номеру с помещением РД; соответствие по общим номерам листа не выделено, сравнение не выполнялось.",
+                stage="RD", competitors=[labels[k] for k in competitors],
+            ))
+            plan["state"] = "issue"
+
+    # Pass 2: observations.  A project room that lost its working counterpart to another sheet is not
+    # emitted alone (a project-only group would only be noise); labels are extended only where needed.
+    emit_keys = [key for key in sorted(expected) if plans[key]["state"] != "lost"]
+    labels = _location_labels(emit_keys)
     observations = []
-    for location, (row, document, source_fragment) in expected_rows.items():
+    for key in emit_keys:
+        row, document, source_fragment = expected[key]
+        location = labels[key]
+        number = key[3]
         observations.append(_ventilation_observation(
-            code, row, document, row["snapshot"], "PD", source_fragment,
+            code, {**row, "location": location}, document, row["snapshot"], "PD", source_fragment,
             extractor=f"official_rule:{code.lower()}-layout",
         ))
-        matches = [item for item in rd_pages if location in item[4] or location in item[5]]
-        if not matches:
+        if plans[key]["state"] != "go":
             continue
-        selected_page = max(
-            matches,
-            key=lambda item: (item[0], float(item[2]["width"]) * float(item[2]["height"]), -int(item[2]["page"])),
-        )
-        _score, rd_document, rd_snapshot, room_words, native_rows, zones_by_location = selected_page
-        room_zone = zones_by_location.get(location)
-        if not room_zone:
+        selected_page, room_zones = plans[key]["selected_page"], plans[key]["room_zones"]
+        rd_document, rd_snapshot = selected_page["document"], selected_page["snapshot"]
+        zone_groups = group_by_identity(room_zones)
+        native_candidates = [r for r in selected_page["native"] if r["location"] == number and keys_compatible(row, r)]
+        native_groups = group_by_identity(native_candidates)
+        unplaceable = len(room_zones) > 1 and any(not zone.get("systems") for zone in room_zones)
+        if any(g["conflict"] for g in [*zone_groups, *native_groups]) or len(zone_groups) > 1 or len(native_groups) > 1 or unplaceable:
+            report["issues"].append(_room_issue(
+                code, "DUPLICATE_ROOM_KEY", location,
+                [_issue_source("PD", document, row)] + [_issue_source("RD", rd_document, z) for z in room_zones],
+                f"В РД на листе номер {number} встречается несколько раз с одним ключом; "
+                "по положению подписи помещение не определить, сравнение не выполнялось.",
+                stage="RD",
+            ))
             continue
+        room_zone = zone_groups[0]["row"]
+        local_row = native_groups[0]["row"] if native_groups else None
         room_box = room_zone["room_bbox"]
         scan_clip = _centered_clip(
             room_box, rd_snapshot["width"], rd_snapshot["height"],
@@ -644,7 +876,6 @@ def _extract_ventilation_observations(
         # English-only OCR; Cyrillic mode adds visually-similar letter/digit
         # confusions here without adding value, since there is no prose to read.
         clip_text = _text_in_bbox(rd_snapshot, scan_clip)
-        local_row = native_rows.get(location)
         if local_row is None and code == "IOS4-078":
             # Branch comparison must retain an explicitly printed trunk label
             # (for example V3) as the actual value when PD lists V3.1/V3.2.
@@ -666,8 +897,23 @@ def _extract_ventilation_observations(
                 "words": [*(rd_snapshot.get("words") or []), *ocr_words],
             }
             system_kinds = {"branch", "exhaust_system"} if code == "IOS4-078" else {"supply"}
-            local_rows = room_system_rows(geometry_snapshot, kinds=system_kinds)
-            local_row = next((candidate for candidate in local_rows if candidate["location"] == location), None)
+            ocr_links = room_system_links(geometry_snapshot, kinds=system_kinds)
+            ambiguous_here = [item for item in ocr_links["ambiguous"]
+                              if any(c["location"] == number for c in item["candidates"])]
+            selected_page["links"] = {**selected_page["links"],
+                                      "ambiguous": [*selected_page["links"]["ambiguous"], *ambiguous_here]}
+            local_row = next((candidate for candidate in ocr_links["rows"]
+                              if candidate["location"] == number and keys_compatible(row, candidate)), None)
+            if local_row is not None:
+                local_row["sheet"] = str(rd_document.id)
+        # An expected label whose room link on the RD sheet was ambiguous is neither
+        # present nor missing: no verdict (otherwise it would be reported as "disappeared").
+        unsure_labels = set(local_row.get("ambiguous_systems") or ()) if local_row else set()
+        for item in selected_page["links"]["ambiguous"]:
+            if any(c["location"] == number for c in item["candidates"]):
+                unsure_labels.add(item["label"])
+        assigned_labels = set(local_row["systems"]) if local_row else set()
+        unresolved_expected = (set(row.get("systems") or ()) & unsure_labels) - assigned_labels
         evidence_text = "\n".join(part for part in (clip_text, ocr_text) if part)
         if code == "IOS4-078":
             normalized = ",".join(local_row["systems"]) if local_row else _extract_exhaust_systems(clip_text)
@@ -681,24 +927,66 @@ def _extract_ventilation_observations(
                 continue
             normalized = _MISSING_EXHAUST
             value = "Вытяжная система не распознана в зоне помещения"
-            confidence = 0.72
         elif not normalized:
             continue
         else:
             value = _ventilation_value(code, normalized)
-            confidence = 0.8
+        if unresolved_expected:
+            # Ambiguous labels block the verdict only when they could change it: compare the rule's answer
+            # with the labels left out and with them assigned to this room.
+            held = {label for label in normalized.split(",") if label and label != _MISSING_EXHAUST}
+            with_labels = ",".join(sorted(held | unresolved_expected, key=_natural_system_key))
+            without_result = rule_is_violation(code, row["normalized_value"], normalized)
+            with_result = rule_is_violation(code, row["normalized_value"], with_labels)
+            if without_result is None or without_result != with_result:
+                report["issues"].append(_room_issue(
+                    code, "AMBIGUOUS_SYSTEM_LINK", location,
+                    [_issue_source("PD", document, row), _issue_source("RD", rd_document, room_zone)],
+                    f"В РД подпись системы {', '.join(sorted(unresolved_expected))} стоит между помещениями, "
+                    f"включая {number}; привязка не назначена, от неё зависит вердикт, поэтому он не выносится.",
+                    stage="RD", unresolved_systems=sorted(unresolved_expected),
+                ))
+                continue
+            report.setdefault("ambiguity_not_decisive", []).append({
+                "code": code, "location": location, "unresolved_systems": sorted(unresolved_expected),
+                "verdict": bool(without_result)})
+        # Measured confidences only. A value read from the text of the room clip
+        # (no label-to-room linkage performed) has no measured score at all.
+        if local_row:
+            text_confidence, link_confidence = local_row.get("text_confidence"), local_row.get("link_confidence")
+            confidence = local_row.get("confidence")
+        else:
+            text_confidence = link_confidence = None
+            confidence = None
+        if confidence is None:
+            confidence = UNMEASURED_CONFIDENCE
         actual = {
             "location": location,
             "value": value,
             "normalized_value": normalized,
             "bbox_pdf": evidence_bbox,
             "confidence": confidence,
-            "context": f"Лист ОВ классифицирован по содержимому; зона помещения {location}:\n{evidence_text[:1200]}",
+            "text_confidence": text_confidence, "link_confidence": link_confidence,
+            "linkage": local_row.get("linkage") if local_row else None,
+            "context": f"Лист ОВ классифицирован по содержимому; зона помещения {number}:\n{evidence_text[:1200]}",
         }
         observations.append(_ventilation_observation(
             code, actual, rd_document, rd_snapshot, "RD", None,
             extractor=f"official_rule:{code.lower()}-ocr",
         ))
+        report["pairs_compared"] += 1
+        if local_row is not None:
+            comparison = compare_project_to_working([row], [local_row], mode="composition", include_unresolved=True)
+            if comparison and comparison[0].get("added_systems"):
+                report["added_systems"].append({
+                    "code": code, "type": "added", "violation_claimed": False,
+                    "decision_mode": mode, "location": location,
+                    "added_systems": comparison[0]["added_systems"],
+                    "missing_systems": comparison[0]["missing_systems"],
+                    "match_basis": comparison[0].get("match_basis"),
+                    "PD": _issue_source("PD", document, row), "RD": _issue_source("RD", rd_document, local_row),
+                    "text_confidence": text_confidence, "link_confidence": link_confidence,
+                })
     return observations
 
 
@@ -769,6 +1057,7 @@ def _ocr_room_system_words(
             continue
         body = span[span.find(">") + 1:span.rfind("</span>")]
         raw_text = unescape(re.sub(r"<[^>]+>", "", body)).strip()
+        word_confidence = re.search(r"x_wconf\s+(\d+(?:\.\d+)?)", span)
         if raw_text:
             raw_tokens.append(raw_text)
         labels: list[str] = []
@@ -786,7 +1075,10 @@ def _ocr_room_system_words(
         x0, y0, x1, y1 = (int(value) / 2.0 for value in coords.groups())
         box = [clip_rect.x0 + x0, clip_rect.y0 + y0, clip_rect.x0 + x1, clip_rect.y0 + y1]
         for label in dict.fromkeys(labels):
-            words.append({"text": label, "bbox": box, "confidence": 0.68, "ocr_source_text": raw_text})
+            word = {"text": label, "bbox": box, "ocr_source_text": raw_text}
+            if word_confidence:
+                word["confidence"] = float(word_confidence.group(1)) / 100.0   # Tesseract x_wconf, measured
+            words.append(word)
     return words, " ".join(raw_tokens)
 
 
@@ -805,104 +1097,114 @@ def _is_rd_ventilation_drawing_document(code: str, document: DocumentVersion, sn
 def _extract_warm_floor_observations(
     documents: dict[int, DocumentVersion],
     snapshots: dict[tuple[int, int], dict[str, Any]],
+    identity_report: dict[str, Any] | None = None,
 ) -> tuple[list[RuleObservation], dict[str, Any]]:
-    project_by_room: dict[str, tuple[dict[str, Any], DocumentVersion]] = {}
-    working_by_room: dict[str, tuple[dict[str, Any], DocumentVersion]] = {}
-    working_room_zones: dict[str, tuple[dict[str, Any], DocumentVersion, dict[str, Any]]] = {}
-    for (document_id, _page_number), snapshot in snapshots.items():
+    report = identity_report if identity_report is not None else new_room_identity_report()
+    pd_rows: list[dict[str, Any]] = []
+    rd_rows: list[dict[str, Any]] = []
+    rd_zone_rows: list[dict[str, Any]] = []
+    owner: dict[int, DocumentVersion] = {}
+    for (document_id, _page_number), snapshot in sorted(snapshots.items()):
         document = documents[document_id]
         stage = effective_dataset_stage(document)
         if stage not in {"PD", "RD"} or not classify_ventilation_sheet(snapshot, document):
             continue
         rows = warm_floor_rows(snapshot)
-        if stage == "PD":
-            for row in rows:
-                current = project_by_room.get(row["location"])
-                if current is None or row["confidence"] > current[0]["confidence"]:
-                    project_by_room[row["location"]] = (row, document)
-        else:
-            for row in rows:
-                working_by_room.setdefault(row["location"], (row, document))
+        for row in rows:
+            row["sheet"] = str(document_id)
+            owner[id(row)] = document
+        (pd_rows if stage == "PD" else rd_rows).extend(rows)
+        if stage == "RD":
+            for zone in room_zone_index(snapshot):
+                zone["sheet"] = str(document_id)
+                owner[id(zone)] = document
+                rd_zone_rows.append(zone)
 
-    for location in project_by_room:
-        matches = []
-        for (document_id, _page_number), snapshot in snapshots.items():
-            document = documents[document_id]
-            if effective_dataset_stage(document) != "RD" or not classify_ventilation_sheet(snapshot, document):
-                continue
-            zone = room_zone_for_location(snapshot, location)
-            if zone:
-                matches.append((float(zone["confidence"]), document, snapshot, zone))
-        if matches:
-            _confidence, document, snapshot, zone = max(
-                matches, key=lambda item: (item[0], -int(item[2]["page"]), -int(item[1].id)),
-            )
-            working_room_zones[location] = (zone, document, snapshot)
-
+    pd_groups = group_by_identity(pd_rows)
+    labels = _location_labels(group["key"] for group in pd_groups)
     observations: list[RuleObservation] = []
     report_rows = []
-    for location, (project_row, project_document) in sorted(project_by_room.items()):
+    project_rooms = 0
+    for group in pd_groups:
+        location = labels[group["key"]]
+        if group["conflict"]:
+            report_rows.append({"location": location, "status": "CONFLICT", "reason": "DUPLICATE_ROOM_KEY"})
+            continue
+        project_row = group["row"]
+        project_document = owner[id(project_row)]
+        project_rooms += 1
         pd_snapshot = project_row["snapshot"]
         observations.append(_ventilation_observation(
             "FREE_SEARCH",
-            {**project_row, "value": "Контур теплого пола показан в ПД", "normalized_value": "WARM_FLOOR"},
+            {**project_row, "location": location, "value": "Контур теплого пола показан в ПД",
+             "normalized_value": "WARM_FLOOR"},
             project_document, pd_snapshot, "PD", None, extractor="room_drawing_compare:warm-floor",
         ))
-        working = working_by_room.get(location)
-        zone_pair = working_room_zones.get(location)
-        if working:
-            actual_row, actual_document = working
+        worked = match_room_rows([project_row], rd_rows)[0]
+        if worked["kind"] in {"CONFLICT", "AMBIGUOUS"}:
+            report_rows.append({"location": location, "status": worked["kind"], "reason": worked["reason"]})
+            continue
+        if worked["kind"] == "MATCHED":
+            actual_row = worked["actual"]
+            actual_document = owner[id(actual_row)]
             actual_snapshot = actual_row["snapshot"]
             actual_value, actual_norm, actual_bbox = "Контур теплого пола показан в РД", "WARM_FLOOR", actual_row["bbox_pdf"]
             comparison = "PRESENT_IN_BOTH"
-        elif zone_pair:
-            actual_row, actual_document, actual_snapshot = zone_pair
+        else:
+            zone_match = match_room_rows([project_row], rd_zone_rows)[0]
+            if zone_match["kind"] in {"CONFLICT", "AMBIGUOUS"}:
+                report_rows.append({"location": location, "status": zone_match["kind"], "reason": zone_match["reason"]})
+                continue
+            if zone_match["kind"] != "MATCHED":
+                report_rows.append({"location": location, "status": "NO_RD_ROOM_ZONE"})
+                continue
+            actual_row = zone_match["actual"]
+            actual_document = owner[id(actual_row)]
+            actual_snapshot = actual_row["snapshot"]
             actual_value, actual_norm, actual_bbox = "Контур теплого пола не распознан в зоне РД", "MISSING_WARM_FLOOR", actual_row["bbox_pdf"]
             comparison = "ROOM_FOUND_FLOOR_MARKER_NOT_FOUND"
-        else:
-            report_rows.append({"location": location, "status": "NO_RD_ROOM_ZONE"})
-            continue
         observations.append(_ventilation_observation(
             "FREE_SEARCH",
             {"location": location, "value": actual_value, "normalized_value": actual_norm,
-             "bbox_pdf": actual_bbox, "confidence": 0.75,
+             "bbox_pdf": actual_bbox,
+             "confidence": actual_row.get("confidence") if actual_row.get("confidence") is not None else UNMEASURED_CONFIDENCE,
+             "text_confidence": actual_row.get("text_confidence"), "link_confidence": actual_row.get("link_confidence"),
              "context": f"Помещение {location}; статус распознавания контура теплого пола: {comparison}"},
             actual_document, actual_snapshot, "RD", None, extractor="room_drawing_compare:warm-floor",
         ))
         report_rows.append({
-            "location": location, "status": comparison,
+            "location": location, "status": comparison, "match_basis": worked.get("match_basis"),
             "PD": {"file_id": getattr(project_document, "dataset_file_id", None), "page": int(pd_snapshot["page"]),
                    "bbox_pdf": project_row["bbox_pdf"]},
             "RD": {"file_id": getattr(actual_document, "dataset_file_id", None), "page": int(actual_snapshot["page"]),
                    "bbox_pdf": actual_bbox},
         })
     return observations, {
-        "code": "FREE_SEARCH", "project_rooms": len(project_by_room),
-        "compared_rooms": sum(row.get("status") != "NO_RD_ROOM_ZONE" for row in report_rows), "rooms": report_rows,
+        "code": "FREE_SEARCH", "project_rooms": project_rooms,
+        "compared_rooms": sum(row.get("status") in {"PRESENT_IN_BOTH", "ROOM_FOUND_FLOOR_MARKER_NOT_FOUND"} for row in report_rows),
+        "rooms": report_rows,
     }
 
 
-def _pd_exhaust_room_rows(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
-    output = []
-    for row in room_system_rows(snapshot, kinds={"branch"}):
+def _pd_exhaust_room_links(snapshot: dict[str, Any]) -> dict[str, Any]:
+    links = room_system_links(snapshot, kinds={"branch"})
+    rows = []
+    for row in links["rows"]:
         labels = row["systems"]
-        output.append({
-            "location": row["location"],
-            "value": _ventilation_value("IOS4-078", ",".join(labels)),
-            "normalized_value": ",".join(labels),
-            "bbox_pdf": row["bbox_pdf"],
-            "confidence": row["confidence"],
-            "linkage": row["linkage"],
-            "context": row["context"],
-            "snapshot": snapshot,
-        })
-    return output
+        rows.append({**row, "value": _ventilation_value("IOS4-078", ",".join(labels)), "snapshot": snapshot})
+    return {**links, "rows": rows}
 
 
-def _pd_supply_room_rows(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
+def _pd_exhaust_room_rows(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
+    return _pd_exhaust_room_links(snapshot)["rows"]
+
+
+def _pd_supply_room_links(snapshot: dict[str, Any]) -> dict[str, Any]:
     words = snapshot.get("words") or []
     width, height = float(snapshot["width"]), float(snapshot["height"])
-    rooms = extract_room_words(snapshot)
+    context = detect_sheet_context(snapshot)
+    accepted = extract_room_words(snapshot)
+    rooms = sorted(accepted, key=lambda room: (room["bbox"][1], room["bbox"][0], room["room"]))
     vent_rooms = [word for word in words if "венткамер" in str(word.get("text") or "").lower()]
     supply = []
     for word in words:
@@ -910,33 +1212,72 @@ def _pd_supply_room_rows(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
         if token:
             supply.append((token, word))
     output = []
+    ambiguous = []
     for vent_room in vent_rooms:
         linked_rooms = sorted(
             ((room, _normalized_distance(vent_room["bbox"], room["bbox"], width, height)) for room in rooms),
-            key=lambda item: (item[1], item[0]["room"]),
+            key=lambda item: (item[1], item[0]["bbox"][1], item[0]["bbox"][0], item[0]["room"]),
         )
         if not linked_rooms or linked_rooms[0][1] > 0.06:
             continue
-        room = linked_rooms[0][0]
+        room, room_distance = linked_rooms[0]
+        # The ventilation-chamber caption must be clearly nearer to one room number
+        # than to the next one, otherwise the chamber's room number is not known.
+        if len(linked_rooms) > 1 and linked_rooms[1][1] <= 0.06 and (
+                linked_rooms[1][1] - room_distance) <= AMBIGUITY_MARGIN * linked_rooms[1][1]:
+            ambiguous.append({
+                "label": "ВЕНТКАМЕРА", "kind": "vent_chamber", "bbox": vent_room["bbox"],
+                "text_confidence": None, "reason": "AMBIGUOUS_ROOM_LABEL",
+                "candidates": [{"location": candidate["room"], "bbox": candidate["bbox"],
+                                "distance": round(distance, 4)}
+                               for candidate, distance in linked_rooms if distance <= 0.06
+                               and (distance - room_distance) <= AMBIGUITY_MARGIN * distance],
+            })
+            continue
         nearby = sorted(
             ((token, word, _normalized_distance(word["bbox"], room["bbox"], width, height))
              for token, word in supply),
-            key=lambda item: item[2],
+            key=lambda item: (item[2], item[0]),
         )
         if not nearby or nearby[0][2] > 0.08:
             continue
-        token, system_word, _distance = nearby[0]
+        token, system_word, system_distance = nearby[0]
+        runner_up = nearby[1][2] if len(nearby) > 1 and nearby[1][0] != token else None
+        link_confidence = max(
+            0.05, min(0.95, round(0.5 * (1.0 - room_distance / 0.06) + 0.5 * (1.0 - system_distance / 0.08), 3)))
+        text_confidence = _min_known_confidence(room["word"], vent_room, system_word)
         bbox = _union_bbox([room["bbox"], vent_room["bbox"], system_word["bbox"]])
         output.append({
             "location": room["room"],
             "value": _ventilation_value("IOS4-079", token),
             "normalized_value": token,
+            "systems": [token],
             "bbox_pdf": bbox,
-            "confidence": 0.88,
+            "room_bbox": room["bbox"],
+            "text_confidence": text_confidence, "link_confidence": link_confidence,
+            "confidence": min(v for v in (text_confidence, link_confidence) if v is not None),
+            "linkage": "vent_chamber_caption", "wall_check": WALL_CHECK_STATUS,
+            "floor": context["floor"], "building": context["building"],
+            "floor_source": context["floor_source"], "floor_status": context["floor_status"],
+            "sheet": snapshot.get("sheet") or "", "sheet_page": snapshot.get("page"),
             "context": f"Помещение {room['room']} (венткамера); проектная приточная установка: {token}",
             "snapshot": snapshot,
         })
-    return output
+    return {"rows": output, "ambiguous": ambiguous, "sheet": context, "wall_check": WALL_CHECK_STATUS,
+            "excluded_zone_rooms": excluded_zone_rooms(snapshot)}
+
+
+def _pd_supply_room_rows(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
+    return _pd_supply_room_links(snapshot)["rows"]
+
+
+def _min_known_confidence(*words: dict[str, Any]) -> float | None:
+    known = []
+    for word in words:
+        value = (word or {}).get("confidence")
+        if isinstance(value, (int, float)) and not isinstance(value, bool):
+            known.append(float(value) / 100.0 if float(value) > 1.0 else float(value))
+    return min(known) if known else None
 
 
 def _extract_exhaust_systems(text: str) -> str:
@@ -1050,6 +1391,8 @@ def _ventilation_observation(code, row, document, snapshot, stage, source_fragme
         extractor=extractor,
         context=row["context"],
         source_fragment=source_fragment,
+        text_confidence=row.get("text_confidence"),
+        link_confidence=row.get("link_confidence"),
     )
 
 
