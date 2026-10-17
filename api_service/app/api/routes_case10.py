@@ -73,6 +73,7 @@ from evaluation.errors import LeakageGuardError
 from .auth import get_current_user, require_admin, require_ml_engineer, require_supervisor
 from .utils import get_project_for_org
 from ..domain.dataset_sources import render_evidence_page
+from ..domain import inspector_card
 from ..domain import inspector_workbench as workbench
 
 router = APIRouter(tags=["case10"])
@@ -141,6 +142,22 @@ class BulkDecisionIn(BaseModel):
     reason_code: str | None = Field(default=None, max_length=64)
     comment: str = Field(min_length=1, max_length=5000)
     confirm_bulk_reject: bool = False
+
+
+class PartDecisionItemIn(BaseModel):
+    key: str = Field(min_length=1, max_length=160)
+    decision: str = Field(pattern="^(Confirm|Reject|Clarification Required)$")
+    comment: str | None = Field(default=None, max_length=2000)
+
+
+class PartialDecisionIn(BaseModel):
+    parts: list[PartDecisionItemIn] = Field(min_length=1, max_length=100)
+    comment: str | None = Field(default=None, max_length=2000)
+
+
+class HypothesisReviewIn(BaseModel):
+    status: str = Field(pattern="^(CONFIRMED|REJECTED|CLARIFICATION_REQUIRED)$")
+    comment: str = Field(min_length=1, max_length=2000)
 
 
 class FragmentAddIn(BaseModel):
@@ -751,13 +768,45 @@ def _document_error(exc: Exception) -> HTTPException:
 @router.get("/case10/processes/{process_id}/workbench")
 def case10_workbench(process_id: str, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     """The candidate queue of the single candidate window: one light row per evidence group."""
-    return workbench.workbench_summary(db, _org_process(db, process_id, user))
+    return inspector_card.workbench_summary_full(db, _org_process(db, process_id, user))
 
 
 @router.get("/case10/evidence-groups/{evidence_group_id}/workbench")
 def case10_evidence_group_workbench(evidence_group_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     """The §14 evidence card + ПД/РД/ИД panels (effective evidence, page-normalized boxes) + decision/edit history."""
-    return workbench.workbench_group(db, _org_group(db, evidence_group_id, user))
+    return inspector_card.workbench_group_full(db, _org_group(db, evidence_group_id, user))
+
+
+@router.post("/case10/evidence-groups/{evidence_group_id}/partial-decision")
+def case10_partial_decision(evidence_group_id: int, payload: PartialDecisionIn, db: Session = Depends(get_db),
+                            user: User = Depends(get_current_user)):
+    """Final C1 ("Разделить на части"): per-part decisions on a compound finding; once every part has one, the overall
+    decision is recorded through the normal path."""
+    group = _org_group(db, evidence_group_id, user)
+    result = inspector_card.record_part_decisions(db, group, items=[item.model_dump() for item in payload.parts],
+                                                  comment=payload.comment, user_id=int(user.id))
+    return {**result, "evidence_group": inspector_card.workbench_group_full(db, _org_group(db, evidence_group_id, user))}
+
+
+@router.post("/case10/evidence-groups/{evidence_group_id}/hypothesis-review")
+def case10_hypothesis_review(evidence_group_id: int, payload: HypothesisReviewIn, db: Session = Depends(get_db),
+                             user: User = Depends(get_current_user)):
+    """Final C1: review status of a free-search hypothesis (TZ 9.5), rationale mandatory, history append-only."""
+    group = _org_group(db, evidence_group_id, user)
+    result = inspector_card.record_hypothesis_review(db, group, status=payload.status, comment=payload.comment, user_id=int(user.id))
+    return {**result, "evidence_group": inspector_card.workbench_group_full(db, _org_group(db, evidence_group_id, user))}
+
+
+@router.get("/case10/evidence-groups/{evidence_group_id}/protocol-entry")
+def case10_protocol_entry(evidence_group_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """The record of one finding as it goes into the protocol (sources, values, status, decision, rationale)."""
+    return inspector_card.protocol_entry(db, _org_group(db, evidence_group_id, user))
+
+
+@router.get("/case10/processes/{process_id}/progress")
+def case10_progress(process_id: str, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """Documents/pages processed, skips with reasons, found/reviewed candidates, incomplete-coverage flag."""
+    return inspector_card.progress_panel(db, _org_process(db, process_id, user))
 
 
 @router.get("/case10/evidence-groups/{evidence_group_id}/edits")
@@ -772,7 +821,7 @@ def case10_add_fragment(evidence_group_id: int, payload: FragmentAddIn, db: Sess
     edit = workbench.add_fragment(db, group, document_version_id=payload.document_version_id, page=payload.page,
                                   bbox_norm=payload.bbox_norm, extracted_value=payload.extracted_value, role=payload.role,
                                   note=payload.note, reason=payload.reason, user_id=int(user.id))
-    return {"edit": workbench.edit_to_dict(edit), "evidence_group": workbench.workbench_group(db, group)}
+    return {"edit": workbench.edit_to_dict(edit), "evidence_group": inspector_card.workbench_group_full(db, group)}
 
 
 @router.post("/case10/evidence-groups/{evidence_group_id}/fragments/{fragment_key}/refine")
@@ -782,7 +831,7 @@ def case10_refine_fragment(evidence_group_id: int, fragment_key: str, payload: F
     changes = payload.model_dump(exclude_unset=True)
     changes.pop("reason", None)
     edit = workbench.refine_fragment(db, group, fragment_key, changes=changes, reason=payload.reason, user_id=int(user.id))
-    return {"edit": workbench.edit_to_dict(edit), "evidence_group": workbench.workbench_group(db, group)}
+    return {"edit": workbench.edit_to_dict(edit), "evidence_group": inspector_card.workbench_group_full(db, group)}
 
 
 @router.post("/case10/evidence-groups/{evidence_group_id}/fragments/{fragment_key}/remove")
@@ -790,7 +839,7 @@ def case10_remove_fragment(evidence_group_id: int, fragment_key: str, payload: F
                            db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     group = _org_group(db, evidence_group_id, user)
     edit = workbench.set_fragment_status(db, group, fragment_key, remove=True, reason=payload.reason, user_id=int(user.id))
-    return {"edit": workbench.edit_to_dict(edit), "evidence_group": workbench.workbench_group(db, group)}
+    return {"edit": workbench.edit_to_dict(edit), "evidence_group": inspector_card.workbench_group_full(db, group)}
 
 
 @router.post("/case10/evidence-groups/{evidence_group_id}/fragments/{fragment_key}/restore")
@@ -798,7 +847,7 @@ def case10_restore_fragment(evidence_group_id: int, fragment_key: str, payload: 
                             db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     group = _org_group(db, evidence_group_id, user)
     edit = workbench.set_fragment_status(db, group, fragment_key, remove=False, reason=payload.reason, user_id=int(user.id))
-    return {"edit": workbench.edit_to_dict(edit), "evidence_group": workbench.workbench_group(db, group)}
+    return {"edit": workbench.edit_to_dict(edit), "evidence_group": inspector_card.workbench_group_full(db, group)}
 
 
 @router.post("/case10/evidence-groups/bulk-decisions")

@@ -101,6 +101,7 @@ export function label(map, value, fallback) {
 }
 
 export const STAGE_TITLES = { PD: 'ПД', RD: 'РД', ID: 'ИД' };
+export const STAGE_GENITIVE = { PD: 'проектной документации', RD: 'рабочей документации', ID: 'исполнительной документации' };
 export const STAGE_FULL = { PD: 'Проектная документация', RD: 'Рабочая документация', ID: 'Исполнительная документация' };
 
 export const EDIT_ACTION_LABELS = {
@@ -151,3 +152,24 @@ export const DECISION_OPTIONS = [
 ];
 
 export const DECIDABLE_STATUSES = new Set(['CANDIDATE', 'CONFIRMED_VIOLATION', 'NEGATIVE_VERIFIED', 'CLARIFICATION_REQUIRED']);
+
+export const DECISION_LABEL_BY_KEY = { Confirm: 'Подтвердить', Reject: 'Отклонить', 'Clarification Required': 'Уточнить' };
+
+/** What the inspector asks to clarify (checklist 8): a missing document or a wrong source are named, not free text only. */
+export const CLARIFY_KINDS = [
+  { value: 'MISSING_DOCUMENT', label: 'Не хватает документа', placeholder: 'Какой документ или раздел нужно дозагрузить (стадия, шифр, лист)' },
+  { value: 'WRONG_SOURCE', label: 'Неверный источник / лист', placeholder: 'Какой источник выбран неверно и где должен быть правильный (файл, страница)' },
+  { value: 'OTHER', label: 'Другое', placeholder: 'Что нужно уточнить' },
+];
+
+export const NO_RESULT_TONE = {
+  NO_DOCUMENTS: 'warn', NO_VALUE_IN_DOCUMENT: 'warn', NOT_COMPARABLE: 'warn', PROCESSING_ERROR: 'critical',
+  INCOMPLETE_CHECK: 'warn', NO_DIFFERENCE: 'ok',
+};
+
+export const NO_RESULT_SHORT = {
+  NO_DOCUMENTS: 'нет документов', NO_VALUE_IN_DOCUMENT: 'нет значения', NOT_COMPARABLE: 'несопоставимо', PROCESSING_ERROR: 'ошибка обработки',
+  INCOMPLETE_CHECK: 'не завершена', NO_DIFFERENCE: 'нет расхождения',
+};
+
+export const PART_DECISION_LABELS = { Confirm: 'Подтверждено', Reject: 'Отклонено', 'Clarification Required': 'Уточнить' };

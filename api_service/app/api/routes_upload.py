@@ -538,11 +538,16 @@ async def upload(
     background_tasks: BackgroundTasks,
     project_id: int = Form(...),
     file_type: str = Form("auto"),
+    process_id: str | None = Form(None),
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    """Upload a project file and route it to RAG or IFC indexing."""
+    """Upload a project file and route it to RAG or IFC indexing.
+
+    `process_id` (optional) attaches the file to that inspection process instead of the project's open one: the
+    inspector card's "Дозагрузить" adds documents to the very check under review. It must belong to the project and
+    the user's organization and must not be finalized."""
     if user.organization_id is None:
         raise HTTPException(status_code=403, detail="User is not attached to an organization")
 
@@ -556,11 +561,19 @@ async def upload(
     if declared_size > settings.MAX_UPLOAD_FILE_SIZE_BYTES:
         raise HTTPException(status_code=413, detail=_max_file_size_message(settings.MAX_UPLOAD_FILE_SIZE_BYTES))
 
-    process = _open_upload_process(
-        db,
-        project_id=int(project_id),
-        organization_id=int(user.organization_id),
-    )
+    if process_id:
+        process = db.get(InspectionProcess, str(process_id))
+        if (process is None or int(process.project_id) != int(project_id)
+                or int(process.organization_id) != int(user.organization_id)):
+            raise HTTPException(status_code=404, detail="Inspection process not found")
+        if str(process.status or "") == "FINALIZED":
+            raise HTTPException(status_code=409, detail="Finalized protocol cannot receive new documents")
+    else:
+        process = _open_upload_process(
+            db,
+            project_id=int(project_id),
+            organization_id=int(user.organization_id),
+        )
     db.commit()
 
     package_existing = _package_bytes_uploaded(

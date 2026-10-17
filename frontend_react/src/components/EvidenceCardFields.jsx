@@ -1,4 +1,5 @@
 import Badge from './Badge.jsx';
+import { ExplanationBlock, HypothesisCard, IdentityStrip, NoResultNotice, ProtocolEntryPanel } from './CardBlocks.jsx';
 import {
   APPROVAL_STATUS_LABELS,
   FINDING_STATUS_LABELS,
@@ -12,7 +13,7 @@ import { buildExplanation, fmtConfidence, fmtDate, formatBBox, formatValue } fro
 
 const DECISION_TO_INSPECTOR = { Confirm: 'CONFIRMED', Reject: 'REJECTED', 'Clarification Required': 'CLARIFICATION_REQUIRED' };
 
-function SourceLine({ title, source, stage }) {
+function SourceLine({ title, source, stage, sheet }) {
   if (!source || !source.file_id) {
     return (
       <div className="source-line">
@@ -31,6 +32,7 @@ function SourceLine({ title, source, stage }) {
         {' • ред. '}<b>{formatValue(source.revision)}</b>
         {' • '}{label(APPROVAL_STATUS_LABELS, source.approval, 'статус не указан')}
         {' • стр. '}<b>{formatValue(source.page)}</b>
+        {' • лист '}<b title={sheet ? sheet.basis : 'В основной надписи страницы обозначение листа не найдено'}>{sheet?.label || '—'}</b>
         {source.bbox_polygon ? <span className="muted mono small"> • bbox [{formatBBox(source.bbox_polygon)}]</span> : null}
       </span>
     </div>
@@ -41,7 +43,7 @@ function SourceLine({ title, source, stage }) {
  * The evidence card (expert session §14): ID, object_id, parameter code (M-xxx + legacy), rule, stage, document,
  * cipher, revision, page, bbox, extracted and reference value, description, confidence, the inspector's decision.
  */
-export default function EvidenceCardFields({ detail }) {
+export default function EvidenceCardFields({ detail, locked, onNoResultAction, onHypothesisReviewed, protocolKey }) {
   const card = detail.card || {};
   const rule = card.rule || {};
   const lastDecision = card.last_decision;
@@ -83,12 +85,17 @@ export default function EvidenceCardFields({ detail }) {
           <div className="v">{formatValue(card.actual_value)}</div>
         </div>
         <div className="value-box conf">
-          <div className="l">Confidence</div>
+          <div className="l" title="Минимум по цепочке: распознавание текста, привязка, правило. Составляющие — в блоке «Основание».">Общая уверенность</div>
           <div className="v">{fmtConfidence(card.confidence)}</div>
         </div>
       </div>
 
       {explanation && <div className="explanation">{explanation}</div>}
+
+      <NoResultNotice state={detail.no_result} locked={locked} onAction={onNoResultAction} />
+      <HypothesisCard hypothesis={detail.hypothesis} groupId={detail.id} locked={locked} onReviewed={onHypothesisReviewed} />
+      <IdentityStrip identity={detail.identity} />
+      <ExplanationBlock card={card} />
 
       <dl className="card-grid">
         <dt>ID находки</dt><dd className="mono">{formatValue(card.finding_id)} <span className="muted">/ {formatValue(card.evidence_group_id)} / #{card.id}</span></dd>
@@ -104,9 +111,11 @@ export default function EvidenceCardFields({ detail }) {
       </dl>
 
       <div className="sources">
-        <SourceLine title="Источник эталона" source={card.source_expected} stage={card.expected_stage || card.source_expected?.stage} />
-        <SourceLine title="Источник факта" source={card.source_actual} stage={card.actual_stage || card.source_actual?.stage} />
+        <SourceLine title="Источник эталона" source={card.source_expected} stage={card.expected_stage || card.source_expected?.stage} sheet={card.sheets?.[card.expected_stage || card.source_expected?.stage]} />
+        <SourceLine title="Источник факта" source={card.source_actual} stage={card.actual_stage || card.source_actual?.stage} sheet={card.sheets?.[card.actual_stage || card.source_actual?.stage]} />
       </div>
+
+      <ProtocolEntryPanel groupId={detail.id} refreshKey={protocolKey} />
     </div>
   );
 }

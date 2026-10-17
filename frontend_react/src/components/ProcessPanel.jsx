@@ -4,6 +4,7 @@ import Badge from './Badge.jsx';
 import Workbench from './Workbench.jsx';
 import RevisionsPanel from './RevisionsPanel.jsx';
 import CompletenessPanel from './CompletenessPanel.jsx';
+import ProgressPanel from './ProgressPanel.jsx';
 import VerificationTimer from './VerificationTimer.jsx';
 import { PROCESS_STATUS_LABELS, PROCESS_TONE, label } from '../labels.js';
 import { fmtDate } from '../utils.js';
@@ -32,6 +33,7 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
   const [unfinalizeReason, setUnfinalizeReason] = useState('');
   const [section, setSection] = useState('workbench');
   const [timerKey, setTimerKey] = useState(0);
+  const [ackNoId, setAckNoId] = useState(false);
   const canUnfinalize = Boolean(me?.is_admin || SUPERVISOR_ROLES.has(String(me?.role || '').toUpperCase()));
 
   const refreshHistory = useCallback(() => {
@@ -130,6 +132,7 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
       await api.finalizeProtocol(protocol.id);
       await refreshAfterAction();
       setShowFinalizeConfirm(false);
+      setAckNoId(false);
       setTimerKey((k) => k + 1);
     } catch (err) {
       setStatusError(err.message || 'Не удалось финализировать протокол');
@@ -161,6 +164,8 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
   const hasCompleteness = Object.keys(completeness).length > 0;
   const sections = protocol?.payload?.sections || {};
   const loaded = process && LOADED_STATUSES.has(process.status);
+  // ТЗ 9.2: finishing without an ИД is allowed, but only knowingly -- the protocol then has no ИД comparisons.
+  const idMissing = hasCompleteness && completeness.ID_UPLOADED !== 'ID_UPLOADED';
 
   return (
     <div>
@@ -227,6 +232,8 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
             </div>
           )}
 
+          {loaded && <ProgressPanel processId={process.process_id} refreshKey={`${process.status}:${protocol?.version || 0}:${sections.candidates ?? ''}`} />}
+
           {process.status === 'PENDING' && (
             <div className="top-gap">
               <button className="btn primary" type="button" onClick={retryProcess} disabled={retrying}>
@@ -279,6 +286,16 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
         <div className="modal-overlay" onClick={() => !finalizing && setShowFinalizeConfirm(false)}>
           <div className="modal-box" onClick={(e) => e.stopPropagation()}>
             <h3>Финализировать протокол?</h3>
+            {idMissing && (
+              <div className="finalize-warning" role="alert">
+                <b>Исполнительная документация (ИД) не загружена.</b> Протокол будет завершён без сравнений ПД/РД с ИД; параметры, для которых нужна ИД, останутся без результата.
+                Дозагрузить ИД можно до финализации (кнопка «Дозагрузить» в панели ИД карточки); после финализации дозагрузка заблокирована.
+                <label className="confirm-check" style={{ marginTop: 8 }}>
+                  <input type="checkbox" checked={ackNoId} onChange={(e) => setAckNoId(e.target.checked)} />
+                  <span>Я понимаю, что протокол завершается без ИД.</span>
+                </label>
+              </div>
+            )}
             <p className="muted">
               {(sections.candidates || 0) > 0
                 ? `Есть ${sections.candidates} кандидат(ов) без решения инспектора. Финализация заблокирована, пока по каждому не принято решение (подтверждено, отклонено или переведено в «Требуется уточнение»).`
@@ -290,7 +307,7 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
                 className="btn primary"
                 type="button"
                 onClick={confirmFinalize}
-                disabled={finalizing || (sections.candidates || 0) > 0}
+                disabled={finalizing || (sections.candidates || 0) > 0 || (idMissing && !ackNoId)}
               >
                 {finalizing ? 'Финализация…' : 'Финализировать'}
               </button>
@@ -349,7 +366,7 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
             ))}
           </div>
           {section === 'workbench' && (
-            <Workbench projectId={projectId} processId={process.process_id} locked={locked} onChanged={refreshAfterAction} />
+            <Workbench projectId={projectId} processId={process.process_id} locked={locked} onChanged={refreshAfterAction} onOpenSection={setSection} />
           )}
           {section === 'revisions' && <RevisionsPanel processId={process.process_id} locked={locked} />}
           {section === 'completeness' && <CompletenessPanel processId={process.process_id} />}

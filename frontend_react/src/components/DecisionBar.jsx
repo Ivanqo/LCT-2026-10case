@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { DECISION_OPTIONS, REJECT_REASON_CODES } from '../labels.js';
+import { CLARIFY_KINDS, DECISION_OPTIONS, REJECT_REASON_CODES } from '../labels.js';
 
 /**
  * ~3 conscious actions per decision (expert session §16): open the candidate -> choose Confirm / Reject / Clarify
  * (C / R / U) -> save (Enter, Ctrl+Enter inside the comment). A comment is mandatory for a rejection and for a
  * clarification request; a rejection also carries a reason_code.
  */
-export default function DecisionBar({ disabledReason, choice, reasonCode, comment, saving, error, actions, onChoose, onReason, onComment, onSave, onCancel }) {
+export default function DecisionBar({ disabledReason, choice, reasonCode, clarifyKind, comment, saving, error, actions, compound, partsDecided, partsTotal, partsOpen, onSplit, onChoose, onReason, onClarifyKind, onComment, onSave, onCancel }) {
   const commentRef = useRef(null);
   const needsComment = choice === 'Reject' || choice === 'Clarification Required';
   const canSave = Boolean(choice) && (!needsComment || comment.trim().length >= 3) && !saving;
@@ -34,6 +34,17 @@ export default function DecisionBar({ disabledReason, choice, reasonCode, commen
             <kbd>{opt.hotkey}</kbd> {opt.label}
           </button>
         ))}
+        {compound && (
+          <button
+            type="button"
+            className={`btn decision-btn tone-split${partsOpen ? ' selected' : ''}`}
+            onClick={onSplit}
+            disabled={saving}
+            title="Составное замечание: решение по каждой части отдельно (клавиша S)"
+          >
+            <kbd>S</kbd> Разделить на части{partsTotal ? ` (${partsDecided || 0}/${partsTotal})` : ''}
+          </button>
+        )}
         <div className="spacer" />
         <span className="muted small" title="Осознанные действия с момента открытия кандидата">действий: {actions}</span>
       </div>
@@ -48,9 +59,17 @@ export default function DecisionBar({ disabledReason, choice, reasonCode, commen
               </select>
             </label>
           )}
+          {choice === 'Clarification Required' && (
+            <label className="field inline">
+              <span>Что уточнить</span>
+              <select className="select" value={clarifyKind} onChange={(e) => onClarifyKind(e.target.value)}>
+                {CLARIFY_KINDS.map((k) => <option key={k.value} value={k.value}>{k.label}</option>)}
+              </select>
+            </label>
+          )}
           <label className="field">
             <span>
-              {choice === 'Reject' ? 'Комментарий — обязателен при отклонении' : choice === 'Clarification Required' ? 'Что нужно уточнить — обязательно' : 'Комментарий (необязательно)'}
+              {choice === 'Reject' ? 'Комментарий — обязателен при отклонении' : choice === 'Clarification Required' ? 'Уточнение — обязательно: что именно не хватает или что неверно' : 'Комментарий (необязательно)'}
             </span>
             <textarea
               ref={commentRef}
@@ -68,7 +87,7 @@ export default function DecisionBar({ disabledReason, choice, reasonCode, commen
                   onCancel();
                 }
               }}
-              placeholder={choice === 'Reject' ? 'Например: в РД система сохранена, отличается только маркировка' : ''}
+              placeholder={choice === 'Reject' ? 'Например: в РД система сохранена, отличается только маркировка' : choice === 'Clarification Required' ? (CLARIFY_KINDS.find((k) => k.value === clarifyKind)?.placeholder || '') : ''}
             />
           </label>
           {error && <div className="error-banner"><span>{error}</span></div>}

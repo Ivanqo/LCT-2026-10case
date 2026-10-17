@@ -122,6 +122,10 @@
                     "type": "string",
                     "default": "auto"
                   },
+                  "process_id": {
+                    "type": "string",
+                    "description": "Optional: attach the file to this inspection process (inspector card 'Дозагрузить'); 409 once finalized"
+                  },
                   "file": {
                     "type": "string",
                     "format": "binary"
@@ -1156,6 +1160,170 @@
         "responses": {
           "200": {
             "description": "Completeness"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/{evidence_group_id}/partial-decision": {
+      "post": {
+        "summary": "Final C1: per-part decisions on a compound finding (reason mandatory for a rejected/clarified part); the overall decision is recorded once every part has one",
+        "parameters": [
+          {
+            "name": "evidence_group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "parts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "decision": {
+                          "type": "string",
+                          "enum": [
+                            "Confirm",
+                            "Reject",
+                            "Clarification Required"
+                          ]
+                        },
+                        "comment": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "key",
+                        "decision"
+                      ]
+                    }
+                  },
+                  "comment": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "parts"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Parts with their decisions, the overall decision (if complete) and the refreshed card"
+          },
+          "409": {
+            "description": "Protocol is finalized"
+          },
+          "422": {
+            "description": "Not a compound finding, unknown part, or a reason is missing"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/{evidence_group_id}/hypothesis-review": {
+      "post": {
+        "summary": "Final C1: review status of a free-search hypothesis (TZ 9.5); rationale mandatory, history append-only",
+        "parameters": [
+          {
+            "name": "evidence_group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "CONFIRMED",
+                      "REJECTED",
+                      "CLARIFICATION_REQUIRED"
+                    ]
+                  },
+                  "comment": {
+                    "type": "string",
+                    "minLength": 3
+                  }
+                },
+                "required": [
+                  "status",
+                  "comment"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New status, history and the refreshed card"
+          },
+          "409": {
+            "description": "Protocol is finalized"
+          },
+          "422": {
+            "description": "Not a hypothesis, unsupported status or missing rationale"
+          }
+        }
+      }
+    },
+    "/api/case10/evidence-groups/{evidence_group_id}/protocol-entry": {
+      "get": {
+        "summary": "Final C1: the record of one finding as it goes into the protocol (sources, values, status, decision, rationale)",
+        "parameters": [
+          {
+            "name": "evidence_group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Protocol entry"
+          }
+        }
+      }
+    },
+    "/api/case10/processes/{process_id}/progress": {
+      "get": {
+        "summary": "Final C1: documents/pages processed per stage, skips with reasons, found/reviewed candidates, incomplete-coverage flag",
+        "parameters": [
+          {
+            "name": "process_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Progress"
           }
         }
       }

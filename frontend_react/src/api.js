@@ -102,6 +102,10 @@ export const api = {
     request(`/api/case10/evidence-groups/${groupId}/fragments/${encodeURIComponent(key)}/remove`, { method: 'POST', body: { reason } }),
   restoreFragment: (groupId, key, reason) =>
     request(`/api/case10/evidence-groups/${groupId}/fragments/${encodeURIComponent(key)}/restore`, { method: 'POST', body: { reason } }),
+  partialDecision: (groupId, body) => request(`/api/case10/evidence-groups/${groupId}/partial-decision`, { method: 'POST', body }),
+  hypothesisReview: (groupId, body) => request(`/api/case10/evidence-groups/${groupId}/hypothesis-review`, { method: 'POST', body }),
+  protocolEntry: (groupId) => request(`/api/case10/evidence-groups/${groupId}/protocol-entry`),
+  progress: (processId) => request(`/api/case10/processes/${processId}/progress`),
   bulkDecisions: (body) => request('/api/case10/evidence-groups/bulk-decisions', { method: 'POST', body }),
   revisions: (processId) => request(`/api/case10/processes/${processId}/revisions`),
   chooseRevision: (processId, body) => request(`/api/case10/processes/${processId}/revision-choices`, { method: 'POST', body }),
@@ -161,11 +165,12 @@ export async function openSourcePage(docId, page) {
   }
 }
 
-export function uploadFile(projectId, file, onProgress) {
+export function uploadFile(projectId, file, onProgress, processId) {
   return new Promise((resolve, reject) => {
     const form = new FormData();
     form.append('project_id', String(projectId));
     form.append('file_type', 'auto');
+    if (processId) form.append('process_id', String(processId));
     form.append('file', file);
 
     const xhr = new XMLHttpRequest();

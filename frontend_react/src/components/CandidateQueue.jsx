@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FINDING_STATUS_LABELS, FINDING_TONE, INSPECTOR_STATUS_LABELS, REJECT_REASON_CODES, STAGE_TITLES, label } from '../labels.js';
+import { FINDING_STATUS_LABELS, FINDING_TONE, INSPECTOR_STATUS_LABELS, NO_RESULT_SHORT, REJECT_REASON_CODES, STAGE_TITLES, label } from '../labels.js';
 import { fmtConfidence, formatValue } from '../utils.js';
 
 export const QUEUE_MODES = [
@@ -7,7 +7,7 @@ export const QUEUE_MODES = [
   { key: 'lowconf', label: 'Низкая уверенность / LOW_QUALITY', test: (i, t) => i.low_quality || (i.min_confidence !== null && i.min_confidence !== undefined && i.min_confidence < t) },
   { key: 'clarify', label: 'Уточнение', test: (i) => i.finding_status === 'CLARIFICATION_REQUIRED' },
   { key: 'decided', label: 'Решённые', test: (i) => i.inspector_status !== 'PENDING' },
-  { key: 'suspicion', label: 'Подозрения ИИ', test: (i) => i.is_suspicion },
+  { key: 'suspicion', label: 'Гипотезы (подозрения ИИ)', test: (i) => i.is_suspicion },
   { key: 'all', label: 'Все', test: () => true },
 ];
 
@@ -20,7 +20,7 @@ export function filterQueue(items, { mode, status, section, search, threshold })
     .filter((i) => modeDef.test(i, threshold))
     .filter((i) => status === 'ALL' || i.finding_status === status)
     .filter((i) => section === 'ALL' || i.section === section)
-    .filter((i) => !needle || [i.matrix_code, i.legacy_code, i.name, i.location, i.expected, i.actual].some((v) => String(v || '').toLowerCase().includes(needle)))
+    .filter((i) => !needle || [i.matrix_code, i.legacy_code, i.name, i.description, i.section, i.location, i.expected, i.actual].some((v) => String(v || '').toLowerCase().includes(needle)))
     .sort((a, b) =>
       (a.finding_status === 'CANDIDATE' ? 0 : 1) - (b.finding_status === 'CANDIDATE' ? 0 : 1)
       || (PRIORITY_RANK[a.review_priority] ?? 3) - (PRIORITY_RANK[b.review_priority] ?? 3)
@@ -29,7 +29,7 @@ export function filterQueue(items, { mode, status, section, search, threshold })
       || a.id - b.id);
 }
 
-export default function CandidateQueue({ summary, rows, filters, onFilters, selectedId, onSelect, checked, onChecked, onBulk, locked }) {
+export default function CandidateQueue({ summary, rows, filters, onFilters, selectedId, onSelect, checked, onChecked, onBulk, locked, changedIds }) {
   const items = summary?.items || [];
   const counts = Object.fromEntries(QUEUE_MODES.map((m) => [m.key, items.filter((i) => m.test(i, filters.threshold)).length]));
   const checkedRows = items.filter((i) => checked.has(i.id));
@@ -61,7 +61,7 @@ export default function CandidateQueue({ summary, rows, filters, onFilters, sele
       </div>
 
       <div className="queue-filters">
-        <input className="input" placeholder="Поиск: код, помещение, значение" value={filters.search} onChange={(e) => onFilters({ search: e.target.value })} />
+        <input className="input" placeholder="Поиск: код, название, описание, помещение, значение" value={filters.search} onChange={(e) => onFilters({ search: e.target.value })} />
         <div className="row" style={{ gap: 6 }}>
           <select className="select" value={filters.section} onChange={(e) => onFilters({ section: e.target.value })} title="Раздел">
             <option value="ALL">Все разделы</option>
@@ -126,6 +126,11 @@ export default function CandidateQueue({ summary, rows, filters, onFilters, sele
                 <span className="muted">conf {fmtConfidence(i.min_confidence ?? i.confidence)}</span>
                 {i.low_quality && <span className="flag lq" title={(i.low_quality_reasons || []).join('; ')}>LQ</span>}
                 {i.min_confidence !== null && i.min_confidence !== undefined && i.min_confidence < filters.threshold && <span className="flag lc">низк.</span>}
+                {i.hypothesis && <span className="flag hy" title="Гипотеза свободного поиска: не нарушение матрицы">гипотеза</span>}
+                {i.no_result && <span className="flag nr" title="Состояние без результата сравнения">{NO_RESULT_SHORT[i.no_result] || i.no_result}</span>}
+                {i.needs_reverification && <span className="flag lc" title="Доказательства изменились после пересчёта — проверьте повторно">перепроверить</span>}
+                {changedIds?.has(i.id) && <span className="flag ch" title="Карточка изменилась или появилась после дозагрузки документов">{changedIds.get(i.id) === 'new' ? 'новая' : 'изменилась'}</span>}
+                {i.compound_parts > 0 && i.parts_decided > 0 && i.parts_decided < i.compound_parts && <span className="flag lc" title="Решено по частям, замечание ещё не закрыто">по частям {i.parts_decided}/{i.compound_parts}</span>}
                 {i.edits > 0 && <span className="flag ed" title="Доказательства уточнены инспектором">✎{i.edits}</span>}
                 {i.inspector_status !== 'PENDING' && <span className="flag ok">{label(INSPECTOR_STATUS_LABELS, i.inspector_status)}</span>}
               </div>

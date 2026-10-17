@@ -4,8 +4,10 @@ import CandidateQueue, { BulkDialog, filterQueue } from './CandidateQueue.jsx';
 import DecisionBar from './DecisionBar.jsx';
 import EvidenceCardFields from './EvidenceCardFields.jsx';
 import EvidenceEditor from './EvidenceEditor.jsx';
+import PartsPanel from './PartsPanel.jsx';
 import StagePanels, { ZOOM_MAX, ZOOM_MIN } from './StagePanels.jsx';
-import { DECIDABLE_STATUSES, DECISION_OPTIONS, FINDING_STATUS_LABELS, INSPECTOR_STATUS_LABELS, REJECT_REASON_CODES, label } from '../labels.js';
+import SupplementDialog from './SupplementDialog.jsx';
+import { CLARIFY_KINDS, DECIDABLE_STATUSES, DECISION_OPTIONS, FINDING_STATUS_LABELS, INSPECTOR_STATUS_LABELS, REJECT_REASON_CODES, label } from '../labels.js';
 import { fmtDate, isTypingTarget } from '../utils.js';
 
 /** File identity for a panel in draw mode: the refined fragment's own, or the chosen document's (add). */
@@ -24,6 +26,27 @@ function documentMeta(documents, draft) {
   return {};
 }
 
+const DEFAULT_FILTERS = { mode: 'candidates', status: 'ALL', section: 'ALL', search: '', threshold: 0.75 };
+
+/** What survives a page reload (the decisions themselves are in the database): open record, filters, view modes. */
+function loadViewState(processId) {
+  try {
+    return JSON.parse(localStorage.getItem(`case10_workbench_${processId}`) || 'null') || {};
+  } catch {
+    return {};
+  }
+}
+
+function saveViewState(processId, state) {
+  try {
+    localStorage.setItem(`case10_workbench_${processId}`, JSON.stringify(state));
+  } catch {
+    /* storage may be unavailable: the view simply starts fresh */
+  }
+}
+
+const cardSignature = (i) => [i.finding_status, i.expected, i.actual, i.needs_reverification, (i.stages || []).join(','), i.fragments, i.inspector_status].join('|');
+
 const DECISION_BY_CODE = Object.fromEntries(DECISION_OPTIONS.map((o) => [`Key${o.hotkey}`, o.key]));
 const INSPECTOR_BY_DECISION = { Confirm: 'CONFIRMED', Reject: 'REJECTED', 'Clarification Required': 'CLARIFICATION_REQUIRED' };
 
@@ -32,10 +55,20 @@ const INSPECTOR_BY_DECISION = { Confirm: 'CONFIRMED', Reject: 'REJECTED', 'Clari
  * decision bar and the synchronized ПД/РД/ИД panels on the right. Every decision reports how many conscious actions
  * and how much time it took from opening the candidate (DECISION_UI_METRICS in the audit log, for the pitch).
  */
-export default function Workbench({ projectId, processId, locked, onChanged }) {
+export default function Workbench({ projectId, processId, locked, onChanged, onOpenSection }) {
   const [summary, setSummary] = useState(null);
   const [summaryError, setSummaryError] = useState('');
-  const [filters, setFilters] = useState({ mode: 'candidates', status: 'ALL', section: 'ALL', search: '', threshold: 0.75 });
+  const [filters, setFilters] = useState(() => ({ ...DEFAULT_FILTERS, ...(loadViewState(processId).filters || {}) }));
+  const [pair, setPair] = useState(() => loadViewState(processId).pair || 'PD_RD_ID');
+  const [sync, setSync] = useState(() => loadViewState(processId).sync !== false);
+  const [showFrames, setShowFrames] = useState(() => loadViewState(processId).showFrames !== false);
+  const [partsOpen, setPartsOpen] = useState(false);
+  const [supplement, setSupplement] = useState(null);
+  const [changedIds, setChangedIds] = useState(() => new Map());
+  const [supplementNote, setSupplementNote] = useState('');
+  const [clarifyKind, setClarifyKind] = useState(CLARIFY_KINDS[0].value);
+  const pendingSelect = useRef(loadViewState(processId).selectedId || null);
+  const snapshot = useRef(null);
   const [selectedId, setSelectedId] = useState(null);
   const [detail, setDetail] = useState(null);
   const [detailError, setDetailError] = useState('');
@@ -77,13 +110,23 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
   }, [processId]);
 
   useEffect(() => {
+    const stored = loadViewState(processId);
     setSummary(null);
     setSelectedId(null);
     setDetail(null);
     setChecked(new Set());
-    thresholdInit.current = false;
+    setChangedIds(new Map());
+    setSupplementNote('');
+    if (stored.filters) setFilters({ ...DEFAULT_FILTERS, ...stored.filters });
+    pendingSelect.current = stored.selectedId || null;
+    thresholdInit.current = Boolean(stored.filters);
     refreshSummary();
-  }, [refreshSummary]);
+  }, [refreshSummary, processId]);
+
+  useEffect(() => {
+    if (!processId) return;
+    saveViewState(processId, { selectedId, filters, pair, sync, showFrames });
+  }, [processId, selectedId, filters, pair, sync, showFrames]);
 
   useEffect(() => {
     if (!projectId) return;
@@ -114,6 +157,8 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
     setChoice(null);
     setComment('');
     setReasonCode(REJECT_REASON_CODES[0].value);
+    setClarifyKind(CLARIFY_KINDS[0].value);
+    setPartsOpen(false);
     setDecisionError('');
     setDraft(null);
     setDraftError('');
@@ -123,7 +168,11 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
 
   useEffect(() => {
     if (!rows.length) return;
-    if (!selectedId || !(summary?.items || []).some((i) => i.id === selectedId)) openCandidate(rows[0].id, 'auto');
+    if (!selectedId || !(summary?.items || []).some((i) => i.id === selectedId)) {
+      const restored = pendingSelect.current && (summary?.items || []).some((i) => i.id === pendingSelect.current) ? pendingSelect.current : null;
+      pendingSelect.current = null;
+      openCandidate(restored || rows[0].id, 'auto');
+    }
   }, [rows, selectedId, summary, openCandidate]);
 
   function bump() {
@@ -142,8 +191,10 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
     ? 'Выберите кандидата в очереди'
     : locked
       ? 'Протокол финализирован — решения заблокированы (отмена финализации — Admin/Supervisor).'
-      : !DECIDABLE_STATUSES.has(detail.finding_status)
-        ? `Технический статус «${label(FINDING_STATUS_LABELS, detail.finding_status)}»: сравнение не состоялось, решение по нарушению не принимается.`
+      : detail.hypothesis
+        ? 'Гипотеза свободного поиска: статус рассмотрения задаётся в блоке «Гипотеза свободного поиска» карточки (принять / отклонить / запросить уточнение).'
+        : !DECIDABLE_STATUSES.has(detail.finding_status)
+        ? `Технический статус «${label(FINDING_STATUS_LABELS, detail.finding_status)}»: сравнение не состоялось, решение по нарушению не принимается.${detail.no_result ? ` ${detail.no_result.title}: ${detail.no_result.reason}` : ''}`
         : null;
 
   function choose(key) {
@@ -168,7 +219,12 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
     setSaving(true);
     setDecisionError('');
     try {
-      await api.evidenceDecision(detail.id, choice, choice === 'Reject' ? reasonCode : null, comment.trim() || null, uiMetrics);
+      const clarify = choice === 'Clarification Required';
+      const kind = CLARIFY_KINDS.find((k) => k.value === clarifyKind);
+      await api.evidenceDecision(
+        detail.id, choice, choice === 'Reject' ? reasonCode : clarify ? clarifyKind : null,
+        clarify ? `${kind.label}: ${comment.trim()}` : comment.trim() || null, uiMetrics,
+      );
       await refreshSummary();
       onChanged?.();
       if (nextId) openCandidate(nextId, 'auto');
@@ -182,6 +238,58 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
     } finally {
       setSaving(false);
     }
+  }
+
+  async function onHypothesisReviewed(result) {
+    setDetail(result.evidence_group);
+    await refreshSummary();
+    onChanged?.();
+  }
+
+  async function onPartsSaved(result) {
+    setDetail(result.evidence_group);
+    const data = await refreshSummary();
+    onChanged?.();
+    if (result.group_decision && data) {
+      setPartsOpen(false);
+      const index = rows.findIndex((r) => r.id === result.evidence_group.id);
+      const nextId = rows.slice(index + 1).find((r) => r.inspector_status === 'PENDING' && r.id !== result.evidence_group.id)?.id;
+      if (nextId) openCandidate(nextId, 'auto');
+    }
+  }
+
+  function openSupplement(stage) {
+    if (locked) return;
+    snapshot.current = new Map((summary?.items || []).map((i) => [i.id, cardSignature(i)]));
+    setSupplement({ stage });
+  }
+
+  async function onSupplementDone() {
+    const before = snapshot.current || new Map();
+    setSupplement(null);
+    api.listCase10Documents(projectId).then(setDocuments).catch(() => {});
+    const data = await refreshSummary();
+    const items = data?.items || [];
+    const marks = new Map();
+    items.forEach((i) => {
+      if (!before.has(i.id)) marks.set(i.id, 'new');
+      else if (before.get(i.id) !== cardSignature(i)) marks.set(i.id, 'changed');
+    });
+    const present = new Set(items.map((i) => i.id));
+    const gone = [...before.keys()].filter((id) => !present.has(id)).length;
+    const changedCount = [...marks.values()].filter((v) => v === 'changed').length;
+    setChangedIds(marks);
+    setSupplementNote(marks.size || gone
+      ? `Дозагрузка завершена: изменились ${changedCount}, добавлены ${marks.size - changedCount}, заменены пересчётом ${gone} карточек (отмечены в очереди). Остальные карточки не тронуты; решения инспектора сохранены.`
+      : 'Дозагрузка завершена: ни одна карточка не изменилась, решения инспектора сохранены.');
+    onChanged?.();
+    if (detail) loadDetail(detail.id);
+  }
+
+  function onNoResultAction(action) {
+    if (action.kind === 'upload') openSupplement(action.stage);
+    else if (action.kind === 'revisions') onOpenSection?.('revisions');
+    else if (action.kind === 'edit_evidence') document.getElementById('evidence-editor-anchor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   async function submitDraft() {
@@ -263,6 +371,9 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
         setZoom((z) => Math.max(ZOOM_MIN, (z === 'auto' ? 2 : z) / 1.5));
       } else if (event.code === 'KeyA') {
         setZoom('auto');
+      } else if (event.code === 'KeyS' && detail?.parts?.compound && !locked) {
+        event.preventDefault();
+        setPartsOpen((v) => !v);
       } else if (event.code === 'KeyX' && selectedId) {
         setChecked((prev) => {
           const next = new Set(prev);
@@ -296,6 +407,7 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
         onChecked={setChecked}
         onBulk={setBulk}
         locked={locked}
+        changedIds={changedIds}
       />
 
       <main className="candidate-window">
@@ -303,6 +415,7 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
         {!summary && !summaryError && <div className="empty-state"><span className="spinner" /> Загружаю очередь…</div>}
         {summary && !rows.length && <div className="empty-state card">В выбранной очереди нет кандидатов. Смените очередь или фильтр слева.</div>}
         {detailError && <div className="error-banner"><span>{detailError}</span></div>}
+        {supplementNote && <div className="info-banner"><span>{supplementNote}</span><button type="button" onClick={() => setSupplementNote('')} aria-label="Закрыть">×</button></div>}
 
         {detail && (
           <>
@@ -315,12 +428,19 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
             </div>
 
             <div className={`candidate-body${loadingDetail ? ' loading' : ''}`}>
-              <EvidenceCardFields detail={detail} />
+              <EvidenceCardFields detail={detail} locked={locked} onNoResultAction={onNoResultAction} onHypothesisReviewed={onHypothesisReviewed} protocolKey={`${decisions.length}:${detail.parts?.decided || 0}`} />
 
               <DecisionBar
                 disabledReason={decisionBlocked}
                 choice={choice}
                 reasonCode={reasonCode}
+                clarifyKind={clarifyKind}
+                onClarifyKind={setClarifyKind}
+                compound={Boolean(detail.parts?.compound) && !locked}
+                partsDecided={detail.parts?.decided}
+                partsTotal={detail.parts?.total}
+                partsOpen={partsOpen}
+                onSplit={() => setPartsOpen((v) => !v)}
                 comment={comment}
                 saving={saving}
                 error={decisionError}
@@ -332,9 +452,20 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
                 onCancel={() => setChoice(null)}
               />
 
+              {partsOpen && <PartsPanel detail={detail} locked={locked} onSaved={onPartsSaved} onClose={() => setPartsOpen(false)} />}
+
               <StagePanels
                 panels={detail.panels}
-                visibleStages={detail.visible_stages || []}
+                pair={pair}
+                onPair={setPair}
+                documents={documents}
+                section={detail.card?.section}
+                locked={locked}
+                onSupplement={openSupplement}
+                sync={sync}
+                onSync={setSync}
+                showFrames={showFrames}
+                onShowFrames={setShowFrames}
                 zoom={zoom}
                 onZoom={setZoom}
                 activeKeys={activeKeys}
@@ -344,6 +475,7 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
                 showRemoved={showRemoved}
               />
 
+              <div id="evidence-editor-anchor" />
               <EvidenceEditor
                 detail={detail}
                 documents={documents}
@@ -375,6 +507,17 @@ export default function Workbench({ projectId, processId, locked, onChanged }) {
           </>
         )}
       </main>
+
+      {supplement && (
+        <SupplementDialog
+          projectId={projectId}
+          processId={processId}
+          stage={supplement.stage}
+          section={detail?.card?.section}
+          onClose={() => setSupplement(null)}
+          onDone={onSupplementDone}
+        />
+      )}
 
       {bulk && (
         <BulkDialog
