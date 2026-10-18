@@ -104,6 +104,7 @@ export const api = {
     request(`/api/case10/evidence-groups/${groupId}/fragments/${encodeURIComponent(key)}/restore`, { method: 'POST', body: { reason } }),
   partialDecision: (groupId, body) => request(`/api/case10/evidence-groups/${groupId}/partial-decision`, { method: 'POST', body }),
   hypothesisReview: (groupId, body) => request(`/api/case10/evidence-groups/${groupId}/hypothesis-review`, { method: 'POST', body }),
+  hypothesisToCandidate: (groupId, body) => request(`/api/case10/evidence-groups/${groupId}/hypothesis-to-candidate`, { method: 'POST', body }),
   protocolEntry: (groupId) => request(`/api/case10/evidence-groups/${groupId}/protocol-entry`),
   progress: (processId) => request(`/api/case10/processes/${processId}/progress`),
   bulkDecisions: (body) => request('/api/case10/evidence-groups/bulk-decisions', { method: 'POST', body }),

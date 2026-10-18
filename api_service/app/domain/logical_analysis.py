@@ -9,19 +9,16 @@ produced a `SUSPICION` finding was `_create_gold_fixture_groups` in
 in, only replays organizer-provided fixtures rather than computing a
 hypothesis -- i.e. the module was entirely dead.
 
-This file implements exactly one of the four approaches -- LOGICAL_ANALYSIS
-("if A then B") -- for real, against actually extracted data, and is honest
-about the other three still being unimplemented:
+This file implements the LOGICAL_ANALYSIS approach ("if A then B") for real,
+against actually extracted data -- the three rules below, unchanged -- and
+hosts the entry point of the other approaches, which live in the package
+`free_hypotheses/` (switch CASE10_FREE_HYPOTHESES, see there and
+evaluation/phase12/FINAL_B2_HYPOTHESES_REPORT.md):
 
-- SEMANTIC_DISSONANCE: not implemented here (see `semantic_dissonance.py`
-  for a second, independent approach, wired in separately).
-- NORMATIVE_ANALYSIS (a general SP/GOST/SanPiN checker outside the matrix):
-  not implemented. The `LogicalRule` table below cites real normative
-  paragraphs, but there is no general-purpose normative-document engine --
-  every rule is hand-authored, not derived from a machine-readable norms
-  base.
-- ML_PATTERN_ANALYSIS: not implemented (no historical-anomaly model
-  exists in this codebase yet).
+- SEMANTIC_DISSONANCE, UNMATCHED_DIFF ("found, but no matrix parameter"),
+  further internal-consistency logic rules LR-101..106, NORMATIVE (checks
+  against the admin `Normative_Base`) and an optional statistical
+  ML_PATTERN_STAT baseline. There is no trained model anywhere.
 
 A rule fires only when a real numeric value was actually extracted for its
 condition parameter this run (an unparseable/missing condition is an honest
@@ -35,6 +32,7 @@ in `protocol_annex2.py`).
 """
 from __future__ import annotations
 
+import logging
 import re
 from dataclasses import dataclass, field
 from typing import Any
@@ -337,7 +335,30 @@ def run_logical_analysis_module(
         param_touched.add(group_key)
         _upsert_logical_suspicion(db, process, condition_param, rule, observed_value, condition_group, user_id=user_id)
         fired.append(rule.rule_id)
+    _run_free_hypotheses(db, process, params, touched_keys, by_id=by_id, user_id=user_id)
     return fired
+
+
+def _run_free_hypotheses(db: Session, process: InspectionProcess, params: list[Param], touched_keys: dict[int, set[str]], *,
+                         by_id: dict[int, DocumentVersion], user_id: int | None) -> dict[str, Any] | None:
+    """The other TZ 9.5 detectors (`free_hypotheses/`: UNMATCHED_DIFF, SEMANTIC_DISSONANCE, internal-consistency logic rules,
+    NORMATIVE, optional ML statistics) behind CASE10_FREE_HYPOTHESES. A failure here never fails the matrix run: the
+    savepoint rolls back whatever the module wrote and the error is logged."""
+    from .free_hypotheses.base import free_hypotheses_enabled
+
+    if not free_hypotheses_enabled():
+        return None
+    from .free_hypotheses.runner import run_free_hypotheses
+
+    savepoint = db.begin_nested()
+    try:
+        summary = run_free_hypotheses(db, process, params, touched_keys, by_id=by_id, user_id=user_id)
+        savepoint.commit()
+        return summary
+    except Exception:  # noqa: BLE001
+        savepoint.rollback()
+        logging.getLogger(__name__).exception("free hypothesis search failed; matrix result unaffected")
+        return None
 
 
 def _upsert_logical_suspicion(

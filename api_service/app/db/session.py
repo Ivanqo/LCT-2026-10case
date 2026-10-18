@@ -314,6 +314,16 @@ def _seed_logical_rules() -> None:
                 row.criticality = rule.criticality
                 row.confidence = rule.confidence
                 db.add(row)
+        from ..domain.free_hypotheses.logic_rules import rule_descriptors
+
+        for item in rule_descriptors():
+            row = existing.get(item["rule_id"])
+            if row is None:
+                db.add(LogicalRuleRecord(**item))
+            else:
+                for key in ("rule_name", "condition", "expected", "normative_base", "criticality", "confidence"):
+                    setattr(row, key, item[key])
+                db.add(row)
         db.commit()
     finally:
         db.close()

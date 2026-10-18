@@ -42,6 +42,7 @@ from evaluation.exporter import evidence_group_to_submission_check
 
 ENTITY_PART = "PART_DECISION"
 ENTITY_HYPOTHESIS = "HYPOTHESIS_REVIEW"
+ENTITY_CONVERSION = "HYPOTHESIS_CONVERSION"
 HYPOTHESIS_STATUSES = ("CONFIRMED", "REJECTED", "CLARIFICATION_REQUIRED")  # same vocabulary as the inspector's decision on a finding
 PART_ACTIONS = {"Confirm": "CONFIRM", "Reject": "REJECT", "Clarification Required": "CLARIFY"}
 PART_ACTION_TO_DECISION = {value: key for key, value in PART_ACTIONS.items()}
@@ -455,7 +456,11 @@ def explanation_block(*, delta: dict[str, Any], param: Any, expected: object, ac
     for attr, title in (("sp_reference", "СП"), ("gost_reference", "ГОСТ"), ("fz_reference", "ФЗ")):
         if getattr(param, attr, None):
             basis_parts.append(f"{title}: {getattr(param, attr)}")
-    return {
+    stored = delta.get("explanation") if isinstance(delta.get("explanation"), dict) else {}
+    if "deviation_basis" in stored:
+        # the pipeline computed (or deliberately did not compute) the deviation: never guess one from the value strings
+        dev_abs, dev_pct, computed_by = stored.get("deviation_abs"), stored.get("deviation_pct"), stored.get("deviation_basis")
+    block = {
         "rule": trigger.get("label") or rule_version,
         "rule_kind": trigger.get("kind"),
         "rule_evaluation": trigger.get("evaluation"),
@@ -476,6 +481,16 @@ def explanation_block(*, delta: dict[str, Any], param: Any, expected: object, ac
         "probability": None,
         "probability_note": "Вероятность нарушения не заявляется: способа её расчёта в системе нет.",
     }
+    # values the pipeline itself wrote (evidence_tier.build_explanation / producers) win over the ones derived here
+    for key in ("rule", "threshold", "threshold_unit", "threshold_basis", "text_confidence", "link_confidence", "unit",
+                "rounding_tolerance", "missing_systems", "added_systems", "combined_confidence_kind"):
+        if stored.get(key) is not None:
+            block[key] = stored[key]
+    if "threshold" in stored and stored["threshold"] is None and stored.get("threshold_basis") and not block.get("threshold_text"):
+        block["threshold_text"] = "не установлен матрицей"
+    block["evidence_tier"] = delta.get("evidence_tier")
+    block["tier_reasons"] = delta.get("tier_reason_text") or delta.get("tier_reasons")
+    return block
 
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -529,6 +544,29 @@ def record_hypothesis_review(db: Session, group: EvidenceGroup, *, status: str, 
     db.commit()
     db.refresh(group)
     return {"status": status, "previous_status": previous, "history": hypothesis_history(db, group)}
+
+
+def convert_hypothesis_to_candidate(db: Session, group: EvidenceGroup, *, comment: object, user_id: int | None) -> dict[str, Any]:
+    """"Преобразовать в кандидата" (ТЗ 9.5): allowed only when every cited place of the hypothesis has a file, a page and a
+    box (and the stages the claim needs are cited); refused with the missing items otherwise. A hypothesis is never
+    converted automatically, and the conversion is not a violation: CONFIRMED_VIOLATION stays the inspector's separate
+    decision. The conversion is an append-only edit with author, time and reason."""
+    from .free_hypotheses.store import ConversionRefused, convert_to_candidate
+
+    process = wb._group_process(db, group)
+    wb.require_open_process(process)
+    reason = wb.require_reason(comment, what="conversion rationale")
+    try:
+        result = convert_to_candidate(db, group, reason=reason, user_id=user_id, process=process)
+    except ConversionRefused as exc:
+        raise HTTPException(status_code=422, detail=f"Hypothesis cannot become a candidate: {exc}") from exc
+    wb._record_edit(
+        db, process=process, group=group, entity_type=ENTITY_CONVERSION, entity_key=f"hypothesis-conversion:{int(group.id)}", action="TO_CANDIDATE",
+        previous_value={"finding_status": "SUSPICION"}, new_value={"finding_status": "CANDIDATE", "comment": reason}, reason=reason,
+        user_id=user_id, audit_action="HYPOTHESIS_CONVERTED_TO_CANDIDATE")
+    db.commit()
+    db.refresh(group)
+    return result
 
 
 def hypothesis_card(group: EvidenceGroup, delta: dict[str, Any], sources: dict[str, Any], inspector_status: str,

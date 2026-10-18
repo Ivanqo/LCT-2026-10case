@@ -7,6 +7,7 @@ const HYPOTHESIS_ACTIONS = [
   { status: 'CONFIRMED', label: 'Принять гипотезу' },
   { status: 'REJECTED', label: 'Отклонить гипотезу' },
   { status: 'CLARIFICATION_REQUIRED', label: 'Запросить уточнение' },
+  { status: 'TO_CANDIDATE', label: 'Преобразовать в кандидата' },
 ];
 import { fmtConfidence, fmtDate, formatValue } from '../utils.js';
 
@@ -52,6 +53,7 @@ export function ExplanationBlock({ card }) {
     <details className="explain-block" open>
       <summary>Основание расхождения</summary>
       <dl className="card-grid">
+        <dt>Уровень выдачи</dt><dd>{e.evidence_tier === 'SUGGESTION' ? 'Предположение для верификации инспектором' : e.evidence_tier === 'VIOLATION_CANDIDATE' ? 'Нарушение-кандидат' : NOT_COMPUTED}{Array.isArray(e.tier_reasons) && e.tier_reasons.length ? <span className="muted small"> • {e.tier_reasons.join('; ')}</span> : null}</dd>
         <dt>Параметр</dt><dd>{formatValue(card.parameter_name)}{card.matrix_code ? <span className="muted mono"> • {card.matrix_code}</span> : null}</dd>
         <dt>Объект сравнения</dt><dd>{formatValue(card.location)} <span className="muted mono">({formatValue(card.object_id)})</span></dd>
         <dt>Значения по стадиям</dt>
@@ -112,7 +114,9 @@ export function HypothesisCard({ hypothesis, groupId, locked, onReviewed }) {
     setBusy(true);
     setError('');
     try {
-      const result = await api.hypothesisReview(groupId, { status, comment: comment.trim() });
+      const result = status === 'TO_CANDIDATE'
+        ? await api.hypothesisToCandidate(groupId, { comment: comment.trim() })
+        : await api.hypothesisReview(groupId, { status, comment: comment.trim() });
       setStatus(null);
       setComment('');
       onReviewed(result);

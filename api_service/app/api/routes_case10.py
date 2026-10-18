@@ -160,6 +160,10 @@ class HypothesisReviewIn(BaseModel):
     comment: str = Field(min_length=1, max_length=2000)
 
 
+class HypothesisConvertIn(BaseModel):
+    comment: str = Field(min_length=1, max_length=2000)
+
+
 class FragmentAddIn(BaseModel):
     document_version_id: int
     page: int = Field(ge=1)
@@ -794,6 +798,15 @@ def case10_hypothesis_review(evidence_group_id: int, payload: HypothesisReviewIn
     """Final C1: review status of a free-search hypothesis (TZ 9.5), rationale mandatory, history append-only."""
     group = _org_group(db, evidence_group_id, user)
     result = inspector_card.record_hypothesis_review(db, group, status=payload.status, comment=payload.comment, user_id=int(user.id))
+    return {**result, "evidence_group": inspector_card.workbench_group_full(db, _org_group(db, evidence_group_id, user))}
+
+
+@router.post("/case10/evidence-groups/{evidence_group_id}/hypothesis-to-candidate")
+def case10_hypothesis_to_candidate(evidence_group_id: int, payload: HypothesisConvertIn, db: Session = Depends(get_db),
+                                   user: User = Depends(get_current_user)):
+    """TZ 9.5: a hypothesis becomes a CANDIDATE only on the inspector's action and only with concrete sources and boxes."""
+    group = _org_group(db, evidence_group_id, user)
+    result = inspector_card.convert_hypothesis_to_candidate(db, group, comment=payload.comment, user_id=int(user.id))
     return {**result, "evidence_group": inspector_card.workbench_group_full(db, _org_group(db, evidence_group_id, user))}
 
 
