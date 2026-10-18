@@ -260,7 +260,8 @@ class TesseractObservabilityTests(unittest.TestCase):
         from PIL import Image
 
         image = Image.new("L", (40, 30), 255)
-        with patch("subprocess.run", side_effect=subprocess.TimeoutExpired("tesseract", 600)) as mocked_run, \
+        with patch.dict("os.environ", {"CASE10_ROBUST_INPUTS": "0"}), \
+                patch("subprocess.run", side_effect=subprocess.TimeoutExpired("tesseract", 600)) as mocked_run, \
                 self.assertLogs(dataset_sources.logger, level="WARNING"):
             result = dataset_sources._run_tesseract_tsv(image, "eng")
         self.assertIsNone(result)

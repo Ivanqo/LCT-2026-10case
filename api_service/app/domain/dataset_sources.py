@@ -21,6 +21,7 @@ from ..metrics import (
     ocr_tesseract_available,
     ocr_tesseract_calls_total,
 )
+from ..robustness import robust_inputs_enabled
 from .anchor_search import cluster_rows
 from .official_dataset import find_dataset_paths
 
@@ -246,59 +247,55 @@ def _original_page_snapshots(relative: str, sha256: str, page_numbers: tuple[int
         for page_number in page_numbers:
             if page_number < 1 or page_number > len(pdf):
                 continue
-            page = pdf[page_number - 1]
-            rotation = int(page.rotation)
-            raw_width, raw_height = float(page.cropbox.width), float(page.cropbox.height)
-            width, height = _visible_page_dims(raw_width, raw_height, rotation)
-            words = [
-                {
-                    "bbox": _bbox_to_visible_frame(
-                        [float(word[0]), float(word[1]), float(word[2]), float(word[3])],
-                        raw_width, raw_height, rotation,
-                    ),
-                    "text": _normalize_pua_glyphs(str(word[4])),
-                }
-                for word in page.get_text("words", sort=True)
-                if len(word) >= 5 and str(word[4]).strip()
-            ]
-            if rotation % 360 != 0:
-                # `sort=True` orders words in fitz's own RAW (unrotated
-                # content-stream) frame -- correct reading order for a
-                # 0deg page, but scrambled for a rotated one: a table's
-                # label/value cells end up nowhere near each other in the
-                # flat list even though their (now-corrected) visible bboxes
-                # are right. Verified forensically on a real 90deg-rotated
-                # LOS3A RD sheet: literal anchor-phrase matching
-                # (`find_anchor_end_word_index`, which assumes its anchor's
-                # words are adjacent in this list) found 0/132 matrix
-                # parameters pre-fix and 5/132 post-fix on the same page,
-                # including the literal ТЭП-table row this was built to
-                # find. Re-clustering by the already-corrected visible bbox
-                # (same Y/X banding `cluster_rows` uses for row
-                # fingerprinting/semantic scoring elsewhere in this module
-                # family) restores true reading order for any rotation;
-                # left untouched for the far more common 0deg case, where
-                # fitz's own order is already correct and already covered
-                # by existing tests/fixtures.
-                words = [word for row in cluster_rows(words) for word in row]
-            # Corruption detection reads the plain-text extraction, not the words-joined
-            # text above: fitz's "words" tokenizer treats raw C0 control-byte glyphs
-            # (one of the two confirmed broken-CMap signatures -- see
-            # `_looks_like_broken_cmap_text`) as word-boundary whitespace and silently
-            # drops them, so a page like F0150 that is genuinely garbled shows *zero*
-            # control characters once tokenized into words even though `get_text("text")`
-            # on the same page has them at >3% density. Checking the untokenized text
-            # instead of re-deriving it from `words` is what actually catches that case.
-            cmap_corrupted = _looks_like_broken_cmap_text(page.get_text("text"))
-            snapshots.append({
-                "page": page_number,
-                "width": width,
-                "height": height,
-                "text": " ".join(word["text"] for word in words),
-                "words": words,
-                "cmap_corrupted": cmap_corrupted,
-            })
+            if not robust_inputs_enabled():
+                snapshots.append(_extract_original_page_snapshot(pdf, page_number))
+                continue
+            repaired_pdf = bool(getattr(pdf, "is_repaired", False))
+            try:
+                snapshot = _extract_original_page_snapshot(pdf, page_number)
+            except Exception as exc:  # noqa: BLE001 -- one malformed page must not discard its document's other pages
+                snapshot = {"page": page_number, "width": 1.0, "height": 1.0,
+                            "text": "", "words": [], "cmap_corrupted": False}
+                _mark_ocr_page_low_quality(snapshot, "PAGE_EXTRACTION_FAILED")
+                _log_ocr_event(logging.WARNING, "pdf_page_extraction_failed", relative=relative,
+                               page=page_number, error=type(exc).__name__)
+            if repaired_pdf:
+                _mark_page_low_quality(snapshot, "PDF_REPAIRED_DURING_OPEN")
+            snapshots.append(snapshot)
     return tuple(snapshots)
+
+
+def _extract_original_page_snapshot(pdf, page_number: int) -> dict:
+    page = pdf[page_number - 1]
+    rotation = int(page.rotation)
+    raw_width, raw_height = float(page.cropbox.width), float(page.cropbox.height)
+    width, height = _visible_page_dims(raw_width, raw_height, rotation)
+    words = [
+        {
+            "bbox": _bbox_to_visible_frame(
+                [float(word[0]), float(word[1]), float(word[2]), float(word[3])],
+                raw_width, raw_height, rotation,
+            ),
+            "text": _normalize_pua_glyphs(str(word[4])),
+        }
+        for word in page.get_text("words", sort=True)
+        if len(word) >= 5 and str(word[4]).strip()
+    ]
+    if rotation % 360 != 0:
+        # `sort=True` orders words in fitz's own RAW (unrotated content-stream) frame,
+        # so cluster the already-corrected visible bboxes for rotated pages only.
+        words = [word for row in cluster_rows(words) for word in row]
+    # Check the plain text too: PyMuPDF's word tokenizer drops C0 glyphs that
+    # `_looks_like_broken_cmap_text` uses to identify a broken text layer.
+    cmap_corrupted = _looks_like_broken_cmap_text(page.get_text("text"))
+    return {
+        "page": page_number,
+        "width": width,
+        "height": height,
+        "text": " ".join(word["text"] for word in words),
+        "words": words,
+        "cmap_corrupted": cmap_corrupted,
+    }
 
 
 # Bounds how many pages a single `extract_original_pages()` call will force through full
@@ -327,6 +324,10 @@ def document_page_count_hint(document, default: int = 60) -> int:
 
 def _mark_ocr_page_low_quality(snapshot: dict, reason: str) -> None:
     snapshot["cmap_corruption_suspected"] = True
+    _mark_page_low_quality(snapshot, reason)
+
+
+def _mark_page_low_quality(snapshot: dict, reason: str) -> None:
     snapshot["quality_status"] = "LOW_QUALITY"
     snapshot["page_quality"] = "LOW_QUALITY"
     reasons = set(snapshot.get("quality_reasons") or [])
@@ -340,7 +341,20 @@ def extract_original_pages(document, page_numbers) -> dict[int, dict]:
     if ref is None or not pages:
         return {}
     relative, sha256 = ref
-    snapshots = {row["page"]: row for row in _original_page_snapshots(relative, sha256, pages)}
+    if not robust_inputs_enabled():
+        snapshots = {row["page"]: row for row in _original_page_snapshots(relative, sha256, pages)}
+    else:
+        try:
+            snapshots = {row["page"]: row for row in _original_page_snapshots(relative, sha256, pages)}
+        except Exception as exc:  # noqa: BLE001 -- an unreadable PDF is page-level LOW_QUALITY, not a failed batch
+            _log_ocr_event(logging.WARNING, "pdf_document_extraction_failed", relative=relative,
+                           pages=list(pages), error=type(exc).__name__)
+            snapshots = {}
+            for page_number in pages:
+                snapshot = {"page": page_number, "width": 1.0, "height": 1.0,
+                            "text": "", "words": [], "cmap_corrupted": False}
+                _mark_ocr_page_low_quality(snapshot, "PDF_DOCUMENT_EXTRACTION_FAILED")
+                snapshots[page_number] = snapshot
     forced_ocr_budget = _MOJIBAKE_FORCED_OCR_MAX_PAGES_PER_CALL
     for page_number, snapshot in sorted(snapshots.items()):
         if forced_ocr_budget <= 0:
@@ -351,7 +365,15 @@ def extract_original_pages(document, page_numbers) -> dict[int, dict]:
         if not snapshot.get("cmap_corrupted"):
             continue
         forced_ocr_budget -= 1
-        ocr_snapshot = ocr_page_snapshot(document, page_number)
+        if not robust_inputs_enabled():
+            ocr_snapshot = ocr_page_snapshot(document, page_number)
+        else:
+            try:
+                ocr_snapshot = ocr_page_snapshot(document, page_number)
+            except Exception as exc:  # noqa: BLE001 -- OCR failure is local to this page
+                _log_ocr_event(logging.WARNING, "pdf_page_ocr_failed", relative=relative,
+                               page=page_number, error=type(exc).__name__)
+                ocr_snapshot = None
         if ocr_snapshot:
             ocr_cmap_corruption_detected_total.labels(resolution="forced_ocr_substituted").inc()
             _log_ocr_event(
@@ -398,7 +420,7 @@ def _ocr_original_clip(relative: str, sha256: str, page_number: int, clip_values
             input=prepared.getvalue(),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            timeout=_TESSERACT_EMERGENCY_TIMEOUT_SECONDS,
+            timeout=_tesseract_emergency_timeout_seconds(),
             check=False,
         )
     except (FileNotFoundError, subprocess.TimeoutExpired) as exc:
@@ -427,7 +449,7 @@ def _ocr_original_clip_via_tempfile(png: bytes, lang: str) -> str:
                 ["tesseract", str(image_path), str(output_base), "-l", lang, "--psm", "11"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.PIPE,
-                timeout=_TESSERACT_EMERGENCY_TIMEOUT_SECONDS,
+                timeout=_tesseract_emergency_timeout_seconds(),
                 check=False,
             )
             output_path = output_base.with_suffix(".txt")
@@ -461,7 +483,8 @@ def ocr_original_clip(document, page_number: int, bbox_pdf, *, lang: str | None 
 _OCR_PAGE_ZOOM_MAX = 3.0
 _OCR_PAGE_MAX_PIXELS_SIDE = 3500.0
 _OCR_PAGE_MAX_PIXELS_AREA = _OCR_PAGE_MAX_PIXELS_SIDE * _OCR_PAGE_MAX_PIXELS_SIDE
-_TESSERACT_EMERGENCY_TIMEOUT_SECONDS = 600
+def _tesseract_emergency_timeout_seconds() -> int:
+    return 60 if robust_inputs_enabled() else 600
 
 
 def ocr_zoom_for_page_size(width: float, height: float) -> float:
@@ -585,7 +608,7 @@ def _run_tesseract_tsv(image, lang: str) -> str | None:
                 ["tesseract", str(image_path), str(output_base), "-l", lang, "--psm", "11", "tsv"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.PIPE,
-                timeout=_TESSERACT_EMERGENCY_TIMEOUT_SECONDS,
+            timeout=_tesseract_emergency_timeout_seconds(),
                 check=False,
             )
             output_path = output_base.with_suffix(".tsv")

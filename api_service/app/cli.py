@@ -30,6 +30,8 @@ import threading
 import time
 from typing import Any, Callable
 
+from .robustness import default_max_unpacked_bytes, robust_inputs_enabled
+
 REFERENCE_ROOT = Path(__file__).resolve().parent / "reference_data" / "case_data"
 SCHEMA_PATH = REFERENCE_ROOT / "submission_schema.json"
 PROJECT_ID = 1
@@ -87,7 +89,12 @@ def main(argv: list[str] | None = None) -> int:
         if isinstance(exc, PackageError):
             _say(f"error: {exc}")
             return EXIT_ERROR
-        raise
+        if not robust_inputs_enabled():
+            raise
+        detail = str(exc).strip()[:500]
+        suffix = f": {detail}" if detail else ""
+        _say(f"error: batch run failed ({type(exc).__name__}){suffix}")
+        return EXIT_ERROR
 
 
 # ------------------------------------------------------------------------------------------------------ run
@@ -107,18 +114,26 @@ def _run(args: argparse.Namespace) -> int:
     with clock.stage("unpack"):
         package_root, package_name = bp.resolve_package(
             args.docs, unpack_root=work_dir / "unpacked",
-            max_unpacked_bytes=int(os.getenv("CASE10_BATCH_MAX_UNPACKED_BYTES", str(256 * 1024**3))),
+            max_unpacked_bytes=int(os.getenv("CASE10_BATCH_MAX_UNPACKED_BYTES",
+                                            str(default_max_unpacked_bytes()))),
         )
     _prepare_environment(package_root=package_root, work_dir=work_dir, workers=args.workers)
 
     with clock.stage("package_scan_sha256"):
-        files = bp.scan_package(package_root)
+        scan_errors: list[dict[str, str]] = []
+        files = bp.scan_package(package_root, scan_errors=scan_errors)
         registry = bp.read_registry(args.registry) if args.registry else None
         registry_sha = bp.sha256_file(Path(args.registry)) if args.registry else None
         plan = bp.build_plan(files, registry, package_name=package_name, object_id=args.object_id,
-                             registry_sha256=registry_sha)
+                             registry_sha256=registry_sha, scan_errors=scan_errors)
+        excluded = bp.package_exclusions(package_root)
+        if excluded:
+            all_excluded = [*(plan.report.get("excluded_files") or []), *excluded]
+            plan.report["excluded_files"] = sorted(all_excluded, key=lambda item: (item["file"], item["reason"]))
+            plan.report["files_excluded"] = len(all_excluded)
     _say(f"package: {len(files)} files, {plan.report['files_pdf']} PDF, {plan.report['bytes_total'] / 1e6:.1f} MB; "
          f"object {plan.object_id!r}; registry {plan.report['registry_status']}")
+    _print_package_warnings(plan.report)
 
     with clock.stage("import_models"):
         from sqlalchemy import create_engine
@@ -183,6 +198,24 @@ def _run(args: argparse.Namespace) -> int:
         _say(f"INVALID: {len(errors)} schema/format errors, first: {errors[0]}")
         return EXIT_INVALID
     return EXIT_OK
+
+
+def _print_package_warnings(report: dict[str, Any]) -> None:
+    for warning in report.get("registry_warnings") or []:
+        code = warning.get("code")
+        count = int(warning.get("count") or 0)
+        label = {
+            "REGISTRY_ROW_WITHOUT_FILE": "registry rows without a matching file",
+            "FILE_WITHOUT_REGISTRY_ROW": "package files without a registry row",
+            "APPROVAL_UNVERIFIED": "files with missing or unknown approval status",
+            "INVALID_REGISTRY_PATH": "registry rows with unsafe or malformed paths",
+        }.get(code, str(code or "registry warning"))
+        examples = warning.get("files") or [row.get("file_name") for row in (warning.get("rows") or [])]
+        sample = ", ".join(str(value) for value in examples[:3] if value)
+        suffix = f"; examples: {sample}" if sample else ""
+        _say(f"warning: {count} {label}{suffix}")
+    for issue in report.get("scan_errors") or []:
+        _say(f"warning: package directory scan failed at {issue.get('file')}: {issue.get('reason')}")
 
 
 def _weekly_report(args: argparse.Namespace) -> int:

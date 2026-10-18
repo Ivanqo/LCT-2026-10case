@@ -9,7 +9,8 @@ import json
 
 from sqlalchemy.orm import Session
 
-from ..db.models import DocumentVersion, EvidenceFragment, InspectionProcess, Param, SourceFragment
+from ..robustness import robust_inputs_enabled
+from ..db.models import DocumentVersion, EvidenceDecision, EvidenceFragment, EvidenceGroup, InspectionProcess, Param, SourceFragment
 from . import trigger_policy as tp
 from . import file_registry
 from . import page_quality_cache
@@ -370,8 +371,43 @@ def create_official_evidence_groups(
     # dict -- otherwise a suspicion's group_key would look orphaned to that
     # same sweep and be deleted immediately. See logical_analysis.py.
     run_logical_analysis_module(db, process, params, touched_keys, fragments=fragments, by_id=by_id, user_id=user_id)
+    _mark_approval_unverified_assumptions(db, process, touched_keys, selection)
     sweep_orphaned_evidence_groups(db, process, {int(p.id) for p in params}, touched_keys, user_id=user_id)
     return fallback_diagnostics
+
+
+def _mark_approval_unverified_assumptions(db, process, touched_keys: dict[int, set[str]], selection: dict) -> None:
+    """Downgrade clean, single-edition comparisons when the registry does not attest approval."""
+    document_ids = set(selection.get("approval_unverified_document_ids") or ())
+    param_ids = set(touched_keys)
+    if not document_ids or not param_ids:
+        return
+    groups = db.query(EvidenceGroup).filter(
+        EvidenceGroup.process_id == str(process.id), EvidenceGroup.param_id.in_(param_ids),
+    ).all()
+    for group in groups:
+        if group.group_key not in touched_keys.get(int(group.param_id), set()):
+            continue
+        cited = {int(fragment.document_version_id) for fragment in group.fragments}
+        if not cited.intersection(document_ids):
+            continue
+        if db.query(EvidenceDecision.id).filter(EvidenceDecision.evidence_group_id == int(group.id)).first():
+            continue
+        status = str(group.finding_status or "").upper()
+        if status not in {"CANDIDATE", "NEGATIVE_VERIFIED", "SUSPICION"}:
+            continue
+        delta = dict(group.delta) if isinstance(group.delta, dict) else {}
+        delta["assumption_reasons"] = sorted(set(delta.get("assumption_reasons") or ()) | {"approval_unverified"})
+        if status == "NEGATIVE_VERIFIED":
+            group.finding_status = "CANDIDATE"
+            delta.pop("no_result_state", None)
+        if status in {"CANDIDATE", "NEGATIVE_VERIFIED"}:
+            delta["evidence_tier"] = "SUGGESTION"
+            delta["tier_reasons"] = sorted(set(delta.get("tier_reasons") or ()) | {"approval_unverified"})
+            delta["tier_reason_text"] = [et.SUGGESTION_REASON_TEXT.get(reason, reason) for reason in delta["tier_reasons"]]
+        group.delta = delta
+        db.add(group)
+    db.flush()
 
 
 def _stage_code(document) -> str:
@@ -411,6 +447,8 @@ def _quality_for_page(document, page_number: int) -> dict:
 
         data = dataset_sources.original_document_bytes(document)
         with fitz.open(stream=data, filetype="pdf") as pdf:
+            if robust_inputs_enabled() and bool(getattr(pdf, "is_repaired", False)):
+                reasons.append("PDF_REPAIRED_DURING_OPEN")
             if page_number > len(pdf):
                 result["quality_status"] = "LOW_QUALITY"
                 result["reasons"] = ["PAGE_OUT_OF_RANGE"]

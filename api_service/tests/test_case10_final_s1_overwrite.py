@@ -611,7 +611,8 @@ class H1H5ExportIdentifierTests(unittest.TestCase):
             self._group("low_quality", "NOT_COMPARABLE", "values_not_extracted"),
             self._group("annotation", "MISSING_EVIDENCE", "missing_stage"),
         ]}}
-        checks = protocol_to_submission(protocol)["checks"]
+        with patch.dict("os.environ", {"CASE10_ROBUST_INPUTS": "0"}):
+            checks = protocol_to_submission(protocol)["checks"]
         self.assertEqual(len(checks), 2)
         self.assertEqual(len({c["finding_id"] for c in checks}), 2)
         self.assertEqual(len({c["evidence_group_id"] for c in checks}), 2)

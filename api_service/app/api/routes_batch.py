@@ -28,6 +28,7 @@ from ..db.session import get_db
 from ..domain.official_dataset import MATRIX_VERSION_OFFICIAL
 from ..domain.v3_jobs import enqueue_process_job, publish_job_message
 from ..domain.v3_pipeline import add_audit, create_process, latest_protocol, process_to_dict, protocol_to_dict
+from ..robustness import robust_inputs_enabled
 from .auth import require_supervisor
 from .utils import get_project_for_org
 
@@ -55,15 +56,31 @@ def create_batch_run(payload: BatchRunIn, db: Session = Depends(get_db), user: U
     try:
         package_root, package_name = bp.resolve_package(
             source, unpack_root=root / UNPACK_DIR, max_unpacked_bytes=settings.BATCH_MAX_UNPACKED_BYTES)
-        files = bp.scan_package(package_root)
+        scan_errors: list[dict[str, str]] = []
+        files = bp.scan_package(package_root, scan_errors=scan_errors)
         registry = bp.read_registry(registry_path) if registry_path else None
         plan = bp.build_plan(
             files, registry, package_name=package_name, object_id=payload.object_id,
             registry_sha256=bp.sha256_file(registry_path) if registry_path else None,
             originals_prefix=package_root.relative_to(root).as_posix(),
+            scan_errors=scan_errors,
         )
+        excluded = bp.package_exclusions(package_root) if robust_inputs_enabled() else []
+        if excluded:
+            all_excluded = [*(plan.report.get("excluded_files") or []), *excluded]
+            plan.report["excluded_files"] = sorted(all_excluded, key=lambda item: (item["file"], item["reason"]))
+            plan.report["files_excluded"] = len(all_excluded)
     except bp.PackageError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except OSError as exc:
+        if not robust_inputs_enabled():
+            raise
+        raise HTTPException(status_code=422, detail=f"cannot read batch package input ({type(exc).__name__})") from exc
+    if robust_inputs_enabled() and not plan.rows and plan.report.get("excluded_files"):
+        raise HTTPException(status_code=422, detail={
+            "message": "package contains no supported documents",
+            "excluded_files": plan.report["excluded_files"],
+        })
     if not plan.rows:
         raise HTTPException(status_code=422, detail="package contains no files")
 

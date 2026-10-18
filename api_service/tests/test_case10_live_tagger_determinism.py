@@ -459,7 +459,7 @@ class RealPdfPoolAndCacheTests(unittest.TestCase):
         db = _session()
         good = _add_doc(db, file_id="G", relative=self.docs[0][1], pages=3, sha=self.docs[0][2])
         bad = _add_doc(db, file_id="B", relative="RD/missing.pdf", pages=3, sha="0" * 64)
-        with patch.dict(os.environ, {"CASE10_ORIGINALS_ROOT": str(self.root)}), \
+        with patch.dict(os.environ, {"CASE10_ORIGINALS_ROOT": str(self.root), "CASE10_ROBUST_INPUTS": "0"}), \
              patch("app.domain.live_candidate_tagger.settings.LIVE_TAGGER_WORKERS", 2), \
              patch("app.domain.live_candidate_tagger.settings.LIVE_TAGGER_CACHE_ENABLED", False), _NO_SEMANTIC:
             diag = tag_live_candidates(db, [good, bad], PARAMS)

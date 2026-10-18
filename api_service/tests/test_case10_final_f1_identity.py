@@ -13,6 +13,7 @@ import json
 import random
 import unittest
 from collections import Counter
+from unittest.mock import patch
 
 from evaluation.exporter import protocol_to_submission
 from evaluation import export_identity as ei
@@ -41,7 +42,10 @@ def service_group(key, source, reason, status, code="PZ-001", extra=None):
 
 
 def export(groups):
-    return protocol_to_submission({"payload": {"object_id": OBJ, "findings": copy.deepcopy(groups)}})
+    # These identity-plan tests pin the pre-robust exporter contract. Robust-mode
+    # matrix collapsing has its own focused coverage in test_case10_robustness_harness.py.
+    with patch.dict("os.environ", {"CASE10_ROBUST_INPUTS": "0"}):
+        return protocol_to_submission({"payload": {"object_id": OBJ, "findings": copy.deepcopy(groups)}})
 
 
 def pairs_of(submission):

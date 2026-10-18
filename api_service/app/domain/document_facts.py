@@ -57,6 +57,7 @@ _EXPAND: dict[str, tuple[str, ...]] = {
 _MANIFEST_SECTION_ALIASES = {
     "AR": "АР", "KR": "КР", "KZH": "КР", "GP": "ГП", "OV": "ОВ", "VK": "ВК", "EOM": "ЭОМ", "SS": "СС",
     "POS": "ПОС", "PB": "ПБ", "PZ": "ПЗ", "OOS": "ООС", "ODI": "ОДИ", "TX": "ТХ",
+    "ОВИК": "ОВ", "OVIK": "ОВ", "ИОС4": "ИОС4", "IOS4": "ИОС4",
 }
 _SECTION_WORDS = "|".join(sorted(_TOKEN_TAG, key=len, reverse=True))
 _SECTION_RE = re.compile(
