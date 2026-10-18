@@ -1,0 +1,142 @@
+{
+ "tyu_tiers": {
+  "SUGGESTION": 1,
+  "VIOLATION_CANDIDATE": 12
+ },
+ "check1_panels": [
+  {
+   "cls": "stage-panel stage-PD",
+   "frames": 1,
+   "labels": [
+    "Системы: V2.4, V2.5, V2.6 · ПД"
+   ]
+  },
+  {
+   "cls": "stage-panel stage-RD",
+   "frames": 1,
+   "labels": [
+    "Вытяжная система не распознана в зоне помещения "
+   ]
+  },
+  {
+   "cls": "stage-panel stage-ID missing",
+   "frames": 0,
+   "labels": []
+  }
+ ],
+ "check3_identity": "Объект: OBJ-TYUMENSKAYA-5-GOLD-SEED Элемент: 142 Документы сопоставлены по объекту и элементу (помещению) из записи; сравнение по совпадению числа или марки не используется.",
+ "check3_stage_source": [
+  "ID файла F0171 Шифр F0171 Редакция — Статус Утверждён Страница 88 из 177 Лист Лист 10 · АНО/150321/1-П-ИОС5.4.2 SHA-256 a9070055b75a… Стадия по реестр ПД · классификация ПД",
+  "ID файла F0202 Шифр F0202 Редакция 3_в1.pdf Статус Утверждён Страница 16 из 36 Лист — SHA-256 632379a0e541… Стадия по реестр РД · классификация РД · имя РД"
+ ],
+ "check2_zoom": [
+  "×8.0",
+  "авто ×6.0"
+ ],
+ "check2_frames_after_zoom": 1,
+ "check2_frames_hidden": 0,
+ "check2_frames_shown": 2,
+ "explanation_text": "Основание расхождения\nУровень выдачи\nНарушение-кандидат\nПараметр\nСечения и геометрия воздуховодов общеобменной вентиляции • M-078\nОбъект сравнения\n142 (OBJ-TYUMENSKAYA-5-GOLD-SEED)\nЗначения по стадиям\nПД Системы: V2.4, V2.5, V2.6РД Вытяжная система не распознана в зоне помещения\nОтклонение\nне вычислялось\nПравило оценки\nв РД исчезла система вытяжки помещения (добавление нарушением не считается)\nУсловие\nУменьшение площади сечения воздуховода в РД (падение объема воздуха, рост шума).\nПорог\nне установлен матрицей\nОснование порога\nКаталог параметров, триггер: «Уменьшение площади сечения воздуховода в РД (падение объема воздуха, рост шума).»\nУВЕРЕННОСТЬ РАСПОЗНАВАНИЯ ТЕКСТА\nне вычислялось\nУВЕРЕННОСТЬ ПРИВЯЗКИ\nне вычислялось\nСХОДСТВО ЛИСТОВ\nне вычислялось\nОБЩАЯ (МИНИМУМ ПО ЦЕПОЧКЕ)\n0.50\nВероятность нарушения не заявляется: способа её расчёта в системе нет.",
+ "check5_reject_save_disabled_without_comment": true,
+ "check5_api_reject_without_comment": {
+  "status": 422
+ },
+ "check5_status_consistency": {
+  "list_item": "CONFIRMED_VIOLATION/CONFIRMED",
+  "queue_row": "",
+  "protocol_entry": "{\"protocol\":{\"id\":5,\"version\":2,\"status\":\"DRAFT\"},\"section\":{\"key\":\"section_4_critical_violations\",\"title\":\"Раздел 4. Критические нарушения\"},\"finding_id\":\"F-09d21fc8cd03dff1\",\"evidence_group_id\":\"EG-40c50456bd6ab925\",\"check\":{\"parameter_code\":\"M-078\",\"location\":\"142\",\"pd_value\":\"Системы: V2.4, V2.5"
+ },
+ "check5_after_reload": {
+  "before": {
+   "title": "Сечения и геометрия воздуховодов общеобменной вентиляции — 142",
+   "row": "M-078 142 Сечения и геометрия воздуховодов общеобменной вентиляции ПД РД conf 0.50 низк. Подтверждено инспектором"
+  },
+  "after": {
+   "title": "Сечения и геометрия воздуховодов общеобменной вентиляции — 142",
+   "row": "M-078 142 Сечения и геометрия воздуховодов общеобменной вентиляции ПД РД conf 0.50 низк. Подтверждено инспектором"
+  },
+  "same": true
+ },
+ "hyp_before": {
+  "CLARIFICATION_REQUIRED": 109,
+  "MISSING_EVIDENCE": 23,
+  "NOT_COMPARABLE": 12,
+  "hypothesis": 21
+ },
+ "hypothesis_card_text": "Гипотеза свободного поиска\nГипотеза не является найденным нарушением; она проходит рассмотрение отдельно от кандидатов матрицы.\nМетод обнаружения\nUNMATCHED_DIFF • Расхождение вне Матрицы (экспликация ПД ↔ РД)\nУверенность\n0.63\nОписание\nпомещение 1 (антресоль): площадь в экспликации ПД — 11.33 м², в РД — 11.68 м² (отклонение 0.35 м² (3.1 %)). Параметр Матрицы не определён: порог отклонения для площади помещения матрицей не установлен (учтён только шум печатной точности и 1 %), вывод за инспектором.\nСсылка на ПД\nALT79B-000015, стр.19\nСсылка на РД\nALT79B-000077, стр.4\nКритичность\nСУЩЕСТВЕННОЕ\nНормативное основание\nне определено\nСтатус рассмотрения\nОжидает решения • Подозрение ИИ\nРассмотрение гипотезы:\nПринять гипотезу\nОтклонить гипотезу\nЗапросить уточнение\nПреобразовать в кандидата",
+ "hyp_after": {
+  "CLARIFICATION_REQUIRED": 109,
+  "MISSING_EVIDENCE": 23,
+  "NOT_COMPARABLE": 12,
+  "hypothesis": 20,
+  "VIOLATION_CANDIDATE": 1
+ },
+ "check4_no_result_state": {
+  "code": "M-040",
+  "state": "NO_DOCUMENTS",
+  "reason": "missing_stage"
+ },
+ "check4_reason_text": "Нет документов\nнет документов одной из сравниваемых стадий (стадия ИД, есть: —)\nЧто можно сделать:\nДозагрузить документы стадии ИД",
+ "check4_supplement_log": "Загружаю ИД_демо_акт.pdf…\nИД_демо_акт.pdf: принят сервером\nЖду появления файлов в реестре документов…\nФайлы в реестре. Жду пересчёта затронутых параметров…",
+ "check4_supplement_seconds": 16,
+ "check4_cards_before_after": {
+  "before": 140,
+  "after": 140,
+  "changed": 131,
+  "new": 0,
+  "removed": 2,
+  "changed_ids_sample": [
+   "M-055||",
+   "M-058||",
+   "M-099||",
+   "M-007||",
+   "M-008||",
+   "M-009||",
+   "M-012||",
+   "M-032||"
+  ]
+ },
+ "check6_decision_after_finalize_status": 409,
+ "check6_unfinalize_without_reason_status": 422,
+ "check6_history_entry": {
+  "status": 200,
+  "keys": [
+   "protocol",
+   "section",
+   "finding_id",
+   "evidence_group_id",
+   "check",
+   "status",
+   "decision",
+   "decision_rationale",
+   "decisions",
+   "parts",
+   "explanation",
+   "no_result",
+   "hypothesis",
+   "sources"
+  ],
+  "text": "{\"protocol\":{\"id\":45,\"version\":40,\"status\":\"FINALIZED\"},\"section\":{\"key\":\"section_4_critical_violations\",\"title\":\"Раздел 4. Критические нарушения\"},\"finding_id\":\"F-797d5f4bd50aca7c\",\"evidence_group_id\":\"EG-a288b33bbdc79cad\",\"check\":{\"parameter_code\":\"M-002\",\"location\":\"антресоль\",\"pd_value\":\"71.01\",\"rd_value\":\"71.77\",\"id_value\":null,\"violation_label\":\"VIOLATION_PRESENT\",\"protocol_status\":\"CRITICAL"
+ },
+ "protocol_pdf": {
+  "status": 200,
+  "type": "application/pdf",
+  "bytes": 287808
+ },
+ "protocol_submission": {
+  "status": 200,
+  "checks": 192,
+  "duplicate_code_location_pairs": [
+   "M-055|OBJ-NEW-ALT79B x2",
+   "M-058|OBJ-NEW-ALT79B x2",
+   "M-099|OBJ-NEW-ALT79B x2",
+   "M-114|OBJ-NEW-ALT79B x2",
+   "M-001|OBJ-NEW-ALT79B x2",
+   "M-006|OBJ-NEW-ALT79B x2",
+   "M-008|OBJ-NEW-ALT79B x2",
+   "M-015|OBJ-NEW-ALT79B x2",
+   "M-017|OBJ-NEW-ALT79B x2",
+   "M-021|OBJ-NEW-ALT79B x2"
+  ]
+ }
+}

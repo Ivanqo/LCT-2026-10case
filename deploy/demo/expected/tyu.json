@@ -1,0 +1,75 @@
+{
+ "package": "tyu",
+ "process_id_when_recorded": "b4a7f644ccd04e849638cdbd2d41dd12",
+ "counts": {
+  "VIOLATION_CANDIDATE": 12,
+  "SUGGESTION": 1
+ },
+ "items": [
+  [
+   "M-078",
+   "002",
+   "VIOLATION_CANDIDATE"
+  ],
+  [
+   "M-078",
+   "005",
+   "VIOLATION_CANDIDATE"
+  ],
+  [
+   "M-078",
+   "129",
+   "VIOLATION_CANDIDATE"
+  ],
+  [
+   "M-078",
+   "140",
+   "SUGGESTION"
+  ],
+  [
+   "M-078",
+   "142",
+   "VIOLATION_CANDIDATE"
+  ],
+  [
+   "M-078",
+   "147",
+   "VIOLATION_CANDIDATE"
+  ],
+  [
+   "M-078",
+   "198",
+   "VIOLATION_CANDIDATE"
+  ],
+  [
+   "M-078",
+   "247",
+   "VIOLATION_CANDIDATE"
+  ],
+  [
+   "M-078",
+   "275",
+   "VIOLATION_CANDIDATE"
+  ],
+  [
+   "M-078",
+   "314",
+   "VIOLATION_CANDIDATE"
+  ],
+  [
+   "M-078",
+   "323",
+   "VIOLATION_CANDIDATE"
+  ],
+  [
+   "M-078",
+   "338",
+   "VIOLATION_CANDIDATE"
+  ],
+  [
+   "M-078",
+   "341",
+   "VIOLATION_CANDIDATE"
+  ]
+ ]
+}

@@ -257,6 +257,9 @@ class RoomSuggestionTests(unittest.TestCase):
         self.assertEqual(group.delta["tier_reasons"], ["composition_change_not_decisive"])
         self.assertFalse(group.delta["violation_claimed"])
         self.assertEqual(group.delta["added_systems"], ["V2"])
+        # (code, place) of the addition differs from the rule group's place "198": one row per (code, place) in the export
+        self.assertEqual(group.delta["location"], "198 (добавлена система в РД)")
+        self.assertEqual(group.delta["room_number"], "198")
         # 079: any change of the set is the trigger; the rule group already carries it
         param79 = SimpleNamespace(id=8, code="IOS4-079", review_priority="HIGH", unit=None, trigger_logic=None)
         entry79 = {**entry, "code": "IOS4-079", "decision_mode": "composition"}

@@ -65,6 +65,7 @@ const allowedRoutes = [
   ["GET", /^\/api\/case10\/evidence-groups\/[^/]+\/edits$/],
   ["POST", /^\/api\/case10\/evidence-groups\/[^/]+\/partial-decision$/],
   ["POST", /^\/api\/case10\/evidence-groups\/[^/]+\/hypothesis-review$/],
+  ["POST", /^\/api\/case10\/evidence-groups\/[^/]+\/hypothesis-to-candidate$/],
   ["GET", /^\/api\/case10\/evidence-groups\/[^/]+\/protocol-entry$/],
   ["GET", /^\/api\/case10\/processes\/[^/]+\/progress$/],
   ["POST", /^\/api\/case10\/evidence-groups\/[^/]+\/fragments$/],

@@ -1,0 +1,16 @@
+# Demo overlay for docker-compose.case10.yml (the image with the working Tesseract + Russian OCR).
+#   python deploy/demo/demo.py --docker start        (uses this file; the UI container is not started, see demo.py)
+# Switches the optional comparison modules ON for the demo -- the same values as deploy/demo/packages.json "flags".
+# Packages: CASE10_PACKAGES_DIR (demo.py sets it to <home>/packages) is mounted to /data/packages by the base file.
+x-demo-flags: &demo-flags
+  CASE10_EXPLICATION_COMPARE: ${CASE10_EXPLICATION_COMPARE:-1}
+  CASE10_ROOM_DRAWING_COMPARE_ENABLED: ${CASE10_ROOM_DRAWING_COMPARE_ENABLED:-1}
+  CASE10_FREE_HYPOTHESES: ${CASE10_FREE_HYPOTHESES:-1}
+  CASE10_LLM_VERIFIER_ENABLED: "0"
+  CASE10_LIVE_TAGGER_WORKERS: ${CASE10_LIVE_TAGGER_WORKERS:-3}
+
+services:
+  api:
+    environment: *demo-flags
+  case10_worker:
+    environment: *demo-flags

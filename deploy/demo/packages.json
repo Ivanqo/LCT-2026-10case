@@ -1,0 +1,80 @@
+{
+  "_comment": "Демо-пакеты. Пути источников берутся из переменных окружения (CASE10_BENCH_WORK, CASE10_NEW_OBJECTS_ROOT) либо по умолчанию из E:\\. Ожидаемые находки лежат в deploy/demo/expected/<id>.json (для сверки при репетиции, в код не вшиваются).",
+  "registry_defaults": {
+    "approval_status": "APPROVED",
+    "approval_date": "2026-01-15"
+  },
+  "discipline_map": {
+    "OV": "ОВ",
+    "VK": "ВК",
+    "SS": "СС",
+    "EOM": "ЭОМ",
+    "KR": "КР",
+    "AR": "АР",
+    "GP": "ГП",
+    "POS": "ПОС",
+    "PB": "ПБ",
+    "OTHER": ""
+  },
+  "flags": {
+    "CASE10_EXPLICATION_COMPARE": "1",
+    "CASE10_ROOM_DRAWING_COMPARE_ENABLED": "1",
+    "CASE10_FREE_HYPOTHESES": "1",
+    "CASE10_LLM_VERIFIER_ENABLED": "0"
+  },
+  "packages": [
+    {
+      "id": "tyu",
+      "title": "Тюмень, Тюменская 5 — вентиляция по помещениям (M-078/M-079)",
+      "object_id": "OBJ-TYUMENSKAYA-5-GOLD-SEED",
+      "manifest": "{BENCH_WORK}/public_docs/manifest_TYU.jsonl",
+      "source": "{BENCH_WORK}/public_docs/TYU",
+      "role": "основной: реальные расхождения по ОВ-помещениям, неоднозначность привязки, добавленная система",
+      "live_seconds_warm": 100,
+      "live": true,
+      "stage_rules": [
+        {
+          "match": "Исполнительный чертеж",
+          "stage": "ID"
+        },
+        {
+          "match": "АОСР",
+          "stage": "ID"
+        }
+      ]
+    },
+    {
+      "id": "alt79b",
+      "title": "Алтуфьевское, 79Б — экспликации помещений + гипотезы вне матрицы",
+      "object_id": "OBJ-NEW-ALT79B",
+      "manifest": "{REPO}/evaluation/silver_new_objects_pass1/manifests/manifest_ALT79B.jsonl",
+      "source": "{NEW_OBJECTS_ROOT}/Алтуфьевское, 79Б",
+      "role": "экспликации (S1): нарушения-кандидаты, предположения без порога матрицы, гипотезы 9.5, «преобразовать в кандидата»",
+      "live_seconds_warm": 40,
+      "live": true
+    },
+    {
+      "id": "nov",
+      "title": "Новослободская — негативный контроль (воздержание)",
+      "object_id": "OBJ-NOVOSLOBODSKAYA",
+      "manifest": "{BENCH_WORK}/public_docs/manifest_NOV.jsonl",
+      "source": "{BENCH_WORK}/public_docs/NOV",
+      "role": "система не придумывает нарушения: 0 кандидатов, честные состояния «нет результата»",
+      "live_seconds_warm": 60,
+      "live": true
+    },
+    {
+      "id": "alt79b-hyp",
+      "title": "Алтуфьевское, 79Б — свободный поиск гипотез (S1 выключен)",
+      "object_id": "OBJ-NEW-ALT79B",
+      "manifest": "{REPO}/evaluation/silver_new_objects_pass1/manifests/manifest_ALT79B.jsonl",
+      "source": "{NEW_OBJECTS_ROOT}/Алтуфьевское, 79Б",
+      "role": "заготовка для показа гипотез ТЗ 9.5 и кнопки «Преобразовать в кандидата»: при включённом S1 те же расхождения уже оформлены матричными находками, дубликаты гипотез не создаются",
+      "live_seconds_warm": 40,
+      "live": false,
+      "flags": {
+        "CASE10_EXPLICATION_COMPARE": "0"
+      }
+    }
+  ]
+}

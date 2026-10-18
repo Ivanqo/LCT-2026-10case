@@ -1,0 +1,21 @@
+# ONLY for checking the working-tree code on an already built image (before E1 rebuilds the delivery image):
+# bind-mounts the application code over the image's /app/app and the runtime part of /app/evaluation (the same five
+# modules the delivery Dockerfile copies) and the gateway files. Never part of the delivery.
+#   python deploy/demo/demo.py --docker --mount-code start
+x-code-mounts: &code-mounts
+  - ./api_service/app:/app/app:ro
+  - ./evaluation/__init__.py:/app/evaluation/__init__.py:ro
+  - ./evaluation/metrics.py:/app/evaluation/metrics.py:ro
+  - ./evaluation/exporter.py:/app/evaluation/exporter.py:ro
+  - ./evaluation/errors.py:/app/evaluation/errors.py:ro
+  - ./evaluation/candidate_coverage.py:/app/evaluation/candidate_coverage.py:ro
+
+services:
+  api:
+    volumes: *code-mounts
+  case10_worker:
+    volumes: *code-mounts
+  node_gateway:
+    volumes:
+      - ./node_gateway/server.js:/app/server.js:ro
+      - ./node_gateway/openapi.json:/app/openapi.json:ro

@@ -771,7 +771,10 @@ def _upsert_added_system_groups(db, process, param, entries: list[dict], *, docu
                                 extractor="room_identity"),
         ) if spec is not None]
         delta = {
-            "source": "room_identity", "matrix_scope": "MATRIX", "parameter_code": param.code, "location": location,
+            # The rule group of the same room keeps the printed room number; the addition is a different statement, so it
+            # gets its own (code, place) -- an export consumer indexing checks by (code, location) must not see one of two.
+            "source": "room_identity", "matrix_scope": "MATRIX", "parameter_code": param.code,
+            "location": f"{location} (добавлена система в РД)", "room_number": location,
             "comparison_result": "TRIGGERED", "violation_claimed": False, "type": "added",
             "decision_mode": entry.get("decision_mode"), "match_basis": entry.get("match_basis"),
             "added_systems": entry["added_systems"], "missing_systems": entry.get("missing_systems") or [],

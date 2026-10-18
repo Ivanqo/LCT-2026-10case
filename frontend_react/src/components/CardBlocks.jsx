@@ -60,7 +60,7 @@ export function ExplanationBlock({ card }) {
         <dd>
           {stages.length ? stages.map((s) => (
             <span key={s} style={{ marginRight: 12 }}>
-              <span className={`stage-chip mini stage-${s}`}>{STAGE_TITLES[s]}</span> <b>{formatValue(card.values_by_stage[s])}</b>{card.unit ? <span className="muted"> {card.unit}</span> : null}
+              <span className={`stage-chip mini stage-${s}`}>{STAGE_TITLES[s]}</span> <b>{formatValue(card.values_by_stage[s])}</b>{card.unit && /^[\s\d.,]+$/.test(String(formatValue(card.values_by_stage[s]))) ? <span className="muted"> {card.unit}</span> : null}
             </span>
           )) : NOT_COMPUTED}
         </dd>

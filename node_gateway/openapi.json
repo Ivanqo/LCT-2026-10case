@@ -1288,6 +1288,51 @@
         }
       }
     },
+    "/api/case10/evidence-groups/{evidence_group_id}/hypothesis-to-candidate": {
+      "post": {
+        "summary": "TZ 9.5: a hypothesis becomes a CANDIDATE only on the inspector's action, with a rationale, and only when every cited place has file, page and box",
+        "parameters": [
+          {
+            "name": "evidence_group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string",
+                    "minLength": 3
+                  }
+                },
+                "required": [
+                  "comment"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The group is now a CANDIDATE out of the matrix (matrix_scope OUT_OF_MATRIX); refreshed card"
+          },
+          "409": {
+            "description": "Protocol is finalized"
+          },
+          "422": {
+            "description": "Not a hypothesis, missing rationale, or a cited place lacks file/page/box"
+          }
+        }
+      }
+    },
     "/api/case10/evidence-groups/{evidence_group_id}/protocol-entry": {
       "get": {
         "summary": "Final C1: the record of one finding as it goes into the protocol (sources, values, status, decision, rationale)",

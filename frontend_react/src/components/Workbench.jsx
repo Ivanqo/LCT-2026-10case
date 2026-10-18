@@ -46,6 +46,8 @@ function saveViewState(processId, state) {
 }
 
 const cardSignature = (i) => [i.finding_status, i.expected, i.actual, i.needs_reverification, (i.stages || []).join(','), i.fragments, i.inspector_status].join('|');
+// A recompute rewrites the groups (new ids), so a card is recognised by what it is about, not by its row id.
+const cardKey = (i) => `${i.matrix_code}|${i.location || ''}|${i.hypothesis ? 'H' : ''}`;
 
 const DECISION_BY_CODE = Object.fromEntries(DECISION_OPTIONS.map((o) => [`Key${o.hotkey}`, o.key]));
 const INSPECTOR_BY_DECISION = { Confirm: 'CONFIRMED', Reject: 'REJECTED', 'Clarification Required': 'CLARIFICATION_REQUIRED' };
@@ -260,27 +262,35 @@ export default function Workbench({ projectId, processId, locked, onChanged, onO
 
   function openSupplement(stage) {
     if (locked) return;
-    snapshot.current = new Map((summary?.items || []).map((i) => [i.id, cardSignature(i)]));
+    const items = summary?.items || [];
+    const keys = new Map();
+    items.forEach((i) => keys.set(cardKey(i), (keys.get(cardKey(i)) || new Set()).add(cardSignature(i))));
+    snapshot.current = { ids: new Map(items.map((i) => [i.id, cardSignature(i)])), keys };
     setSupplement({ stage });
   }
 
   async function onSupplementDone() {
-    const before = snapshot.current || new Map();
+    const before = snapshot.current || { ids: new Map(), keys: new Map() };
     setSupplement(null);
     api.listCase10Documents(projectId).then(setDocuments).catch(() => {});
     const data = await refreshSummary();
     const items = data?.items || [];
     const marks = new Map();
     items.forEach((i) => {
-      if (!before.has(i.id)) marks.set(i.id, 'new');
-      else if (before.get(i.id) !== cardSignature(i)) marks.set(i.id, 'changed');
+      if (before.ids.has(i.id)) {
+        if (before.ids.get(i.id) !== cardSignature(i)) marks.set(i.id, 'changed');
+        return;
+      }
+      const same = before.keys.get(cardKey(i));
+      if (!same) marks.set(i.id, 'new');
+      else if (!same.has(cardSignature(i))) marks.set(i.id, 'changed');
     });
-    const present = new Set(items.map((i) => i.id));
-    const gone = [...before.keys()].filter((id) => !present.has(id)).length;
+    const present = new Set(items.map(cardKey));
+    const gone = [...before.keys.keys()].filter((key) => !present.has(key)).length;
     const changedCount = [...marks.values()].filter((v) => v === 'changed').length;
     setChangedIds(marks);
     setSupplementNote(marks.size || gone
-      ? `Дозагрузка завершена: изменились ${changedCount}, добавлены ${marks.size - changedCount}, заменены пересчётом ${gone} карточек (отмечены в очереди). Остальные карточки не тронуты; решения инспектора сохранены.`
+      ? `Дозагрузка завершена: изменились ${changedCount}, добавлены ${marks.size - changedCount}, исчезли ${gone} карточек (изменившиеся и новые отмечены в очереди). Остальные карточки не тронуты; решения инспектора сохранены.`
       : 'Дозагрузка завершена: ни одна карточка не изменилась, решения инспектора сохранены.');
     onChanged?.();
     if (detail) loadDetail(detail.id);
