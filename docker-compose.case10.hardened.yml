@@ -1,0 +1,61 @@
+# Optional hardening of the CASE10 delivery stand (TZ section 12: protection of the runtime environment).
+#
+#   docker compose -f docker-compose.case10.yml -f docker-compose.case10.hardened.yml up -d --build
+#
+# What it adds, per service (nothing else changes; the default stand file is untouched):
+#   all but rabbitmq  security_opt no-new-privileges, cap_drop ALL (nginx gets back the four it needs to start and bind :80)
+#   api, worker       read_only root filesystem; writable places are the /data and /logs volumes, the packages bind mount
+#                     and a tmpfs /tmp
+#   node_gateway      runs as the unprivileged `node` user of the base image, read_only, tmpfs /tmp
+#   react_frontend    read_only; tmpfs for nginx's cache, pid and temp directories
+#
+# Checked on the images `case10-api|gateway|ui:latest` of 2026-09-29 (not on an image rebuilt from the current tree):
+# each container started and answered (/health, /openapi.json, the UI page); the api image ran
+# `python -m app.cli run` on a three-file package under `--network none --read-only --cap-drop ALL`.
+#
+# NOT done, and why:
+#   * api/worker as a non-root user: the embedding model is baked into /root/.cache of the image, which a non-root user
+#     cannot read; it needs a Dockerfile change (HF_HOME outside /root, USER, chown of /data and /logs) and an image rebuild.
+#   * rabbitmq: the stock image starts as root and drops privileges itself; its capabilities were not tried.
+#   * nginx keeps its master process as root (it binds :80); its workers run as `nginx`.
+# With the CLI (`docker run ... python -m app.cli run`) point API_DATA_DIR and API_LOG_DIR at a writable mount when the
+# root filesystem is read-only (the image default is /data): `-e API_DATA_DIR=/out/data -e API_LOG_DIR=/out/logs`.
+
+x-case10-hardening: &case10-hardening
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+
+services:
+  api:
+    <<: *case10-hardening
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  case10_worker:
+    <<: *case10-hardening
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  node_gateway:
+    <<: *case10-hardening
+    user: node
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  react_frontend:
+    <<: *case10-hardening
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+      - /tmp

@@ -86,6 +86,21 @@ export const api = {
   unfinalizeProtocol: (protocolId, reason) =>
     request(`/api/case10/protocols/${protocolId}/unfinalize`, { method: 'POST', body: { reason } }),
 
+  dashboard: (params) => {
+    const query = new URLSearchParams();
+    Object.entries(params || {}).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') query.set(key, String(value));
+    });
+    return request(`/api/case10/dashboard?${query.toString()}`);
+  },
+  weeklyMlReport: (params) => {
+    const query = new URLSearchParams();
+    Object.entries(params || {}).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') query.set(key, String(value));
+    });
+    return request(`/api/case10/ml/reports/weekly?${query.toString()}`);
+  },
+
   evidenceDecision: (evidenceGroupId, decision, reasonCode, comment, uiMetrics) =>
     request(`/api/case10/evidence-groups/${evidenceGroupId}/decisions`, {
       method: 'POST',
@@ -217,6 +232,22 @@ export async function fetchEvidencePageImage(fragmentId) {
 
 export function protocolPdfUrl(protocolId) {
   return `${API_BASE}/api/case10/protocols/${protocolId}/pdf`;
+}
+
+export function protocolDocxUrl(protocolId) {
+  return `${API_BASE}/api/case10/protocols/${protocolId}/docx`;
+}
+
+export function protocolXmlUrl(protocolId) {
+  return `${API_BASE}/api/case10/protocols/${protocolId}/xml`;
+}
+
+export function weeklyMlReportHtmlUrl(params) {
+  const query = new URLSearchParams({ format: 'html' });
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') query.set(key, String(value));
+  });
+  return `${API_BASE}/api/case10/ml/reports/weekly?${query.toString()}`;
 }
 
 export function protocolSubmissionUrl(protocolId) {

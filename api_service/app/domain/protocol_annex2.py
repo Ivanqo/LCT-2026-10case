@@ -9,6 +9,56 @@ from evaluation.exporter import evidence_group_to_submission_check
 from . import evidence_tier as et
 
 
+# Human-readable labels of statuses and reasons; shared by the PDF, DOCX and XML renderers (protocol_export.py).
+PROTOCOL_LABELS = {
+    "CANDIDATE": "Кандидат на нарушение",
+    "CONFIRMED_VIOLATION": "Нарушение подтверждено",
+    "NEGATIVE_VERIFIED": "Несоответствие не подтверждено",
+    "MISSING_EVIDENCE": "Недостаточно доказательств",
+    "NOT_APPLICABLE": "Неприменимо",
+    "NOT_COMPARABLE": "Сравнение невозможно",
+    "CLARIFICATION_REQUIRED": "Требуется уточнение",
+    "SUSPICION": "Подозрение ИИ",
+    "PENDING": "Ожидает решения",
+    "CONFIRMED": "Подтверждено инспектором",
+    "REJECTED": "Отклонено инспектором",
+    "UNKNOWN": "Статус утверждения не указан",
+    "PD_UPLOADED": "ПД загружена",
+    "RD_UPLOADED": "РД загружена",
+    "ID_UPLOADED": "ИД загружена",
+    "PD_MISSING": "ПД отсутствует",
+    "RD_MISSING": "РД отсутствует",
+    "ID_MISSING": "ИД отсутствует",
+    "no_relevant_evidence": "релевантные доказательства не найдены",
+    "values_not_extracted": "значения не извлечены",
+    "mixed_stage_requires_review": "смешанная стадия РД/ИД требует уточнения",
+    "missing_stage": "отсутствует требуемая стадия",
+    "missing_discipline_document": "на стадии нет документа нужного раздела",
+    "evidence_discipline_mismatch": "найденное значение взято из раздела, не названного в каталоге",
+    "revision_conflict": "конфликт редакций: несколько неупорядочиваемых версий раздела",
+    "VIOLATION_CANDIDATE": "Нарушение-кандидат",
+    "SUGGESTION": "Предположение для верификации инспектором",
+    "NO_DOCUMENTS": "нет документов",
+    "NO_VALUE_IN_DOCUMENT": "нет значения в документе",
+    "PROCESSING_ERROR": "ошибка обработки",
+    "INCOMPLETE_CHECK": "проверка не завершена",
+    "NO_DIFFERENCE": "расхождения нет (только по просмотренным фрагментам)",
+    "self_comparison": "ПД и РД опираются на один и тот же файл",
+    "unit_mismatch": "рядом со значением иная единица измерения",
+    "unit_evidence_absent": "рядом со значением нет единицы измерения параметра",
+    "magnitude_mismatch": "значения на стадиях различаются на порядок и более",
+    "multi_instance_parameter": "параметр задаётся для каждого элемента отдельно",
+    "trigger_not_evaluable": "триггер нельзя проверить сравнением значений",
+    "change_not_triggering": "изменение не удовлетворяет триггеру параметра",
+    "MIXED_PROJECT_BASELINES": "смешаны серии шифров/поколения проекта",
+    "UNORDERED_REVISIONS": "редакции нельзя упорядочить",
+    "EXACT_DUPLICATE_WITHIN_STAGE": "точный дубль внутри стадии",
+    "UNREADABLE_OR_EMPTY_SOURCE_FILE": "файл пуст или не читается",
+    "TEMPORARY_OR_SERVICE_FILE": "служебный/временный файл",
+    "EXCLUDED_BY_MANIFEST": "исключён по манифесту",
+}
+
+
 def annex2_payload(findings, docs, *, object_info, matrix_size, document_analysis=None):
     confirmed = [row for row in findings if row["finding_status"] == "CONFIRMED_VIOLATION"]
     critical = [row for row in confirmed if row["review_priority"] == "HIGH"]
@@ -84,53 +134,7 @@ def render_protocol_pdf(protocol) -> bytes:
 
     payload = protocol.payload_json or {}
     annex = payload.get("annex_2") or {}
-    labels = {
-        "CANDIDATE": "Кандидат на нарушение",
-        "CONFIRMED_VIOLATION": "Нарушение подтверждено",
-        "NEGATIVE_VERIFIED": "Несоответствие не подтверждено",
-        "MISSING_EVIDENCE": "Недостаточно доказательств",
-        "NOT_APPLICABLE": "Неприменимо",
-        "NOT_COMPARABLE": "Сравнение невозможно",
-        "CLARIFICATION_REQUIRED": "Требуется уточнение",
-        "SUSPICION": "Подозрение ИИ",
-        "PENDING": "Ожидает решения",
-        "CONFIRMED": "Подтверждено инспектором",
-        "REJECTED": "Отклонено инспектором",
-        "UNKNOWN": "Статус утверждения не указан",
-        "PD_UPLOADED": "ПД загружена",
-        "RD_UPLOADED": "РД загружена",
-        "ID_UPLOADED": "ИД загружена",
-        "PD_MISSING": "ПД отсутствует",
-        "RD_MISSING": "РД отсутствует",
-        "ID_MISSING": "ИД отсутствует",
-        "no_relevant_evidence": "релевантные доказательства не найдены",
-        "values_not_extracted": "значения не извлечены",
-        "mixed_stage_requires_review": "смешанная стадия РД/ИД требует уточнения",
-        "missing_stage": "отсутствует требуемая стадия",
-        "missing_discipline_document": "на стадии нет документа нужного раздела",
-        "evidence_discipline_mismatch": "найденное значение взято из раздела, не названного в каталоге",
-        "revision_conflict": "конфликт редакций: несколько неупорядочиваемых версий раздела",
-        "VIOLATION_CANDIDATE": "Нарушение-кандидат",
-        "SUGGESTION": "Предположение для верификации инспектором",
-        "NO_DOCUMENTS": "нет документов",
-        "NO_VALUE_IN_DOCUMENT": "нет значения в документе",
-        "PROCESSING_ERROR": "ошибка обработки",
-        "INCOMPLETE_CHECK": "проверка не завершена",
-        "NO_DIFFERENCE": "расхождения нет (только по просмотренным фрагментам)",
-        "self_comparison": "ПД и РД опираются на один и тот же файл",
-        "unit_mismatch": "рядом со значением иная единица измерения",
-        "unit_evidence_absent": "рядом со значением нет единицы измерения параметра",
-        "magnitude_mismatch": "значения на стадиях различаются на порядок и более",
-        "multi_instance_parameter": "параметр задаётся для каждого элемента отдельно",
-        "trigger_not_evaluable": "триггер нельзя проверить сравнением значений",
-        "change_not_triggering": "изменение не удовлетворяет триггеру параметра",
-        "MIXED_PROJECT_BASELINES": "смешаны серии шифров/поколения проекта",
-        "UNORDERED_REVISIONS": "редакции нельзя упорядочить",
-        "EXACT_DUPLICATE_WITHIN_STAGE": "точный дубль внутри стадии",
-        "UNREADABLE_OR_EMPTY_SOURCE_FILE": "файл пуст или не читается",
-        "TEMPORARY_OR_SERVICE_FILE": "служебный/временный файл",
-        "EXCLUDED_BY_MANIFEST": "исключён по манифесту",
-    }
+    labels = PROTOCOL_LABELS
 
     def text(value):
         return escape(str(value if value is not None else "Не указано"))

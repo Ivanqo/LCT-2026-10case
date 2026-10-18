@@ -2,6 +2,8 @@
 
     python -m app.cli run --docs <folder|zip> [--registry <csv|xlsx|json>] --out result.json
     python -m app.cli validate result.json
+    python -m app.cli selftest [--only TEXT] [--json]
+    python -m app.cli weekly-report [--db-url URL] [--end YYYY-MM-DD] [--format json|html] [--out FILE]
 
 `run` takes a whole package (no UI size limits), imports it with its file registry (Perechen ID 1.1), runs the
 same `run_process` the service runs, and writes the submission JSON (`submission_schema.json` + GOLD 1.1 fields +
@@ -56,10 +58,28 @@ def main(argv: list[str] | None = None) -> int:
     validate.add_argument("result")
     validate.add_argument("--schema", default=str(SCHEMA_PATH))
 
+    weekly = sub.add_parser("weekly-report", help="weekly report for ML engineers (TZ module 10) from the service database")
+    weekly.add_argument("--db-url", help="SQLAlchemy URL of the service database (default: the service's own setting)")
+    weekly.add_argument("--end", help="last day of the 7-day window, YYYY-MM-DD (default: today, UTC)")
+    weekly.add_argument("--organization-id", type=int, help="limit to one organization (default: all)")
+    weekly.add_argument("--project-id", type=int, help="limit to one project")
+    weekly.add_argument("--format", choices=("json", "html"), default="json")
+    weekly.add_argument("--out", help="write the report here (default: standard output)")
+
+    selftest = sub.add_parser("selftest", help="smoke check on generated PDFs (about 30 scenarios); NOT a quality metric")
+    selftest.add_argument("--only", help="run only the scenarios whose name contains this text")
+    selftest.add_argument("--json", action="store_true", help="print the result as JSON")
+
     args = parser.parse_args(argv)
     try:
         if args.command == "validate":
             return _validate_file(Path(args.result), Path(args.schema))
+        if args.command == "weekly-report":
+            return _weekly_report(args)
+        if args.command == "selftest":
+            from . import selftest as selftest_module
+
+            return selftest_module.run_selftest(only=args.only, as_json=args.json, say=print)
         return _run(args)
     except Exception as exc:  # noqa: BLE001 -- a CLI reports, it does not print a traceback for user errors
         from .batch_package import PackageError
@@ -162,6 +182,42 @@ def _run(args: argparse.Namespace) -> int:
     if errors:
         _say(f"INVALID: {len(errors)} schema/format errors, first: {errors[0]}")
         return EXIT_INVALID
+    return EXIT_OK
+
+
+def _weekly_report(args: argparse.Namespace) -> int:
+    """Weekly ML report from the service database; read-only. Works on an empty history ("данных мало")."""
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
+
+    from .domain import ml_weekly_report
+
+    engine = None
+    if args.db_url:
+        engine = create_engine(args.db_url)
+        db = sessionmaker(bind=engine)()
+    else:
+        from .db.session import SessionLocal
+
+        db = SessionLocal()
+    try:
+        try:
+            report = ml_weekly_report.build_weekly_report(db, organization_id=args.organization_id, project_id=args.project_id, end=args.end)
+        except ValueError:
+            _say("error: --end must be YYYY-MM-DD")
+            return EXIT_ERROR
+    finally:
+        db.close()
+        if engine is not None:
+            engine.dispose()
+    text = ml_weekly_report.render_html(report) if args.format == "html" else json.dumps(report, ensure_ascii=False, indent=2, default=str)
+    if args.out:
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.out).write_text(text, encoding="utf-8")
+        _say(f"weekly report: {args.out} (decisions this week: {report['totals']['decisions']}; "
+             f"{'enough data' if report['data_sufficiency']['enough'] else 'not enough data'})")
+    else:
+        sys.stdout.buffer.write(text.encode("utf-8") + b"\n")
     return EXIT_OK
 
 

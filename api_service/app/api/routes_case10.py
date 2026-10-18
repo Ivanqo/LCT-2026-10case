@@ -74,6 +74,9 @@ from .auth import get_current_user, require_admin, require_ml_engineer, require_
 from .utils import get_project_for_org
 from ..domain.dataset_sources import render_evidence_page
 from ..domain import inspector_card
+from ..domain import inspector_dashboard
+from ..domain import ml_weekly_report
+from ..domain import protocol_export
 from ..domain import inspector_workbench as workbench
 
 router = APIRouter(tags=["case10"])
@@ -263,6 +266,31 @@ def seed_synthetic_dataset(
     result["process_id"] = process.id
     result["process_status"] = process.status
     return result
+
+
+@router.get("/case10/dashboard")
+def case10_dashboard(
+    project_id: int | None = Query(default=None),
+    section: str | None = Query(default=None, max_length=255),
+    status: str | None = Query(default=None, description="comma-separated colours: RED,YELLOW,GREEN,GRAY"),
+    date_from: str | None = Query(default=None, description="YYYY-MM-DD, by the date the check was created"),
+    date_to: str | None = Query(default=None, description="YYYY-MM-DD, inclusive"),
+    limit: int = Query(default=200, ge=1, le=1000),
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    """TZ module 7: objects/checks with a colour indication (red/yellow/green/gray). The rule is `inspector_dashboard.classify`
+    and is returned as `rules`; the colour is derived from the findings, never stored."""
+    organization_id = _require_org(user)
+    colors = {item.strip().upper() for item in (status or "").split(",") if item.strip()}
+    unknown = colors - set(inspector_dashboard.COLORS)
+    if unknown:
+        raise HTTPException(status_code=422, detail=f"Unknown status filter: {', '.join(sorted(unknown))}")
+    try:
+        return inspector_dashboard.dashboard(db, organization_id=organization_id, project_id=project_id, section=section or None,
+                                             colors=colors or None, date_from=date_from, date_to=date_to, limit=limit)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail="Dates must be YYYY-MM-DD") from exc
 
 
 @router.get("/case10/overview")
@@ -1033,6 +1061,30 @@ def case10_protocol_pdf(
     return Response(content=data, media_type="application/pdf")
 
 
+def _protocol_for_export(db: Session, user: User, protocol_id: int) -> dict[str, Any]:
+    organization_id = _require_org(user)
+    protocol = db.get(Protocol, int(protocol_id))
+    if not protocol or int(protocol.organization_id) != organization_id:
+        raise HTTPException(status_code=404, detail="Protocol not found")
+    return protocol_to_dict(protocol)
+
+
+@router.get("/case10/protocols/{protocol_id}/docx")
+def case10_protocol_docx(protocol_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """Annex 2 as a Word document (TZ module 7); built from the same protocol payload as the PDF and the JSON."""
+    data = protocol_export.render_docx(_protocol_for_export(db, user, protocol_id))
+    return Response(content=data, media_type=protocol_export.DOCX_MEDIA_TYPE,
+                    headers={"Content-Disposition": f'attachment; filename="protocol_{int(protocol_id)}.docx"'})
+
+
+@router.get("/case10/protocols/{protocol_id}/xml")
+def case10_protocol_xml(protocol_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """Annex 2 as XML (TZ module 7): the same model as the DOCX, machine-readable."""
+    data = protocol_export.render_xml(_protocol_for_export(db, user, protocol_id))
+    return Response(content=data, media_type=protocol_export.XML_MEDIA_TYPE,
+                    headers={"Content-Disposition": f'attachment; filename="protocol_{int(protocol_id)}.xml"'})
+
+
 @router.post("/case10/protocols/{protocol_id}/finalize")
 async def finalize_case10_protocol(
     protocol_id: int,
@@ -1147,6 +1199,28 @@ def list_case10_ml_retraining_log(
         .all()
     )
     return [training_log_to_dict(row) for row in rows]
+
+
+@router.get("/case10/ml/reports/weekly")
+def case10_ml_weekly_report(
+    end: str | None = Query(default=None, description="last day of the 7-day window, YYYY-MM-DD (default: today, UTC)"),
+    project_id: int | None = Query(default=None),
+    format: str = Query(default="json", pattern="^(json|html)$"),
+    db: Session = Depends(get_db),
+    user: User = Depends(require_ml_engineer),
+):
+    """TZ module 10: weekly report for ML engineers (inspector decisions by reason, section and method, change to the previous
+    week, recommendations, retraining log). Honest about small samples: see `data_sufficiency`."""
+    organization_id = _require_org(user)
+    if project_id:
+        get_project_for_org(db, project_id, organization_id)
+    try:
+        report = ml_weekly_report.build_weekly_report(db, organization_id=organization_id, project_id=project_id, end=end)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail="end must be YYYY-MM-DD") from exc
+    if format == "html":
+        return Response(content=ml_weekly_report.render_html(report), media_type="text/html; charset=utf-8")
+    return report
 
 
 def _logical_rule_to_dict(row: LogicalRuleRecord) -> dict[str, Any]:

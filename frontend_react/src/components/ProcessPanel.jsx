@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { api, protocolPdfUrl, protocolSubmissionUrl, downloadProtectedFile } from '../api.js';
+import { api, protocolPdfUrl, protocolDocxUrl, protocolXmlUrl, protocolSubmissionUrl, downloadProtectedFile } from '../api.js';
 import Badge from './Badge.jsx';
 import Workbench from './Workbench.jsx';
 import RevisionsPanel from './RevisionsPanel.jsx';
@@ -270,6 +270,12 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
             <div className="row wrap top-gap" style={{ gap: 10 }}>
               <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolPdfUrl(protocol.id), `protocol_${protocol.id}.pdf`)}>
                 Скачать протокол (PDF)
+              </button>
+              <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolDocxUrl(protocol.id), `protocol_${protocol.id}.docx`).catch((e) => setStatusError(e.message))}>
+                Скачать протокол (DOCX)
+              </button>
+              <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolXmlUrl(protocol.id), `protocol_${protocol.id}.xml`).catch((e) => setStatusError(e.message))}>
+                Скачать протокол (XML)
               </button>
               <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolSubmissionUrl(protocol.id), `submission_${protocol.id}.json`)}>
                 Экспорт submission (JSON)

@@ -3,6 +3,8 @@ import Login from './components/Login.jsx';
 import TopBar from './components/TopBar.jsx';
 import DocumentsPanel from './components/DocumentsPanel.jsx';
 import ProcessPanel from './components/ProcessPanel.jsx';
+import Dashboard from './components/Dashboard.jsx';
+import MlReport from './components/MlReport.jsx';
 import { api, getToken, setToken } from './api.js';
 
 const PROJECT_KEY = 'case10_react_project_id';
@@ -83,6 +85,17 @@ export default function App() {
     }
   }
 
+  // Dashboard click: open the check's workplace (its project and process) without going through the documents tab.
+  function openFromDashboard(targetProjectId, targetProcessId) {
+    const map = loadProcessMap();
+    map[targetProjectId] = targetProcessId;
+    saveProcessMap(map);
+    setProjectId(targetProjectId);
+    localStorage.setItem(PROJECT_KEY, String(targetProjectId));
+    setProcessId(targetProcessId);
+    setView('process');
+  }
+
   function handleProcessStarted(id) {
     handleProcessIdChange(id);
     setView('process');
@@ -117,6 +130,8 @@ export default function App() {
     setProcessId(null);
   }
 
+  const canSeeMlReport = Boolean(me?.is_admin || ['ADMIN', 'ML_ENGINEER'].includes(String(me?.role || '').toUpperCase()));
+
   if (booting) {
     return <div className="auth-shell"><span className="spinner" /></div>;
   }
@@ -143,16 +158,26 @@ export default function App() {
       ) : (
         <>
           <div className="tabs">
+            <button className={`tab${view === 'dashboard' ? ' active' : ''}`} type="button" onClick={() => setView('dashboard')}>
+              Панель объектов
+            </button>
             <button className={`tab${view === 'documents' ? ' active' : ''}`} type="button" onClick={() => setView('documents')}>
               Документы
             </button>
             <button className={`tab${view === 'process' ? ' active' : ''}`} type="button" onClick={() => setView('process')}>
               Проверка{processId ? '' : ' (не запущена)'}
             </button>
+            {canSeeMlReport && (
+              <button className={`tab${view === 'ml' ? ' active' : ''}`} type="button" onClick={() => setView('ml')}>
+                Отчёт ML
+              </button>
+            )}
           </div>
 
-          <div className={`content${view === 'process' ? ' wide' : ''}`}>
+          <div className={`content${view === 'process' || view === 'dashboard' ? ' wide' : ''}`}>
             {error && <div className="error-banner"><span>{error}</span><button onClick={() => setError('')}>×</button></div>}
+            {view === 'dashboard' && <Dashboard projectId={projectId} onOpen={openFromDashboard} />}
+            {view === 'ml' && canSeeMlReport && <MlReport />}
             {view === 'documents' && (
               <DocumentsPanel projectId={projectId} onProcessStarted={handleProcessStarted} />
             )}
