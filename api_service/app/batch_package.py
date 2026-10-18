@@ -405,6 +405,16 @@ def build_plan(
     if registry and object_ids and object_id not in object_ids:
         raise PackageError(f"--object-id {object_id!r} is not in the registry (it names {object_ids})")
     registry = [row for row in registry if not row.get("object_id") or row.get("object_id") == object_id]
+    registry_manifest_summary = [
+        {
+            "doc_stage": str(row.get("doc_stage") or "").upper(),
+            "file_id": str(row.get("file_id") or "").strip() or None,
+            "file_name": str(row.get("file_name") or "").strip() or None,
+            "sha256": str(row.get("sha256") or "").strip().lower() or None,
+        }
+        for row in registry
+        if str(row.get("doc_stage") or "").upper() in {"PD", "RD", "ID"}
+    ]
 
     by_sha: dict[str, list[int]] = {}
     by_name: dict[str, list[int]] = {}
@@ -455,6 +465,7 @@ def build_plan(
             "relative_path": f"{originals_prefix.strip('/')}/{item.relative_path}".lstrip("/"),
             "package_path": item.relative_path,
             "registry": registry_view or None,
+            "registry_manifest_summary": registry_manifest_summary or None,
             "registry_issues": file_issues or None,
         }
         if reg and reg.get("discipline"):

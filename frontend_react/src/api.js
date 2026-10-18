@@ -100,6 +100,16 @@ export const api = {
     });
     return request(`/api/case10/ml/reports/weekly?${query.toString()}`);
   },
+  savedWeeklyMlReports: (params) => {
+    const query = new URLSearchParams();
+    Object.entries(params || {}).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') query.set(key, String(value));
+    });
+    return request(`/api/case10/ml/reports/weekly/saved?${query.toString()}`);
+  },
+  listNormativeBase: () => request('/api/case10/normative-base'),
+  createNormativeBase: (body) => request('/api/case10/normative-base', { method: 'POST', body }),
+  updateNormativeBase: (entryId, body) => request(`/api/case10/normative-base/${entryId}`, { method: 'PATCH', body }),
 
   evidenceDecision: (evidenceGroupId, decision, reasonCode, comment, uiMetrics) =>
     request(`/api/case10/evidence-groups/${evidenceGroupId}/decisions`, {

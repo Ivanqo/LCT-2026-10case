@@ -338,12 +338,20 @@ class NormativeTests(DbCase):
 
     def test_value_outside_an_admin_entry_is_a_hypothesis_with_the_entrys_basis(self):
         self.add_value_group("PZ-008", {"PD": "18"})
+        param = next(p for p in self.params if p.code == "PZ-008")
+        param.min_value, param.max_value = 100.0, 200.0  # the active normative-base entry supplies the effective bounds
         self.entry(max_value=15.0)
         found, stats = normative.detect(self.db, self.process, self.params, object_id="OBJ-FREE")
         self.assertEqual(len(found), 1, stats)
         self.assertEqual(found[0].method, base.METHOD_NORMATIVE)
         self.assertIn("Тестовый свод СП-тест, п. 1", found[0].normative_base)
         self.assertIn("не более 15", found[0].expected)
+
+    def test_empty_normative_base_preserves_behavior_even_if_param_bounds_are_set(self):
+        self.add_value_group("PZ-008", {"PD": "18"})
+        param = next(p for p in self.params if p.code == "PZ-008")
+        param.min_value, param.max_value = 100.0, 200.0
+        self.assertEqual(normative.detect(self.db, self.process, self.params, object_id="O")[0], [])
 
     def test_value_inside_range_inactive_entry_expired_entry_and_empty_base_give_nothing(self):
         self.add_value_group("PZ-008", {"PD": "12"})
@@ -370,6 +378,13 @@ class NormativeTests(DbCase):
     def test_no_bounds_are_invented_without_a_value(self):
         self.entry(max_value=15.0)
         self.assertEqual(normative.detect(self.db, self.process, self.params, object_id="O")[0], [])
+
+    def test_active_entry_window_accepts_timezone_aware_dates(self):
+        from datetime import timezone
+
+        now = datetime(2026, 10, 18, 12, 0, tzinfo=timezone.utc)
+        row = self.entry(max_value=15.0, effective_from=now - timedelta(days=1), effective_to=now + timedelta(days=1))
+        self.assertTrue(normative._in_force(row, now))
 
 
 # ---------------------------------------------------------------- ML_PATTERN_STAT

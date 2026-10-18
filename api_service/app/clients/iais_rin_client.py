@@ -81,3 +81,25 @@ class IaisRinClient:
             return response.json()
         except ValueError:
             return {"status_code": response.status_code, "raw": response.text}
+
+    async def fetch_documents(self, *, process_id: str) -> dict[str, Any]:
+        """Fetch a mock/adapter bundle: GET /api/v1/inspection/{id}/documents."""
+        if not self.configured:
+            raise IaisRinError("IAIS_RIN_BASE_URL is not configured")
+        url = f"{self.base_url}/api/v1/inspection/{process_id}/documents"
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout, cert=self._cert()) as client:
+                response = await client.get(url)
+        except httpx.RequestError as exc:
+            raise IaisRinRetryableError(f"{type(exc).__name__}: {exc}") from exc
+        if response.status_code >= 500:
+            raise IaisRinRetryableError(f"HTTP {response.status_code}: {response.text[:500]}")
+        if response.status_code >= 400:
+            raise IaisRinRejectedError(response.status_code, response.text[:500])
+        try:
+            body = response.json()
+        except ValueError as exc:
+            raise IaisRinError("ИАИС РиН returned non-JSON document metadata") from exc
+        if not isinstance(body, dict) or not isinstance(body.get("documents"), list):
+            raise IaisRinError("ИАИС РиН document response must contain a documents array")
+        return body

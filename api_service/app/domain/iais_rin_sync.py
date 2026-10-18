@@ -82,6 +82,13 @@ def sync_state_of(protocol: Protocol) -> dict[str, Any]:
     return dict((protocol.payload_json or {}).get("iais_rin_sync") or {})
 
 
+async def fetch_documents_from_iais_rin(process_id: str, *, client: IaisRinClient | None = None) -> dict[str, Any]:
+    """Inbound pull adapter. It is explicitly disabled until a mock/external URL is configured."""
+    if not settings.IAIS_RIN_PULL_ENABLED:
+        raise HTTPException(status_code=503, detail="IAIS РиН file pull is disabled")
+    return await (client or IaisRinClient()).fetch_documents(process_id=str(process_id))
+
+
 async def sync_protocol_to_iais_rin(
     db: Session,
     protocol: Protocol,

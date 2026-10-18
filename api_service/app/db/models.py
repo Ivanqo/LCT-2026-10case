@@ -801,10 +801,8 @@ class ProcessingCache(Base):
 class RejectionLog(Base):
     """ТЗ-10 `Rejection_Log`: written whenever an inspector's decision resolves
     a finding to NEGATIVE_VERIFIED (see `record_inspector_decision` in
-    v3_pipeline.py). `ai_verdict`/`ai_verdict_comment`/`suggested_fix` stay
-    NULL until Module 9.4 ("Обратная связь ИИ") is implemented -- there is no
-    automated AGREE/DISAGREE reasoning in this codebase yet, so this table
-    honestly leaves those columns unset rather than fabricating a verdict."""
+    v3_pipeline.py). `ai_verdict` and `suggested_fix` are populated by the
+    deterministic rules in `rejection_feedback.py`; they are not model outputs."""
 
     __tablename__ = "rejection_logs"
 
@@ -830,7 +828,7 @@ class DisputeLog(Base):
     """ТЗ-10 `Dispute_Log`: a disputed finding, opened via
     `POST /case10/evidence-groups/{id}/disputes`. There is no resolution
     workflow/UI yet (ТЗ does not describe one either), so `resolution_status`
-    starts and stays at `OPEN` until a future module closes it."""
+    starts and stays at `OPEN`; feedback fields use deterministic rules."""
 
     __tablename__ = "dispute_logs"
 
@@ -842,6 +840,9 @@ class DisputeLog(Base):
 
     inspector_comment = Column(Text, nullable=False)
     ai_comment = Column(Text, nullable=True)
+    reason_code = Column(String(64), nullable=False, server_default="OTHER", index=True)
+    ai_verdict = Column(String(32), nullable=False, server_default="PENDING_REVIEW", index=True)
+    suggested_fix = Column(Text, nullable=True)
     resolution_status = Column(String(32), nullable=False, server_default="OPEN", index=True)
     opened_by_user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
     resolved_by_user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
@@ -912,8 +913,8 @@ class LogicalRuleRecord(Base):
 
 class NormativeBaseEntry(Base):
     """ТЗ-10 `Normative_Base` / ТЗ module 8 ("Управление нормативной базой"):
-    an admin-maintained registry of normative documents and their threshold
-    values, independent of (not yet wired into) `Param.min_value`/`max_value`."""
+    an admin-maintained registry of normative documents and the effective
+    threshold source for matched active parameters."""
 
     __tablename__ = "normative_base"
 

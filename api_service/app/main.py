@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -22,6 +23,7 @@ from .api.routes_batch import router as batch_router
 
 setup_logging("api")
 logger = logging.getLogger("api")
+_weekly_report_task: asyncio.Task | None = None
 
 app = FastAPI(title="API Service", version="2.1.0")
 
@@ -78,6 +80,26 @@ def _startup():
                 "CASE10_OCR_ENGINE=paddleocr but the PaddleOCR pipeline failed to load at "
                 "startup (calls will fall back to tesseract): %s", paddle_health.get("error"),
             )
+
+
+@app.on_event("startup")
+async def _start_weekly_report_scheduler():
+    global _weekly_report_task
+    if settings.ML_WEEKLY_REPORT_SCHEDULER_ENABLED and _weekly_report_task is None:
+        from .domain.ml_weekly_scheduler import run_scheduler
+        _weekly_report_task = asyncio.create_task(run_scheduler(), name="case10-weekly-ml-report")
+
+
+@app.on_event("shutdown")
+async def _stop_weekly_report_scheduler():
+    global _weekly_report_task
+    if _weekly_report_task is not None:
+        _weekly_report_task.cancel()
+        try:
+            await _weekly_report_task
+        except asyncio.CancelledError:
+            pass
+        _weekly_report_task = None
 
 
 @app.get("/health")

@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 import json
+import base64
+import hashlib
+import os
 from datetime import datetime
+from pathlib import Path, PurePosixPath
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Response
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, Response
 from pydantic import BaseModel, Field
 from sqlalchemy import func
 from sqlalchemy.orm import Session, selectinload
@@ -31,7 +35,9 @@ from ..db.models import (
     EntityObservation,
     ReviewDecision,
     User,
+    UploadJob,
 )
+from ..config import settings
 from ..db.session import get_db
 from ..domain.change_engine import ChangeEngine
 from ..domain.ifc_observation_sync import sync_ifc_observations
@@ -51,6 +57,7 @@ from ..domain.v3_pipeline import (
     impact_scope_for_documents,
     create_process,
     current_applicable_documents,
+    document_completeness,
     ensure_default_matrix,
     ensure_demo_matrix,
     evidence_group_to_dict,
@@ -64,10 +71,12 @@ from ..domain.v3_pipeline import (
     record_inspector_decision,
     run_process,
     unfinalize_protocol,
+    upload_scenario,
 )
 from ..domain.v3_jobs import enqueue_process_job, publish_job_message
 from ..domain.training_release import build_training_release, training_log_to_dict
-from ..domain.iais_rin_sync import retry_pending_iais_rin_syncs, sync_protocol_to_iais_rin, sync_state_of
+from ..domain.iais_rin_sync import fetch_documents_from_iais_rin, retry_pending_iais_rin_syncs, sync_protocol_to_iais_rin, sync_state_of
+from ..domain.rejection_feedback import suggested_fix_for_reason, verdict_for_inspector_decision
 from evaluation.exporter import protocol_to_evaluation_predictions, protocol_to_submission, validate_submission_basic, validate_submission_schema
 from evaluation.errors import LeakageGuardError
 from .auth import get_current_user, require_admin, require_ml_engineer, require_supervisor
@@ -78,6 +87,7 @@ from ..domain import inspector_dashboard
 from ..domain import ml_weekly_report
 from ..domain import protocol_export
 from ..domain import inspector_workbench as workbench
+from ..services.simple_documents import safe_filename
 
 router = APIRouter(tags=["case10"])
 
@@ -203,6 +213,7 @@ class UnfinalizeIn(BaseModel):
 class DisputeLogIn(BaseModel):
     inspector_comment: str = Field(min_length=1, max_length=5000)
     ai_comment: str | None = Field(default=None, max_length=5000)
+    reason_code: str | None = Field(default="OTHER", max_length=64)
 
 
 class LogicalRuleUpdateIn(BaseModel):
@@ -734,13 +745,17 @@ def create_dispute_log(
     group = db.get(EvidenceGroup, int(evidence_group_id))
     if not group or int(group.organization_id) != organization_id:
         raise HTTPException(status_code=404, detail="Evidence group not found")
+    ai_verdict, rule_comment = verdict_for_inspector_decision(group.finding_status, None)
     row = DisputeLog(
         evidence_group_id=int(group.id),
         process_id=str(group.process_id),
         project_id=int(group.project_id),
         organization_id=int(group.organization_id),
         inspector_comment=payload.inspector_comment,
-        ai_comment=payload.ai_comment,
+        ai_comment=payload.ai_comment or rule_comment,
+        reason_code=str(payload.reason_code or "OTHER").strip().upper(),
+        ai_verdict=ai_verdict,
+        suggested_fix=suggested_fix_for_reason(payload.reason_code),
         opened_by_user_id=int(user.id),
     )
     db.add(row)
@@ -761,6 +776,9 @@ def create_dispute_log(
         "process_id": row.process_id,
         "inspector_comment": row.inspector_comment,
         "ai_comment": row.ai_comment,
+        "reason_code": row.reason_code,
+        "ai_verdict": row.ai_verdict,
+        "suggested_fix": row.suggested_fix,
         "resolution_status": row.resolution_status,
         "opened_by_user_id": row.opened_by_user_id,
         "created_at": row.created_at,
@@ -915,7 +933,8 @@ def case10_choose_revision(process_id: str, payload: RevisionChoiceIn, db: Sessi
 
 @router.get("/case10/processes/{process_id}/completeness")
 def case10_completeness(process_id: str, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
-    return workbench.completeness_panel(db, _org_process(db, process_id, user))
+    process = _org_process(db, process_id, user)
+    return {**workbench.completeness_panel(db, process), "process_upload_status": process.completeness_status or {}}
 
 
 @router.post("/case10/processes/{process_id}/verification/open")
@@ -1160,6 +1179,180 @@ async def case10_iais_rin_sync_sweep(db: Session = Depends(get_db), user: User =
     return {"retried": len(results), "results": results}
 
 
+@router.post("/case10/processes/{process_id}/iais-rin/pull-files")
+async def case10_iais_rin_pull_files(
+    process_id: str,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    """Pull a mock/adapter document bundle into an open process (emulation, no real IAИС contour)."""
+    if not settings.IAIS_RIN_PULL_ENABLED:
+        raise HTTPException(status_code=503, detail="ИАИС РиН file pull is disabled")
+    process = _org_process(db, process_id, user)
+    if str(process.status or "") == "FINALIZED":
+        raise HTTPException(status_code=409, detail="Finalized protocol cannot receive documents")
+    try:
+        bundle = await fetch_documents_from_iais_rin(str(process.id))
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"ИАИС РиН file pull failed: {type(exc).__name__}: {exc}") from exc
+
+    remote_docs = bundle.get("documents") or []
+    if not remote_docs or len(remote_docs) > 500:
+        raise HTTPException(status_code=422, detail="ИАИС РиН bundle must contain between 1 and 500 documents")
+
+    # Re-read under a row lock after the network wait: a protocol finalized while the client was fetching may not
+    # receive the returned files.
+    process = db.query(InspectionProcess).filter(
+        InspectionProcess.id == str(process_id), InspectionProcess.organization_id == int(user.organization_id or 0),
+    ).with_for_update().first()
+    if process is None:
+        raise HTTPException(status_code=404, detail="Inspection process not found")
+    if str(process.status or "") == "FINALIZED":
+        raise HTTPException(status_code=409, detail="Finalized protocol cannot receive documents")
+
+    from .. import batch_package as bp
+
+    stage_codes = {"PD": "PD", "RD": "RD", "ID": "ID"}
+    total_size = 0
+    staged: list[tuple[dict[str, Any], bytes, str, str, str]] = []
+    used_names: set[tuple[str, str]] = set()
+    object_id = str(process.object_id or "").strip() or None
+    for item in remote_docs:
+        if not isinstance(item, dict):
+            raise HTTPException(status_code=422, detail="Each IAИС РиН document must be an object")
+        raw_stage = str(item.get("doc_stage") or item.get("stage") or "").strip().upper()
+        stage = stage_codes.get(raw_stage)
+        raw_name = PurePosixPath(str(item.get("filename") or "").replace("\\", "/")).name
+        filename = safe_filename(raw_name)
+        if stage is None or not filename or Path(filename).suffix.lower() != ".pdf":
+            raise HTTPException(status_code=422, detail="Each pulled file needs stage PD/RD/ID and a PDF filename")
+        if (stage, filename.casefold()) in used_names:
+            raise HTTPException(status_code=422, detail="ИАИС РиН bundle contains duplicate filenames within a stage")
+        used_names.add((stage, filename.casefold()))
+        try:
+            content = base64.b64decode(str(item.get("content_base64") or ""), validate=True)
+        except (ValueError, TypeError) as exc:
+            raise HTTPException(status_code=422, detail=f"Invalid base64 content for {filename}") from exc
+        if not content:
+            raise HTTPException(status_code=422, detail=f"Empty file in IAИС РиН bundle: {filename}")
+        total_size += len(content)
+        if total_size > settings.MAX_UPLOAD_PACKAGE_SIZE_BYTES:
+            raise HTTPException(status_code=413, detail="ИАИС РиН bundle exceeds the configured package size limit")
+        digest = hashlib.sha256(content).hexdigest()
+        expected_digest = str(item.get("sha256") or "").strip().lower()
+        if expected_digest and expected_digest != digest:
+            raise HTTPException(status_code=422, detail=f"SHA-256 mismatch for {filename}")
+        candidate_object_id = str(item.get("object_id") or object_id or "").strip()
+        if object_id and candidate_object_id and candidate_object_id != object_id:
+            raise HTTPException(status_code=422, detail="ИАИС РиН bundle contains more than one object_id")
+        object_id = object_id or candidate_object_id or f"RIN-P{int(process.project_id)}-{hashlib.sha256(str(process.id).encode()).hexdigest()[:12]}"
+        staged.append((item, content, stage, filename, digest))
+
+    remote_registry = bundle.get("registry")
+    registry_rows = []
+    if remote_registry is not None:
+        if not isinstance(remote_registry, list) or not remote_registry or len(remote_registry) > 2000:
+            raise HTTPException(status_code=422, detail="ИАИС РиН registry must be a non-empty array with at most 2000 rows")
+        for row in remote_registry:
+            if not isinstance(row, dict):
+                raise HTTPException(status_code=422, detail="Each IAИС РиН registry record must be an object")
+            stage = stage_codes.get(str(row.get("doc_stage") or row.get("stage") or "").strip().upper())
+            raw_name = PurePosixPath(str(row.get("file_name") or row.get("filename") or "").replace("\\", "/")).name
+            filename = safe_filename(raw_name)
+            if stage is None or not filename or Path(filename).suffix.lower() != ".pdf":
+                raise HTTPException(status_code=422, detail="Each IAИС РиН registry row needs stage PD/RD/ID and a PDF filename")
+            registry_rows.append({
+                "file_id": str(row.get("file_id") or "").strip() or None,
+                "object_id": object_id,
+                "file_name": f"files/{stage}/{filename}",
+                "doc_stage": stage,
+                "sha256": str(row.get("sha256") or "").strip().lower() or None,
+                "approval_status": str(row.get("approval_status") or "UNKNOWN"),
+                "document_code": row.get("document_code"),
+                "revision": row.get("revision"),
+                "approval_date": row.get("approval_date"),
+            })
+    else:
+        for item, _content, stage, filename, digest in staged:
+            registry_rows.append({
+                "file_id": str(item.get("file_id") or f"RIN-{digest[:16]}"),
+                "object_id": object_id,
+                "file_name": f"files/{stage}/{filename}",
+                "doc_stage": stage,
+                "sha256": digest,
+                "approval_status": str(item.get("approval_status") or "UNKNOWN"),
+                "document_code": item.get("document_code"),
+                "revision": item.get("revision"),
+            })
+    package_digest = hashlib.sha256(json.dumps(registry_rows, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()[:16]
+    process_digest = hashlib.sha256(str(process.id).encode("utf-8")).hexdigest()[:16]
+    package_relative = Path("_iais_rin") / str(int(process.project_id)) / process_digest / package_digest
+    package_root = settings.BATCH_PACKAGES_ROOT.resolve()
+    package_dir = (package_root / package_relative).resolve()
+    if not package_dir.is_relative_to(package_root):
+        raise HTTPException(status_code=422, detail="Invalid IAИС РиН package path")
+    originals_root = os.environ.get("CASE10_ORIGINALS_ROOT", "").strip()
+    if originals_root and Path(originals_root).resolve() != package_root:
+        raise HTTPException(status_code=409, detail="CASE10_ORIGINALS_ROOT must match CASE10_BATCH_PACKAGES_ROOT for IAИС pulls")
+    os.environ.setdefault("CASE10_ORIGINALS_ROOT", str(package_root))
+
+    package_files = []
+    for item, content, stage, filename, digest in staged:
+        relative = Path("files") / stage / filename
+        stored_path = package_dir / relative
+        stored_path.parent.mkdir(parents=True, exist_ok=True)
+        stored_path.write_bytes(content)
+        package_files.append(bp.PackageFile(relative.as_posix(), len(content), digest, None))
+    registry_digest = hashlib.sha256(json.dumps(registry_rows, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
+    try:
+        plan = bp.build_plan(
+            package_files, registry_rows, package_name=f"iais-rin-{process.id}", object_id=object_id,
+            registry_sha256=registry_digest, originals_prefix=package_relative.as_posix(),
+        )
+    except bp.PackageError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    manifest_path = settings.DATA_DIR / "iais_rin_manifests" / f"{process_digest}-{package_digest}.jsonl"
+    bp.import_plan(db, plan, project_id=int(process.project_id), organization_id=int(process.organization_id), manifest_path=manifest_path)
+    process.object_id = plan.object_id
+    imported_ids = {str(row["file_id"]) for row in plan.rows}
+    documents = db.query(DocumentVersion).filter(
+        DocumentVersion.project_id == int(process.project_id),
+        DocumentVersion.organization_id == int(process.organization_id),
+        DocumentVersion.object_id == plan.object_id,
+        DocumentVersion.dataset_file_id.in_(sorted(imported_ids)),
+    ).order_by(DocumentVersion.id.asc()).all()
+    process.completeness_status = document_completeness(documents)
+    process.upload_scenario = upload_scenario(process.completeness_status)
+    db.add(process)
+    upload_job = UploadJob(
+        project_id=int(process.project_id), organization_id=int(process.organization_id), user_id=int(user.id),
+        filename="ИАИС РиН: пакет документов", file_type="pdf", temp_path=str(package_dir), file_size=total_size,
+        process_id=str(process.id), source_type="case10_dataset", status="ready", stage="Файлы получены из mock-контура ИАИС РиН",
+        progress=100, detail=f"Импортировано документов: {len(documents)}; эмуляция внешнего контура",
+    )
+    db.add(upload_job)
+    db.flush()
+    from .routes_upload import _recompute_case10_for_uploaded_documents
+    case10_job = _recompute_case10_for_uploaded_documents(db, upload_job, documents)
+    add_audit(db, action="IAIS_RIN_FILES_PULLED", user_id=int(user.id), process=process,
+              details={"upload_job_id": int(upload_job.id), "documents": len(documents), "sha256": [item[4] for item in staged], "emulation": True})
+    db.commit()
+    if case10_job is not None:
+        published = publish_job_message(case10_job)
+        if settings.OFFLINE_DELIVERY and not published:
+            from .routes_upload import _execute_case10_job_inline
+            background_tasks.add_task(_execute_case10_job_inline, dict(case10_job.payload_json or {}))
+    return {
+        "process_id": str(process.id), "upload_job_id": int(upload_job.id),
+        "case10_job_id": str(case10_job.id) if case10_job else None,
+        "documents_pulled": len(documents), "completeness": process.completeness_status,
+        "emulation": True, "registry_status": plan.report.get("registry_status"),
+    }
+
+
 @router.post("/case10/projects/{project_id}/training-release")
 def create_case10_training_release(
     project_id: int,
@@ -1221,6 +1414,21 @@ def case10_ml_weekly_report(
     if format == "html":
         return Response(content=ml_weekly_report.render_html(report), media_type="text/html; charset=utf-8")
     return report
+
+
+@router.get("/case10/ml/reports/weekly/saved")
+def case10_list_saved_weekly_reports(
+    project_id: int | None = Query(default=None),
+    limit: int = Query(default=50, ge=1, le=200),
+    db: Session = Depends(get_db),
+    user: User = Depends(require_ml_engineer),
+):
+    """List persisted scheduler snapshots for the current organization."""
+    organization_id = _require_org(user)
+    if project_id:
+        # Project ownership is validated with the same check as report generation.
+        get_project_for_org(db, project_id, organization_id)
+    return ml_weekly_report.list_saved_reports(organization_id=organization_id, project_id=project_id, limit=limit)
 
 
 def _logical_rule_to_dict(row: LogicalRuleRecord) -> dict[str, Any]:

@@ -489,6 +489,9 @@ kbd {
 .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .data-table th { text-align: left; font-weight: 500; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
 .data-table td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.normative-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.normative-active { display: flex; align-items: center; gap: 8px; padding: 8px 0; font-size: 13px; }
+.table-scroll { overflow-x: auto; }
 .dash-row { cursor: pointer; }
 .dash-row:hover { background: rgba(125,211,252,0.06); }
 .ml-report h3 { font-size: 14px; margin: 18px 0 6px; }

@@ -12,14 +12,18 @@ The window is seven days ending on `end` (inclusive, UTC dates); the previous wi
 from __future__ import annotations
 
 from collections import Counter, defaultdict
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, time, timedelta, timezone
 from html import escape
+import json
 import math
+import os
+from pathlib import Path
 from typing import Any
 
 from sqlalchemy.orm import Session
 
-from ..db.models import EvidenceDecision, EvidenceGroup, InspectorEdit, MLRetrainingLog, Param, RejectionLog
+from ..config import settings
+from ..db.models import EvidenceDecision, EvidenceGroup, InspectorEdit, MLRetrainingLog, Organization, Param, RejectionLog
 
 SCHEMA_VERSION = "case10-ml-weekly-report-v1"
 MIN_DECISIONS_FOR_REPORT = 20     # below this the whole report is flagged "данных мало" and gives no recommendations
@@ -338,3 +342,95 @@ def render_html(report: dict[str, Any]) -> str:
     parts.append("<p><small>Отклонения в журнале: " + escape(", ".join(f"{k}: {v}" for k, v in retraining["rejection_log_by_retraining_status"].items()) or "нет") + ". "
                  + escape(report["definitions"]["precision_by_inspectors"]) + ".</small></p></body></html>")
     return "".join(parts)
+
+
+def save_report(report: dict[str, Any], *, directory: str | Path | None = None, saved_at: datetime | None = None) -> dict[str, Any]:
+    """Persist a deterministic JSON snapshot and return its safe list metadata."""
+    root = Path(directory or settings.ML_WEEKLY_REPORTS_DIR).resolve()
+    root.mkdir(parents=True, exist_ok=True)
+    scope = report.get("scope") or {}
+    organization_id = scope.get("organization_id")
+    project_id = scope.get("project_id")
+    period_end = str((report.get("period") or {}).get("to") or "unknown")
+    org_part = f"org-{int(organization_id)}" if organization_id is not None else "org-all"
+    project_part = f"project-{int(project_id)}" if project_id is not None else "project-all"
+    report_id = f"weekly_{org_part}_{project_part}_{period_end}"
+    created = saved_at or datetime.utcnow()
+    if created.tzinfo is not None:
+        created = created.astimezone(timezone.utc).replace(tzinfo=None)
+    record = {"id": report_id, "saved_at": created.isoformat(timespec="seconds") + "Z", "report": report}
+    path = root / f"{report_id}.json"
+    temporary = path.with_suffix(".json.tmp")
+    encoded = json.dumps(record, ensure_ascii=False, sort_keys=True, indent=2, default=str) + "\n"
+    temporary.write_text(encoded, encoding="utf-8", newline="\n")
+    os.replace(temporary, path)
+    return {"id": report_id, "saved_at": record["saved_at"], "period": report.get("period"), "report": report}
+
+
+def list_saved_reports(
+    *, organization_id: int | None = None, project_id: int | None = None, directory: str | Path | None = None, limit: int = 50,
+) -> list[dict[str, Any]]:
+    """Read stored reports and enforce organization/project scope before returning payloads."""
+    root = Path(directory or settings.ML_WEEKLY_REPORTS_DIR).resolve()
+    if not root.is_dir():
+        return []
+    rows: list[dict[str, Any]] = []
+    for path in sorted(root.glob("weekly_*.json"), reverse=True):
+        try:
+            record = json.loads(path.read_text(encoding="utf-8"))
+            report = record.get("report") or {}
+            scope = report.get("scope") or {}
+            if organization_id is not None and scope.get("organization_id") != int(organization_id):
+                continue
+            if project_id is not None and scope.get("project_id") != int(project_id):
+                continue
+            rows.append({"id": str(record.get("id") or path.stem), "saved_at": record.get("saved_at"),
+                         "period": report.get("period"), "report": report})
+        except (OSError, ValueError, TypeError):
+            continue
+        if len(rows) >= max(1, min(int(limit), 200)):
+            break
+    return rows
+
+
+def run_scheduler_tick(
+    *, now: datetime | None = None, session_factory=None, directory: str | Path | None = None,
+    interval_seconds: int | None = None,
+) -> dict[str, Any]:
+    """Generate one snapshot per organization when the persisted interval is due."""
+    from ..db.session import SessionLocal
+
+    factory = session_factory or SessionLocal
+    root = Path(directory or settings.ML_WEEKLY_REPORTS_DIR).resolve()
+    root.mkdir(parents=True, exist_ok=True)
+    current = now or datetime.utcnow()
+    if current.tzinfo is not None:
+        current = current.astimezone(timezone.utc).replace(tzinfo=None)
+    interval = max(60, int(interval_seconds or settings.ML_WEEKLY_REPORT_INTERVAL_SECONDS))
+    state_path = root / ".weekly_scheduler_state.json"
+    if state_path.exists():
+        try:
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            last_run = datetime.fromisoformat(str(state["last_run_at"]).replace("Z", "+00:00"))
+            if last_run.tzinfo is not None:
+                last_run = last_run.astimezone(timezone.utc).replace(tzinfo=None)
+            if (current - last_run).total_seconds() < interval:
+                return {"ran": False, "next_due_at": (last_run + timedelta(seconds=interval)).isoformat() + "Z", "reports_saved": 0}
+        except (OSError, ValueError, KeyError, TypeError):
+            pass
+
+    db = factory()
+    try:
+        organizations = [int(row[0]) for row in db.query(Organization.id).order_by(Organization.id.asc()).all()]
+        scopes: list[int | None] = organizations or [None]
+        saved = []
+        end = current.date().isoformat()
+        for org_id in scopes:
+            saved.append(save_report(build_weekly_report(db, organization_id=org_id, end=end), directory=root, saved_at=current))
+        state_record = {"last_run_at": current.isoformat(timespec="seconds") + "Z", "reports_saved": len(saved)}
+        temp_state = state_path.with_suffix(".json.tmp")
+        temp_state.write_text(json.dumps(state_record, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+        os.replace(temp_state, state_path)
+        return {"ran": True, "next_due_at": (current + timedelta(seconds=interval)).isoformat() + "Z", "reports_saved": len(saved)}
+    finally:
+        db.close()

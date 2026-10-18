@@ -43,8 +43,9 @@ function BucketTable({ title, rows, nameHeader }) {
 }
 
 /** Module 10: weekly report for ML engineers (inspector decisions by reason, section and method; recommendations; retraining log). */
-export default function MlReport() {
+export default function MlReport({ projectId = null }) {
   const [report, setReport] = useState(null);
+  const [savedReports, setSavedReports] = useState([]);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [end, setEnd] = useState('');
@@ -53,13 +54,21 @@ export default function MlReport() {
     setBusy(true);
     setError('');
     try {
-      setReport(await api.weeklyMlReport({ end }));
+      const [current, saved] = await Promise.all([
+        api.weeklyMlReport({ end, project_id: projectId }),
+        // The scheduler persists one snapshot per organization. Keep the
+        // project filter on the on-demand report, but list organization
+        // snapshots regardless of the currently selected project.
+        api.savedWeeklyMlReports(),
+      ]);
+      setReport(current);
+      setSavedReports(saved);
     } catch (err) {
       setError(err.message || 'Не удалось загрузить отчёт');
     } finally {
       setBusy(false);
     }
-  }, [end]);
+  }, [end, projectId]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -81,6 +90,19 @@ export default function MlReport() {
         </div>
       </div>
       {error && <div className="error-banner top-gap"><span>{error}</span></div>}
+      <h3 className="top-gap">Сохранённые отчёты организации</h3>
+      {savedReports.length === 0 ? <p className="muted">Планировщик пока не сохранил отчёты.</p> : (
+        <div className="table-scroll"><table className="data-table">
+          <thead><tr><th>Период</th><th>Сохранён</th><th>Решений</th><th>Действие</th></tr></thead>
+          <tbody>{savedReports.map((item) => (
+            <tr key={item.id}>
+              <td>{item.period?.from} — {item.period?.to}</td><td>{item.saved_at}</td>
+              <td>{item.report?.totals?.decisions ?? '—'}</td>
+              <td><button className="btn small" type="button" onClick={() => setReport(item.report)}>Открыть</button></td>
+            </tr>
+          ))}</tbody>
+        </table></div>
+      )}
       {report && (
         <>
           <p className="muted small">

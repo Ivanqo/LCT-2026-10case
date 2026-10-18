@@ -14,6 +14,7 @@ from fastapi import HTTPException
 from sqlalchemy import func
 from sqlalchemy.orm import Session, defer
 
+from ..config import settings
 from ..db.models import (
     AttributeObservation,
     AuditLog,
@@ -42,6 +43,8 @@ from .evidence_groups import compute_basis_hash, sweep_orphaned_evidence_groups,
 from .live_candidate_tagger import live_tagger_coverage
 from .official_evidence import create_official_evidence_groups
 from .comparison_gate import GateContext
+from .rejection_feedback import suggested_fix_for_reason, verdict_for_inspector_decision
+from .registry_completeness import registry_stage_counts
 from .protocol_annex2 import annex2_payload, render_protocol_pdf
 from ..request_context import get_client_ip
 from evaluation.exporter import evidence_group_to_submission_check
@@ -762,6 +765,7 @@ def record_inspector_decision(
     if decision_label == "Reject" and not str(reason_code or "").strip():
         reason_code = "OTHER"
 
+    ai_status_before_decision = str(group.finding_status or "")
     group.finding_status = DECISION_TO_STATUS[decision_label]
     group.updated_at = datetime.utcnow()
     reverified = _apply_pending_reverification(db, group)
@@ -777,7 +781,7 @@ def record_inspector_decision(
     db.flush()
     _upsert_gold_draft_item(db, group, row)
     if decision_label == "Reject":
-        _record_rejection_log(db, process, group, row)
+        _record_rejection_log(db, process, group, row, ai_status_before_decision=ai_status_before_decision)
     add_audit(
         db,
         action="INSPECTOR_DECISION",
@@ -1047,6 +1051,8 @@ def build_protocol_payload(db: Session, process: InspectionProcess) -> dict[str,
                 "contractor": obj.contractor if obj else None,
             },
             matrix_size=matrix_size,
+            completeness=process.completeness_status or {},
+            include_registry_counts=settings.PARTIAL_UPLOAD_STATUS_ENABLED,
         ),
     }
 
@@ -1281,18 +1287,32 @@ def protocol_pdf_bytes(protocol: Protocol) -> bytes:
     return render_protocol_pdf(protocol)
 
 
-def document_completeness(docs: Iterable[DocumentVersion]) -> dict[str, str]:
-    stages = {_doc_stage(doc) for doc in docs}
-    return {
-        uploaded: uploaded if stage in stages else missing
-        for stage, (uploaded, missing) in STAGE_TO_COMPLETENESS.items()
-    }
+def document_completeness(docs: Iterable[DocumentVersion], *, registry_aware: bool | None = None) -> dict[str, str]:
+    rows = list(docs)
+    stages = {_doc_stage(doc) for doc in rows}
+    registry_aware = settings.PARTIAL_UPLOAD_STATUS_ENABLED if registry_aware is None else bool(registry_aware)
+    if not registry_aware:
+        return {
+            uploaded: uploaded if stage in stages else missing
+            for stage, (uploaded, missing) in STAGE_TO_COMPLETENESS.items()
+        }
+    has_registry_summary, expected_by_stage, loaded_by_stage = registry_stage_counts(rows)
+    result: dict[str, str] = {}
+    for stage, (uploaded, missing) in STAGE_TO_COMPLETENESS.items():
+        short = {"project": "PD", "working": "RD", "as_built": "ID"}[stage]
+        expected = expected_by_stage.get(short, 0)
+        if has_registry_summary and expected:
+            loaded = loaded_by_stage.get(short, 0)
+            result[uploaded] = uploaded if loaded >= expected else f"{short}_PARTIAL" if loaded else missing
+        else:
+            result[uploaded] = uploaded if stage in stages else missing
+    return result
 
 
 def upload_scenario(completeness: dict[str, str]) -> str:
-    has_pd = completeness.get("PD_UPLOADED") == "PD_UPLOADED"
-    has_rd = completeness.get("RD_UPLOADED") == "RD_UPLOADED"
-    has_id = completeness.get("ID_UPLOADED") == "ID_UPLOADED"
+    has_pd = completeness.get("PD_UPLOADED") in {"PD_UPLOADED", "PD_PARTIAL"}
+    has_rd = completeness.get("RD_UPLOADED") in {"RD_UPLOADED", "RD_PARTIAL"}
+    has_id = completeness.get("ID_UPLOADED") in {"ID_UPLOADED", "ID_PARTIAL"}
     count = sum([has_pd, has_rd, has_id])
     if count == 3:
         return "FULL"
@@ -1621,13 +1641,12 @@ def _upsert_gold_draft_item(db: Session, group: EvidenceGroup, decision: Evidenc
     return row
 
 
-def _record_rejection_log(db: Session, process: InspectionProcess, group: EvidenceGroup, decision: EvidenceDecision) -> RejectionLog:
-    """ТЗ-10 `Rejection_Log`: one row per inspector rejection (decision ==
-    "Reject", finding_status -> NEGATIVE_VERIFIED), for Module 9.4's
-    retraining pipeline. `ai_verdict`/`suggested_fix` are left NULL -- Module
-    9.4's automated AI-verdict reasoning is not implemented in this codebase
-    (see the `RejectionLog` docstring); this only records what an inspector
-    actually did, honestly, not a verdict nobody computed."""
+def _record_rejection_log(
+    db: Session, process: InspectionProcess, group: EvidenceGroup, decision: EvidenceDecision,
+    *, ai_status_before_decision: str,
+) -> RejectionLog:
+    """Record a rule-based comparison of the pre-decision finding and inspector verdict."""
+    ai_verdict, ai_comment = verdict_for_inspector_decision(ai_status_before_decision, decision.decision)
     row = RejectionLog(
         evidence_group_id=int(group.id),
         evidence_decision_id=int(decision.id),
@@ -1635,6 +1654,9 @@ def _record_rejection_log(db: Session, process: InspectionProcess, group: Eviden
         project_id=int(process.project_id),
         organization_id=int(process.organization_id),
         rejection_reason=str(decision.comment or decision.reason_code or "").strip() or (decision.reason_code or "OTHER"),
+        ai_verdict=ai_verdict,
+        ai_verdict_comment=ai_comment,
+        suggested_fix=suggested_fix_for_reason(decision.reason_code),
         retraining_status="PENDING",
     )
     db.add(row)

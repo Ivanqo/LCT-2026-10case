@@ -9,12 +9,16 @@ service or extra dependency needed) standing in for ИАИС РИН, per the tas
 from __future__ import annotations
 
 import json
+import base64
+import hashlib
+import os
 import threading
 import unittest
 from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import tempfile
+from unittest.mock import patch
 
 from fastapi import FastAPI, HTTPException
 from fastapi.testclient import TestClient
@@ -26,7 +30,7 @@ from app.config import settings
 from app.api.auth import get_current_user
 from app.api.routes_case10 import router as case10_router
 from app.clients.iais_rin_client import IaisRinClient, IaisRinRejectedError, IaisRinRetryableError
-from app.db.models import InspectionProcess, MonitoringMetric, Organization, Project, Protocol, User
+from app.db.models import DocumentVersion, InspectionProcess, MonitoringMetric, Organization, Project, Protocol, User
 from app.db.session import Base, get_db
 from app.domain.iais_rin_sync import (
     IAIS_SYNC_NOT_CONFIGURED,
@@ -37,6 +41,7 @@ from app.domain.iais_rin_sync import (
     sync_protocol_to_iais_rin,
     sync_state_of,
 )
+from test_case10_s5_workbench import WorkbenchTestBase
 
 
 class _MockIaisRinServer:
@@ -46,11 +51,28 @@ class _MockIaisRinServer:
 
     def __init__(self):
         self.requests: list[dict] = []
+        self.document_bundle: dict | None = None
         self._lock = threading.Lock()
         self._responses: list[int] = []
         outer = self
 
         class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                with outer._lock:
+                    outer.requests.append({"method": "GET", "path": self.path})
+                    bundle = outer.document_bundle
+                if self.path.endswith("/documents") and bundle is not None:
+                    payload = json.dumps(bundle).encode("utf-8")
+                    status = 200
+                else:
+                    payload = b"{\"error\":\"not found\"}"
+                    status = 404
+                self.send_response(status)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(payload)))
+                self.end_headers()
+                self.wfile.write(payload)
+
             def do_POST(self):
                 length = int(self.headers.get("Content-Length", 0))
                 body = self.rfile.read(length) if length else b""
@@ -99,6 +121,13 @@ class IaisRinClientTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["status"], "accepted")
         self.assertEqual(self.server.requests[0]["path"], "/api/v1/inspection/proc-1")
         self.assertEqual(self.server.requests[0]["body"], {"hello": "world"})
+
+    async def test_mock_client_fetches_document_bundle(self):
+        self.server.document_bundle = {"documents": [{"filename": "pd.pdf", "stage": "PD", "content_base64": "JVBERi0="}]}
+        client = IaisRinClient(base_url=self.server.base_url, timeout=5.0)
+        result = await client.fetch_documents(process_id="proc-1")
+        self.assertEqual(result["documents"][0]["filename"], "pd.pdf")
+        self.assertEqual(self.server.requests[0]["path"], "/api/v1/inspection/proc-1/documents")
 
     async def test_5xx_raises_retryable_error(self):
         self.server.queue_responses(503)
@@ -339,6 +368,97 @@ class FinalizeTriggersIaisRinSyncTests(unittest.TestCase):
         retried = self.client.post(f"/api/case10/protocols/{protocol['id']}/iais-rin-sync/retry")
         self.assertEqual(retried.status_code, 200, retried.text)
         self.assertEqual(retried.json()["status"], IAIS_SYNC_SYNCED)
+
+
+class PullIaisRinFilesTests(WorkbenchTestBase):
+    def setUp(self):
+        super().setUp()
+        self.server = _MockIaisRinServer()
+        self._saved_settings = {
+            "base_url": settings.IAIS_RIN_BASE_URL,
+            "pull_enabled": settings.IAIS_RIN_PULL_ENABLED,
+            "package_root": settings.BATCH_PACKAGES_ROOT,
+            "data_dir": settings.DATA_DIR,
+            "offline": settings.OFFLINE_DELIVERY,
+            "partial_upload_status": settings.PARTIAL_UPLOAD_STATUS_ENABLED,
+        }
+        self._old_originals_root = os.environ.get("CASE10_ORIGINALS_ROOT")
+        settings.IAIS_RIN_BASE_URL = self.server.base_url
+        settings.IAIS_RIN_PULL_ENABLED = False
+        settings.PARTIAL_UPLOAD_STATUS_ENABLED = False
+        settings.BATCH_PACKAGES_ROOT = Path(self._tmp.name) / "packages"
+        settings.DATA_DIR = Path(self._tmp.name) / "data"
+        settings.OFFLINE_DELIVERY = False
+        os.environ["CASE10_ORIGINALS_ROOT"] = str(settings.BATCH_PACKAGES_ROOT)
+        self.process = InspectionProcess(
+            id="proc-pull-files", project_id=self.project.id, organization_id=self.org_id,
+            object_id="OBJ-PULL", status="READY",
+        )
+        self.db.add(self.process)
+        self.db.commit()
+
+    def tearDown(self):
+        self.server.shutdown()
+        settings.IAIS_RIN_BASE_URL = self._saved_settings["base_url"]
+        settings.IAIS_RIN_PULL_ENABLED = self._saved_settings["pull_enabled"]
+        settings.BATCH_PACKAGES_ROOT = self._saved_settings["package_root"]
+        settings.DATA_DIR = self._saved_settings["data_dir"]
+        settings.OFFLINE_DELIVERY = self._saved_settings["offline"]
+        settings.PARTIAL_UPLOAD_STATUS_ENABLED = self._saved_settings["partial_upload_status"]
+        if self._old_originals_root is None:
+            os.environ.pop("CASE10_ORIGINALS_ROOT", None)
+        else:
+            os.environ["CASE10_ORIGINALS_ROOT"] = self._old_originals_root
+        super().tearDown()
+
+    def test_pull_is_flagged_locked_after_finalization_and_reports_partial_registry(self):
+        url = f"/api/case10/processes/{self.process.id}/iais-rin/pull-files"
+        self.assertEqual(self.client.post(url).status_code, 503)
+        settings.IAIS_RIN_PULL_ENABLED = True
+        settings.PARTIAL_UPLOAD_STATUS_ENABLED = True
+        self.process.status = "FINALIZED"
+        self.db.commit()
+        self.assertEqual(self.client.post(url).status_code, 409)
+        self.assertEqual(self.server.requests, [])
+
+        self.process.status = "READY"
+        self.db.commit()
+        pdf = b"%PDF-1.4\\nmock document\\n%%EOF"
+        digest = hashlib.sha256(pdf).hexdigest()
+        self.server.document_bundle = {
+            "documents": [{
+                "filename": "one.pdf", "stage": "PD", "file_id": "PD-1", "sha256": digest,
+                "approval_status": "APPROVED", "content_base64": base64.b64encode(pdf).decode("ascii"),
+            }],
+            "registry": [
+                {"file_id": "PD-1", "filename": "one.pdf", "stage": "PD", "sha256": digest, "approval_status": "APPROVED"},
+                {"file_id": "PD-2", "filename": "two.pdf", "stage": "PD", "sha256": "2" * 64, "approval_status": "APPROVED"},
+            ],
+        }
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 200, response.text)
+        body = response.json()
+        self.assertTrue(body["emulation"])
+        self.assertEqual(body["documents_pulled"], 1)
+        self.assertEqual(body["completeness"]["PD_UPLOADED"], "PD_PARTIAL")
+        self.assertEqual(self.db.query(DocumentVersion).filter_by(object_id="OBJ-PULL", dataset_file_id="PD-1").count(), 1)
+        self.assertEqual(self.server.requests[-1]["path"], f"/api/v1/inspection/{self.process.id}/documents")
+
+    def test_pull_rechecks_finalization_after_mock_fetch_returns(self):
+        settings.IAIS_RIN_PULL_ENABLED = True
+        self.server.document_bundle = {"documents": [{"filename": "ignored.pdf", "stage": "PD"}]}
+
+        async def finalize_during_fetch(process_id):
+            self.assertEqual(process_id, self.process.id)
+            self.process.status = "FINALIZED"
+            self.db.commit()
+            return self.server.document_bundle
+
+        url = f"/api/case10/processes/{self.process.id}/iais-rin/pull-files"
+        with patch("app.api.routes_case10.fetch_documents_from_iais_rin", side_effect=finalize_during_fetch):
+            response = self.client.post(url)
+        self.assertEqual(response.status_code, 409, response.text)
+        self.assertEqual(self.db.query(DocumentVersion).count(), 0)
 
 
 if __name__ == "__main__":

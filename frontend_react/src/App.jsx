@@ -5,6 +5,7 @@ import DocumentsPanel from './components/DocumentsPanel.jsx';
 import ProcessPanel from './components/ProcessPanel.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import MlReport from './components/MlReport.jsx';
+import NormativeBase from './components/NormativeBase.jsx';
 import { api, getToken, setToken } from './api.js';
 
 const PROJECT_KEY = 'case10_react_project_id';
@@ -131,6 +132,7 @@ export default function App() {
   }
 
   const canSeeMlReport = Boolean(me?.is_admin || ['ADMIN', 'ML_ENGINEER'].includes(String(me?.role || '').toUpperCase()));
+  const canManageNormative = Boolean(me?.is_admin || String(me?.role || '').toUpperCase() === 'ADMIN');
 
   if (booting) {
     return <div className="auth-shell"><span className="spinner" /></div>;
@@ -153,7 +155,16 @@ export default function App() {
 
       {projects.length === 0 ? (
         <div className="content">
-          <div className="card empty-state">У вас пока нет проектов. Создайте проект, чтобы начать проверку CASE10.</div>
+          {canManageNormative && (
+            <div className="tabs">
+              <button className={`tab${view === 'normative' ? ' active' : ''}`} type="button" onClick={() => setView('normative')}>
+                Нормативная база
+              </button>
+            </div>
+          )}
+          {view === 'normative' && canManageNormative
+            ? <NormativeBase />
+            : <div className="card empty-state">У вас пока нет проектов. Создайте проект, чтобы начать проверку CASE10.</div>}
         </div>
       ) : (
         <>
@@ -172,12 +183,18 @@ export default function App() {
                 Отчёт ML
               </button>
             )}
+            {canManageNormative && (
+              <button className={`tab${view === 'normative' ? ' active' : ''}`} type="button" onClick={() => setView('normative')}>
+                Нормативная база
+              </button>
+            )}
           </div>
 
           <div className={`content${view === 'process' || view === 'dashboard' ? ' wide' : ''}`}>
             {error && <div className="error-banner"><span>{error}</span><button onClick={() => setError('')}>×</button></div>}
             {view === 'dashboard' && <Dashboard projectId={projectId} onOpen={openFromDashboard} />}
-            {view === 'ml' && canSeeMlReport && <MlReport />}
+            {view === 'ml' && canSeeMlReport && <MlReport projectId={projectId} />}
+            {view === 'normative' && canManageNormative && <NormativeBase />}
             {view === 'documents' && (
               <DocumentsPanel projectId={projectId} onProcessStarted={handleProcessStarted} />
             )}

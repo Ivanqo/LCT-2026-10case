@@ -24,6 +24,7 @@ from app.db.models import (
     EvidenceFragment,
     EvidenceGroup,
     InspectorEdit,
+    InspectionProcess,
     Organization,
     Project,
     SourceFragment,
@@ -475,11 +476,15 @@ class RevisionChoiceTests(WorkbenchTestBase):
 class CompletenessAndTimingTests(WorkbenchTestBase):
     def test_completeness_stub_reports_expected_uploaded_and_basis(self):
         self.seed()
+        process = self.db.get(InspectionProcess, self.process_id)
+        process.completeness_status = {"PD_UPLOADED": "PD_PARTIAL", "RD_UPLOADED": "RD_MISSING", "ID_UPLOADED": "ID_MISSING"}
+        self.db.commit()
         data = self.client.get(f"/api/case10/processes/{self.process_id}/completeness").json()
         self.assertIn(data["status"], {"COMPLETE", "INCOMPLETE", "CLARIFICATION_REQUIRED"})
         self.assertFalse(data["registry_present"])
         self.assertTrue(data["basis"])
         self.assertEqual([s["stage"] for s in data["stages"]], ["PD", "RD", "ID"])
+        self.assertEqual(data["process_upload_status"]["PD_UPLOADED"], "PD_PARTIAL")
         for row in data["rows"]:
             self.assertIn(row["status"], {"UPLOADED", "MISSING_EVIDENCE", "UNCERTAIN", "NOT_APPLICABLE"})
             self.assertTrue(row["expected_basis"])
