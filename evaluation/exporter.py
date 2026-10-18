@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from app.domain import matrix_v11
 from .errors import LeakageGuardError
+from .export_identity import plan_identity
 
 
 SUBMISSION_VIOLATION_LABELS = {"VIOLATION_PRESENT", "NO_VIOLATION", "MISSING_DOCUMENT", "COMPARISON_IMPOSSIBLE"}
@@ -81,6 +82,7 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
     source_selection: dict[tuple[str, str], dict[str, Any]] = {}
     duplicate_of, dropped_files = _integrity_maps(payload)
     group_keys: list[str] = []
+    exported_groups: list[dict[str, Any]] = []
     for group in payload.get("findings") or []:
         if not isinstance(group, dict):
             continue
@@ -125,10 +127,13 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
         if str(delta.get("matrix_scope") or "MATRIX").upper() != "MATRIX" and not include_suspicions:
             continue
         effective_group = _with_inspector_evidence(group)
-        item = evidence_group_to_submission_check(_canonical_evidence(effective_group, duplicate_of, dropped_files), context=context, code_style=style)
+        canonical = _canonical_evidence(effective_group, duplicate_of, dropped_files)
+        item = evidence_group_to_submission_check(canonical, context=context, code_style=style)
         if item.get("parameter_code"):
             checks.append(item)
             group_keys.append(str(group.get("group_key") or ""))
+            exported_groups.append(canonical)
+    checks, group_keys = _apply_identity(checks, group_keys, exported_groups, context=context, code_style=style)
     _disambiguate_identifiers(checks, group_keys)
     return {
         "object_id": object_id,
@@ -144,6 +149,70 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
             **{key: context.get(key) for key in VERSION_CONTEXT_KEYS},
         },
     }
+
+
+def _merged_fragments(head: dict[str, Any], others: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Fragments of `head` plus those of folded groups that say the same thing, without repeating a citation."""
+    out: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for group in [head, *others]:
+        for fragment in group.get("fragments") or []:
+            if not isinstance(fragment, dict):
+                out.append(fragment)
+                continue
+            key = json.dumps([fragment.get(name) for name in ("stage", "file_id", "page", "role", "bbox_normalized", "bbox", "value")],
+                             sort_keys=True, default=str, ensure_ascii=False)
+            if key not in seen:
+                seen.add(key)
+                out.append(fragment)
+    return out
+
+
+def _apply_identity(checks: list[dict[str, Any]], group_keys: list[str], groups: list[dict[str, Any]], *,
+                    context: dict[str, Any], code_style: str | None) -> tuple[list[dict[str, Any]], list[str]]:
+    """Step F1: (parameter code, location) names one object of comparison (see export_identity). Nothing changes for a
+    package without a shared (code, location); otherwise the strongest row of a place keeps its location, rows of
+    other objects get a qualifier, and rows of the same object are folded into the strongest one."""
+    plans = plan_identity(list(zip(groups, checks)))
+    if all(plan["fold_into"] is None and plan["qualifier"] is None for plan in plans):
+        return checks, group_keys
+    folded: dict[int, list[int]] = {}
+    for index, plan in enumerate(plans):
+        if plan["fold_into"] is not None:
+            folded.setdefault(plan["fold_into"], []).append(index)
+    out_checks: list[dict[str, Any]] = []
+    out_keys: list[str] = []
+    for index, (group, check) in enumerate(zip(groups, checks)):
+        plan = plans[index]
+        if plan["fold_into"] is not None:
+            continue
+        others = sorted(folded.get(index, []), key=lambda o: (group_keys[o], o))
+        if plan["qualifier"] is None and not others:
+            out_checks.append(check)
+            out_keys.append(group_keys[index])
+            continue
+        delta = dict(group.get("delta") or {})
+        delta["location"] = plan["location"]
+        rebuilt = {**group, "delta": delta}
+        merge = [groups[o] for o in others if plans[o]["merge_evidence"]]
+        if merge:
+            rebuilt["fragments"] = _merged_fragments(group, merge)
+        item = evidence_group_to_submission_check(rebuilt, context=context, code_style=code_style)
+        if plan["qualifier"] is not None:
+            item["location_base"] = check["location"]
+            item["location_qualifier"] = plan["qualifier"]
+        if others:
+            item["related_group_ids"] = [checks[o]["evidence_group_id"] for o in others]
+            item["superseded"] = [
+                {"group_id": checks[o]["evidence_group_id"], "protocol_status": checks[o]["protocol_status"],
+                 "violation_label": checks[o]["violation_label"], "pd_value": checks[o]["pd_value"],
+                 "rd_value": checks[o]["rd_value"], "id_value": checks[o]["id_value"], "evidence_merged": plans[o]["merge_evidence"],
+                 "reason": ("identical duplicate of the same object of comparison" if plans[o]["merge_evidence"]
+                            else "same object of comparison, weaker statement; stays in the protocol")}
+                for o in others]
+        out_checks.append(item)
+        out_keys.append(group_keys[index])
+    return out_checks, out_keys
 
 
 def _disambiguate_identifiers(checks: list[dict[str, Any]], group_keys: list[str]) -> None:

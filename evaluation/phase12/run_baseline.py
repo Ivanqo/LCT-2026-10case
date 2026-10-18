@@ -62,6 +62,8 @@ def child(obj: str, mode: str, out: Path) -> None:
     submission = protocol_to_submission(protocol)
     data = json.dumps(submission, ensure_ascii=False, indent=1, sort_keys=True).encode("utf-8")
     (out / f"{obj}.submission.json").write_bytes(data)
+    if os.environ.get("CASE10_BASELINE_DUMP_PROTOCOL"):  # F1: lets a later export change be compared on the very same protocol
+        (out / f"{obj}.protocol.json").write_text(json.dumps(protocol, ensure_ascii=False, default=str), encoding="utf-8")
     findings = protocol["payload"]["findings"]
     summary = {
         "object": obj, "object_id": object_id, "mode": mode,
