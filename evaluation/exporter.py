@@ -354,7 +354,33 @@ def evidence_group_to_submission_check(
         "evidence": fragments,
     }
     check.update(_gold11_fields(group, check, internal_code, context or {}))
+    check.update(_tier_fields(group, delta))
     return check
+
+
+def _tier_fields(group: dict[str, Any], delta: dict[str, Any]) -> dict[str, Any]:
+    """Extra keys (the schema allows them), step B1: the output tier, why a suggestion is one, the no-result state, and
+    the separately reported confidences / deviation. A violation probability is never exported."""
+    from app.domain import evidence_tier as et
+
+    status = str(group.get("finding_status") or "").upper()
+    explanation = delta.get("explanation") if isinstance(delta.get("explanation"), dict) else {}
+    tier = et.tier_of(status, delta)
+    return {
+        "evidence_tier": tier,
+        "tier_reasons": list(delta.get("tier_reasons") or []) or None,
+        "no_result_state": delta.get("no_result_state") or et.no_result_state(status, et.reason_of(delta)),
+        "reason_code": et.reason_of(delta) or None,
+        "text_confidence": explanation.get("text_confidence", delta.get("text_confidence")),
+        "link_confidence": explanation.get("link_confidence", delta.get("link_confidence")),
+        "deviation": ({"abs": explanation.get("deviation_abs"), "pct": explanation.get("deviation_pct"),
+                       "unit": explanation.get("unit"), "basis": explanation.get("deviation_basis")}
+                      if explanation and (explanation.get("deviation_abs") is not None or explanation.get("deviation_pct") is not None) else None),
+        "rule": explanation.get("rule"),
+        "threshold": explanation.get("threshold"),
+        "threshold_basis": explanation.get("threshold_basis"),
+        "violation_claimed": (bool(delta["violation_claimed"]) if "violation_claimed" in delta else (tier == et.TIER_VIOLATION_CANDIDATE if tier else None)),
+    }
 
 
 def _gold11_fields(group: dict[str, Any], check: dict[str, Any], internal_code: str, context: dict[str, Any]) -> dict[str, Any]:

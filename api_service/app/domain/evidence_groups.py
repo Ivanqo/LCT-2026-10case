@@ -29,6 +29,7 @@ from sqlalchemy.orm import Session
 
 from ..db.models import AuditLog, EvidenceDecision, EvidenceGroup, InspectionProcess, Param
 from ..request_context import get_client_ip
+from .evidence_tier import finalize_delta
 
 
 def _hash_json(value: object) -> str:
@@ -116,6 +117,9 @@ def upsert_evidence_group(
     - (group, False): an inspector decision already exists and the basis
       changed; the row is flagged for re-review, fragments are left as-is.
     """
+    # One contract for every producer: evidence tier, no-result state and the explanation block (evidence_tier.py).
+    if isinstance(fields.get("delta"), dict):
+        fields = {**fields, "delta": finalize_delta(param, fields)}
     new_hash = compute_basis_hash(
         expected_value=fields.get("expected_value"),
         actual_value=fields.get("actual_value"),

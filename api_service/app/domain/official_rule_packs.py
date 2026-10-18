@@ -644,6 +644,76 @@ def _room_issue(code, reason, location, sources, text, **extra) -> dict[str, Any
             "sources": sources, "text": text, **extra}
 
 
+def _label_set(systems: Iterable[Any]) -> list[str]:
+    return sorted({str(label) for label in systems or () if label}, key=_natural_system_key)
+
+
+_CLIP_OCR_CACHE: dict[tuple, str] = {}
+
+
+def _systems_in_room_clip(code: str, room: dict[str, Any], document: DocumentVersion | None = None) -> tuple[list[str], str | None]:
+    """(system labels, how they were read) around a room label: the text layer first, OCR of the clip when the text
+    layer has none (the same two readings the resolved path uses). ([], None) when nothing is readable: an empty
+    reading is "unknown", never "the system disappeared"."""
+    snapshot, box = room.get("snapshot"), room.get("room_bbox")
+    if not snapshot or not box:
+        return [], None
+    clip = _centered_clip(box, snapshot["width"], snapshot["height"],
+                          max(260.0, float(snapshot["width"]) * 0.11), max(240.0, float(snapshot["height"]) * 0.07))
+
+    def labels(text: str) -> list[str]:
+        value = _extract_exhaust_systems(text) if code == "IOS4-078" else _extract_supply_configuration(text)
+        found = _exhaust_system_set(value) if code == "IOS4-078" else _supply_system_set(value)
+        # system numbers start at 1: "V0.55" is a dimension or a level mark read as a label
+        return sorted((label for label in found if not re.match(r"[VP]0(?:\.|$)", label)), key=_natural_system_key)
+
+    found = labels(_text_in_bbox(snapshot, clip))
+    if found:
+        return found, "room_clip_text"
+    if document is not None and snapshot.get("page"):
+        key = (int(document.id), int(snapshot["page"]), tuple(round(v, 1) for v in clip), code)
+        if key not in _CLIP_OCR_CACHE:
+            _CLIP_OCR_CACHE[key] = _ocr_room_system_words(document, int(snapshot["page"]), clip, code)[1]
+        found = labels(_CLIP_OCR_CACHE[key])
+        if found:
+            return found, "room_clip_ocr"
+    return [], None
+
+
+def _candidate_pair(code: str, pd_row: dict[str, Any], pd_document: DocumentVersion | None,
+                    rd_row: dict[str, Any], rd_document: DocumentVersion | None, *, basis: str,
+                    rd_systems: Iterable[Any] | None = None, empty_means_absent: bool = False) -> dict[str, Any]:
+    """One candidate PD/RD pairing of an unresolved room identity, with what each side says and whether the rule of
+    the parameter sees a discrepancy in THIS pairing (rule_is_violation; None when a side has no readable systems,
+    which is never reported as a difference). Nothing is chosen here: every pairing is returned."""
+    pd_systems = _label_set(pd_row.get("systems"))
+    rd_list = _label_set(rd_systems if rd_systems is not None else rd_row.get("systems"))
+    reading = "zone_links" if rd_list else None
+    if not rd_list and rd_systems is None:
+        rd_list, reading = _systems_in_room_clip(code, rd_row, rd_document)   # the readings the resolved path uses
+    verdict = None
+    if pd_systems and rd_list:
+        verdict = rule_is_violation(code, ",".join(pd_systems), ",".join(rd_list))
+    elif pd_systems and empty_means_absent and code == "IOS4-078":
+        verdict = rule_is_violation(code, ",".join(pd_systems), _MISSING_EXHAUST)   # the room zone was read: no exhaust system in it
+    return {
+        "PD": _issue_source("PD", pd_document, pd_row), "RD": _issue_source("RD", rd_document, rd_row),
+        "pd_systems": pd_systems, "rd_systems": rd_list,
+        "missing_systems": sorted(set(pd_systems) - set(rd_list), key=_natural_system_key),
+        "added_systems": sorted(set(rd_list) - set(pd_systems), key=_natural_system_key),
+        "difference_visible": verdict is True, "rule_verdict": verdict, "match_basis": basis, "rd_reading": reading,
+        "text_confidence": rd_row.get("text_confidence"), "link_confidence": rd_row.get("link_confidence"),
+    }
+
+
+def _with_pairs(issue: dict[str, Any], pairs: list[dict[str, Any]]) -> dict[str, Any]:
+    """Attaches the candidate pairs; the issue becomes a SUGGESTION (instead of a clarification request) when the
+    rule sees a discrepancy in at least one of them."""
+    issue["candidate_pairs"] = pairs
+    issue["difference_visible"] = any(pair["difference_visible"] for pair in pairs)
+    return issue
+
+
 # Minimum number of shared room numbers (and the factor over the runner-up) for a project sheet to be
 # preferred over another project sheet that also carries the same room number but no determinable floor.
 _SHEET_OVERLAP_MIN = 3
@@ -700,17 +770,20 @@ def _extract_ventilation_observations(
 
     pd_groups = group_by_identity(pd_rows)
     labels = _location_labels(group["key"] for group in pd_groups)   # for issues; observations get their own labels
+    pd_duplicates: list[tuple[dict[str, Any], dict[str, Any], dict[int, DocumentVersion]]] = []
     expected: dict[tuple[str, str, str, str], tuple[dict[str, Any], DocumentVersion, SourceFragment | None]] = {}
     for group in pd_groups:
         first_row = group["records"][0]
         if group["conflict"]:
-            report["issues"].append(_room_issue(
+            issue = _room_issue(
                 code, "DUPLICATE_ROOM_KEY", labels[group["key"]],
                 [_issue_source("PD", pd_source[id(r)][0], r) for r in group["records"]],
                 f"В ПД помещение {first_row['location']} с одним и тем же ключом (корпус, этаж, номер) "
                 "описано разными наборами систем; сравнение не выполнялось.",
                 stage="PD", building=group["key"][0], floor=group["key"][1],
-            ))
+            )
+            report["issues"].append(issue)
+            pd_duplicates.append((issue, group, {id(r): pd_source[id(r)][0] for r in group["records"]}))
             continue
         row = group["row"]
         document, source_fragment = pd_source[id(row)]
@@ -751,6 +824,19 @@ def _extract_ventilation_observations(
             report["excluded_zone_rooms"].append({"code": code, "stage": "RD", "document_id": document_id,
                                                   "page": page_number, "rooms": links["excluded_zone_rooms"]})
 
+    # A project room described twice with different system sets (DUPLICATE_ROOM_KEY in PD): pair every record with
+    # every working room of that number that could be it. A discrepancy in any pairing makes the issue a suggestion.
+    for issue, group, record_documents in pd_duplicates:
+        number = group["key"][3]
+        pairs = []
+        for record in group["records"]:
+            for page in rd_pages:
+                for zone in page["zones"]:
+                    if zone["location"] == number and keys_compatible(record, zone):
+                        pairs.append(_candidate_pair(code, record, record_documents[id(record)], zone, page["document"],
+                                                     basis="pd_duplicate_key"))
+        _with_pairs(issue, pairs)
+
     # Pass 1: find, for every project room, the working sheet/room it can be compared with.
     plans: dict[tuple[str, str, str, str], dict[str, Any]] = {}
     for key in sorted(expected):
@@ -768,14 +854,15 @@ def _extract_ventilation_observations(
             continue
         known_places = {(z.get("building") or "", z.get("floor") or "") for _p, zs in page_matches for z in zs}
         if (not key[1] or not key[0]) and len({place for place in known_places if place[1] or place[0]}) > 1:
-            report["issues"].append(_room_issue(
+            report["issues"].append(_with_pairs(_room_issue(
                 code, "AMBIGUOUS_ROOM_MATCH", labels[key],
                 [_issue_source("PD", document, row)] + [
                     _issue_source("RD", page["document"], zs[0]) for page, zs in page_matches],
                 f"Помещение {number} в ПД без определённого этажа/корпуса совпадает по номеру с помещениями "
                 "разных этажей в РД; соответствие не выбиралось.",
                 stage="RD",
-            ))
+            ), [_candidate_pair(code, row, document, zone, page["document"], basis="room_number_floor_unknown")
+                for page, zs in page_matches for zone in zs]))
             plan["state"] = "issue"
             continue
         selected_page, room_zones = max(
@@ -822,7 +909,7 @@ def _extract_ventilation_observations(
             # the working room belongs to another project sheet, which compares it in its own pass
             plan["state"] = "lost"
         elif resolution == "unresolved":
-            report["issues"].append(_room_issue(
+            report["issues"].append(_with_pairs(_room_issue(
                 code, "AMBIGUOUS_ROOM_MATCH", labels[key],
                 [_issue_source("PD", document, row)]
                 + [_issue_source("PD", expected[k][1], expected[k][0]) for k in competitors]
@@ -830,7 +917,8 @@ def _extract_ventilation_observations(
                 f"Помещение {number} есть на нескольких листах ПД, этаж которых не определён, и совпадает по "
                 "номеру с помещением РД; соответствие по общим номерам листа не выделено, сравнение не выполнялось.",
                 stage="RD", competitors=[labels[k] for k in competitors],
-            ))
+            ), [_candidate_pair(code, expected[k][0], expected[k][1], zone, rd_document, basis="project_sheet_unresolved")
+                for k in [key, *competitors] for zone in room_zones]))
             plan["state"] = "issue"
 
     # Pass 2: observations.  A project room that lost its working counterpart to another sheet is not
@@ -855,13 +943,14 @@ def _extract_ventilation_observations(
         native_groups = group_by_identity(native_candidates)
         unplaceable = len(room_zones) > 1 and any(not zone.get("systems") for zone in room_zones)
         if any(g["conflict"] for g in [*zone_groups, *native_groups]) or len(zone_groups) > 1 or len(native_groups) > 1 or unplaceable:
-            report["issues"].append(_room_issue(
+            report["issues"].append(_with_pairs(_room_issue(
                 code, "DUPLICATE_ROOM_KEY", location,
                 [_issue_source("PD", document, row)] + [_issue_source("RD", rd_document, z) for z in room_zones],
                 f"В РД на листе номер {number} встречается несколько раз с одним ключом; "
                 "по положению подписи помещение не определить, сравнение не выполнялось.",
                 stage="RD",
-            ))
+            ), [_candidate_pair(code, row, document, candidate, rd_document, basis="rd_duplicate_key")
+                for candidate in [*room_zones, *native_candidates]]))
             continue
         room_zone = zone_groups[0]["row"]
         local_row = native_groups[0]["row"] if native_groups else None
@@ -939,13 +1028,20 @@ def _extract_ventilation_observations(
             without_result = rule_is_violation(code, row["normalized_value"], normalized)
             with_result = rule_is_violation(code, row["normalized_value"], with_labels)
             if without_result is None or without_result != with_result:
-                report["issues"].append(_room_issue(
+                held_list = sorted(held, key=_natural_system_key)
+                report["issues"].append(_with_pairs(_room_issue(
                     code, "AMBIGUOUS_SYSTEM_LINK", location,
                     [_issue_source("PD", document, row), _issue_source("RD", rd_document, room_zone)],
                     f"В РД подпись системы {', '.join(sorted(unresolved_expected))} стоит между помещениями, "
                     f"включая {number}; привязка не назначена, от неё зависит вердикт, поэтому он не выносится.",
                     stage="RD", unresolved_systems=sorted(unresolved_expected),
-                ))
+                ), [
+                    _candidate_pair(code, row, document, local_row or room_zone, rd_document,
+                                    basis="label_not_in_this_room", rd_systems=held_list, empty_means_absent=True),
+                    _candidate_pair(code, row, document, local_row or room_zone, rd_document,
+                                    basis="label_in_this_room",
+                                    rd_systems=sorted(set(held_list) | unresolved_expected, key=_natural_system_key)),
+                ]))
                 continue
             report.setdefault("ambiguity_not_decisive", []).append({
                 "code": code, "location": location, "unresolved_systems": sorted(unresolved_expected),
@@ -983,6 +1079,7 @@ def _extract_ventilation_observations(
                     "decision_mode": mode, "location": location,
                     "added_systems": comparison[0]["added_systems"],
                     "missing_systems": comparison[0]["missing_systems"],
+                    "pd_systems": _label_set(row.get("systems")), "rd_systems": _label_set(local_row.get("systems")),
                     "match_basis": comparison[0].get("match_basis"),
                     "PD": _issue_source("PD", document, row), "RD": _issue_source("RD", rd_document, local_row),
                     "text_confidence": text_confidence, "link_confidence": link_confidence,

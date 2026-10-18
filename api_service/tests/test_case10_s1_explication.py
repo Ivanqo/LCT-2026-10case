@@ -123,14 +123,14 @@ class CompareTests(unittest.TestCase):
         self.assertEqual(self.kinds(self.results(ROWS, ROWS, pd_total="316.95", rd_total="316.95")), [])
 
     def test_function_change_area_change_added_removed(self):
-        rd = [("1", "Зона мойки", "165.88"),            # +0.5 %: within the 1 % trigger
+        rd = [("1", "Зона мойки", "165.88"),            # +0.5 %: reported too (step B1) -- no 1 % threshold for a room area
               ("2", "Зона выдачи", "72.10"),            # +4.3 %
               ("3", "Санузел", "5.35"),                 # same name after normalisation
               ("4", "Раздевалка женская", "35.62"),     # function change
               ("А", "Лестничная клетка", "24.51"),
               ("6", "Комната отдыха", "17.30")]         # 5 removed, 6 added
         self.assertEqual(self.kinds(self.results(ROWS, rd)), [
-            (ec.TYPE_AREA_CHANGED, "2"), (ec.TYPE_ONLY_PD, "5"), (ec.TYPE_ONLY_RD, "6"), (ec.TYPE_NAME_CHANGED, "4")])
+            (ec.TYPE_AREA_CHANGED, "1"), (ec.TYPE_AREA_CHANGED, "2"), (ec.TYPE_ONLY_PD, "5"), (ec.TYPE_ONLY_RD, "6"), (ec.TYPE_NAME_CHANGED, "4")])
 
     def test_typo_is_not_a_function_change(self):
         rd = [(k, "Зона мойкки" if k == "1" else n, a) for k, n, a in ROWS]
@@ -272,6 +272,40 @@ class PipelineGroupsTests(unittest.TestCase):
         self.assertTrue(all(e["bbox_norm"] and all(0 <= v <= 1 for v in e["bbox_norm"]) for e in check["evidence"]))
         total = [g for g in groups if g["delta"]["discrepancy_type"] == ec.TYPE_TOTAL]
         self.assertEqual([g["finding_status"] for g in total], ["NEGATIVE_VERIFIED"])
+
+    def test_room_area_deviation_is_a_suggestion_and_does_not_borrow_the_m002_threshold(self):
+        rd_rows = [(k, n, "69.45" if k == "2" else a) for k, n, a in ROWS]          # +0.5 %: below the (not applicable) 1 %
+        self.scans["sha2"] = self.scan(rd_rows, 4)
+        self.run_once()
+        groups = [g for g in self.groups() if g["delta"]["discrepancy_type"] == ec.TYPE_AREA_CHANGED]
+        self.assertEqual(len(groups), 1)
+        group = groups[0]
+        self.assertEqual(group["finding_status"], "CANDIDATE")                       # shown, never silently dropped
+        delta = group["delta"]
+        self.assertEqual(delta["evidence_tier"], "SUGGESTION")
+        self.assertEqual(delta["tier_reasons"], ["threshold_not_set_by_matrix"])
+        self.assertEqual(delta["object_level"], "ROOM")
+        explanation = delta["explanation"]
+        self.assertIsNone(explanation["threshold"])
+        self.assertIn("порог не установлен матрицей", explanation["threshold_basis"])
+        self.assertAlmostEqual(explanation["deviation_abs"], 0.35, places=6)
+        self.assertAlmostEqual(explanation["deviation_pct"], 0.51, places=2)
+        self.assertIsNone(explanation["probability"])
+
+    def test_floor_total_keeps_the_m002_trigger(self):
+        self.scans["sha2"] = {"pages_total": 30, "candidate_pages": [4], "tables": [self._with_total("340.00")]}
+        self.run_once()
+        total = [g for g in self.groups() if g["delta"]["discrepancy_type"] == ec.TYPE_TOTAL]
+        self.assertEqual([g["finding_status"] for g in total], ["CANDIDATE"])
+        delta = total[0]["delta"]
+        self.assertEqual(delta["evidence_tier"], "VIOLATION_CANDIDATE")
+        self.assertEqual(delta["object_level"], "FLOOR")
+        self.assertEqual((delta["explanation"]["threshold"], delta["explanation"]["threshold_unit"]), (1, "%"))
+
+    def _with_total(self, total):
+        table = only(schedule(ROWS, total=total))
+        table.page = 4
+        return table.to_dict()
 
     def test_rerun_is_idempotent_and_keeps_decisions(self):
         from app.domain.v3_pipeline import record_inspector_decision

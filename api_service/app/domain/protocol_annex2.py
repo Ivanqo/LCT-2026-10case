@@ -6,12 +6,21 @@ from io import BytesIO
 
 from evaluation.exporter import evidence_group_to_submission_check
 
+from . import evidence_tier as et
+
 
 def annex2_payload(findings, docs, *, object_info, matrix_size, document_analysis=None):
     confirmed = [row for row in findings if row["finding_status"] == "CONFIRMED_VIOLATION"]
     critical = [row for row in confirmed if row["review_priority"] == "HIGH"]
     substantial = [row for row in confirmed if row["review_priority"] != "HIGH"]
-    pending = [row for row in findings if row["finding_status"] == "CANDIDATE"]
+    # candidates: violation candidates first, then suggestions; inside a tier by the parameter's review priority and by
+    # the size of the deviation (step B1) -- the inspector's queue and the protocol read in the same order
+    pending = sorted(
+        (row for row in findings if row["finding_status"] == "CANDIDATE"),
+        key=lambda row: et.review_sort_key(row["finding_status"], row.get("delta"), row.get("review_priority"), row.get("confidence"), row.get("id")),
+    )
+    violation_candidates = [row for row in pending if et.tier_of(row["finding_status"], row.get("delta")) == et.TIER_VIOLATION_CANDIDATE]
+    suggestions = [row for row in pending if et.tier_of(row["finding_status"], row.get("delta")) == et.TIER_SUGGESTION]
     missing = [row for row in findings if row["finding_status"] in {"MISSING_EVIDENCE", "NOT_COMPARABLE", "CLARIFICATION_REQUIRED"}]
     suspicions = [row for row in findings if row["finding_status"] == "SUSPICION" or (row.get("delta") or {}).get("matrix_scope") == "FREE_SEARCH"]
     stages = Counter(doc.dataset_stage or {"project": "PD", "working": "RD", "as_built": "ID"}.get(doc.doc_stage, "UNKNOWN") for doc in docs)
@@ -53,6 +62,8 @@ def annex2_payload(findings, docs, *, object_info, matrix_size, document_analysi
         "section_2_statistics": [statistic("Всего параметров в Матрице", matrix_size), statistic("Параметров с результатом сравнения", len(checked)),
                                  statistic("Подтвержденных нарушений", len(confirmed)), statistic("Критических", len(critical)),
                                  statistic("Существенных", len(substantial)), statistic("Кандидатов на проверку", len(pending)),
+                                 statistic("  из них нарушений-кандидатов", len(violation_candidates)),
+                                 statistic("  из них предположений для верификации", len(suggestions)),
                                  statistic("Подозрений ИИ", len(suspicions)), statistic("Параметров без результата сравнения", matrix_size - len(checked))],
         "section_3_unverified_parameters": [check(row) for row in missing],
         "section_4_critical_violations": [check(row) for row in critical],
@@ -63,6 +74,8 @@ def annex2_payload(findings, docs, *, object_info, matrix_size, document_analysi
              "inspector_comment": (row.get("decisions") or [{}])[-1].get("comment"),
              "recommendation": None} for row in confirmed]},
         "pending_candidates": [check(row) for row in pending],
+        "evidence_tiers": {et.TIER_VIOLATION_CANDIDATE: len(violation_candidates), et.TIER_SUGGESTION: len(suggestions),
+                           et.TIER_HYPOTHESIS: len(suspicions)},
     }
 
 
@@ -97,6 +110,13 @@ def render_protocol_pdf(protocol) -> bytes:
         "missing_discipline_document": "на стадии нет документа нужного раздела",
         "evidence_discipline_mismatch": "найденное значение взято из раздела, не названного в каталоге",
         "revision_conflict": "конфликт редакций: несколько неупорядочиваемых версий раздела",
+        "VIOLATION_CANDIDATE": "Нарушение-кандидат",
+        "SUGGESTION": "Предположение для верификации инспектором",
+        "NO_DOCUMENTS": "нет документов",
+        "NO_VALUE_IN_DOCUMENT": "нет значения в документе",
+        "PROCESSING_ERROR": "ошибка обработки",
+        "INCOMPLETE_CHECK": "проверка не завершена",
+        "NO_DIFFERENCE": "расхождения нет (только по просмотренным фрагментам)",
         "self_comparison": "ПД и РД опираются на один и тот же файл",
         "unit_mismatch": "рядом со значением иная единица измерения",
         "unit_evidence_absent": "рядом со значением нет единицы измерения параметра",
@@ -130,7 +150,18 @@ def render_protocol_pdf(protocol) -> bytes:
         parts = []
         for row in rows:
             parts.append(f"<h3>{text(row.get('parameter_code'))} {text(row.get('parameter_name'))}</h3>")
-            parts.append(f"<p>{text(label(row.get('finding_status')))}; решение: {text(label(row.get('inspector_status')))}</p>")
+            tier = row.get("evidence_tier")
+            tier_line = f" Уровень: {text(et.TIER_TITLES.get(tier, tier))}." if tier else ""
+            reasons = (row.get("delta") or {}).get("tier_reason_text") or []
+            parts.append(f"<p>{text(label(row.get('finding_status')))}; решение: {text(label(row.get('inspector_status')))}.{tier_line}</p>")
+            if reasons:
+                parts.append("<p>Оговорка: " + text("; ".join(reasons)) + "</p>")
+            explanation = (row.get("delta") or {}).get("explanation") or {}
+            if explanation.get("rule") or explanation.get("threshold_basis"):
+                parts.append("<p>Основание: " + text(explanation.get("rule")) + ". Порог: " + text(explanation.get("threshold")) + ". " + text(explanation.get("threshold_basis")) + "</p>")
+            if explanation.get("deviation_abs") is not None or explanation.get("deviation_pct") is not None:
+                parts.append("<p>Отклонение: " + text(explanation.get("deviation_abs")) + " (" + text(explanation.get("deviation_pct")) + " %), " + text(explanation.get("deviation_basis")) + ".</p>")
+            parts.append("<p>Уверенность распознавания текста: " + text(explanation.get("text_confidence") if explanation.get("text_confidence") is not None else "не вычислялась") + "; уверенность привязки: " + text(explanation.get("link_confidence") if explanation.get("link_confidence") is not None else "не вычислялась") + ". Вероятность нарушения не заявляется (способа расчёта нет).</p>")
             result = (row.get("delta") or {}).get("reason") or row.get("protocol_status")
             parts.append(table(["ПД", "РД", "ИД", "Результат"], [[row.get("pd_value"), row.get("rd_value"), row.get("id_value"), label(result)]]))
             for source in row.get("evidence") or []:

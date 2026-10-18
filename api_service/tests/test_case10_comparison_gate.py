@@ -53,7 +53,7 @@ def _obs(doc, value="100", *, unit_evidence=None, page=1):
     return SimpleNamespace(
         document=doc, page=page, decimal_value=D(value), normalized_value=value, value=value, confidence=0.55, gate_facts=facts,
         bbox_normalized=[0.1, 0.1, 0.2, 0.2], bbox_pdf=[1.0, 1.0, 2.0, 2.0], page_width=100.0, page_height=100.0,
-        extractor="generic_anchor_numeric", context="ctx", source_fragment=None,
+        extractor="generic_anchor_numeric", context="ctx", source_fragment=None, location="SITE",
     )
 
 
@@ -268,20 +268,46 @@ class GroupAndExportWiringTests(unittest.TestCase):
         return {"finding_status": group.finding_status, "delta": group.delta, "parameter": {"code": group.param.code if group.param else None},
                 "review_priority": group.review_priority, "fragments": fragments}
 
-    def test_a_gated_pair_becomes_comparison_impossible_and_exports_no_values(self):
+    def test_a_hard_gated_pair_becomes_comparison_impossible_and_exports_no_values(self):
         docs = _clean_docs()
         param = _param(code="POS-081", unit="м")
         param_row = self._persist_param(param)
-        key, group = self._group(param_row, docs, {"PD": _obs(docs[0], "10"), "RD": _obs(docs[2], "50")})
+        # 10 m against 500 m: the magnitude gate (hard) wins over the soft "trigger not evaluable"
+        key, group = self._group(param_row, docs, {"PD": _obs(docs[0], "10"), "RD": _obs(docs[2], "500")})
         self.assertEqual(key, "generic:anchor")
         self.assertEqual((group.finding_status, group.comparability_status), ("NOT_COMPARABLE", "NOT_COMPARABLE"))
-        self.assertEqual(group.delta["reason"], "trigger_not_evaluable")
-        self.assertEqual(group.delta["values_seen"], {"PD": "10", "RD": "50"})
+        self.assertEqual(group.delta["reason"], "magnitude_mismatch")
+        self.assertEqual(group.delta["values_seen"], {"PD": "10", "RD": "500"})
+        self.assertEqual(group.delta["no_result_state"], "NOT_COMPARABLE")
         check = evidence_group_to_submission_check(self._as_dict(group) | {"delta": {**group.delta, "parameter_code": "POS-081"}})
         self.assertEqual((check["violation_label"], check["protocol_status"]), ("COMPARISON_IMPOSSIBLE", "COMPARISON_IMPOSSIBLE"))
         self.assertIsNone(check["pd_value"])
         self.assertIsNone(check["rd_value"])
         self.assertEqual(len(check["evidence"]), 2)           # the cited pages stay visible to the inspector
+
+    def test_a_soft_reason_with_different_values_is_a_suggestion_with_the_reservation(self):
+        docs = _clean_docs()
+        param_row = self._persist_param(_param(code="POS-081", unit="м"))
+        _key, group = self._group(param_row, docs, {"PD": _obs(docs[0], "10"), "RD": _obs(docs[2], "50")})
+        self.assertEqual(group.finding_status, "CANDIDATE")                      # never CONFIRMED: that is the inspector's
+        self.assertEqual(group.delta["evidence_tier"], "SUGGESTION")
+        self.assertIn("trigger_not_evaluable", group.delta["tier_reasons"])
+        self.assertEqual(group.delta["soft_gate"]["reason"], "trigger_not_evaluable")
+        self.assertEqual(group.expected_value, "10")
+        self.assertEqual(group.actual_value, "50")
+        check = evidence_group_to_submission_check(self._as_dict(group) | {"delta": {**group.delta, "parameter_code": "POS-081"}})
+        self.assertEqual(check["violation_label"], "VIOLATION_PRESENT")           # a candidate for the inspector
+        explanation = group.delta["explanation"]
+        self.assertIsNone(explanation["probability"])
+        self.assertIsNone(explanation["text_confidence"])
+        self.assertIsNone(explanation["link_confidence"])
+
+    def test_a_soft_reason_with_equal_values_stays_an_abstention_not_a_negative(self):
+        docs = _clean_docs()
+        param_row = self._persist_param(_param(code="POS-081", unit="м"))
+        _key, group = self._group(param_row, docs, {"PD": _obs(docs[0], "10"), "RD": _obs(docs[2], "10")})
+        self.assertEqual(group.finding_status, "NOT_COMPARABLE")
+        self.assertEqual(group.delta["reason"], "trigger_not_evaluable")
 
     def test_a_missing_discipline_document_exports_missing_document(self):
         docs = _clean_docs()
@@ -432,12 +458,14 @@ class SilverReplayTests(unittest.TestCase):
 
     def test_each_of_the_six_has_the_expected_named_reason(self):
         expected = {
-            ("ALT79B", "KR-067"): {cg.REASON_REVISION_CONFLICT},                # PD КР mixes two project series
+            # step B1: a revision conflict is a SOFT reason; the reading itself is not a measurement / is from another
+            # section, which is a HARD reason and wins (the unsupported value is still never compared)
+            ("ALT79B", "KR-067"): {cg.REASON_UNIT_ABSENT},                      # PD КР mixes two project series; no unit by the number
             ("LOS3A", "AR-041"): {cg.REASON_MULTI_INSTANCE},                    # doors: one number per document is arbitrary
             ("LOS3A", "KR-067"): {cg.REASON_DISCIPLINE_MISMATCH},               # PD value from ООС, RD value from АР
             ("POL17", "AR-041"): {cg.REASON_MULTI_INSTANCE},
-            ("POL17", "PZ-005"): {cg.REASON_REVISION_CONFLICT},                 # ПЗ2 has two unorderable editions
-            ("POL17", "PZ-006"): {cg.REASON_REVISION_CONFLICT},
+            ("POL17", "PZ-005"): {cg.REASON_DISCIPLINE_MISMATCH},               # ПЗ2 has two unorderable editions (soft) + wrong section
+            ("POL17", "PZ-006"): {cg.REASON_DISCIPLINE_MISMATCH},
         }
         for (obj, code), reasons in expected.items():
             with self.subTest(check=f"{obj}::{code}"):

@@ -18,8 +18,12 @@ Pipeline (one call per process run, `collect_explication_groups`):
   3. rows        by room number (normalized: «Ст.1.1.1» ~ «1.1.1»), then by unique identical name; then the rest are
                  rooms present in one stage only. Names are equal after normalisation, when one contains the other
                  (a wrapped cell read partly, «Кабинет» / «Кабинет врача») or when they differ by a typo
-                 (similarity >= NAME_SIMILARITY); areas differ when |Δ| exceeds both the catalog's relative trigger
-                 (M-002: > 1 %) and one unit of the coarser printed precision (rounding noise).
+                 (similarity >= NAME_SIMILARITY); areas differ when |Δ| exceeds one unit of the coarser printed
+                 precision (rounding noise). NO percentage threshold is applied to a room / apartment area: the matrix
+                 sets none for that level (M-002 "> 1 %" is the total area of the building; M-003 names a reduction in
+                 favour of technical zones, without a number). A room-area deviation is therefore a SUGGESTION (step B1)
+                 with the size of the deviation and the note "порог не установлен матрицей"; only the floor total keeps
+                 the M-002 trigger.
   4. output      one evidence group per discrepancy (location = the room / apartment number as printed, finding_group
                  = the floor table pair), one per floor total (M-002 trigger > 1 %), one NEGATIVE_VERIFIED group per
                  table pair without discrepancies. Evidence: PD and RD row (file + page + row bbox) and both tables'
@@ -50,6 +54,7 @@ import re
 from types import SimpleNamespace
 from typing import Any, Iterable
 
+from . import evidence_tier as et
 from . import table_parser as tpar
 from .table_parser import KIND_APARTMENTS, KIND_ROOMS, RoomTable, Row
 
@@ -59,8 +64,9 @@ EXPLICATION_COMPARE_VERSION = "explication-compare-v1"
 EXPLICATION_SOURCE = "explication_compare"
 EXTRACTOR_NAME = "explication_table_parser"
 
-AREA_RELATIVE_TOLERANCE = Decimal("0.01")         # catalog M-002 trigger «> 1%», reused for every area cell
-TOTAL_RELATIVE_TOLERANCE = Decimal("0.01")        # M-002 trigger for a floor total
+# Step B1: the M-002 threshold ("> 1 %") is NOT carried over to room / apartment areas (experts: a threshold and a
+# parameter name must not be transferred to another parameter without a basis). Only rounding noise is tolerated there.
+TOTAL_RELATIVE_TOLERANCE = Decimal("0.01")        # M-002 trigger «> 1%» -- the floor total only
 NAME_SIMILARITY = 0.8                             # below: a different function, above: the same name with a typo
 MIN_COMMON_KEYS = 2
 MIN_KEY_OVERLAP = 0.5
@@ -123,8 +129,8 @@ def names_equal(a: object, b: object) -> bool:
 
 
 def area_tolerance(expected: Decimal, decimals: int) -> Decimal:
-    unit = Decimal(1).scaleb(-max(0, decimals))
-    return max(abs(expected) * AREA_RELATIVE_TOLERANCE, unit)
+    """Rounding noise of an area cell: one unit of the coarser printed precision. Not a semantic threshold."""
+    return Decimal(1).scaleb(-max(0, decimals))
 
 
 def numbers_differ(pd_cell: dict[str, Any], rd_cell: dict[str, Any], *, area: bool) -> tuple[bool, Decimal]:
@@ -913,6 +919,59 @@ def _fragment(ref: TableRef, *, bbox_pdf: list[float], role: str, value: str | N
     }
 
 
+_NUM = re.compile(r"-?\d+(?:[.,]\d+)?")
+
+
+def _first_decimal(raw: Any) -> Decimal | None:
+    found = _NUM.search(str(raw or ""))
+    if not found:
+        return None
+    try:
+        return Decimal(found.group(0).replace(",", "."))
+    except Exception:
+        return None
+
+
+def _apply_level_and_threshold(delta: dict[str, Any], param: Any, d: Discrepancy, pd: TableRef, rd: TableRef) -> None:
+    """Object level and threshold basis of an S1 group (step B1).
+
+    * the level of the compared object (room / apartment / floor) and the matrix parameter name are both shown: the
+      card must not suggest that a room row is the building-level parameter;
+    * floor total: the trigger of M-002 (> 1 %) stays, it is the parameter's own trigger;
+    * room / apartment area: no threshold in the matrix -> SUGGESTION with the signed deviation."""
+    delta["object_level"] = delta.get("location_type")
+    delta["matrix_parameter"] = {"code": str(param.code), "name": getattr(param, "parameter_name", None)}
+    if d.type == TYPE_TOTAL:
+        details = d.details or {}
+        relative = _first_decimal(details.get("relative"))
+        delta["explanation"] = {
+            "rule": "дельта общей площади между ПД и РД > 1 % (триггер каталога M-002), применён к итогу по этажу",
+            "threshold": 1, "threshold_unit": "%",
+            "threshold_basis": "Каталог параметров, триггер M-002: «Дельта общей площади между ПД и РД (или ИД) > 1%»",
+            "deviation_abs": details.get("delta"), "deviation_pct": float(relative * 100) if relative is not None else None,
+            "deviation_basis": "итог по этажу ПД против итога РД", "unit": "м²",
+            "text_confidence": None, "link_confidence": None,
+        }
+        return
+    if d.type == TYPE_AREA_CHANGED and d.violation:
+        before, after = _first_decimal(d.expected), _first_decimal(d.actual)
+        signed = (after - before) if before is not None and after is not None else None
+        pct = float(abs(signed) / abs(before) * 100) if signed is not None and before else None
+        et.suggestion(delta, "threshold_not_set_by_matrix")
+        delta["explanation"] = {
+            "rule": "изменение площади помещения/квартиры между ПД и РД",
+            "threshold": None, "threshold_unit": None,
+            "threshold_basis": ("порог не установлен матрицей: M-002 («> 1 %») задан для общей площади, M-003 описывает "
+                                "сокращение полезной площади в пользу технических зон без числового порога; "
+                                "учтён только допуск округления (одна единица наименьшей из печатных точностей)"),
+            "rounding_tolerance": (d.details or {}).get("tolerance"),
+            "deviation_abs": float(signed) if signed is not None else None,
+            "deviation_pct": round(pct, 2) if pct is not None else None,
+            "deviation_basis": "значение РД минус значение ПД (знак: «−» — уменьшение)", "unit": "м²",
+            "text_confidence": None, "link_confidence": None,
+        }
+
+
 def _upsert_group(db: Any, process: Any, param: Any, result: PairResult, d: Discrepancy, *, user_id: int | None) -> str:
     from ..db.models import EvidenceFragment
     from .evidence_groups import upsert_evidence_group
@@ -960,6 +1019,7 @@ def _upsert_group(db: Any, process: Any, param: Any, result: PairResult, d: Disc
         "extraction_method": "text_layer_table_geometry", "gold_validated": False,
         **({"details": d.details} if d.details else {}),
     }
+    _apply_level_and_threshold(delta, param, d, pd, rd)
     group_key = "explication:" + hashlib.sha256("|".join([result.finding_group, d.type, str(d.field), d.location]).encode("utf-8")).hexdigest()[:24]
     group, should_write = upsert_evidence_group(
         db, process, param, group_key,

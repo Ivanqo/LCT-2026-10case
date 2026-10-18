@@ -14,6 +14,7 @@ from . import trigger_policy as tp
 from . import file_registry
 from . import page_quality_cache
 from .anchor_search import GENERIC_SITE_LOCATION
+from . import evidence_tier as et
 from .comparison_gate import REASON_MISSING_DISCIPLINE, GateContext, GateDecision
 from .dataset_sources import normalized_original_geometry
 from .document_order import document_order_key
@@ -255,6 +256,11 @@ def create_official_evidence_groups(
             fallback_diagnostics=fallback_diagnostics,
             user_id=user_id,
         )
+        for added_key in _upsert_added_system_groups(
+            db, process, param, (extraction_context.get("room_identity") or {}).get("added_systems") or [],
+            documents=extraction_context["documents"], existing_keys=set(rule_keys), user_id=user_id,
+        ):
+            param_touched.add(added_key)
         if rule_keys:
             param_touched.update(rule_keys)
             continue
@@ -616,58 +622,178 @@ def _upsert_quality_warning_group(db, process, param, issues: list[dict], *, blo
     return group_key
 
 
+_STAGE_INTERNAL_PD_RD = {"PD": "project", "RD": "working", "ID": "as_built"}
+
+
+def _room_fragment_spec(source: dict, document, *, role: str, systems, context: str, extractor: str) -> dict | None:
+    """One evidence fragment of a room-identity source (file, page, bbox of the label / room zone)."""
+    bbox_pdf, width, height = source.get("bbox_pdf"), source.get("page_width"), source.get("page_height")
+    if document is None or not source.get("page") or not bbox_pdf or not width or not height:
+        return None
+    bbox = [max(0.0, min(1.0, bbox_pdf[0] / width)), max(0.0, min(1.0, bbox_pdf[1] / height)),
+            max(0.0, min(1.0, bbox_pdf[2] / width)), max(0.0, min(1.0, bbox_pdf[3] / height))]
+    return {
+        "document_version_id": int(document.id), "source_fragment_id": None,
+        "dataset_file_id": document.dataset_file_id,
+        "file_sha256": document.file_hash or document.content_hash,
+        "stage": _STAGE_INTERNAL_PD_RD.get(str(source.get("stage")), document.doc_stage),
+        "discipline": document.discipline, "document_code": document.document_code,
+        "revision": document.revision, "approval_status": document.approval_status,
+        "page": int(source["page"]), "bbox": bbox, "bbox_pdf": bbox_pdf,
+        "page_width": float(width), "page_height": float(height),
+        "polygon": [[bbox[0], bbox[1]], [bbox[2], bbox[1]], [bbox[2], bbox[3]], [bbox[0], bbox[3]]],
+        "extracted_value": ",".join(systems or []) or None,
+        "role": role, "context": context, "extractor": extractor, "confidence": None,
+    }
+
+
+def _pair_document_ids(pair: dict) -> list[tuple[str, dict]]:
+    return [("PD", pair["PD"]), ("RD", pair["RD"])]
+
+
 def _upsert_room_identity_groups(db, process, param, issues: list[dict], *, documents: dict,
                                  user_id: int | None = None) -> list[str]:
-    """One CLARIFICATION_REQUIRED group per unresolved room identity / linkage issue of this parameter.
+    """One group per unresolved room identity / linkage issue of this parameter.
 
     Reasons: DUPLICATE_ROOM_KEY (one building+floor+number described twice), AMBIGUOUS_ROOM_MATCH (the
     counterpart room cannot be chosen), AMBIGUOUS_SYSTEM_LINK (a system label sits between rooms).
+
+    Step B1 (finding beats classifying): when the rule of the parameter sees a discrepancy in AT LEAST ONE candidate
+    pairing, the issue is a SUGGESTION (finding_status CANDIDATE, evidence_tier SUGGESTION) listing every candidate
+    pairing with its evidence -- no pairing is chosen silently, the flat export shows the first discrepant one and says
+    so. When no pairing shows a discrepancy it stays CLARIFICATION_REQUIRED, as before.
     """
     keys: list[str] = []
-    stage_internal = {"PD": "project", "RD": "working", "ID": "as_built"}
     for issue in issues:
         if issue.get("code") != param.code:
             continue
+        pairs = [pair for pair in issue.get("candidate_pairs") or [] if isinstance(pair, dict)]
+        visible = [pair for pair in pairs if pair.get("difference_visible")]
         digest = hashlib.sha256(json.dumps(
             [issue.get("reason"), issue.get("location"), issue.get("stage"),
              [(s.get("stage"), s.get("document_id"), s.get("page"), s.get("systems")) for s in issue.get("sources") or []]],
             sort_keys=True, default=str, ensure_ascii=False).encode("utf-8")).hexdigest()[:20]
         group_key = f"room_identity:{digest}"
         fragment_specs = []
+        shown: set[tuple] = set()
+
+        def add(source: dict, role: str, systems, text: str) -> None:
+            ident = (source.get("stage"), source.get("document_id"), source.get("page"), tuple(source.get("bbox_pdf") or ()), role)
+            if ident in shown:
+                return
+            spec = _room_fragment_spec(source, documents.get(source.get("document_id")), role=role, systems=systems,
+                                       context=text, extractor="room_identity")
+            if spec is not None:
+                shown.add(ident)
+                fragment_specs.append(spec)
+
+        export_pair = visible[0] if visible else None
+        if export_pair is not None:
+            add(export_pair["PD"], "expected", export_pair["pd_systems"], f"{issue.get('reason')}: пара ПД (показана в выгрузке)")
+            add(export_pair["RD"], "actual", export_pair["rd_systems"], f"{issue.get('reason')}: пара РД (показана в выгрузке)")
+        for pair in pairs:
+            add(pair["PD"], "context", pair["pd_systems"], f"{issue.get('reason')}: кандидат ПД ({pair.get('match_basis')})")
+            add(pair["RD"], "context", pair["rd_systems"], f"{issue.get('reason')}: кандидат РД ({pair.get('match_basis')})")
         for source in issue.get("sources") or []:
-            document = documents.get(source.get("document_id"))
-            bbox_pdf, width, height = source.get("bbox_pdf"), source.get("page_width"), source.get("page_height")
-            if document is None or not source.get("page") or not bbox_pdf or not width or not height:
-                continue
-            bbox = [max(0.0, min(1.0, bbox_pdf[0] / width)), max(0.0, min(1.0, bbox_pdf[1] / height)),
-                    max(0.0, min(1.0, bbox_pdf[2] / width)), max(0.0, min(1.0, bbox_pdf[3] / height))]
-            fragment_specs.append({
-                "document_version_id": int(document.id), "source_fragment_id": None,
-                "dataset_file_id": document.dataset_file_id,
-                "file_sha256": document.file_hash or document.content_hash,
-                "stage": stage_internal.get(str(source.get("stage")), document.doc_stage),
-                "discipline": document.discipline, "document_code": document.document_code,
-                "revision": document.revision, "approval_status": document.approval_status,
-                "page": int(source["page"]), "bbox": bbox, "bbox_pdf": bbox_pdf,
-                "page_width": float(width), "page_height": float(height),
-                "polygon": [[bbox[0], bbox[1]], [bbox[2], bbox[1]], [bbox[2], bbox[3]], [bbox[0], bbox[3]]],
-                "extracted_value": ",".join(source.get("systems") or []) or None,
-                "role": "context",
-                "context": f"{issue.get('reason')}: {issue.get('text')}",
-                "extractor": "room_identity", "confidence": None,
+            add(source, "context", source.get("systems"), f"{issue.get('reason')}: {issue.get('text')}")
+        delta = {"source": "room_identity", "identity_reason": issue.get("reason"), "location": issue.get("location"),
+                 "text": issue.get("text"), "wall_check": "not_evaluated",
+                 "unresolved_systems": issue.get("unresolved_systems") or [],
+                 "candidate_pairs": [{k: v for k, v in pair.items()} for pair in pairs],
+                 "candidate_pair_count": len(pairs), "discrepant_pair_count": len(visible)}
+        fields = {
+            "matrix_version": process.matrix_version, "model_version": "room-identity-v2",
+            "dataset_version": process.dataset_version, "comparison_scenario": process.upload_scenario,
+            "review_priority": param.review_priority,
+        }
+        if export_pair is not None:
+            delta.update({
+                "matrix_scope": "MATRIX", "parameter_code": param.code, "comparison_result": "TRIGGERED",
+                "violation_claimed": False, "export_pair_note": (
+                    "кандидатных пар несколько; в плоской выгрузке показана первая из различающихся, остальные — в candidate_pairs"
+                    if len(pairs) > 1 else None),
+                "set_difference": True,
+                "explanation": {
+                    "rule": ("исчезновение системы вытяжки в РД" if param.code == "IOS4-078" else "изменение состава установок в РД"),
+                    "deviation_abs": None, "deviation_pct": None, "deviation_basis": "разность составов систем",
+                    "missing_systems": export_pair["missing_systems"], "added_systems": export_pair["added_systems"],
+                    "text_confidence": export_pair.get("text_confidence"), "link_confidence": export_pair.get("link_confidence"),
+                },
             })
+            et.suggestion(delta, str(issue.get("reason")))
+            fields.update({
+                "completeness_status": "COMPLETE", "comparability_status": "COMPARABLE", "finding_status": "CANDIDATE",
+                "expected_value": ",".join(export_pair["pd_systems"]) or None,
+                "actual_value": ",".join(export_pair["rd_systems"]) or None,
+                "confidence": None,
+            })
+        else:
+            delta["reason"] = "CLARIFICATION_REQUIRED"
+            fields.update({
+                "completeness_status": "PARTIALLY_LOADED", "comparability_status": "NOT_COMPARABLE",
+                "finding_status": "CLARIFICATION_REQUIRED", "expected_value": None, "actual_value": None,
+            })
+        fields["delta"] = delta
+        group, should_write = upsert_evidence_group(db, process, param, group_key, fields=fields,
+                                                    fragment_specs=fragment_specs, user_id=user_id)
+        if group is not None and should_write:
+            for spec in fragment_specs:
+                db.add(EvidenceFragment(evidence_group_id=int(group.id), **spec))
+            db.flush()
+        keys.append(group_key)
+    return keys
+
+
+def _upsert_added_system_groups(db, process, param, entries: list[dict], *, documents: dict, existing_keys: set[str],
+                                user_id: int | None = None) -> list[str]:
+    """Systems that appear in RD but not in PD (room_drawing_compare `added_systems`, violation_claimed = false).
+
+    IOS4-078 judges the DISAPPEARANCE of exhaust systems, so an addition is no violation by its rule -- it is shown as
+    a SUGGESTION so the change of composition is not lost. IOS4-079 judges ANY change of the installation set: the rule
+    group of that room already carries it as a violation candidate; a separate candidate is written only when the rule
+    group does not exist (nothing else would show the change)."""
+    keys: list[str] = []
+    for entry in entries:
+        if entry.get("code") != param.code or not entry.get("added_systems"):
+            continue
+        location = str(entry.get("location") or "")
+        if param.code == "IOS4-079" and f"loc:{location}" in existing_keys:
+            continue
+        group_key = f"added:{location}"
+        pd_source, rd_source = entry["PD"], entry["RD"]
+        pd_systems = list(entry.get("pd_systems") or [])
+        rd_systems = list(entry.get("rd_systems") or [])
+        fragment_specs = [spec for spec in (
+            _room_fragment_spec(pd_source, documents.get(pd_source.get("document_id")), role="expected", systems=pd_systems,
+                                context=f"Состав систем в ПД, помещение {location}", extractor="room_identity"),
+            _room_fragment_spec(rd_source, documents.get(rd_source.get("document_id")), role="actual", systems=rd_systems,
+                                context=f"Состав систем в РД, помещение {location}: добавлены {', '.join(entry['added_systems'])}",
+                                extractor="room_identity"),
+        ) if spec is not None]
+        delta = {
+            "source": "room_identity", "matrix_scope": "MATRIX", "parameter_code": param.code, "location": location,
+            "comparison_result": "TRIGGERED", "violation_claimed": False, "type": "added",
+            "decision_mode": entry.get("decision_mode"), "match_basis": entry.get("match_basis"),
+            "added_systems": entry["added_systems"], "missing_systems": entry.get("missing_systems") or [],
+            "set_difference": True, "text_confidence": entry.get("text_confidence"), "link_confidence": entry.get("link_confidence"),
+            "explanation": {
+                "rule": ("правило параметра: нарушение — исчезновение системы; добавление нарушением не считается"
+                         if param.code == "IOS4-078" else "правило параметра: любое изменение состава установок"),
+                "deviation_abs": None, "deviation_pct": None, "deviation_basis": "разность составов систем",
+                "missing_systems": entry.get("missing_systems") or [], "added_systems": entry["added_systems"],
+                "text_confidence": entry.get("text_confidence"), "link_confidence": entry.get("link_confidence"),
+            },
+        }
+        if param.code == "IOS4-078":
+            et.suggestion(delta, "composition_change_not_decisive")
         group, should_write = upsert_evidence_group(
             db, process, param, group_key,
             fields={
-                "matrix_version": process.matrix_version, "model_version": "room-identity-v1",
+                "matrix_version": process.matrix_version, "model_version": "room-identity-v2",
                 "dataset_version": process.dataset_version, "comparison_scenario": process.upload_scenario,
-                "completeness_status": "PARTIALLY_LOADED", "comparability_status": "NOT_COMPARABLE",
-                "finding_status": "CLARIFICATION_REQUIRED", "review_priority": param.review_priority,
-                "expected_value": None, "actual_value": None,
-                "delta": {"source": "room_identity", "reason": "CLARIFICATION_REQUIRED",
-                          "identity_reason": issue.get("reason"), "location": issue.get("location"),
-                          "text": issue.get("text"), "wall_check": "not_evaluated",
-                          "unresolved_systems": issue.get("unresolved_systems") or []},
+                "completeness_status": "COMPLETE", "comparability_status": "COMPARABLE", "finding_status": "CANDIDATE",
+                "review_priority": param.review_priority, "expected_value": ",".join(pd_systems) or None,
+                "actual_value": ",".join(rd_systems) or None, "confidence": None, "delta": delta,
             },
             fragment_specs=fragment_specs, user_id=user_id,
         )
@@ -792,15 +918,29 @@ def _count_trigger(param: Param, stage_observations: dict) -> "tp.TriggerEvaluat
     ])
 
 
-def _verdict(equal: bool, trigger: "tp.TriggerEvaluation | None") -> tuple[str, dict]:
+def _verdict(equal: bool, trigger: "tp.TriggerEvaluation | None", soft: GateDecision | None = None) -> tuple[str, dict]:
     """(finding_status, extra delta). Different values are a CANDIDATE only when the catalog trigger fires (or
     cannot be decided -- recall first); a change that provably cannot satisfy the trigger is a verified
-    negative with `reason = change_not_triggering`. Equal values stay exactly as they were."""
+    negative with `reason = change_not_triggering`. Equal values stay exactly as they were.
+
+    Tiers (step B1): a candidate is a SUGGESTION -- not a violation candidate -- when a soft gate reason (competing
+    editions, trigger not evaluable by values) or an undecidable trigger stands behind it; the reasons are recorded.
+    With a soft reason, equal values / a change that cannot fire the trigger are NOT a verified negative: the caller
+    keeps the abstention (`status != CANDIDATE` and `soft` -> gated group)."""
     if equal:
         return "NEGATIVE_VERIFIED", {}
     if trigger is not None and trigger.status == tp.NOT_FIRING:
         return "NEGATIVE_VERIFIED", {"reason": tp.CHANGE_NOT_TRIGGERING, "trigger": trigger.to_delta()}
-    return "CANDIDATE", ({"trigger": trigger.to_delta()} if trigger is not None else {})
+    extra = {"trigger": trigger.to_delta()} if trigger is not None else {}
+    reasons = []
+    if soft is not None:
+        reasons.append(soft.reason)
+        extra["soft_gate"] = soft.to_delta()["gate"]
+    if trigger is not None and trigger.status in (tp.UNDETERMINED, tp.NOT_EVALUABLE_STATUS) and "trigger_not_evaluable" not in reasons:
+        reasons.append("trigger_undetermined")
+    if reasons:
+        et.suggestion(extra, *reasons)
+    return "CANDIDATE", extra
 
 
 def _raw_value(tier: str, obs) -> object:
@@ -918,7 +1058,8 @@ def _upsert_generic_group(
     if "PD" not in stage_observations or "RD" not in stage_observations:
         return None
     decision = gate.evaluate(param, "numeric", stage_observations) if gate is not None else None
-    if decision is not None:
+    soft = decision if decision is not None and decision.soft else None
+    if decision is not None and soft is None:
         return _upsert_gated_group(
             db, process, param, stage_observations, decision, tier="numeric", group_key="generic:anchor",
             model_version=GENERIC_EXTRACTOR_VERSION, source="generic_anchor_extractor",
@@ -928,7 +1069,13 @@ def _upsert_generic_group(
     actual = stage_observations.get("ID") or stage_observations["RD"]
     later = [stage_observations[stage] for stage in ("RD", "ID") if stage in stage_observations]
     equal = all(values_equal(expected.decimal_value, obs.decimal_value) for obs in later)
-    finding_status, verdict_delta = _verdict(equal, None if equal else _numeric_trigger(param, stage_observations))
+    finding_status, verdict_delta = _verdict(equal, None if equal else _numeric_trigger(param, stage_observations), soft)
+    if soft is not None and finding_status != "CANDIDATE":
+        return _upsert_gated_group(
+            db, process, param, stage_observations, soft, tier="numeric", group_key="generic:anchor",
+            model_version=GENERIC_EXTRACTOR_VERSION, source="generic_anchor_extractor",
+            method="anchor_phrase_plus_nearest_number", user_id=user_id,
+        )
     needed = {stage for stage, field in (("PD", "source_pd"), ("RD", "source_rd"), ("ID", "source_id")) if getattr(param, field)}
     missing = sorted(needed - set(stage_observations))
 
@@ -1015,7 +1162,8 @@ def _upsert_enum_group(
     if "PD" not in stage_observations or "RD" not in stage_observations:
         return None
     decision = gate.evaluate(param, "enum", stage_observations) if gate is not None else None
-    if decision is not None:
+    soft = decision if decision is not None and decision.soft else None
+    if decision is not None and soft is None:
         return _upsert_gated_group(
             db, process, param, stage_observations, decision, tier="enum", group_key="generic:enum",
             model_version=GENERIC_ENUM_EXTRACTOR_VERSION, source="generic_enum_extractor",
@@ -1025,7 +1173,13 @@ def _upsert_enum_group(
     actual = stage_observations.get("ID") or stage_observations["RD"]
     later = [stage_observations[stage] for stage in ("RD", "ID") if stage in stage_observations]
     equal = all(enum_values_equal(expected.canonical_value, obs.canonical_value) for obs in later)
-    finding_status, verdict_delta = _verdict(equal, None if equal else _enum_trigger(param, stage_observations))
+    finding_status, verdict_delta = _verdict(equal, None if equal else _enum_trigger(param, stage_observations), soft)
+    if soft is not None and finding_status != "CANDIDATE":
+        return _upsert_gated_group(
+            db, process, param, stage_observations, soft, tier="enum", group_key="generic:enum",
+            model_version=GENERIC_ENUM_EXTRACTOR_VERSION, source="generic_enum_extractor",
+            method="anchor_phrase_plus_enum_vocabulary", user_id=user_id,
+        )
     needed = {stage for stage, field in (("PD", "source_pd"), ("RD", "source_rd"), ("ID", "source_id")) if getattr(param, field)}
     missing = sorted(needed - set(stage_observations))
 
@@ -1112,7 +1266,8 @@ def _upsert_compound_group(
     if "PD" not in stage_observations or "RD" not in stage_observations:
         return None
     decision = gate.evaluate(param, "compound", stage_observations) if gate is not None else None
-    if decision is not None:
+    soft = decision if decision is not None and decision.soft else None
+    if decision is not None and soft is None:
         return _upsert_gated_group(
             db, process, param, stage_observations, decision, tier="compound", group_key="generic:compound",
             model_version=GENERIC_COMPOUND_EXTRACTOR_VERSION, source="generic_compound_extractor",
@@ -1122,7 +1277,13 @@ def _upsert_compound_group(
     actual = stage_observations.get("ID") or stage_observations["RD"]
     later = [stage_observations[stage] for stage in ("RD", "ID") if stage in stage_observations]
     equal = all(all(c.equal for c in compare_components(expected, obs)) for obs in later)
-    finding_status, verdict_delta = _verdict(equal, None if equal else _compound_trigger(param, stage_observations))
+    finding_status, verdict_delta = _verdict(equal, None if equal else _compound_trigger(param, stage_observations), soft)
+    if soft is not None and finding_status != "CANDIDATE":
+        return _upsert_gated_group(
+            db, process, param, stage_observations, soft, tier="compound", group_key="generic:compound",
+            model_version=GENERIC_COMPOUND_EXTRACTOR_VERSION, source="generic_compound_extractor",
+            method="anchor_phrase_plus_sequential_numbers", user_id=user_id,
+        )
     needed = {stage for stage, field in (("PD", "source_pd"), ("RD", "source_rd"), ("ID", "source_id")) if getattr(param, field)}
     missing = sorted(needed - set(stage_observations))
 
@@ -1216,7 +1377,8 @@ def _upsert_table_count_group(
     if "PD" not in stage_observations or "RD" not in stage_observations:
         return None
     decision = gate.evaluate(param, "table_count", stage_observations) if gate is not None else None
-    if decision is not None:
+    soft = decision if decision is not None and decision.soft else None
+    if decision is not None and soft is None:
         return _upsert_gated_group(
             db, process, param, stage_observations, decision, tier="table_count", group_key="generic:table_count",
             model_version=GENERIC_TABLE_COUNT_EXTRACTOR_VERSION, source="generic_table_row_count_extractor",
@@ -1226,7 +1388,13 @@ def _upsert_table_count_group(
     actual = stage_observations.get("ID") or stage_observations["RD"]
     later = [stage_observations[stage] for stage in ("RD", "ID") if stage in stage_observations]
     equal = all(counts_equal(expected.row_count, obs.row_count) for obs in later)
-    finding_status, verdict_delta = _verdict(equal, None if equal else _count_trigger(param, stage_observations))
+    finding_status, verdict_delta = _verdict(equal, None if equal else _count_trigger(param, stage_observations), soft)
+    if soft is not None and finding_status != "CANDIDATE":
+        return _upsert_gated_group(
+            db, process, param, stage_observations, soft, tier="table_count", group_key="generic:table_count",
+            model_version=GENERIC_TABLE_COUNT_EXTRACTOR_VERSION, source="generic_table_row_count_extractor",
+            method="title_match_plus_row_clustering", user_id=user_id,
+        )
     needed = {stage for stage, field in (("PD", "source_pd"), ("RD", "source_rd"), ("ID", "source_id")) if getattr(param, field)}
     missing = sorted(needed - set(stage_observations))
 
@@ -1293,6 +1461,15 @@ def _upsert_table_count_group(
             db.add(EvidenceFragment(evidence_group_id=group.id, **spec))
         db.flush()
     return group_key
+
+
+_RULE_PACK_RULE_TEXT = {
+    "PZ-009": "значение абсолютной отметки нуля в РД не совпадает со значением в ПД",
+    "KR-055": "класс бетона в РД ниже класса в ПД",
+    "KR-058": "минимальный диаметр арматуры в РД меньше, чем в ПД",
+    "IOS4-078": "в РД исчезла система вытяжки помещения (добавление нарушением не считается)",
+    "IOS4-079": "в РД изменился состав приточных установок помещения",
+}
 
 
 def _rule_row_order(row) -> tuple:
@@ -1427,6 +1604,16 @@ def _upsert_rule_groups(
         alternatives = _rule_alternatives(by_stage, selected)
         if alternatives:
             delta["alternatives"] = alternatives
+        # confidences are reported apart from each other and from the deviation (None = not measured, never invented)
+        def _known(attr: str):
+            values = [getattr(row, attr, None) for row in later if getattr(row, attr, None) is not None]
+            return min(values) if values else None
+
+        delta["text_confidence"], delta["link_confidence"] = _known("text_confidence"), _known("link_confidence")
+        delta["explanation"] = {"rule": _RULE_PACK_RULE_TEXT.get(str(param.code)), "threshold": None}
+        if str(param.code) in ("IOS4-078", "IOS4-079"):
+            delta["set_difference"] = True          # a difference of two sets of systems has no numeric deviation
+            delta["explanation"].update(deviation_abs=None, deviation_pct=None, deviation_basis="разность составов систем")
         group, should_write_fragments = upsert_evidence_group(
             db, process, param, group_key,
             fields={

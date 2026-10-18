@@ -43,6 +43,7 @@ from ..db.models import (
     Protocol,
 )
 from . import document_facts as df
+from . import evidence_tier as et
 from . import matrix_v11
 from .comparison_gate import GateContext
 from .dataset_sources import original_document_bytes
@@ -733,6 +734,9 @@ def workbench_summary(db: Session, process: InspectionProcess) -> dict[str, Any]
             "actual": group.actual_value,
             "confidence": group.confidence,
             "review_priority": group.review_priority,
+            "evidence_tier": et.tier_of(group.finding_status, delta),
+            "tier_reasons": delta.get("tier_reasons"),
+            "no_result_state": delta.get("no_result_state"),
             "comparability_status": group.comparability_status,
             "reason": delta.get("reason"),
             "needs_reverification": bool(group.needs_reverification),

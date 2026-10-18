@@ -12,6 +12,17 @@ Outcome -> submission label (see evaluation/exporter.py)
     NOT_COMPARABLE   + any other reason               -> COMPARISON_IMPOSSIBLE
 Neither is ever a violation. A gate never turns an abstention into a verdict.
 
+Hard and soft reasons (final round, step B1)
+    HARD   the comparison itself is impossible: another physical unit / order of magnitude, a page of a section the
+           catalog does not name, self-comparison, a missing section, a per-element parameter read as one number.
+           -> abstention (NOT_COMPARABLE / MISSING_EVIDENCE), as before.
+    SOFT   the values are comparable in kind, only the certainty is low: competing editions that cannot be ordered
+           (`revision_conflict`) and a trigger that value comparison cannot judge (`trigger_not_evaluable`).
+           `evaluate` still returns the decision, flagged `soft`; the caller compares the values anyway and, when they
+           differ and the trigger does not rule the change out, issues a SUGGESTION (evidence_tier.py) for the inspector
+           with the reservation recorded. Equal values / a change that cannot fire the trigger stay an abstention:
+           a soft reason never produces a "no violation" verdict either. A hard reason found later wins over a soft one.
+
 Reasons (all deterministic, all recorded)
     trigger_not_evaluable         the catalog trigger cannot be judged from a value comparison (spatial/registry)
     multi_instance_parameter      the parameter is per element (doors, corridors, pipes...) and the mechanism
@@ -50,6 +61,11 @@ REASON_UNIT_ABSENT = "unit_evidence_absent"
 REASON_MAGNITUDE = "magnitude_mismatch"
 
 MISSING_DOCUMENT_REASONS = frozenset({"missing_stage", REASON_MISSING_DISCIPLINE})
+SOFT_REASONS = frozenset({REASON_REVISION_CONFLICT, REASON_TRIGGER_NOT_EVALUABLE})
+HARD_REASONS = frozenset({
+    REASON_MULTI_INSTANCE, REASON_MISSING_DISCIPLINE, REASON_DISCIPLINE_MISMATCH, REASON_SELF_COMPARISON,
+    REASON_UNIT_MISMATCH, REASON_UNIT_ABSENT, REASON_MAGNITUDE,
+})
 # A verdict between values >= 20x apart is a comparison of different quantities (m vs mm, a height vs a
 # volume, an ordinal vs an area) -- no PD->RD design change moves a scalar by more than an order of magnitude.
 MAGNITUDE_RATIO_LIMIT = Decimal(20)
@@ -100,6 +116,11 @@ class GateDecision:
     reason: str
     details: dict[str, Any] = field(default_factory=dict)
     stages: list[str] = field(default_factory=list)
+
+    @property
+    def soft(self) -> bool:
+        """True when the values may still be compared and a difference shown as a SUGGESTION."""
+        return self.reason in SOFT_REASONS
 
     def to_delta(self) -> dict[str, Any]:
         out: dict[str, Any] = {"reason": self.reason, "gate": {"reason": self.reason, **self.details}}
@@ -179,9 +200,10 @@ class GateContext:
         if code in self.rule_pack_codes:
             return None
         rule = rule_for(code, trigger_logic=getattr(param, "trigger_logic", None))
+        soft: GateDecision | None = None
         # 1. applicability ---------------------------------------------------------------------------
         if rule.kind == NOT_EVALUABLE:
-            return GateDecision(STATUS_NOT_COMPARABLE, REASON_TRIGGER_NOT_EVALUABLE, {"trigger": rule.source_text})
+            soft = GateDecision(STATUS_NOT_COMPARABLE, REASON_TRIGGER_NOT_EVALUABLE, {"trigger": rule.source_text})
         if tier in _MULTI_INSTANCE_TIERS and code in MULTI_INSTANCE_PARAMETERS:
             return GateDecision(STATUS_NOT_COMPARABLE, REASON_MULTI_INSTANCE, {"per_element": MULTI_INSTANCE_PARAMETERS[code]})
         # 2. completeness ----------------------------------------------------------------------------
@@ -203,10 +225,13 @@ class GateContext:
                 continue
             conflicts = self.revisions.conflicts_for(fact.key)
             if conflicts:
-                return GateDecision(STATUS_NOT_COMPARABLE, REASON_REVISION_CONFLICT, {
+                # the edition is uncertain, the values are comparable in kind: a soft reason (a revision conflict
+                # outranks "trigger not evaluable" as the reservation shown to the inspector)
+                soft = GateDecision(STATUS_NOT_COMPARABLE, REASON_REVISION_CONFLICT, {
                     "stage": stage, "cited_file": fact.file_id or fact.key,
                     "conflicts": [{"id": c.conflict_id, "type": c.type, "section": c.scope, "files": list(c.file_ids)} for c in conflicts],
                 })
+                break
         # 4. comparability ------------------------------------------------------------------------------
         decision = self._self_comparison(observations)
         if decision:
@@ -226,7 +251,7 @@ class GateContext:
             decision = self._magnitude_gate(observations)
             if decision:
                 return decision
-        return None
+        return soft
 
     # ---------------------------------------------------------------- comparability helpers
     def _self_comparison(self, observations: Mapping[str, Any]) -> GateDecision | None:

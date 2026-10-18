@@ -1027,6 +1027,8 @@ def build_protocol_payload(db: Session, process: InspectionProcess) -> dict[str,
             "upload_completeness": process.completeness_status or {},
             "comparability": _count_by(groups, "comparability_status"),
             "candidates": counts.get(STATUS_CANDIDATE, 0),
+            "violation_candidates": sum(1 for row in findings if row.get("finding_status") == STATUS_CANDIDATE and _tier_name(row) == "VIOLATION_CANDIDATE"),
+            "suggestions": sum(1 for row in findings if row.get("finding_status") == STATUS_CANDIDATE and _tier_name(row) == "SUGGESTION"),
             "confirmed_violations": counts.get(STATUS_CONFIRMED_VIOLATION, 0),
             "negative_verified": counts.get(STATUS_NEGATIVE_VERIFIED, 0),
             "missing_evidence": counts.get(STATUS_MISSING_EVIDENCE, 0),
@@ -1238,6 +1240,12 @@ def evidence_fragment_to_dict(fragment: EvidenceFragment) -> dict[str, Any]:
         "document_version_id": fragment.document_version_id,
         "source_fragment_id": fragment.source_fragment_id,
     }
+
+
+def _tier_name(row: dict) -> str | None:
+    from .evidence_tier import tier_of
+
+    return tier_of(row.get("finding_status"), row.get("delta"))
 
 
 def protocol_to_dict(protocol: Protocol | None, *, include_payload: bool = True) -> dict[str, Any] | None:
