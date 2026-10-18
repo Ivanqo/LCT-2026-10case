@@ -1,0 +1,64 @@
+{
+ "cases": [
+  {
+   "gold_id": "ALT79B-V01",
+   "label": "POSITIVE",
+   "score_eligible": false,
+   "source_status": "candidate",
+   "hypotheses_on_object": 0,
+   "hits": 0,
+   "hit_examples": []
+  },
+  {
+   "gold_id": "DOO25-V01",
+   "label": "POSITIVE",
+   "score_eligible": false,
+   "source_status": "candidate",
+   "hypotheses_on_object": 10,
+   "hits": 0,
+   "hit_examples": []
+  },
+  {
+   "gold_id": "IZM12-V01",
+   "label": "POSITIVE",
+   "score_eligible": false,
+   "source_status": "candidate",
+   "hypotheses_on_object": 0,
+   "hits": 0,
+   "hit_examples": []
+  },
+  {
+   "gold_id": "LOS3A-V01",
+   "label": "POSITIVE",
+   "score_eligible": false,
+   "source_status": "candidate",
+   "hypotheses_on_object": 17,
+   "hits": 1,
+   "hit_examples": [
+    {
+     "id": 4,
+     "method": "CHANGE_SHEET",
+     "location": "2.4.1"
+    }
+   ]
+  },
+  {
+   "gold_id": "OKT103-V01",
+   "label": "POSITIVE",
+   "score_eligible": true,
+   "source_status": "confirmed",
+   "hypotheses_on_object": 0,
+   "hits": 0,
+   "hit_examples": []
+  },
+  {
+   "gold_id": "POL17-N01",
+   "label": "NEGATIVE",
+   "score_eligible": true,
+   "source_status": "negative",
+   "hypotheses_on_object": 5,
+   "hits": 0,
+   "hit_examples": []
+  }
+ ]
+}

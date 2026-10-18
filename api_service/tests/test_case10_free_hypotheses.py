@@ -401,7 +401,7 @@ class MlStatTests(unittest.TestCase):
         with mock.patch.dict("os.environ", {}, clear=False):
             for name in ("CASE10_FREE_HYPOTHESES_ML", "CASE10_FREE_HYPOTHESES_METHODS"):
                 __import__("os").environ.pop(name, None)
-            self.assertEqual(base.enabled_methods(), (base.METHOD_UNMATCHED, base.METHOD_SEMANTIC, base.METHOD_NORMATIVE))
+            self.assertEqual(base.enabled_methods(), (base.METHOD_UNMATCHED, base.METHOD_CHANGE_SHEET, base.METHOD_LAYERS, base.METHOD_SEMANTIC, base.METHOD_NORMATIVE))
         with mock.patch.dict("os.environ", {"CASE10_FREE_HYPOTHESES_METHODS": "LOGICAL_ANALYSIS,UNMATCHED_DIFF"}):
             self.assertEqual(base.enabled_methods(), (base.METHOD_UNMATCHED, base.METHOD_LOGICAL))
 

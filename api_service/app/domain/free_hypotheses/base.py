@@ -18,7 +18,9 @@ METHOD_SEMANTIC = "SEMANTIC_DISSONANCE"
 METHOD_NORMATIVE = "NORMATIVE_ANALYSIS"
 METHOD_ML = "ML_PATTERN_STAT"
 METHOD_UNMATCHED = "UNMATCHED_DIFF"
-ALL_METHODS = (METHOD_UNMATCHED, METHOD_SEMANTIC, METHOD_LOGICAL, METHOD_NORMATIVE, METHOD_ML)
+METHOD_CHANGE_SHEET = "CHANGE_SHEET"
+METHOD_LAYERS = "LAYER_COMPOSITION"
+ALL_METHODS = (METHOD_UNMATCHED, METHOD_CHANGE_SHEET, METHOD_LAYERS, METHOD_SEMANTIC, METHOD_LOGICAL, METHOD_NORMATIVE, METHOD_ML)
 
 # the sentinel the hypotheses hang on: not a matrix parameter, never active (never counted in the 132 / M-0xx matrix)
 FREE_SEARCH_PARAM_CODE = "FREE-SEARCH"
@@ -54,10 +56,12 @@ def free_hypotheses_enabled() -> bool:
 # sampled precision is >= 0.6 and its noise <= 3 hypotheses per 100 pages. UNMATCHED_DIFF and SEMANTIC_DISSONANCE passed;
 # NORMATIVE needs admin entries (idle otherwise); the new logic rules (LR-101..106) produced nothing measurable and the
 # statistical baseline failed the precision bar, so those two are off until enabled by name (see enabled_methods()).
+# Step R added CHANGE_SHEET (sampled precision 7/10, 0.05 hypotheses per 100 pages) and LAYER_COMPOSITION (1/1 on real objects, noise 0.002 per
+# 100 pages; n is too small to say more -- see evaluation/phase12/FINAL_R_RECALL_REPORT.md): both on by default.
 DEFAULT_ENABLED = "1"
 
 
-DEFAULT_METHODS = (METHOD_UNMATCHED, METHOD_SEMANTIC, METHOD_NORMATIVE)
+DEFAULT_METHODS = (METHOD_UNMATCHED, METHOD_CHANGE_SHEET, METHOD_LAYERS, METHOD_SEMANTIC, METHOD_NORMATIVE)
 
 
 def enabled_methods() -> tuple[str, ...]:

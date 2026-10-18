@@ -22,6 +22,8 @@ from ...request_context import get_client_ip
 from .base import (
     ALL_METHODS,
     METHOD_LOGICAL,
+    METHOD_CHANGE_SHEET,
+    METHOD_LAYERS,
     METHOD_ML,
     METHOD_NORMATIVE,
     METHOD_SEMANTIC,
@@ -102,6 +104,20 @@ def _detect_logical(ctx: RunContext):
     return relations + schedules, {"relations": rel_stats, "schedules": sched_stats}, bool(rel_stats.get("scope_complete"))
 
 
+def _detect_change_sheet(ctx: RunContext):
+    from . import change_detect
+
+    out, stats = change_detect.detect(ctx.documents, ctx.gate, object_id=ctx.object_id)
+    return out, stats, True
+
+
+def _detect_layers(ctx: RunContext):
+    from . import layer_detect
+
+    out, stats = layer_detect.detect(ctx.documents, ctx.gate, object_id=ctx.object_id)
+    return out, stats, True
+
+
 def _detect_normative(ctx: RunContext):
     from . import normative
 
@@ -118,6 +134,8 @@ def _detect_ml(ctx: RunContext):
 
 DETECTORS: dict[str, Callable[[RunContext], tuple[list[HypothesisCandidate], dict[str, Any], bool]]] = {
     METHOD_UNMATCHED: _detect_unmatched,
+    METHOD_CHANGE_SHEET: _detect_change_sheet,
+    METHOD_LAYERS: _detect_layers,
     METHOD_SEMANTIC: _detect_semantic,
     METHOD_LOGICAL: _detect_logical,
     METHOD_NORMATIVE: _detect_normative,

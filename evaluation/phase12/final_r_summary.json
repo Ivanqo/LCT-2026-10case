@@ -1,0 +1,152 @@
+{
+ "objects": [
+  {
+   "object": "ALT79B",
+   "pages": 4286,
+   "seconds": 13.5,
+   "CHANGE_SHEET": 0,
+   "LAYER_COMPOSITION": 0,
+   "CHANGE_SHEET_per_100": 0.0,
+   "LAYER_COMPOSITION_per_100": 0.0,
+   "register_entries": 0,
+   "candidate_entries": 0,
+   "pd_compositions": 2,
+   "rd_compositions": 6
+  },
+  {
+   "object": "DOO25",
+   "pages": 17072,
+   "seconds": 58.0,
+   "CHANGE_SHEET": 7,
+   "LAYER_COMPOSITION": 3,
+   "CHANGE_SHEET_per_100": 0.041,
+   "LAYER_COMPOSITION_per_100": 0.018,
+   "register_entries": 139,
+   "candidate_entries": 38,
+   "pd_compositions": 28,
+   "rd_compositions": 67
+  },
+  {
+   "object": "IZM12",
+   "pages": 5387,
+   "seconds": 14.2,
+   "CHANGE_SHEET": 0,
+   "LAYER_COMPOSITION": 0,
+   "CHANGE_SHEET_per_100": 0.0,
+   "LAYER_COMPOSITION_per_100": 0.0,
+   "register_entries": 0,
+   "candidate_entries": 0,
+   "pd_compositions": 14,
+   "rd_compositions": 0
+  },
+  {
+   "object": "LOS3A",
+   "pages": 10982,
+   "seconds": 52.3,
+   "CHANGE_SHEET": 17,
+   "LAYER_COMPOSITION": 0,
+   "CHANGE_SHEET_per_100": 0.155,
+   "LAYER_COMPOSITION_per_100": 0.0,
+   "register_entries": 1478,
+   "candidate_entries": 581,
+   "pd_compositions": 6,
+   "rd_compositions": 42
+  },
+  {
+   "object": "NOV",
+   "pages": 4279,
+   "seconds": 11.9,
+   "CHANGE_SHEET": 0,
+   "LAYER_COMPOSITION": 0,
+   "CHANGE_SHEET_per_100": 0.0,
+   "LAYER_COMPOSITION_per_100": 0.0,
+   "register_entries": 13,
+   "candidate_entries": 9,
+   "pd_compositions": 10,
+   "rd_compositions": 0
+  },
+  {
+   "object": "OKT103",
+   "pages": 3614,
+   "seconds": 12.2,
+   "CHANGE_SHEET": 0,
+   "LAYER_COMPOSITION": 0,
+   "CHANGE_SHEET_per_100": 0.0,
+   "LAYER_COMPOSITION_per_100": 0.0,
+   "register_entries": 16,
+   "candidate_entries": 1,
+   "pd_compositions": 12,
+   "rd_compositions": 0
+  },
+  {
+   "object": "POL17",
+   "pages": 10817,
+   "seconds": 56.3,
+   "CHANGE_SHEET": 4,
+   "LAYER_COMPOSITION": 1,
+   "CHANGE_SHEET_per_100": 0.037,
+   "LAYER_COMPOSITION_per_100": 0.009,
+   "register_entries": 228,
+   "candidate_entries": 77,
+   "pd_compositions": 37,
+   "rd_compositions": 22
+  },
+  {
+   "object": "TYU",
+   "pages": 5863,
+   "seconds": 11.1,
+   "CHANGE_SHEET": 0,
+   "LAYER_COMPOSITION": 0,
+   "CHANGE_SHEET_per_100": 0.0,
+   "LAYER_COMPOSITION_per_100": 0.0,
+   "register_entries": 15,
+   "candidate_entries": 6,
+   "pd_compositions": 6,
+   "rd_compositions": 0
+  }
+ ],
+ "pages_total": 62300,
+ "hypotheses": {
+  "LAYER_COMPOSITION": 4,
+  "CHANGE_SHEET": 28
+ },
+ "per_100_pages": {
+  "CHANGE_SHEET": 0.045,
+  "LAYER_COMPOSITION": 0.006
+ },
+ "precision": {
+  "CHANGE_SHEET": {
+   "labelled": 10,
+   "true": 7,
+   "labels": {
+    "TRUE_DISCREPANCY": 7,
+    "FALSE": 3
+   },
+   "wilson": {
+    "k": 7,
+    "n": 10,
+    "rate": 0.7,
+    "wilson95": [
+     0.3968,
+     0.8922
+    ]
+   }
+  },
+  "LAYER_COMPOSITION": {
+   "labelled": 4,
+   "true": 4,
+   "labels": {
+    "TRUE_DISCREPANCY": 4
+   },
+   "wilson": {
+    "k": 4,
+    "n": 4,
+    "rate": 1.0,
+    "wilson95": [
+     0.5101,
+     1.0
+    ]
+   }
+  }
+ }
+}
