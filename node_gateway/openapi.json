@@ -1601,6 +1601,18 @@
     "/api/case10/processes/{process_id}/iais-rin/pull-files": {
       "post": {"summary": "Pull files from the external IS mock (emulation)", "responses": {"200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object"}}}}}}
     },
+    "/api/case10/sheet-compare/status": {
+      "get": {"summary": "Sheet comparison availability", "responses": {"200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object"}}}}}}
+    },
+    "/api/case10/sheet-compare": {
+      "get": {"summary": "Compare one sheet pair: similarity, pair confidence, difference regions", "responses": {"200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object"}}}}}}
+    },
+    "/api/case10/sheet-compare/overlay.png": {
+      "get": {"summary": "Difference overlay image", "responses": {"200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object"}}}}}}
+    },
+    "/api/case10/processes/{process_id}/sheet-pairs": {
+      "get": {"summary": "Matched sheet pairs of a process", "responses": {"200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object"}}}}}}
+    },
     "/api/case10/ml/reports/weekly": {
       "get": {
         "summary": "Weekly ML report (ML_ENGINEER / ADMIN)",

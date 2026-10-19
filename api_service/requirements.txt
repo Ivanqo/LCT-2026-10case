@@ -30,3 +30,5 @@ sentence-transformers==2.6.1
 # (numpy==1.26.4) for the same torch version; api_service just lacked the
 # matching pin.
 numpy==1.26.4
+# Sheet comparison (GRAPH): raster alignment of two sheets; optional at runtime (feature switches itself off without it)
+opencv-python-headless==4.9.0.80

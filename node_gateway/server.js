@@ -89,6 +89,11 @@ const allowedRoutes = [
   ["POST", /^\/api\/case10\/processes\/[^/]+\/verification\/open$/],
   ["GET", /^\/api\/case10\/processes\/[^/]+\/verification\/timing$/],
   ["GET", /^\/api\/case10\/document-versions\/[^/]+\/pages\/[^/]+\/geometry$/],
+  // GRAPH: sheet comparison view (API itself answers 404 unless CASE10_SHEET_COMPARE_ENABLED=1)
+  ["GET", /^\/api\/case10\/sheet-compare\/status$/],
+  ["GET", /^\/api\/case10\/sheet-compare$/],
+  ["GET", /^\/api\/case10\/sheet-compare\/overlay\.png$/],
+  ["GET", /^\/api\/case10\/processes\/[^/]+\/sheet-pairs$/],
   ["GET", /^\/api\/case10\/document-versions\/[^/]+\/pages\/[^/]+\.(png|pdf)$/],
   // S6 server-side packages (routes_batch.py)
   ["POST", /^\/api\/case10\/batch-runs$/],
