@@ -340,7 +340,7 @@ def scan_package(root: Path, *, scan_errors: list[dict[str, str]] | None = None)
     else:
         found.sort(key=_path_sort_key)
     if not robust_inputs_enabled():
-        return [PackageFile(rel, (root / rel).stat().st_size, sha256_file(root / rel), pdf_page_count(root / rel))
+        return [PackageFile(rel, (root / rel).stat().st_size, _package_file_sha256(root / rel), pdf_page_count(root / rel))
                 for rel in found]
     result = []
     for relative in found:
@@ -349,7 +349,7 @@ def scan_package(root: Path, *, scan_errors: list[dict[str, str]] | None = None)
         size = 0
         try:
             size = path.stat().st_size
-            sha256 = sha256_file(path) if is_pdf else ""
+            sha256 = _package_file_sha256(path) if is_pdf else ""
         except OSError:
             result.append(PackageFile(relative, size, "", None, "FILE_READ_ERROR"))
             continue
@@ -394,6 +394,13 @@ def sha256_file(path: Path) -> str:
         while chunk := stream.read(_HASH_CHUNK):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _package_file_sha256(path: Path) -> str:
+    """`sha256_file` for the package scan, served from the stat-keyed digest cache when one is configured."""
+    from .domain.file_hash_cache import cached_sha256
+
+    return cached_sha256(path, sha256_file)
 
 
 def _path_sort_key(relative: str) -> str:
