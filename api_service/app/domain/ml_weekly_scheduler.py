@@ -10,7 +10,12 @@ from .ml_weekly_report import run_scheduler_tick
 logger = logging.getLogger("api.ml_weekly_scheduler")
 
 
-async def run_scheduler() -> None:
+async def run_scheduler(initial_delay: float = 30.0) -> None:
+    """Long-lived API loop: wait out the start-up, then check the persisted interval every poll period.
+
+    Started only by the API's startup hook (`app.main`), never by the CLI, the worker or an in-process test client.
+    """
+    await asyncio.sleep(max(0.0, float(initial_delay)))
     while True:
         try:
             result = await asyncio.to_thread(run_scheduler_tick)

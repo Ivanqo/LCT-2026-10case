@@ -53,3 +53,29 @@ class DocxSourceFragmentTests(WorkbenchTestBase):
             .count(),
             1,
         )
+
+
+class DocxFragmentsKeepOfficialChecksTests(WorkbenchTestBase):
+    """The DOCX option is on by default because the official 132-parameter matrix carries no regex patterns: a DOCX text
+    fragment is stored and shown, but none of the V3 extractors returns a value for it, so `checks` cannot change."""
+
+    def test_official_matrix_extracts_nothing_from_docx_text(self):
+        from app.domain.official_dataset import ensure_official_matrix
+        from app.domain.v3_extractors import default_extractors
+        from app.db.models import Param
+
+        ensure_official_matrix(self.db, organization_id=self.org_id, project_id=self.project.id)
+        params = self.db.query(Param).filter(Param.organization_id == self.org_id, Param.project_id == self.project.id).all()
+        self.assertGreaterEqual(len(params), 132)
+        self.assertEqual([p.code for p in params if str(p.regex_pattern or "").strip()], [])
+        doc = DocumentVersion(project_id=self.project.id, organization_id=self.org_id, source_type="rag", filename="a.docx", file_path="a.docx")
+        self.db.add(doc)
+        self.db.flush()
+        fragment = SourceFragment(document_version_id=int(doc.id), page=1, bbox=None, fragment_type="text", source_system="docx",
+                                  external_id="docx:document", metadata_json={"source_type": "docx"}, extractor="docx_text_reader",
+                                  confidence=0.8, text="Площадь застройки 123 м2. Ширина эвакуационных дверей 1200 мм. EI 60.")
+        self.db.add(fragment)
+        self.db.flush()
+        found = [item for param in params for extractor in default_extractors()
+                 for item in extractor.extract(param=param, document=doc, fragments=[fragment])]
+        self.assertEqual(found, [])
