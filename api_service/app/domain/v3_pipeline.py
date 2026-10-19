@@ -1306,7 +1306,9 @@ def document_completeness(docs: Iterable[DocumentVersion], *, registry_aware: bo
         expected = expected_by_stage.get(short, 0)
         if has_registry_summary and expected:
             loaded = loaded_by_stage.get(short, 0)
-            result[uploaded] = uploaded if loaded >= expected else f"{short}_PARTIAL" if loaded else missing
+            # A stage that has files but none of them is a registry entry (e.g. a hand-uploaded file next to a package) is
+            # still "partial", never "missing": the old status was UPLOADED and must not get worse.
+            result[uploaded] = uploaded if loaded >= expected else f"{short}_PARTIAL" if loaded or stage in stages else missing
         else:
             result[uploaded] = uploaded if stage in stages else missing
     return result

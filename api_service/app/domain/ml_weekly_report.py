@@ -18,6 +18,7 @@ import json
 import math
 import os
 from pathlib import Path
+import time as _time
 from typing import Any
 
 from sqlalchemy.orm import Session
@@ -408,6 +409,44 @@ def run_scheduler_tick(
         current = current.astimezone(timezone.utc).replace(tzinfo=None)
     interval = max(60, int(interval_seconds or settings.ML_WEEKLY_REPORT_INTERVAL_SECONDS))
     state_path = root / ".weekly_scheduler_state.json"
+    lock_path = root / ".weekly_scheduler.lock"
+    if not _acquire_tick_lock(lock_path):
+        # Another process (a second API worker) is generating the snapshot right now.
+        return {"ran": False, "next_due_at": None, "reports_saved": 0}
+    try:
+        return _run_tick_locked(factory, root, current, interval, state_path)
+    finally:
+        try:
+            lock_path.unlink()
+        except OSError:
+            pass
+
+
+def _acquire_tick_lock(lock_path: Path, stale_seconds: int = 900) -> bool:
+    """Exclusive create of a lock file; a lock older than `stale_seconds` (crashed holder) is taken over."""
+    for _ in range(2):
+        try:
+            descriptor = os.open(str(lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            try:
+                age = _time.time() - lock_path.stat().st_mtime
+            except OSError:
+                continue
+            if age < stale_seconds:
+                return False
+            try:
+                lock_path.unlink()
+            except OSError:
+                return False
+            continue
+        except OSError:
+            return False
+        os.close(descriptor)
+        return True
+    return False
+
+
+def _run_tick_locked(factory, root: Path, current: datetime, interval: int, state_path: Path) -> dict[str, Any]:
     if state_path.exists():
         try:
             state = json.loads(state_path.read_text(encoding="utf-8"))
