@@ -607,6 +607,9 @@ class RunnerTests(DbCase):
         self.assertEqual((stats["Подозрений ИИ"], stats["Подтвержденных нарушений"], stats["Кандидатов на проверку"]), (1, 0, 0))
         self.assertEqual(len(annex["section_6_ai_suspicions"]), 1)
         self.assertEqual(protocol_to_submission({"object_id": "OBJ-FREE", "findings": [finding]})["checks"], [])
+        default_submission = protocol_to_submission({"object_id": "OBJ-FREE", "findings": [finding]})
+        self.assertEqual(len(default_submission["free_search_hypotheses"]), 1)   # listed separately, never as a matrix check
+        self.assertFalse(default_submission["free_search_hypotheses"][0]["violation_claimed"])
         self.assertEqual(len(protocol_to_submission({"object_id": "OBJ-FREE", "findings": [finding]}, include_suspicions=True)["checks"]), 1)
 
     def test_collect_survives_a_table_scan_failure(self):

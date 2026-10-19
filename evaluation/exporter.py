@@ -85,6 +85,7 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
     duplicate_of, dropped_files = _integrity_maps(payload)
     group_keys: list[str] = []
     exported_groups: list[dict[str, Any]] = []
+    free_search_groups: list[dict[str, Any]] = []
     for group in payload.get("findings") or []:
         if not isinstance(group, dict):
             continue
@@ -127,6 +128,7 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
                     "basis": document.get("basis") or delta.get("basis"),
                 }
         if str(delta.get("matrix_scope") or "MATRIX").upper() != "MATRIX" and not include_suspicions:
+            free_search_groups.append(group)
             continue
         effective_group = _with_inspector_evidence(group)
         canonical = _canonical_evidence(effective_group, duplicate_of, dropped_files)
@@ -141,9 +143,23 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
     # so collapsing is opt-in only (CASE10_COLLAPSE_MATRIX_CHECKS=1) and not part of the robust-input default.
     if os.getenv("CASE10_COLLAPSE_MATRIX_CHECKS", "0").strip().lower() in {"1", "true", "yes", "on"}:
         checks = _collapse_matrix_checks(checks)
+    # Free-search hypotheses (TZ 9.5) are not matrix checks and never count as violations; they are listed in their own
+    # top-level array (extra key, the schema allows it) so that a consumer of this file sees them next to the checks.
+    free_search_hypotheses: list[dict[str, Any]] = []
+    for group in free_search_groups:
+        try:
+            item = evidence_group_to_submission_check(
+                _canonical_evidence(_with_inspector_evidence(group), duplicate_of, dropped_files), context=context, code_style=style)
+        except Exception:  # noqa: BLE001 -- one malformed hypothesis must not break the whole export
+            continue
+        item["finding_scope"] = "FREE_SEARCH_HYPOTHESIS"
+        item["violation_claimed"] = False
+        free_search_hypotheses.append(item)
+    free_search_hypotheses.sort(key=lambda row: (str(row.get("finding_id") or ""), str(row.get("evidence_group_id") or "")))
     return {
         "object_id": object_id,
         "checks": checks,
+        "free_search_hypotheses": free_search_hypotheses,
         "quality_issues": [quality_issues[key] for key in sorted(quality_issues)],
         "completeness": completeness,
         "source_selection": [source_selection[key] for key in sorted(source_selection)],
