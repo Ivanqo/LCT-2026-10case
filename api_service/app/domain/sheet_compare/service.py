@@ -87,17 +87,18 @@ def _sheet_view(document: Any, page: int, meta: dict[str, Any]) -> dict[str, Any
 
 
 def sheet_pairs(documents: list[Any], gate: Any, *, left_id: int | None = None, right_id: int | None = None, kinds: Iterable[str] = ("stage", "revision"),
-                min_confidence: float | None = None, limit: int = 200, max_pages: int = MAX_PAGES_PER_DOCUMENT) -> dict[str, Any]:
+                min_confidence: float | None = None, limit: int = 200, max_pages: int = MAX_PAGES_PER_DOCUMENT,
+                max_document_pairs: int = MAX_DOCUMENT_PAIRS) -> dict[str, Any]:
     """Matched sheet pairs of the object. `left_id` / `right_id` restrict the document pairs; without them the first
-    `MAX_DOCUMENT_PAIRS` document pairs are scanned and the rest is reported as `truncated_document_pairs`."""
+    `max_document_pairs` document pairs are scanned and the rest is reported as `truncated_document_pairs`."""
     t0 = time.monotonic()
     pairs = document_pairs(documents, gate, kinds=kinds)
     if left_id is not None:
         pairs = [p for p in pairs if int(p["left"].id) == int(left_id)]
     if right_id is not None:
         pairs = [p for p in pairs if int(p["right"].id) == int(right_id)]
-    truncated_pairs = max(0, len(pairs) - MAX_DOCUMENT_PAIRS)
-    pairs = pairs[:MAX_DOCUMENT_PAIRS]
+    truncated_pairs = max(0, len(pairs) - max_document_pairs)
+    pairs = pairs[:max_document_pairs]
     metas: dict[int, dict[int, dict[str, Any]]] = {}
     truncated_docs: set[int] = set()
     result: list[dict[str, Any]] = []
@@ -121,7 +122,7 @@ def sheet_pairs(documents: list[Any], gate: Any, *, left_id: int | None = None, 
                            "title_method": match["title_method"]})
     result.sort(key=lambda p: (-p["pair_confidence"], p["left"]["document_id"], p["left"]["page"], p["right"]["document_id"], p["right"]["page"]))
     return {"pairs": result[:limit], "total": len(result), "document_pairs": len(pairs), "truncated_document_pairs": truncated_pairs,
-            "truncated_documents": sorted(truncated_docs), "seconds": round(time.monotonic() - t0, 1),
+            "truncated_documents": sorted(truncated_docs), "pages_scanned": sum(len(m) for m in metas.values()), "seconds": round(time.monotonic() - t0, 1),
             "note": "Уверенность сопоставления, процент сходства листов и величина отклонения — разные величины; здесь только первая."}
 
 

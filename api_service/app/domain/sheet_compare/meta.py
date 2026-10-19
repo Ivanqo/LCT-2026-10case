@@ -116,6 +116,32 @@ def extract_title(words: list[tuple[float, float, float, float, str]], width: fl
     return {"title": None, "kind": None, "source": None}
 
 
+def stamp_stems(words: list[tuple[float, float, float, float, str]], width: float, height: float) -> list[str]:
+    """Stems of the descriptive text of the title block (the name of the document / system / sheet; labels and names of the
+    signatories dropped). What is printed on every sheet of the document (address, organisation) is removed later, per document, by
+    `annotate_document`."""
+    block = [w for w in words if w[0] > width * _TITLE_X and w[3] > height * _TITLE_Y]
+    lines = [ln for ln in _lines(block) if not _is_label_line(ln[2]) and not _NAME_RE.match(ln[2].strip())]
+    return sorted({s for ln in lines for s in stems(ln[2])})[:80]
+
+
+BOILERPLATE_SHARE = 0.35
+BOILERPLATE_MIN_PAGES = 6
+
+
+def annotate_document(pages: dict[int, dict[str, Any]]) -> None:
+    """Sets `stamp_distinct` on every page: the title-block stems that are NOT printed on a third or more of the document's
+    pages (the project address, the author organisation and the stage are on all of them and say nothing about the sheet)."""
+    stamped = [m for m in pages.values() if m.get("stamp_stems")]
+    counts: dict[str, int] = {}
+    for m in stamped:
+        for s in m["stamp_stems"]:
+            counts[s] = counts.get(s, 0) + 1
+    limit = max(2, BOILERPLATE_SHARE * len(stamped)) if len(stamped) >= BOILERPLATE_MIN_PAGES else len(stamped) + 1
+    for m in pages.values():
+        m["stamp_distinct"] = [s for s in m.get("stamp_stems") or [] if counts.get(s, 0) < limit]
+
+
 def _label_set(words: list[tuple[float, float, float, float, str]], width: float, height: float) -> list[str]:
     """Normalised text labels of the drawing area (title block excluded): Cyrillic stems and marks (П1, ВЕ3, Т1, ...)."""
     keep: set[str] = set()
@@ -151,7 +177,7 @@ def page_meta(page, *, width: float | None = None, height: float | None = None) 
     meta["sheet_no"] = designation.get("sheet")
     meta["cipher"] = designation.get("cipher")
     title = extract_title(words, width, height)
-    meta.update({"title": title["title"], "kind": title["kind"], "title_source": title["source"]})
+    meta.update({"title": title["title"], "kind": title["kind"], "title_source": title["source"], "stamp_stems": stamp_stems(words, width, height)})
     snapshot = {"words": [{"text": w[4], "bbox": [w[0], w[1], w[2], w[3]]} for w in words], "height": height,
                 "text": " ".join(w[4] for w in words)}
     context = rdc.detect_sheet_context(snapshot)
@@ -234,7 +260,10 @@ def document_meta(pdf_bytes: bytes, sha256: str | None = None, *, pages: range |
             os.replace(tmp, path)
         except OSError as exc:
             logger.warning("sheet meta cache write failed: %s", exc)
-    return out
+    # boilerplate of the title block is judged over every page scanned so far (the cache holds them), not only the requested ones
+    everything = {int(k): dict(v) for k, v in stored.items() if isinstance(v, dict)}
+    annotate_document(everything)
+    return {number: everything.get(number, item) for number, item in out.items()}
 
 
 def title_stems(meta: dict[str, Any]) -> list[str]:
@@ -247,4 +276,6 @@ def is_drawing(meta: dict[str, Any]) -> bool:
         return False
     if meta.get("kind") in DRAWING_KINDS:
         return True
+    if meta.get("kind") is not None:          # specification / schedule / legend / general data: a table, not a drawing
+        return False
     return max(float(meta.get("width") or 0), float(meta.get("height") or 0)) >= 1000

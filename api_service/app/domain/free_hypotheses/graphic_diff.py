@@ -44,9 +44,11 @@ def detect(documents: list[Any], gate: Any, *, object_id: str | None) -> tuple[l
     if not cfg.graphic_diff_enabled() or not raster.available():
         stats["skipped"] = "sheet_compare_disabled" if not cfg.graphic_diff_enabled() else "opencv_missing"
         return [], stats
-    listing = service.sheet_pairs(list(documents), gate, kinds=_kinds(), min_confidence=cfg.GRAPHIC_PAIR_CONFIDENCE, limit=10_000)
+    listing = service.sheet_pairs(list(documents), gate, kinds=_kinds(), min_confidence=cfg.GRAPHIC_PAIR_CONFIDENCE, limit=10_000,
+                                 max_document_pairs=cfg.GRAPHIC_MAX_DOCUMENT_PAIRS)
     docs = {int(d.id): d for d in documents}
-    stats.update({"pairs_matched": listing["total"], "document_pairs": listing["document_pairs"], "truncated_document_pairs": listing["truncated_document_pairs"]})
+    stats.update({"pairs_matched": listing["total"], "document_pairs": listing["document_pairs"], "truncated_document_pairs": listing["truncated_document_pairs"],
+                  "pages_scanned": listing.get("pages_scanned")})
     eligible = [p for p in listing["pairs"] if not p["ambiguous"]]
     stats["pairs_ambiguous"] = listing["total"] - len(eligible)
     eligible = eligible[:cfg.GRAPHIC_MAX_PAIRS]

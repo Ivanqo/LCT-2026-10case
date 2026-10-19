@@ -22,9 +22,11 @@ from typing import Any, Iterable
 from ..free_hypotheses.text_utils import fold, stems
 from .config import AMBIGUITY_MARGIN, MIN_PAIR_CONFIDENCE
 
-WEIGHTS = {"title": 3.0, "levels": 2.5, "rooms": 2.5, "labels": 2.0, "cipher": 2.5, "kind": 1.0, "format": 1.0}
-SUBSTANTIVE = ("title", "levels", "rooms", "labels", "cipher")
+WEIGHTS = {"title": 3.0, "levels": 2.5, "rooms": 2.5, "labels": 2.0, "cipher": 2.5, "stamp": 2.0, "kind": 1.0, "format": 1.0}
+SUBSTANTIVE = ("title", "levels", "rooms", "labels", "cipher", "stamp")
 EVIDENCE_CAP = 0.45
+STAMP_VETO = 0.2          # title blocks that name different documents / systems cap the pair (below)
+STAMP_VETO_CAP = 0.5
 
 _FLOOR_RE = re.compile(r"(-?\d{1,2})\s*-?\s*(?:й|го|ого|ом|ый)?\s*этаж")
 _FLOOR_WORD = re.compile(r"(подвал|цоколь|кровл|чердак|техническ\w*\s+этаж|техэтаж|типов\w+\s+этаж)")
@@ -146,6 +148,12 @@ def score_pair(a: dict[str, Any], b: dict[str, Any], *, same_series: bool = Fals
     if len(sa) >= 8 and len(sb) >= 8:
         components["labels"] = round(_jaccard(sa, sb), 4)
         basis.append(f"общих текстовых меток: {len(sa & sb)}")
+    xa, xb = set(a.get("stamp_distinct") or []), set(b.get("stamp_distinct") or [])
+    stamp_conflict = False
+    if len(xa) >= 2 and len(xb) >= 2:
+        components["stamp"] = round(_jaccard(xa, xb), 4)
+        stamp_conflict = components["stamp"] < STAMP_VETO
+        basis.append(f"основные надписи: общих слов {len(xa & xb)} из {len(xa | xb)}")
     ca, cb = _normalise_cipher(a.get("cipher")), _normalise_cipher(b.get("cipher"))
     if same_series and ca and cb:
         if ca == cb:
@@ -164,6 +172,9 @@ def score_pair(a: dict[str, Any], b: dict[str, Any], *, same_series: bool = Fals
     evidence = sum(1 for k in SUBSTANTIVE if k in components)
     if evidence < 2:
         confidence = min(confidence, EVIDENCE_CAP)
+    if stamp_conflict:
+        confidence = min(confidence, STAMP_VETO_CAP)
+        basis.append("основные надписи листов называют разные объекты или системы")
     return {"confidence": round(confidence, 4), "components": components, "reject": None, "basis": basis, "evidence": evidence, "title_method": title_method}
 
 

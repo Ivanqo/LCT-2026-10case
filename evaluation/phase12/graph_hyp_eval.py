@@ -62,7 +62,7 @@ def cmd_run(args) -> None:
         rows.append({"object": args.object, "confidence": c.confidence, "location": c.location, "description": c.description, "details": c.details,
                      "evidence": [{"file": str(paths[int(r.document.id)][0]), "page": r.page, "stage": r.stage, "bbox": r.bbox_pdf, "size": [r.page_width, r.page_height]} for r in c.evidence]})
     report = {"object": args.object, "documents": len(docs), "pages_in_documents": pages, "kinds": args.kinds, "hypotheses": len(rows), "seconds": round(seconds, 1),
-              "per_100_pages": round(100 * len(rows) / max(1, pages), 3), "stats": stats}
+              "per_100_pages": round(100 * len(rows) / max(1, pages), 3), "per_100_pages_scanned": round(100 * len(rows) / max(1, stats.get("pages_scanned") or 1), 3), "stats": stats}
     (out / f"hyp_{args.object}.json").write_text(json.dumps({"report": report, "hypotheses": rows}, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False))
 

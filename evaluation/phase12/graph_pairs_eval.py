@@ -42,6 +42,10 @@ MAX_DOC_PAIRS = 60
 
 def stage_of(rel: str) -> str | None:
     low = rel.lower().replace("\\", "/")
+    if "стадия рд" in low or "/полные разделы/" in low:
+        return "RD"
+    if "стадия п/" in low or "стадия п\\" in low:
+        return "PD"
     if "исполнительн" in low or "/ид/" in low or low.startswith("ид/") or "аоср" in low:
         return None
     if "рабоч" in low or "/рд/" in low or low.startswith("рд/"):
@@ -64,6 +68,10 @@ def object_documents(root: Path) -> list[dict]:
         docs.append({"path": str(path), "rel": rel, "stage": stage, "tags": sorted(facts["tags"]), "section_key": facts["section_key"], "family": facts["family"],
                      "markers": [list(m) for m in facts["markers"]], "size": path.stat().st_size})
     return docs
+
+
+def _marker_key(doc: dict) -> list:
+    return [(str(k), int(v or 0)) for k, v in doc["markers"]]
 
 
 def scan(doc: dict) -> dict[int, dict]:
@@ -98,7 +106,8 @@ def cmd_pairs(args) -> None:
             for b in rd[i + 1:]:
                 if a["section_key"] and a["section_key"] == b["section_key"] and a["family"] and a["family"] == b["family"] and a["markers"] != b["markers"]:
                     revisions.append((a, b, a["section_key"], "revision"))
-        pairs = pairs[:MAX_DOC_PAIRS] + revisions[:MAX_DOC_PAIRS]
+        random.Random(args.doc_seed).shuffle(pairs)   # a fixed shuffle: the first documents of the sorted tree are not the only ones sampled
+        pairs = pairs[:args.max_doc_pairs] + revisions[:args.max_doc_pairs]
         metas: dict[str, dict] = {}
         pages = 0
         count = 0
@@ -113,7 +122,7 @@ def cmd_pairs(args) -> None:
                         metas[doc["path"]] = {}
             L = [{"key": n, "meta": m} for n, m in metas[left["path"]].items() if sheet_meta.is_drawing(m)]
             R = [{"key": n, "meta": m} for n, m in metas[right["path"]].items() if sheet_meta.is_drawing(m)]
-            if kind == "revision" and left["markers"] and right["markers"] and left["markers"] > right["markers"]:
+            if kind == "revision" and left["markers"] and right["markers"] and _marker_key(left) > _marker_key(right):
                 left, right, L, R = right, left, R, L
             for match in matching.match_sheets(L, R, same_series=kind == "revision", min_confidence=args.min_confidence):
                 lm, rm = metas[left["path"]][match["left"]], metas[right["path"]][match["right"]]
@@ -206,6 +215,8 @@ def main() -> None:
     p.add_argument("--out", required=True)
     p.add_argument("--objects", nargs="+", default=["LOS3A", "ALT79B", "IZU12", "OKT103", "TYU"])
     p.add_argument("--min-confidence", type=float, default=0.55)
+    p.add_argument("--max-doc-pairs", type=int, default=MAX_DOC_PAIRS)
+    p.add_argument("--doc-seed", type=int, default=20261019)
     s = sub.add_parser("sample")
     s.add_argument("--out", required=True)
     s.add_argument("--n", type=int, default=20)

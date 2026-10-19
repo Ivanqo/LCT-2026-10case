@@ -142,6 +142,40 @@ class PairingTests(unittest.TestCase):
         self.assertEqual(matching.score_pair(a, a, use_embeddings=False), matching.score_pair(a, a, use_embeddings=False))
 
 
+class StampTests(unittest.TestCase):
+    def test_boilerplate_of_the_title_block_is_removed_per_document(self):
+        pages = {n: {"stamp_stems": ["жилой", "адрес", "лосев", f"сист{n}"]} for n in range(1, 11)}
+        sheet_meta.annotate_document(pages)
+        self.assertEqual(pages[3]["stamp_distinct"], ["сист3"])        # the address / stage words are on every page: not evidence
+
+    def test_short_documents_keep_their_stems(self):
+        pages = {1: {"stamp_stems": ["жилой", "сист1"]}, 2: {"stamp_stems": ["жилой", "сист2"]}}
+        sheet_meta.annotate_document(pages)
+        self.assertEqual(pages[1]["stamp_distinct"], ["жилой", "сист1"])
+
+    def test_title_blocks_that_name_different_systems_cap_the_pair(self):
+        rooms = [str(100 + i) for i in range(10)]
+        same = dict(title="Ситуационный план", kind="plan", rooms=rooms, labels=[f"м{i}ab" for i in range(10)])
+        a = pm(stamp_distinct=["ливне", "канал"], **same)
+        b = pm(stamp_distinct=["хозяй", "бытов", "внутр"], **same)
+        result = matching.score_pair(a, b, use_embeddings=False)
+        self.assertLessEqual(result["confidence"], matching.STAMP_VETO_CAP)
+        self.assertTrue(any("разные объекты" in line for line in result["basis"]))
+        agree = matching.score_pair(a, pm(stamp_distinct=["ливне", "канал", "сети"], **same), use_embeddings=False)
+        self.assertGreater(agree["confidence"], matching.STAMP_VETO_CAP)
+
+    def test_tables_and_legends_are_not_drawings_but_plans_and_large_untitled_sheets_are(self):
+        self.assertFalse(sheet_meta.is_drawing(pm(kind="spec")))
+        self.assertFalse(sheet_meta.is_drawing(pm(kind="general")))
+        self.assertTrue(sheet_meta.is_drawing(pm(kind="plan", width=595, height=842)))
+        self.assertTrue(sheet_meta.is_drawing(pm(kind=None)))              # A3 landscape, no readable title
+        self.assertFalse(sheet_meta.is_drawing(pm(kind=None, width=595, height=842)))
+        self.assertFalse(sheet_meta.is_drawing({"error": "unreadable"}))
+
+    def test_a_repeated_caption_collapses(self):
+        self.assertEqual(sheet_meta._dedupe_words("Н. Н. контр. контр. План"), "Н. контр. План")
+
+
 class MetaTests(unittest.TestCase):
     @needs_font
     def test_synthetic_sheet_title_rooms_and_level(self):
