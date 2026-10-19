@@ -23,6 +23,7 @@ from .base import (
     ALL_METHODS,
     METHOD_LOGICAL,
     METHOD_CHANGE_SHEET,
+    METHOD_GRAPHIC,
     METHOD_LAYERS,
     METHOD_ML,
     METHOD_NORMATIVE,
@@ -118,6 +119,13 @@ def _detect_layers(ctx: RunContext):
     return out, stats, True
 
 
+def _detect_graphic(ctx: RunContext):
+    from . import graphic_diff
+
+    out, stats = graphic_diff.detect(ctx.documents, ctx.gate, object_id=ctx.object_id)
+    return out, stats, bool(stats.get("enabled") and not stats.get("skipped"))
+
+
 def _detect_normative(ctx: RunContext):
     from . import normative
 
@@ -136,6 +144,7 @@ DETECTORS: dict[str, Callable[[RunContext], tuple[list[HypothesisCandidate], dic
     METHOD_UNMATCHED: _detect_unmatched,
     METHOD_CHANGE_SHEET: _detect_change_sheet,
     METHOD_LAYERS: _detect_layers,
+    METHOD_GRAPHIC: _detect_graphic,
     METHOD_SEMANTIC: _detect_semantic,
     METHOD_LOGICAL: _detect_logical,
     METHOD_NORMATIVE: _detect_normative,

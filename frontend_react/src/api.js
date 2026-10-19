@@ -147,7 +147,30 @@ export const api = {
   },
   verificationTiming: (processId) => request(`/api/case10/processes/${processId}/verification/timing`),
   pageGeometry: (docId, page) => request(`/api/case10/document-versions/${docId}/pages/${page}/geometry`),
+  sheetCompareStatus: () => request('/api/case10/sheet-compare/status'),
+  sheetPairs: (processId, params = {}) => {
+    const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== ''));
+    return request(`/api/case10/processes/${processId}/sheet-pairs?${qs}`);
+  },
+  sheetCompare: (pair) => request(`/api/case10/sheet-compare?${sheetPairQuery(pair)}`),
 };
+
+function sheetPairQuery(pair) {
+  return new URLSearchParams({
+    left_document_id: pair.left.document_id,
+    left_page: pair.left.page,
+    right_document_id: pair.right.document_id,
+    right_page: pair.right.page,
+    same_series: pair.kind === 'revision' ? 'true' : 'false',
+  }).toString();
+}
+
+/** The difference overlay of a sheet pair (PNG) as a blob URL. */
+export async function fetchSheetOverlay(pair) {
+  const res = await fetch(`${API_BASE}/api/case10/sheet-compare/overlay.png?${sheetPairQuery(pair)}`, { headers: authHeaders() });
+  if (!res.ok) throw new ApiError(`Наложение недоступно (HTTP ${res.status})`, res.status);
+  return URL.createObjectURL(await res.blob());
+}
 
 const pageImageCache = new Map();
 
