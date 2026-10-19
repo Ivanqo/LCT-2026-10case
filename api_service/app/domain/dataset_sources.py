@@ -270,6 +270,11 @@ def _extract_original_page_snapshot(pdf, page_number: int) -> dict:
     rotation = int(page.rotation)
     raw_width, raw_height = float(page.cropbox.width), float(page.cropbox.height)
     width, height = _visible_page_dims(raw_width, raw_height, rotation)
+    # One text page for the words and the plain text below (each `get_text` call otherwise builds its own; the flags of
+    # the two options are the same in PyMuPDF 1.24 -- otherwise each call builds its own, as before).
+    import fitz
+
+    textpage = page.get_textpage(flags=fitz.TEXTFLAGS_WORDS) if fitz.TEXTFLAGS_WORDS == fitz.TEXTFLAGS_TEXT else None
     words = [
         {
             "bbox": _bbox_to_visible_frame(
@@ -278,7 +283,7 @@ def _extract_original_page_snapshot(pdf, page_number: int) -> dict:
             ),
             "text": _normalize_pua_glyphs(str(word[4])),
         }
-        for word in page.get_text("words", sort=True)
+        for word in page.get_text("words", sort=True, textpage=textpage)
         if len(word) >= 5 and str(word[4]).strip()
     ]
     if rotation % 360 != 0:
@@ -287,7 +292,7 @@ def _extract_original_page_snapshot(pdf, page_number: int) -> dict:
         words = [word for row in cluster_rows(words) for word in row]
     # Check the plain text too: PyMuPDF's word tokenizer drops C0 glyphs that
     # `_looks_like_broken_cmap_text` uses to identify a broken text layer.
-    cmap_corrupted = _looks_like_broken_cmap_text(page.get_text("text"))
+    cmap_corrupted = _looks_like_broken_cmap_text(page.get_text("text", textpage=textpage))
     return {
         "page": page_number,
         "width": width,
