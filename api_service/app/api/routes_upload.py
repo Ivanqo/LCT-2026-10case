@@ -21,6 +21,7 @@ from ..clients.rag_client import RagClient
 from ..db.models import AuditLog, DocumentVersion, InspectionProcess, SourceFragment, UploadJob, User
 from ..db.session import SessionLocal, get_db
 from ..domain.document_versions import ensure_document_version_for_upload_job
+from ..domain.stage_from_name import stage_from_name
 from ..domain.v3_jobs import enqueue_process_job, execute_process_job, publish_job_message
 from ..domain.v3_pipeline import get_or_create_open_process, impact_scope_for_documents
 from ..request_context import get_client_ip
@@ -229,6 +230,7 @@ def _import_offline_upload_package(db: Session, job: UploadJob, package: Path, c
         files, registry, package_name=f"upload-{job.process_id}", object_id=object_id,
         registry_sha256=bp.sha256_file(registry_path) if registry_path else None,
         originals_prefix=package.relative_to(settings.BATCH_PACKAGES_ROOT.resolve()).as_posix(),
+        stage_fallback=stage_from_name,  # default for interface uploads: registry and stage folders still win
     )
     if not plan.rows:
         raise bp.PackageError("Не найдено документов для регистрации")
