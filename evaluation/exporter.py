@@ -57,7 +57,7 @@ def protocol_to_evaluation_predictions(protocol: dict[str, Any]) -> dict[str, An
         out_findings.append(prediction["finding"])
         out_evidence.extend(prediction["evidence"])
         out_document_links.extend(prediction["document_links"])
-    return {
+    fields = {
         "total_params": 132 if str(payload.get("matrix_version") or "").startswith("official-132") else len(out_findings),
         "findings": out_findings,
         "evidence": out_evidence,
@@ -65,6 +65,7 @@ def protocol_to_evaluation_predictions(protocol: dict[str, Any]) -> dict[str, An
         "object_id": payload.get("object_id"),
         "provenance": "independent_runtime",
     }
+    return fields
 
 
 def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool = False, code_style: str | None = None) -> dict[str, Any]:
@@ -135,6 +136,9 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
             exported_groups.append(canonical)
     checks, group_keys = _apply_identity(checks, group_keys, exported_groups, context=context, code_style=style)
     _disambiguate_identifiers(checks, group_keys)
+    from app.robustness import robust_inputs_enabled
+    if robust_inputs_enabled():
+        checks = _collapse_matrix_checks(checks)
     return {
         "object_id": object_id,
         "checks": checks,
@@ -435,11 +439,12 @@ def _tier_fields(group: dict[str, Any], delta: dict[str, Any]) -> dict[str, Any]
     status = str(group.get("finding_status") or "").upper()
     explanation = delta.get("explanation") if isinstance(delta.get("explanation"), dict) else {}
     tier = et.tier_of(status, delta)
-    return {
+    assumptions = sorted({str(item) for item in delta.get("assumption_reasons") or []})
+    fields = {
         "evidence_tier": tier,
         "tier_reasons": list(delta.get("tier_reasons") or []) or None,
         "no_result_state": delta.get("no_result_state") or et.no_result_state(status, et.reason_of(delta)),
-        "reason_code": et.reason_of(delta) or None,
+        "reason_code": "approval_unverified" if "approval_unverified" in assumptions else (et.reason_of(delta) or None),
         "text_confidence": explanation.get("text_confidence", delta.get("text_confidence")),
         "link_confidence": explanation.get("link_confidence", delta.get("link_confidence")),
         "deviation": ({"abs": explanation.get("deviation_abs"), "pct": explanation.get("deviation_pct"),
@@ -450,6 +455,45 @@ def _tier_fields(group: dict[str, Any], delta: dict[str, Any]) -> dict[str, Any]
         "threshold_basis": explanation.get("threshold_basis"),
         "violation_claimed": (bool(delta["violation_claimed"]) if "violation_claimed" in delta else (tier == et.TIER_VIOLATION_CANDIDATE if tier else None)),
     }
+    if assumptions:
+        fields["assumption_reasons"] = assumptions
+    return fields
+
+
+def _collapse_matrix_checks(checks: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Emit one matrix row per code in robust mode while retaining every source occurrence verbatim."""
+    import copy
+    from collections import defaultdict
+
+    groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    non_matrix: list[dict[str, Any]] = []
+    for check in checks:
+        code = str(check.get("matrix_code") or "").strip()
+        (groups[code].append(check) if code else non_matrix.append(check))
+    labels = {"VIOLATION_PRESENT": 0, "COMPARISON_IMPOSSIBLE": 1, "MISSING_DOCUMENT": 2, "NO_VIOLATION": 3}
+    collapsed: list[dict[str, Any]] = []
+    for code in sorted(groups):
+        occurrences = groups[code]
+        if len(occurrences) == 1:
+            collapsed.append(occurrences[0])
+            continue
+        ordered = sorted(occurrences, key=lambda item: (
+            labels.get(str(item.get("violation_label") or ""), 4),
+            -len(item.get("evidence") or []),
+            json.dumps(item, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str),
+        ))
+        head = copy.deepcopy(ordered[0])
+        evidence: dict[str, dict[str, Any]] = {}
+        for occurrence in ordered:
+            for citation in occurrence.get("evidence") or []:
+                key = json.dumps(citation, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+                evidence[key] = citation
+        head["evidence"] = [evidence[key] for key in sorted(evidence)]
+        head["occurrence_count"] = len(ordered)
+        head["related_occurrences"] = [copy.deepcopy(item) for item in sorted(
+            ordered, key=lambda item: json.dumps(item, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str))]
+        collapsed.append(head)
+    return collapsed + non_matrix
 
 
 def _gold11_fields(group: dict[str, Any], check: dict[str, Any], internal_code: str, context: dict[str, Any]) -> dict[str, Any]:

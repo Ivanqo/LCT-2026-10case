@@ -17,6 +17,7 @@ from sqlalchemy.orm import Session
 from ..batch_package import PACKAGE_SPLIT, STATUS_ACCEPTED, STATUS_CLARIFICATION_REQUIRED
 from ..db.models import AuditLog, DocumentVersion, InspectorEdit, Param
 from . import document_facts as df
+from ..robustness import approval_unknown_policy
 
 APPROVED_STATUSES = frozenset({"APPROVED", "FOR_CONSTRUCTION", "SIGNED"})
 FORBIDDEN_STATUSES = frozenset({"SUPERSEDED", "CANCELLED"})
@@ -252,6 +253,10 @@ def revision_scopes(db: Session, process) -> list[dict[str, Any]]:
                   "маркер редакции и связанная approval_status / approval_date из реестра",
                   explicit_tip=tip)
 
+    revision_scope_doc_ids = {
+        int(candidate["document_version_id"])
+        for scope in scopes for candidate in scope.get("candidates") or []
+    }
     for doc in sorted(docs, key=lambda item: int(item.id)):
         if int(doc.id) in covered:
             continue
@@ -267,6 +272,11 @@ def revision_scopes(db: Session, process) -> list[dict[str, Any]]:
                       f"Перечень ИД 1.1: {detail}")
             continue
         if registry_enforced and approval not in APPROVED_STATUSES | FORBIDDEN_STATUSES:
+            # A lone edition with an otherwise accepted registry can be compared only as an explicit assumption.
+            # Any edition scope (chain or conflict), registry mismatch, or forbidden status keeps its normal block.
+            if (approval_unknown_policy() == "soft" and status == STATUS_ACCEPTED and not issues
+                    and int(doc.id) not in revision_scope_doc_ids):
+                continue
             stage = facts_by_id[int(doc.id)].stage
             add_scope(stage, str(doc.document_code or doc.dataset_file_id or doc.id), "APPROVAL_STATUS", [doc],
                       f"реестр содержит approval_status={approval}; утверждённость источника не подтверждена")
@@ -281,6 +291,11 @@ def selection_context(db: Session, process, docs: list[DocumentVersion] | None =
     by_id = {int(doc.id): doc for doc in docs}
     inspector_choices = _inspector_choices(db, process)
     scopes = revision_scopes(db, process)
+    revision_scope_doc_ids = {
+        int(candidate["document_version_id"])
+        for scope in scopes for candidate in scope.get("candidates") or []
+    }
+    approval_unverified_document_ids: set[int] = set()
     excluded: set[int] = set()
     blocked: dict[int, dict[str, Any]] = {}
     for doc in docs:
@@ -290,6 +305,11 @@ def selection_context(db: Session, process, docs: list[DocumentVersion] | None =
         status, reason = _registry_status(doc, package_report)
         manifest = _manifest(doc)
         issues = manifest.get("registry_issues") or []
+        registry_enforced = str(doc.dataset_split or "").upper() == PACKAGE_SPLIT or bool(manifest.get("registry_required"))
+        if (approval_unknown_policy() == "soft" and registry_enforced and status == STATUS_ACCEPTED and not issues
+                and _approval(doc) not in APPROVED_STATUSES | FORBIDDEN_STATUSES
+                and int(doc.id) not in revision_scope_doc_ids):
+            approval_unverified_document_ids.add(int(doc.id))
         if status == STATUS_CLARIFICATION_REQUIRED or issues:
             blocked[int(doc.id)] = {
                 "reason": "registry_clarification_required",
@@ -325,7 +345,12 @@ def selection_context(db: Session, process, docs: list[DocumentVersion] | None =
                 if doc and _approval(doc) not in FORBIDDEN_STATUSES:
                     blocked.pop(int(choice_id), None)
 
-    return {"excluded_document_ids": excluded, "blocked_by_document": blocked, "scopes": scopes}
+    return {
+        "excluded_document_ids": excluded,
+        "blocked_by_document": blocked,
+        "scopes": scopes,
+        "approval_unverified_document_ids": approval_unverified_document_ids,
+    }
 
 
 def blocking_for_param(param: Param, docs: list[DocumentVersion], selection: dict[str, Any]) -> dict[str, Any] | None:
@@ -459,6 +484,8 @@ def completeness_report(db: Session, process) -> dict[str, Any]:
                         "document_version_id": int(doc.id), "file_id": doc.dataset_file_id, "file": doc.filename,
                         "approval_status": _approval(doc), "approval_date": doc.approval_date.isoformat() if doc.approval_date else None,
                         "selected": not bool(selection["blocked_by_document"].get(int(doc.id))),
+                        **({"assumption_reasons": ["approval_unverified"]}
+                           if int(doc.id) in selection.get("approval_unverified_document_ids", set()) else {}),
                     })
 
     rows = []
@@ -511,7 +538,7 @@ def completeness_report(db: Session, process) -> dict[str, Any]:
         "expected_sections": sum(1 for row in rows if row["stage"] == stage and row["expected"]),
         "found_sections": sum(1 for row in rows if row["stage"] == stage and row["status"] == "UPLOADED"),
     } for stage in _STAGES]
-    return {
+    result = {
         "process_id": process.id,
         "source": "file_registry",
         "registry_present": registry_present,
@@ -526,3 +553,10 @@ def completeness_report(db: Session, process) -> dict[str, Any]:
         "excluded_files": len(selection["excluded_document_ids"]),
         "rows": rows,
     }
+    if approval_unknown_policy() == "soft":
+        result["approval_policy"] = "soft"
+        result["approval_unverified_files"] = sorted(
+            str(doc.dataset_file_id) for doc in docs
+            if int(doc.id) in selection.get("approval_unverified_document_ids", set())
+        )
+    return result

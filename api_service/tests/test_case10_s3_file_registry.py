@@ -24,6 +24,7 @@ from app.db.models import (
     AuditLog,
     DocumentVersion,
     EvidenceGroup,
+    EvidenceFragment,
     InspectionProcess,
     MatrixVersion,
     Organization,
@@ -58,6 +59,10 @@ class S3RegistryTestBase(unittest.TestCase):
         settings.TEMP_UPLOADS_DIR = self.root / "temp"
         self._originals_root = os.environ.get("CASE10_ORIGINALS_ROOT")
         os.environ.pop("CASE10_ORIGINALS_ROOT", None)
+        self._dataset_root = os.environ.get("CASE10_DATASET_ROOT")
+        os.environ["CASE10_DATASET_ROOT"] = str(Path(__file__).resolve().parents[1] / "app" / "reference_data")
+        from app.domain.official_dataset import find_dataset_paths
+        find_dataset_paths.cache_clear()
         self._route_session_factory = routes_upload.SessionLocal
         self._route_publish_job = routes_upload.publish_job_message
 
@@ -100,6 +105,12 @@ class S3RegistryTestBase(unittest.TestCase):
             os.environ.pop("CASE10_ORIGINALS_ROOT", None)
         else:
             os.environ["CASE10_ORIGINALS_ROOT"] = self._originals_root
+        if self._dataset_root is None:
+            os.environ.pop("CASE10_DATASET_ROOT", None)
+        else:
+            os.environ["CASE10_DATASET_ROOT"] = self._dataset_root
+        from app.domain.official_dataset import find_dataset_paths
+        find_dataset_paths.cache_clear()
         self.tmp.cleanup()
 
 
@@ -136,6 +147,69 @@ class FileRegistryPolicyTests(S3RegistryTestBase):
         self.db.add(doc)
         self.db.flush()
         return doc
+
+    def test_unknown_approval_policy_soft_allows_only_a_lone_clean_revision_as_assumption(self):
+        doc = self.add_document(name="single-АР.pdf", file_id="UNKNOWN-ONLY", approval="UNKNOWN")
+        self.db.commit()
+        with patch.dict(os.environ, {"CASE10_APPROVAL_UNKNOWN_POLICY": "block"}):
+            blocked = file_registry.selection_context(self.db, self.process)
+        self.assertEqual(blocked["blocked_by_document"][doc.id]["reason"], "revision_clarification_required")
+        with patch.dict(os.environ, {"CASE10_APPROVAL_UNKNOWN_POLICY": "soft"}):
+            scopes = file_registry.revision_scopes(self.db, self.process)
+            soft = file_registry.selection_context(self.db, self.process)
+        self.assertFalse(any(item["type"] == "APPROVAL_STATUS" for item in scopes))
+        self.assertNotIn(doc.id, soft["blocked_by_document"])
+        self.assertEqual(soft["approval_unverified_document_ids"], {doc.id})
+
+    def test_unknown_approval_soft_policy_keeps_revision_conflicts_and_forbidden_states_blocked(self):
+        first = self.add_document(name="01-АР red1.pdf", file_id="CHAIN-UNKNOWN-1", approval="UNKNOWN")
+        second = self.add_document(name="01-АР red2.pdf", file_id="CHAIN-UNKNOWN-2", approval="UNKNOWN",
+                                   predecessor=first.id)
+        first.successor_id = second.id
+        superseded = self.add_document(name="old-АР.pdf", file_id="OLD-SUPERSEDED", approval="SUPERSEDED")
+        cancelled = self.add_document(name="old2-АР.pdf", file_id="OLD-CANCELLED", approval="CANCELLED")
+        self.db.commit()
+        with patch.dict(os.environ, {"CASE10_APPROVAL_UNKNOWN_POLICY": "soft"}):
+            scopes = file_registry.revision_scopes(self.db, self.process)
+            selection = file_registry.selection_context(self.db, self.process)
+        chain = next(item for item in scopes if item["type"] == "PREDECESSOR_CHAIN")
+        self.assertEqual(chain["system_status"], "CLARIFICATION_REQUIRED")
+        self.assertEqual(selection["blocked_by_document"][first.id]["reason"], "revision_clarification_required")
+        self.assertEqual(selection["blocked_by_document"][second.id]["reason"], "revision_clarification_required")
+        self.assertEqual(selection["approval_unverified_document_ids"], set())
+        self.assertIn(superseded.id, selection["excluded_document_ids"])
+        self.assertIn(cancelled.id, selection["excluded_document_ids"])
+
+    def test_soft_assumption_downgrades_verified_negative_and_exports_reason(self):
+        doc = self.add_document(name="single-АР-assumption.pdf", file_id="ASSUMPTION", approval="UNKNOWN")
+        param = Param(matrix_version_id=self.matrix.id, project_id=self.project.id, organization_id=self.org.id,
+                      code="S3-ASSUMPTION", section="АР", parameter_name="Площадь", unit="м²",
+                      source_pd=True, source_rd=False, source_id=False, is_active=True)
+        self.db.add(param)
+        self.db.flush()
+        group = EvidenceGroup(
+            process_id=self.process.id, project_id=self.project.id, organization_id=self.org.id,
+            object_id=self.process.object_id, param_id=param.id, matrix_version=self.process.matrix_version,
+            model_version=self.process.model_version, dataset_version=self.process.dataset_version,
+            comparison_scenario="SINGLE_ONLY", completeness_status="COMPLETE", comparability_status="COMPARABLE",
+            finding_status="NEGATIVE_VERIFIED", expected_value="10", actual_value="10",
+            delta={"equal": True, "reason": "values_equal"}, review_priority="MEDIUM", group_key="entity:test",
+        )
+        self.db.add(group)
+        self.db.flush()
+        self.db.add(EvidenceFragment(evidence_group_id=group.id, document_version_id=doc.id,
+                                     dataset_file_id=doc.dataset_file_id, stage="PD", role="expected"))
+        self.db.flush()
+        official_evidence._mark_approval_unverified_assumptions(
+            self.db, self.process, {param.id: {group.group_key}}, {"approval_unverified_document_ids": {doc.id}},
+        )
+        self.assertEqual(group.finding_status, "CANDIDATE")
+        self.assertEqual(group.delta["assumption_reasons"], ["approval_unverified"])
+        self.assertIn("approval_unverified", group.delta["tier_reasons"])
+        from evaluation.exporter import _tier_fields
+        fields = _tier_fields({"finding_status": group.finding_status}, group.delta)
+        self.assertEqual(fields["reason_code"], "approval_unverified")
+        self.assertEqual(fields["evidence_tier"], "SUGGESTION")
 
     def test_predecessor_chain_selects_only_approved_tip_and_never_keeps_superseded(self):
         old = self.add_document(name="01-АР.pdf", file_id="OLD", approval="SUPERSEDED")

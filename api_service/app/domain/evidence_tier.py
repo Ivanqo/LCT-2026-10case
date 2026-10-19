@@ -49,6 +49,7 @@ _PROCESSING_REASONS = {"garbled_table_text", "broken_text_layer_no_ocr", "attemp
 # Why a SUGGESTION is a suggestion (machine readable; the protocol prints a text for each)
 SUGGESTION_REASON_TEXT = {
     "revision_conflict": "в стадии несколько неупорядочиваемых редакций раздела: значение взято из одной из них",
+    "approval_unverified": "сравнение выполнено как предположение: утверждённость единственной редакции не подтверждена реестром",
     "trigger_not_evaluable": "условие триггера по каталогу нельзя проверить сравнением значений",
     "trigger_undetermined": "значения различаются, но форма/единица значения не позволяет проверить условие триггера",
     "threshold_not_set_by_matrix": "порог для этого уровня объекта матрицей не установлен; показана величина отклонения",

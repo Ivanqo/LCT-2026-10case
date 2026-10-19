@@ -18,7 +18,7 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 # Bump whenever the decision logic of `_quality_for_page` changes (reasons, thresholds, geometry predicates).
-QUALITY_ALGORITHM_VERSION = "page-quality-v2"
+QUALITY_ALGORITHM_VERSION = "page-quality-v3"
 _SCHEMA = 1
 
 

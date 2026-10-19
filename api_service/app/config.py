@@ -4,6 +4,8 @@ from pydantic import BaseModel
 from pathlib import Path
 import os
 
+from .robustness import default_max_unpacked_bytes
+
 
 class Settings(BaseModel):
     RAG_SERVICE_URL: str = os.getenv("RAG_SERVICE_URL", "http://rag:8001").rstrip("/")
@@ -141,13 +143,12 @@ class Settings(BaseModel):
     OFFLINE_DELIVERY: bool = os.getenv("CASE10_OFFLINE_DELIVERY", "0").strip().lower() in ("1", "true", "yes", "on")
 
     # Server-side batch path (ТЗ 9.1 / expert session §9, Q14): the 50/200 MB caps above apply to interactive UI
-    # uploads only. `python -m app.cli run` and POST /api/case10/batch-runs read a package folder or ZIP from the
-    # server, with no per-file or per-package size cap. BATCH_PACKAGES_ROOT is the one directory the HTTP path may
-    # read packages/registries from (never an arbitrary server path); ZIPs are unpacked below it, so the unpacked
-    # files stay readable through CASE10_ORIGINALS_ROOT. BATCH_MAX_UNPACKED_BYTES guards the disk against a ZIP
-    # bomb (0 = no cap), it is not a package-size limit.
+    # uploads only. Folder packages have no per-file or per-package size cap. Robust input handling is staged behind
+    # CASE10_ROBUST_INPUTS; with it enabled, CLI/API ZIPs have an 8 GiB default uncompressed-byte guard (0 = no cap),
+    # counted while streaming. BATCH_PACKAGES_ROOT is the only directory the HTTP path may read packages/registries
+    # from (never an arbitrary server path); ZIPs are unpacked below it so files stay readable through CASE10_ORIGINALS_ROOT.
     BATCH_PACKAGES_ROOT: Path = Path(os.getenv("CASE10_BATCH_PACKAGES_ROOT", str(DATA_DIR / "packages"))).resolve()
-    BATCH_MAX_UNPACKED_BYTES: int = int(os.getenv("CASE10_BATCH_MAX_UNPACKED_BYTES", str(256 * 1024**3)))
+    BATCH_MAX_UNPACKED_BYTES: int = int(os.getenv("CASE10_BATCH_MAX_UNPACKED_BYTES", str(default_max_unpacked_bytes())))
 
 
 settings = Settings()

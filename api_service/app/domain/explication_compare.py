@@ -54,6 +54,7 @@ import re
 from types import SimpleNamespace
 from typing import Any, Iterable
 
+from ..robustness import robust_inputs_enabled
 from . import evidence_tier as et
 from . import table_parser as tpar
 from .table_parser import KIND_APARTMENTS, KIND_ROOMS, RoomTable, Row
@@ -634,16 +635,37 @@ def _scan_document_tables_uncached(document: Any) -> dict[str, Any]:
     try:
         data = dataset_sources.original_document_bytes(document)
     except Exception as exc:  # noqa: BLE001 -- an unreadable original is reported, never fatal
-        return {"pages_total": 0, "candidate_pages": [], "tables": [], "skipped": type(exc).__name__}
+        if not robust_inputs_enabled():
+            raise
+        return {"pages_total": 0, "candidate_pages": [], "tables": [],
+                "low_quality": [{"page": None, "quality_status": "LOW_QUALITY",
+                                 "reason": "PDF_PROCESSING_ERROR", "detail": type(exc).__name__}],
+                "skipped": f"PDF_PROCESSING_ERROR:{type(exc).__name__}"}
     pages: list[int] = []
-    with fitz.open(stream=data, filetype="pdf") as pdf:
-        total = len(pdf)
-        for index in range(total):
-            text = re.sub(r"\s+", " ", pdf[index].get_text("text"))
-            if _PREFILTER_RE.search(text):
-                pages.append(index + 1)
-    tables: list[dict[str, Any]] = []
     low_quality: list[dict[str, Any]] = []
+    total = 0
+    try:
+        with fitz.open(stream=data, filetype="pdf") as pdf:
+            total = len(pdf)
+            for index in range(total):
+                try:
+                    text = re.sub(r"\s+", " ", pdf[index].get_text("text"))
+                except Exception as exc:  # noqa: BLE001 -- skip a damaged page and retain its siblings
+                    if not robust_inputs_enabled():
+                        raise
+                    low_quality.append({"page": index + 1, "quality_status": "LOW_QUALITY",
+                                        "reason": "PAGE_PROCESSING_ERROR", "detail": type(exc).__name__})
+                    continue
+                if _PREFILTER_RE.search(text):
+                    pages.append(index + 1)
+    except Exception as exc:  # noqa: BLE001 -- one unreadable PDF must not sink the object's run
+        if not robust_inputs_enabled():
+            raise
+        return {"pages_total": total, "candidate_pages": [], "tables": [],
+                "low_quality": [{"page": None, "quality_status": "LOW_QUALITY",
+                                 "reason": "PDF_PROCESSING_ERROR", "detail": type(exc).__name__}],
+                "skipped": f"PDF_PROCESSING_ERROR:{type(exc).__name__}"}
+    tables: list[dict[str, Any]] = []
     if pages:
         snapshots = dataset_sources.extract_original_pages(document, pages)
         for page in sorted(snapshots):

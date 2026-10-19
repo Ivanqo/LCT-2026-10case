@@ -16,6 +16,7 @@ import tempfile
 import textwrap
 import unittest
 import zipfile
+from unittest.mock import patch
 
 REPO = Path(__file__).resolve().parents[2]
 API = REPO / "api_service"
@@ -391,10 +392,14 @@ class BatchRunEndpointTests(unittest.TestCase):
         self.root = Path(self._tmp.name) / "packages"
         _package(self.root / "Объект А")
         self.settings = settings
-        self._old = (settings.BATCH_PACKAGES_ROOT, settings.LIVE_TAGGER_ENABLED, os.environ.get("CASE10_ORIGINALS_ROOT"))
+        self._old = (settings.BATCH_PACKAGES_ROOT, settings.LIVE_TAGGER_ENABLED, os.environ.get("CASE10_ORIGINALS_ROOT"),
+                     os.environ.get("CASE10_DATASET_ROOT"))
         settings.BATCH_PACKAGES_ROOT = self.root.resolve()
         settings.LIVE_TAGGER_ENABLED = False     # keep the endpoint test fast; the CLI test runs the tagger
         os.environ["CASE10_ORIGINALS_ROOT"] = str(self.root)
+        os.environ["CASE10_DATASET_ROOT"] = str(REPO / "api_service" / "app" / "reference_data")
+        from app.domain.official_dataset import find_dataset_paths
+        find_dataset_paths.cache_clear()
 
         engine = create_engine("sqlite+pysqlite:///:memory:", connect_args={"check_same_thread": False}, poolclass=StaticPool)
         Base.metadata.create_all(engine)
@@ -415,12 +420,18 @@ class BatchRunEndpointTests(unittest.TestCase):
 
     def tearDown(self):
         self.db.close()
-        root, tagger, originals = self._old
+        root, tagger, originals, dataset_root = self._old
         self.settings.BATCH_PACKAGES_ROOT, self.settings.LIVE_TAGGER_ENABLED = root, tagger
         if originals is None:
             os.environ.pop("CASE10_ORIGINALS_ROOT", None)
         else:
             os.environ["CASE10_ORIGINALS_ROOT"] = originals
+        if dataset_root is None:
+            os.environ.pop("CASE10_DATASET_ROOT", None)
+        else:
+            os.environ["CASE10_DATASET_ROOT"] = dataset_root
+        from app.domain.official_dataset import find_dataset_paths
+        find_dataset_paths.cache_clear()
         self._tmp.cleanup()
 
     def test_paths_outside_the_root_are_refused(self):
@@ -428,6 +439,52 @@ class BatchRunEndpointTests(unittest.TestCase):
             response = self.client.post("/api/case10/batch-runs", headers=self.headers,
                                         json={"project_id": self.project.id, "package": package, "run_immediately": False})
             self.assertIn(response.status_code, (404, 422), package)
+
+    def test_all_unsupported_files_return_exclusion_reasons(self):
+        package = self.root / "unsupported"
+        package.mkdir()
+        (package / "notes.unsupported").write_bytes(b"not a CASE10 document")
+        with patch.dict(os.environ, {"CASE10_ROBUST_INPUTS": "1"}):
+            response = self.client.post("/api/case10/batch-runs", headers=self.headers,
+                                        json={"project_id": self.project.id, "package": "unsupported",
+                                              "run_immediately": False})
+        self.assertEqual(response.status_code, 422, response.text)
+        self.assertEqual(response.json()["detail"]["excluded_files"], [
+            {"file": "notes.unsupported", "reason": "UNSUPPORTED_EXTENSION"},
+        ])
+
+    def test_invalid_zip_is_a_documented_client_error(self):
+        archive = self.root / "broken.zip"
+        archive.write_bytes(b"not a ZIP archive")
+        with patch.dict(os.environ, {"CASE10_ROBUST_INPUTS": "1"}):
+            response = self.client.post("/api/case10/batch-runs", headers=self.headers,
+                                        json={"project_id": self.project.id, "package": "broken.zip",
+                                              "run_immediately": False})
+        self.assertEqual(response.status_code, 422, response.text)
+        self.assertIsInstance(response.json().get("detail"), str)
+
+    def test_batch_api_reports_zip_slip_exclusion_reason(self):
+        source_pdf = next((self.root / "Объект А").rglob("*.pdf"))
+        archive = self.root / "unsafe.zip"
+        with zipfile.ZipFile(archive, "w") as package:
+            package.writestr("PD/safe.pdf", source_pdf.read_bytes())
+            package.writestr("../escape.pdf", b"must not escape")
+        with patch.dict(os.environ, {"CASE10_ROBUST_INPUTS": "1"}):
+            response = self.client.post("/api/case10/batch-runs", headers=self.headers,
+                                        json={"project_id": self.project.id, "package": "unsafe.zip",
+                                              "run_immediately": False})
+        self.assertEqual(response.status_code, 200, response.text)
+        excluded = response.json()["package"]["excluded_files"]
+        self.assertIn({"file": "../escape.pdf", "reason": "PARENT_TRAVERSAL"}, excluded)
+
+    def test_batch_api_returns_documented_error_for_package_read_failure(self):
+        with patch.dict(os.environ, {"CASE10_ROBUST_INPUTS": "1"}), \
+             patch("app.api.routes_batch.bp.scan_package", side_effect=PermissionError("synthetic unreadable package")):
+            response = self.client.post("/api/case10/batch-runs", headers=self.headers,
+                                        json={"project_id": self.project.id, "package": "Объект А",
+                                              "run_immediately": False})
+        self.assertEqual(response.status_code, 422)
+        self.assertIn("PermissionError", response.json()["detail"])
 
     def test_import_then_run_gives_readable_documents_and_a_valid_result(self):
         from app.db.models import DocumentVersion
