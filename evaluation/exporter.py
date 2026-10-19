@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 import hashlib
 import json
+import os
 from pathlib import Path
 from app.domain import matrix_v11
 from .errors import LeakageGuardError
@@ -136,8 +137,9 @@ def protocol_to_submission(protocol: dict[str, Any], *, include_suspicions: bool
             exported_groups.append(canonical)
     checks, group_keys = _apply_identity(checks, group_keys, exported_groups, context=context, code_style=style)
     _disambiguate_identifiers(checks, group_keys)
-    from app.robustness import robust_inputs_enabled
-    if robust_inputs_enabled():
+    # One matrix row per code hides every location-level finding behind the strongest one (ALT79B: 39 -> 2 violations),
+    # so collapsing is opt-in only (CASE10_COLLAPSE_MATRIX_CHECKS=1) and not part of the robust-input default.
+    if os.getenv("CASE10_COLLAPSE_MATRIX_CHECKS", "0").strip().lower() in {"1", "true", "yes", "on"}:
         checks = _collapse_matrix_checks(checks)
     return {
         "object_id": object_id,
