@@ -74,6 +74,8 @@ docker compose -f docker-compose.case10.yml up -d --build
 Сеть нужна только при сборке образов (базовые образы, зависимости, веса MiniLM); работающему сервису она не нужна.
 Пакетный запуск без стенда и без сети (`python -m app.cli run`) — в [разделе 3.4](#34-инструкция-запуска).
 
+Если порты 8000, 8080 или 3100 на машине заняты, задайте другие: `API_HOST_PORT`, `GATEWAY_HOST_PORT`, `UI_HOST_PORT`. Интерфейс по умолчанию обращается к шлюзу на порту 8080 того же хоста; при другом порте шлюза укажите его адрес при сборке интерфейса: `REACT_FRONTEND_API_BASE=http://127.0.0.1:<порт шлюза>`.
+
 ---
 
 ## 3. Технический комплект
@@ -118,7 +120,7 @@ docker compose -f docker-compose.case10.yml build
 docker build -f api_service/Dockerfile --target delivery -t case10-api .
 ```
 
-Холодная сборка без кэша слоёв в замерах не выполнялась; время зависит от канала. Для сборки нужна сеть
+Сборка стенда из чистого clone (слои ОС и torch из кэша, слой `pip install -r requirements.txt` собирался со скачиванием) заняла 1 149 с — [FINAL_README_REPORT.md](evaluation/phase12/FINAL_README_REPORT.md). Холодная сборка без кэша слоёв не выполнялась; время зависит от канала. Для сборки нужна сеть
 (перечень источников — отчёт E2, раздел 7); после сборки сервис запускается с `--network none`.
 
 ### 3.4 Инструкция запуска
@@ -148,6 +150,8 @@ docker run --rm --network none \
   case10-api python -m app.cli run --docs /in/docs --registry /in/registry/registry.csv \
   --out /out/result.json --timings /out/timings.json
 ```
+
+В Git Bash на Windows перед `docker run` выполните `export MSYS_NO_PATHCONV=1`, иначе Git Bash исказит пути `/in/docs` внутри контейнера (проверено на Git Bash; PowerShell и WSL не проверялись). Для NOV из публичного набора этот запуск дал 140 проверок за 89 с (холодный контейнер, замер в [FINAL_README_REPORT.md](evaluation/phase12/FINAL_README_REPORT.md)).
 
 Проверка готового файла и самопроверка на сгенерированных PDF (это проверка работоспособности, не метрика качества):
 
@@ -195,7 +199,7 @@ docker run --rm --network none case10-api python -m app.cli selftest
 | находки и доказательства | `GET /api/case10/evidence-groups`, `GET /api/case10/evidence-groups/{id}` |
 | страница-первоисточник | `GET /api/case10/evidence-fragments/{id}/page.png` |
 | решение инспектора | `POST /api/case10/evidence-groups/{id}/decisions` |
-| протокол | `GET /api/case10/protocols/current`, `…/{id}/pdf`, `…/docx`, `…/xml`, `…/{id}/submission`, `POST …/{id}/finalize` |
+| протокол | `GET /api/case10/protocols/current?project_id=…`, `GET …/processes/{id}/protocols`, `GET …/protocols/{id}/pdf`, `…/docx`, `…/xml`, `…/submission`, `POST …/{id}/finalize` |
 
 Полная таблица и пример вызовов с `curl` — в [README_GRADER.md](README_GRADER.md), раздел 3.
 

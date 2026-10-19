@@ -101,7 +101,7 @@ case10-output/
 | `GET /api/case10/evidence-groups?process_id=…`, `GET /api/case10/evidence-groups/{id}` | находки и доказательства |
 | `GET /api/case10/evidence-fragments/{id}/page.png` | страница-первоисточник с выделением |
 | `POST /api/case10/evidence-groups/{id}/decisions` | решение инспектора |
-| `GET /api/case10/protocols/current`, `…/{id}/submission`, `…/{id}/pdf`, `POST …/{id}/finalize` | протокол, JSON, PDF, финализация |
+| `GET /api/case10/protocols/current?project_id=…`, `GET …/protocols/{id}/submission`, `…/{id}/pdf`, `…/{id}/docx`, `…/{id}/xml`, `POST …/{id}/finalize` | протокол, JSON, PDF, финализация |
 | `GET /health`, `GET /metrics` | состояние (OCR, GPU), метрики Prometheus |
 
 Пример серверного пути:
