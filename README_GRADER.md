@@ -55,7 +55,7 @@ case10-output/
 ```
 
 Пути файлов в `registry.csv` остаются относительными к каталогу `documents`. `--docs` — папка или ZIP;
-`--registry` — реестр файлов по Перечню ИД 1.1 (см. §3), расположенный за пределами папки документов. Код выхода: 0 — результат
+`--registry` — реестр файлов по Перечню ИД 1.1 (см. §2), расположенный за пределами папки документов. Код выхода: 0 — результат
 записан и валиден по схеме, 2 — результат не прошёл схему, 1 — ошибка входных данных. Проверка готового файла:
 `python -m app.cli validate /out/result.json`.
 
@@ -101,7 +101,7 @@ case10-output/
 | `GET /api/case10/evidence-groups?process_id=…`, `GET /api/case10/evidence-groups/{id}` | находки и доказательства |
 | `GET /api/case10/evidence-fragments/{id}/page.png` | страница-первоисточник с выделением |
 | `POST /api/case10/evidence-groups/{id}/decisions` | решение инспектора |
-| `GET /api/case10/protocols/current`, `…/{id}/submission`, `…/{id}/pdf`, `POST …/{id}/finalize` | протокол, JSON, PDF, финализация |
+| `GET /api/case10/protocols/current?project_id=…`, `GET …/protocols/{id}/submission`, `…/{id}/pdf`, `…/{id}/docx`, `…/{id}/xml`, `POST …/{id}/finalize` | протокол, JSON, PDF, финализация |
 | `GET /health`, `GET /metrics` | состояние (OCR, GPU), метрики Prometheus |
 
 Пример серверного пути:
@@ -119,7 +119,7 @@ curl -s localhost:8000/api/case10/batch-runs/<process_id>/result -H "Authorizati
 ## 4. Выходной JSON
 
 Корень: `object_id`, `checks` (проверки по матрице: по каждому из 132 кодов одна или несколько записей; пара «код + место» уникальна, у находок с одним кодом на разных объектах сравнения место уточняется), `quality_issues` (страницы с явной проблемой качества), `completeness` (отчёт по комплектности; пустой
-объект, если протокол не содержит данных), `export_conventions` (стиль кодов, версии матрицы/данных/модели, хэш
+объект, если протокол не содержит данных), `source_selection` (выбор источников при неоднозначной редакции), `export_conventions` (стиль кодов, версии матрицы/данных/модели, хэш
 входного манифеста) и `package` (что прочитано: файлы, SHA-256, стадии, статус реестра). Корневые ключи
 `quality_issues` и `completeness` присутствуют всегда. Свободные гипотезы (ТЗ 9.5) лежат в отдельном массиве `free_search_hypotheses`: это не нарушения (`violation_claimed=false`), они не входят в `checks`. Схлопывание записей одного кода в одну (`CASE10_COLLAPSE_MATRIX_CHECKS=1`) выключено по умолчанию. Каждая запись `checks` валидна по
 `submission_schema.json`. В репозитории есть только синтетический пример формы ответа:

@@ -73,7 +73,7 @@ APP_DOMAIN=case10.example.ru LETSENCRYPT_EMAIL=ops@example.ru bash deploy/case10
    (роль администратора или руководителя). Пакет импортируется, процесс ставится в очередь воркеру и виден в
    интерфейсе; результат — `GET /api/case10/batch-runs/{process_id}/result`.
 
-Или без стенда, одной командой в контейнере: `python -m app.cli run` (см. `README_GRADER.md`, раздел 2).
+Или без стенда, одной командой в контейнере: `python -m app.cli run` (см. `README_GRADER.md`, раздел 1).
 
 ## 4. Эксплуатация
 

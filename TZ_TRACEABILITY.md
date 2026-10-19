@@ -1,12 +1,12 @@
 # Прослеживаемость требований ТЗ 1.1 → реализация → тест → статус
 
-Дата составления: 2026-10-18. Основа: `CASE10_FINAL_STATUS_REPORT.md` (состояние на `f0753c9`), отчёты шагов `evaluation/phase12/FINAL_*_REPORT.md`,
+Дата составления: 2026-10-18, обновлено 2026-10-19 (флаги по умолчанию, шаги TZ-ON и Z2). Основа: `CASE10_FINAL_STATUS_REPORT.md` (состояние на `f0753c9`), отчёты шагов `evaluation/phase12/FINAL_*_REPORT.md`,
 `FINAL_CARD_AUDIT.md` и код рабочего дерева. Документ не приукрашивает: «частично» и «нет» указаны там, где это так.
 
 **Как читать.** Статус: **сделано** — есть код и тест, пункт работает на проверенных данных; **частично** — есть, но с названным ограничением;
 **нет** — не сделано. «Сделано» не означает «качество принято»: числа качества стоят отдельно (раздел 7) и каждое привязано к отчёту замера.
 Тесты — файлы в `api_service/tests/`; полный набор запускается из корня репозитория:
-`PYTHONPATH="api_service;." venv/Scripts/python.exe -m pytest api_service/tests` (база шага Z — 1010 passed, 1 skipped, до новых тестов шага Z).
+`PYTHONPATH="api_service;." venv/Scripts/python.exe -m pytest api_service/tests` (на дату `evaluation/phase12/FINAL_PAR_REPORT.md`: 1137 passed, 1 skipped).
 
 **Флаги, меняющие поставку.** `CASE10_EXPLICATION_COMPARE` (S1), `CASE10_ROOM_DRAWING_COMPARE_ENABLED` (S2), `CASE10_FREE_HYPOTHESES` (гипотезы):
 по решению от 18.10.2026 все три включены по умолчанию в поставке (`1` в `api_service/Dockerfile`, `docker-compose.case10.yml`,
@@ -19,16 +19,16 @@
 
 | № | Модуль (приоритет ТЗ) | Реализация | Тест | Статус | Ограничение |
 |---|---|---|---|---|---|
-| 1 | Загрузка и парсинг (High) | `app/domain/official_dataset.py`, `batch_package.py`, `file_registry.py`, `live_candidate_tagger.py`, `routes_upload.py`, `cli.py` | `test_case10_s3_file_registry.py`, `test_case10_live_candidate_tagger.py`, `test_case10_s6_delivery.py` | частично | Значения извлекаются из PDF; DOCX принимается как файл, но значения из него не извлекаются. Точность извлечения на отложенных объектах низкая (раздел 7) |
+| 1 | Загрузка и парсинг (High) | `app/domain/official_dataset.py`, `batch_package.py`, `file_registry.py`, `live_candidate_tagger.py`, `routes_upload.py`, `cli.py` | `test_case10_s3_file_registry.py`, `test_case10_live_candidate_tagger.py`, `test_case10_s6_delivery.py` | частично | Значения извлекаются из PDF; текст DOCX из интерфейса сохраняется (`CASE10_DOCX_TEXT_EXTRACTION_ENABLED=1`), значения по матрице из DOCX не извлекаются. Точность извлечения на отложенных объектах низкая (раздел 7) |
 | 2 | Сравнение и протокол (High) | `v3_pipeline.py`, `comparison_gate.py`, `trigger_policy.py`, `evidence_groups.py`, `protocol_annex2.py` | `test_case10_comparison_gate.py`, `test_case10_trigger_policy.py`, `test_case10_domain.py`, `test_case10_protocol_document_analysis.py` | сделано | Полнота выявления расхождений — слабое место (раздел 7) |
 | 3 | Верификация инспектором (High) | `inspector_workbench.py`, `inspector_card.py`, `v3_pipeline.record_inspector_decision`, `frontend_react/` | `test_case10_verification_lifecycle.py`, `test_case10_s5_workbench.py`, `test_case10_final_card.py` | сделано | Юзабилити-тест на 5 инспекторах не проводился |
 | 4 | Обратная связь и дообучение (High) | `training_release.py`, таблицы `gold_draft_items`, `ml_retraining_logs`, `model_version_registry` | `test_case10_training_release.py` | частично | Есть воспроизводимый контур отбора и шлюз публикации; дообученной модели нет |
 | 5 | Свободный поиск гипотез (High) | `free_hypotheses/`, `logical_analysis.py` | `test_case10_free_hypotheses.py`, `test_case10_logical_analysis.py`, `test_case10_final_r_recall.py` | частично | Из четырёх подходов на реальных данных работают два-три; ML-паттерн-анализ выключен (не прошёл порог точности), см. `FINAL_B2_HYPOTHESES_REPORT.md` |
 | 6 | Интеграция с внешней ИС (Low) | `iais_rin_sync.py`, mock-сервер | `test_case10_iais_rin_sync.py` | частично | Эмуляция: реального контура ИАИС «РиН» и УКЭП нет; автоматического забора файлов из ИС нет |
 | 7 | Дашборд инспектора (Medium) | `inspector_dashboard.py`, `GET /api/case10/dashboard`, `Dashboard.jsx`; экспорт: `protocol_export.py`, `GET /api/case10/protocols/{id}/pdf\|docx\|xml` | `test_case10_final_z_modules.py` | сделано | Цвет считается по текущим находкам, правило — в коде и в интерфейсе; фильтр дат — по дате создания проверки. Скриншоты — `FINAL_Z_TZ_MODULES_REPORT.md` |
-| 8 | Управление нормативной базой (Medium) | `GET/POST/PATCH/DELETE /api/case10/normative-base`, таблица `normative_base` | `test_case10_tz10_tables.py` | частично | Только API; экрана администратора нет; значения базы не подключены к `Param.min_value/max_value` |
+| 8 | Управление нормативной базой (Medium) | `GET/POST/PATCH/DELETE /api/case10/normative-base`, таблица `normative_base`, `NormativeBase.jsx`, `free_hypotheses/normative.py` | `test_case10_tz10_tables.py`, `test_case10_free_hypotheses.py` | сделано | Вкладка администратора есть; активная запись с порогом участвует в нормативном анализе гипотез; пустая база не добавляет находок. Нормы предметными экспертами не валидировались (`FINAL_Z2_TZ_GAPS_REPORT.md`) |
 | 9 | Журнал аудита (Medium) | `AuditLog`, `v3_pipeline.add_audit`, версии протоколов | `test_case10_api.py`, `test_upload_security.py`, `test_case10_verification_lifecycle.py` | сделано | — |
-| 10 | Еженедельный отчёт по дообучению (Medium) | `ml_weekly_report.py`, `GET /api/case10/ml/reports/weekly`, `python -m app.cli weekly-report`, `MlReport.jsx` | `test_case10_final_z_weekly.py` | частично | Отчёт строится по запросу или по команде CLI; встроенного планировщика «раз в неделю» нет (нужен внешний cron). При малом числе решений отчёт пишет «данных мало» и не даёт рекомендаций |
+| 10 | Еженедельный отчёт по дообучению (Medium) | `ml_weekly_report.py`, `ml_weekly_scheduler.py`, `GET /api/case10/ml/reports/weekly`, `python -m app.cli weekly-report`, `MlReport.jsx` | `test_case10_final_z_weekly.py` | сделано | Отчёт строится по запросу, по команде CLI и встроенным расписанием в процессе API (`CASE10_ML_WEEKLY_REPORT_SCHEDULER_ENABLED=1`, `/data/reports`, период 7 суток). При малом числе решений отчёт пишет «данных мало» и не даёт рекомендаций (`FINAL_TZON_REPORT.md`) |
 | 11 | Мониторинг и логирование (Medium) | `logging_setup.py`, `app/metrics.py` (формат Prometheus), таблица `monitoring_metrics` | `test_logging_json.py` | частично | Нет Grafana, ELK и алертинга |
 | 12 | Обработка ошибок (High) | `batch_package.py`, `document_versions.py`, `routes_upload.py`, `v3_jobs.py` | `test_case10_ocr_hardening.py`, `test_upload_security.py`, `test_case10_api.py` | сделано | Время OCR ограничено по стенным часам (порог зависит от скорости машины) |
 
@@ -43,7 +43,7 @@
 
 | Пункт ТЗ | Реализация | Тест | Статус | Ограничение |
 |---|---|---|---|---|
-| Приём PDF, DOCX, XML | `routes_upload.py`, `batch_package.py` | `test_case10_api.py` (XML), `test_case10_s6_delivery.py` | частично | PDF — полностью; XML — как источник фрагментов; DOCX хранится, значения не извлекаются |
+| Приём PDF, DOCX, XML | `routes_upload.py`, `batch_package.py` | `test_case10_api.py` (XML), `test_case10_s6_delivery.py`, `test_case10_docx_source.py` | частично | PDF — основной путь; XML — как источник фрагментов; DOCX через интерфейс сохраняется как текстовый фрагмент без геометрии, пакетный путь и CLI принимают только PDF |
 | Определение стадии, шифра, редакции, статуса утверждения | `file_registry.py`, реестр файлов (Перечень ИД 1.1) | `test_case10_s3_file_registry.py` | сделано | Без реестра пакет принимается как `CLARIFICATION_REQUIRED` |
 | Выбор актуальной редакции, конфликт → `CLARIFICATION_REQUIRED` | `document_versions.py`, `document_order.py`, `comparison_gate.py` | `test_case10_comparison_gate.py`, `test_case10_s3_file_registry.py` | сделано | — |
 | OCR (Character Accuracy ≥ 0,95) | Tesseract 5.5 (rus+eng), `ocr_paddle.py` (не по умолчанию) | `test_case10_ocr_hardening.py`, `test_case10_ocr_paddle.py` | частично | Текстовый слой — норма выполнена; сканы — ниже нормы (раздел 7) |
@@ -54,7 +54,7 @@
 | Кэширование по хешу файла (Redis) | дисковый кэш по SHA-256 (`live_tagger_scan.py`, `page_quality_cache.py`) | `test_case10_live_tagger_determinism.py`, `test_case10_page_quality_perf.py` | частично | Вместо Redis — дисковый кэш; Redis предусмотрен настройкой, в офлайн-режиме отключён |
 | Инкрементальная дозагрузка до финализации | `v3_pipeline` (пересчёт по затронутым параметрам), `SupplementDialog.jsx` | `test_case10_incremental.py`, `test_case10_final_card.py` | сделано | — |
 | Ошибки загрузки: формат, битый PDF, 50 МБ, 200 МБ, таймаут | `routes_upload.py`, `config.py`, `v3_jobs.py` | `test_upload_security.py`, `test_case10_api.py` | сделано | Лимиты 50/200 МБ — только для интерфейса; пакетный путь без лимитов (позиция экспертов) |
-| Статусы загрузки `PD_UPLOADED … ID_MISSING` | `v3_pipeline.document_completeness`, `protocol_annex2.py` | `test_case10_api.py` | частично | В протоколе есть `*_UPLOADED` и `*_MISSING`; статусов `*_PARTIAL` нет (частичность выражена сценарием `PARTIALLY_LOADED`) |
+| Статусы загрузки `PD_UPLOADED … ID_MISSING` | `v3_pipeline.document_completeness`, `registry_completeness.py`, `protocol_annex2.py` | `test_case10_api.py`, `test_case10_domain.py` | сделано | Есть `*_UPLOADED`, `*_PARTIAL` (уникальные строки реестра против загруженных записей; `CASE10_PARTIAL_UPLOAD_STATUS_ENABLED=1`) и `*_MISSING`; массив `checks` статусами не меняется (`FINAL_TZON_REPORT.md`) |
 | Статусы процесса `PENDING … FINALIZED` | `v3_pipeline.py` | `test_case10_verification_lifecycle.py` | сделано | — |
 
 ## 4. Модули 9.2 и 9.3. Сравнение, протокол, верификация
@@ -82,27 +82,27 @@
 |---|---|---|---|---|
 | 9.4 GOLD только из `CONFIRMED_VIOLATION` и `NEGATIVE_VERIFIED` с полными карточками | `training_release.py`, `GoldDraftItem` | `test_case10_training_release.py` | сделано | — |
 | 9.4 Разбиение по объектам, хеши наборов, шлюз публикации (регресс ≤ 2 п. п.) | `training_release.py`, `MLRetrainingLog` | `test_case10_training_release.py` | сделано | Решение о публикации подписывается человеком; автоматической публикации нет |
-| 9.4 Лог отклонений и спорных случаев | `RejectionLog`, `DisputeLog`, `POST /case10/evidence-groups/{id}/disputes` | `test_case10_tz10_tables.py` | частично | Поля `ai_verdict`, `suggested_fix` не заполняются: автоматической оценки согласия ИИ нет |
-| 9.4 Еженедельный отчёт (модуль 10) | `ml_weekly_report.py` | `test_case10_final_z_weekly.py` | частично | См. строку 10 раздела 1 |
+| 9.4 Лог отклонений и спорных случаев | `RejectionLog`, `DisputeLog`, `rejection_feedback.py`, `POST /case10/evidence-groups/{id}/disputes` | `test_case10_tz10_tables.py` | сделано | `ai_verdict` сравнивает исходный статус ИИ с решением инспектора; `suggested_fix` берётся из детерминированного справочника по `reason_code` — это правило, не модель (`FINAL_Z2_TZ_GAPS_REPORT.md`) |
+| 9.4 Еженедельный отчёт (модуль 10) | `ml_weekly_report.py`, `ml_weekly_scheduler.py` | `test_case10_final_z_weekly.py` | сделано | См. строку 10 раздела 1 |
 | 9.5 Логический анализ | `logical_analysis.py`, `free_hypotheses/logic_rules.py` | `test_case10_logical_analysis.py`, `test_case10_free_hypotheses.py` | частично | Три правила по СП в рабочем виде; правила LR-101…106 выключены по умолчанию |
 | 9.5 Семантический диссонанс | `free_hypotheses/` (SEMANTIC_DISSONANCE) | `test_case10_free_hypotheses.py` | частично | Подтверждено на малой выборке (2 из 2, `FINAL_B2_HYPOTHESES_REPORT.md`) |
 | 9.5 Нормативный анализ | `free_hypotheses/` (NORMATIVE_ANALYSIS) | `test_case10_free_hypotheses.py` | частично | Тихий на реальных данных: нет входных значений |
 | 9.5 ML-паттерн-анализ | `free_hypotheses/` (ML) | `test_case10_free_hypotheses.py` | нет | Реализован, но выключен: не прошёл порог точности (`FINAL_B2_HYPOTHESES_REPORT.md`) |
 | 9.5 Структура `Suspicion`, дедупликация, `SUSPICION` не входит в число нарушений | `Suspicion`, `evidence_tier.py`, `protocol_annex2.py` | `test_case10_free_hypotheses.py`, `test_case10_final_b1_tiers.py` | сделано | Гипотеза преобразуется в кандидата только при полных источниках и по решению инспектора |
 | 9.6 Передача результатов в ИАИС «РиН», только `PROTOCOL_FINALIZED`, повторы 1/5/15 мин, `PENDING_SYNC` | `iais_rin_sync.py` | `test_case10_iais_rin_sync.py` | частично | Работает против mock-сервера; реальной интеграции и УКЭП нет |
-| 9.6 Забор файлов из ИС; блокировка автозагрузки при финализации | — | — | нет | Не реализовано |
+| 9.6 Забор файлов из ИС; блокировка автозагрузки при финализации | `iais_rin_sync.py`, `clients/iais_rin_client.py` | `test_case10_iais_rin_sync.py` | частично | Входящий pull-адаптер работает против mock-сервера и по умолчанию выключен (`CASE10_IAIS_RIN_PULL_ENABLED=0`); финализированный протокол отклоняет загрузку. Реальной ИС нет |
 
 ## 6. Разделы 10–13. Данные, производительность, безопасность, мониторинг
 
 | Пункт ТЗ | Реализация | Тест | Статус | Ограничение |
 |---|---|---|---|---|
 | Раздел 10: 16 таблиц | `db/models.py`, `alembic/`; часть таблиц под другими именами (`evidence_groups` = Checks, `document_versions` = Files, `gold_draft_items` = Dataset_Items) | `test_case10_tz10_tables.py` | сделано | Названия полей следуют словарю проекта, не буквам ТЗ |
-| Раздел 11: время сравнения, протокола, OCR, API | `evaluation/performance_smoke.py`, замеры S6 | `test_case10_s6_delivery.py` (запуск), замеры — `S6_REPORT.md` | частично | Замерено на 3 CPU общей машины (`S6_REPORT.md`); 100 одновременных пользователей, SLA, RTO/RPO, CV-анализ DWG не проверялись; список групп отвечал за 340 мс (норма 200 мс), после правки по умолчанию отдаётся без фрагментов и не перемерен |
+| Раздел 11: время сравнения, протокола, OCR, API | `evaluation/performance_smoke.py`, замеры S6 | `test_case10_s6_delivery.py` (запуск), замеры — `S6_REPORT.md` | частично | Замеры CLI и стенда — `evaluation/phase12/FINAL_ACCEPTANCE_E2_REPORT.md`, `FINAL_PERF2_REPORT.md`, `FINAL_STAND_REPORT.md`; 100 одновременных пользователей, SLA, RTO/RPO, CV-анализ DWG не проверялись. Ответ `protocols/current`: p95 220–240 мс в Docker при пороге ТЗ 200 мс (`FINAL_ACCEPTANCE_E2_REPORT.md`); после правок на хосте p95 33–54 мс, в Docker не перемерено (`FINAL_STAND_REPORT.md`) |
 | Раздел 12.1–12.2: аутентификация, роли | `routes_auth.py`, `api/auth.py` (`require_ml_engineer`, `require_supervisor`, `require_admin`) | `test_upload_security.py` | сделано | — |
 | 12.3 Шифрование при передаче и в покое | `deploy/case10/nginx.https.conf.template` | — | частично | TLS — шаблон стенда; по умолчанию локальный HTTP; шифрования данных в покое нет |
 | 12.4 Журнал аудита с IP | `AuditLog.ip_address`, `request_context.py` | `test_upload_security.py` | сделано | — |
 | 12.5, 12.8–12.9, 12.11 Сроки хранения, резервное копирование, IDS/DDoS, антивирус | — | — | нет | Не реализовано (вторичные критерии по экспертной сессии) |
-| 12.9 Усиление среды выполнения (необязательное) | `docker-compose.case10.hardened.yml`: `no-new-privileges`, `cap_drop ALL`, `read_only` | — (проверено вручную, `evaluation/phase12/FINAL_Z_TZ_MODULES_REPORT.md`) | частично | Включается вторым `-f`; проверено на образах 29.09, не на образе, пересобранном из текущего дерева; api и worker работают от root (модель лежит в `/root/.cache`), для запуска не от root нужен новый образ |
+| 12.9 Усиление среды выполнения (необязательное) | `docker-compose.case10.hardened.yml`: `no-new-privileges`, `cap_drop ALL`, `read_only` | — (проверено вручную, `evaluation/phase12/FINAL_ACCEPTANCE_E2_REPORT.md`) | частично | Включается вторым `-f`; на образе `:e2` поднимается, корневая ФС api только для чтения, NOV и ALT79B обработаны до конца; api и worker работают от root (модель лежит в `/root/.cache`), для запуска не от root нужен новый образ |
 | 12.6–12.7 Персональные данные, целостность | SHA-256 файлов и цепочек редакций | `test_case10_s3_file_registry.py` | частично | Ежедневной сверки хешей нет |
 | 12.10 Подпись запросов УКЭП | точка интеграции в `iais_rin_sync.py` | `test_case10_iais_rin_sync.py` | частично | Эмуляция |
 | 13.1–13.2 Структурированные JSON-логи с обязательными полями | `logging_setup.py` | `test_logging_json.py` | сделано | — |
@@ -111,7 +111,7 @@
 
 ## 7. Раздел 14. Приёмка качества
 
-Числа — только со ссылкой на отчёт замера. Свежего полного замера на финальном коде нет: он выполняется шагом E1 (Docker с рабочим Tesseract 5.5).
+Числа — только со ссылкой на отчёт замера. Приёмка поставки в Docker выполнена шагами E1 и E2 (`evaluation/phase12/FINAL_ACCEPTANCE_REPORT.md`, `evaluation/phase12/FINAL_ACCEPTANCE_E2_REPORT.md`); метрики качества на образе `:e2` не пересчитывались.
 
 | Метрика (порог ТЗ 14.3) | Где измерено | Статус | Комментарий |
 |---|---|---|---|
@@ -127,9 +127,9 @@
 ## 8. Что не закрыто (кратко)
 
 1. Полнота выявления реальных расхождений на новых документах (раздел 7, строка Recall); измерение на финальном коде — шаг E1.
-2. Нет CV-анализа чертежей, извлечения из DOCX, забора файлов из внешней ИС, реальной интеграции ИАИС «РиН» и УКЭП.
+2. Нет CV-анализа чертежей, извлечения значений матрицы из DOCX, реальной интеграции ИАИС «РиН» и УКЭП.
 3. Нет шифрования в покое, резервного копирования, антивирусной проверки, IDS/DDoS, Grafana/ELK/алертинга, ежедневной сверки хешей.
-4. Нет встроенного планировщика еженедельного отчёта и экрана администратора нормативной базы.
+4. Забор файлов из внешней ИС и интеграция ИАИС «РиН» — только эмуляция на mock-сервере.
 5. Нет юзабилити-теста на 5 инспекторах и замера времени верификации на людях.
 6. Лицензия PyMuPDF (AGPL-3.0) — для коммерческого внедрения нужна коммерческая лицензия или замена (`LICENSES_MODELS.md`).
 
