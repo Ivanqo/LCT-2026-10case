@@ -256,5 +256,31 @@ class EmbeddingDiskCacheTests(unittest.TestCase):
             self.assertEqual(self.mod.embed("abc").tolist(), [1.0, 1.0, 1.0])
 
 
+class AuxPoolSizeTests(unittest.TestCase):
+    def _count(self, pending, env, *names):
+        from app.domain import aux_pool
+
+        clean = {key: "" for key in ("CASE10_LIVE_TAGGER_WORKERS", "CASE10_EXPLICATION_WORKERS", "CASE10_FREE_HYPOTHESES_WORKERS")}
+        with mock.patch.dict(os.environ, {**clean, **env}):
+            return aux_pool.worker_count(pending, *names)
+
+    def test_unset_keeps_the_old_default_of_three(self):
+        self.assertEqual(self._count(10, {}, "CASE10_EXPLICATION_WORKERS"), 3)
+        self.assertEqual(self._count(2, {}, "CASE10_EXPLICATION_WORKERS"), 2)
+
+    def test_zero_means_the_taggers_automatic_size_not_one_worker(self):
+        with mock.patch("app.domain.live_tagger_scan.available_cpu_count", return_value=6):
+            self.assertEqual(self._count(10, {"CASE10_LIVE_TAGGER_WORKERS": "0"}, "CASE10_EXPLICATION_WORKERS"), 6)
+            self.assertEqual(self._count(4, {"CASE10_LIVE_TAGGER_WORKERS": "0"}, "CASE10_EXPLICATION_WORKERS"), 4)
+
+    def test_explicit_values_win_in_order_and_are_no_longer_cut_to_three(self):
+        env = {"CASE10_LIVE_TAGGER_WORKERS": "8", "CASE10_EXPLICATION_WORKERS": "5"}
+        self.assertEqual(self._count(10, env, "CASE10_FREE_HYPOTHESES_WORKERS", "CASE10_EXPLICATION_WORKERS"), 5)
+        self.assertEqual(self._count(10, {"CASE10_LIVE_TAGGER_WORKERS": "8"}, "CASE10_EXPLICATION_WORKERS"), 8)
+        self.assertEqual(self._count(10, {"CASE10_LIVE_TAGGER_WORKERS": "1"}, "CASE10_EXPLICATION_WORKERS"), 1)
+        self.assertEqual(self._count(20, {"CASE10_LIVE_TAGGER_WORKERS": "99"}, "CASE10_EXPLICATION_WORKERS"), 12)
+        self.assertEqual(self._count(10, {"CASE10_LIVE_TAGGER_WORKERS": "x"}, "CASE10_EXPLICATION_WORKERS"), 3)
+
+
 if __name__ == "__main__":
     unittest.main()
