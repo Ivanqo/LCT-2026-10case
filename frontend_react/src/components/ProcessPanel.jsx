@@ -222,10 +222,12 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
             <div className="completeness-row top-gap">
               {['PD', 'RD', 'ID'].map((code) => {
                 const key = `${code}_UPLOADED`;
-                const uploaded = completeness[key] === key;
+                const status = completeness[key];
+                const uploaded = status === key || status === `${code}_PARTIAL`;
+                const label = status === `${code}_PARTIAL` ? 'загружена частично' : uploaded ? 'загружена' : 'отсутствует';
                 return (
-                  <Badge key={code} tone={uploaded ? 'ok' : 'warn'}>
-                    {code === 'PD' ? 'ПД' : code === 'RD' ? 'РД' : 'ИД'}: {uploaded ? 'загружена' : 'отсутствует'}
+                  <Badge key={code} tone={status === `${code}_PARTIAL` ? 'warn' : uploaded ? 'ok' : 'warn'}>
+                    {code === 'PD' ? 'ПД' : code === 'RD' ? 'РД' : 'ИД'}: {label}
                   </Badge>
                 );
               })}

@@ -6,7 +6,9 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from sqlalchemy.orm import sessionmaker
 
+from app.config import settings
 from app.db.models import EvidenceDecision, EvidenceGroup, InspectorEdit, MLRetrainingLog, User
 from app.domain import ml_weekly_report as ml
 from test_case10_final_z_modules import SeededBase
@@ -123,6 +125,44 @@ class WeeklyReportTests(SeededBase):
         self.assertAlmostEqual(low, 0.49, places=2)
         self.assertAlmostEqual(high, 0.943, places=2)
         self.assertIsNone(ml.wilson(0, 0))
+
+
+class WeeklyReportPersistenceTests(SeededBase):
+    def setUp(self):
+        super().setUp()
+        self._reports_tmp = tempfile.TemporaryDirectory()
+        self._old_reports_dir = settings.ML_WEEKLY_REPORTS_DIR
+        settings.ML_WEEKLY_REPORTS_DIR = Path(self._reports_tmp.name)
+        self.ml_engineer = User(login="ml-persist", email="ml-persist@z.test", password_hash="x", api_key="ml-persist-key",
+                                is_admin=False, role="ML_ENGINEER", organization_id=self.org_id)
+        self.db.add(self.ml_engineer)
+        self.db.commit()
+        self.current_user = self.ml_engineer
+
+    def tearDown(self):
+        settings.ML_WEEKLY_REPORTS_DIR = self._old_reports_dir
+        self._reports_tmp.cleanup()
+        super().tearDown()
+
+    def test_saved_report_api_lists_only_the_users_organization(self):
+        report = ml.build_weekly_report(self.db, organization_id=self.org_id, end="2026-10-18")
+        ml.save_report(report, directory=self._reports_tmp.name, saved_at=datetime(2026, 10, 18, 12, 0))
+        response = self.client.get("/api/case10/ml/reports/weekly/saved")
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json()[0]["report"]["scope"]["organization_id"], self.org_id)
+        self.assertEqual(ml.list_saved_reports(organization_id=self.outsider.organization_id, directory=self._reports_tmp.name), [])
+
+    def test_scheduler_persists_a_weekly_snapshot_and_respects_the_interval(self):
+        factory = sessionmaker(bind=self.db.get_bind())
+        start = datetime(2026, 10, 18, 12, 0)
+        first = ml.run_scheduler_tick(now=start, session_factory=factory, directory=self._reports_tmp.name, interval_seconds=7 * 86400)
+        self.assertTrue(first["ran"])
+        self.assertGreaterEqual(first["reports_saved"], 1)
+        early = ml.run_scheduler_tick(now=start + timedelta(days=1), session_factory=factory, directory=self._reports_tmp.name, interval_seconds=7 * 86400)
+        self.assertFalse(early["ran"])
+        due = ml.run_scheduler_tick(now=start + timedelta(days=7), session_factory=factory, directory=self._reports_tmp.name, interval_seconds=7 * 86400)
+        self.assertTrue(due["ran"])
 
 
 class WeeklyReportCliTests(unittest.TestCase):

@@ -16,6 +16,12 @@ class Settings(BaseModel):
     LOG_DIR: Path = Path(os.getenv("API_LOG_DIR", str(PROJECT_ROOT / "logs"))).resolve()
     TEMP_UPLOADS_DIR: Path = Path(os.getenv("API_TEMP_UPLOADS_DIR", str(DATA_DIR / "tmp_uploads"))).resolve()
     PROJECT_FILES_DIR: Path = Path(os.getenv("API_PROJECT_FILES_DIR", str(DATA_DIR / "project_files"))).resolve()
+    ML_WEEKLY_REPORT_SCHEDULER_ENABLED: bool = os.getenv("CASE10_ML_WEEKLY_REPORT_SCHEDULER_ENABLED", "0").strip().lower() in ("1", "true", "yes", "on")
+    ML_WEEKLY_REPORT_INTERVAL_SECONDS: int = int(os.getenv("CASE10_ML_WEEKLY_REPORT_INTERVAL_SECONDS", str(7 * 24 * 60 * 60)))
+    ML_WEEKLY_REPORT_POLL_SECONDS: int = int(os.getenv("CASE10_ML_WEEKLY_REPORT_POLL_SECONDS", "3600"))
+    ML_WEEKLY_REPORTS_DIR: Path = Path(os.getenv("CASE10_ML_WEEKLY_REPORTS_DIR", str(DATA_DIR / "reports"))).resolve()
+    PARTIAL_UPLOAD_STATUS_ENABLED: bool = os.getenv("CASE10_PARTIAL_UPLOAD_STATUS_ENABLED", "0").strip().lower() in ("1", "true", "yes", "on")
+    DOCX_TEXT_EXTRACTION_ENABLED: bool = os.getenv("CASE10_DOCX_TEXT_EXTRACTION_ENABLED", "0").strip().lower() in ("1", "true", "yes", "on")
 
     SQLITE_PATH: Path = Path(os.getenv("API_SQLITE_PATH", str(DATA_DIR / "api.db"))).resolve()
     SQLALCHEMY_DATABASE_URL: str = os.getenv("API_DATABASE_URL", f"sqlite:///{SQLITE_PATH}")
@@ -121,6 +127,7 @@ class Settings(BaseModel):
     # is deployed for this hackathon -- which the client treats as "sync
     # disabled" rather than attempting a request against an empty URL.
     IAIS_RIN_BASE_URL: str = os.getenv("IAIS_RIN_BASE_URL", "").rstrip("/")
+    IAIS_RIN_PULL_ENABLED: bool = os.getenv("CASE10_IAIS_RIN_PULL_ENABLED", "0").strip().lower() in ("1", "true", "yes", "on")
     IAIS_RIN_TIMEOUT_SECONDS: float = float(os.getenv("IAIS_RIN_TIMEOUT_SECONDS", "30"))
     # УКЭП (усиленная квалифицированная электронная подпись): ТЗ 12.10 requires
     # requests to ИАИС РИН to be signed with it. This codebase has no certified

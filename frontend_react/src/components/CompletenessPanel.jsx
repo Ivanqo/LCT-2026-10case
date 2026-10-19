@@ -24,6 +24,7 @@ export default function CompletenessPanel({ processId }) {
   const rows = (data.rows || [])
     .filter((r) => stage === 'ALL' || r.stage === stage)
     .filter((r) => !onlyProblems || (r.status !== 'UPLOADED' && r.status !== 'NOT_APPLICABLE'));
+  const uploadStatus = data.process_upload_status || {};
 
   return (
     <div>
@@ -36,6 +37,15 @@ export default function CompletenessPanel({ processId }) {
           </div>
         </div>
         <div className="info-banner small">Основание: {data.basis}</div>
+        {Object.keys(uploadStatus).length > 0 && (
+          <div className="completeness-row top-gap">
+            {['PD', 'RD', 'ID'].map((code) => {
+              const status = uploadStatus[`${code}_UPLOADED`];
+              const title = status === `${code}_PARTIAL` ? 'загружена частично' : status === `${code}_UPLOADED` ? 'загружена' : 'отсутствует';
+              return <Badge key={code} tone={status === `${code}_PARTIAL` ? 'warn' : status === `${code}_UPLOADED` ? 'ok' : 'warn'}>{code}: {title}</Badge>;
+            })}
+          </div>
+        )}
         <div className="status-grid top-gap">
           {(data.stages || []).map((s) => (
             <div className="stat-tile" key={s.stage}>

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from types import SimpleNamespace
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -12,6 +13,8 @@ from app.domain.entity_resolution import EntityResolver, ObservationDraft
 from app.domain.normalization import normalize_alias
 from app.domain.portrait_builder import PortraitBuilder
 from app.domain.synthetic_dataset import ensure_synthetic_case10_dataset
+from app.domain.v3_pipeline import document_completeness, upload_scenario
+from app.domain.protocol_annex2 import annex2_payload
 
 
 class Case10DomainTests(unittest.TestCase):
@@ -81,6 +84,54 @@ class Case10DomainTests(unittest.TestCase):
         self.assertTrue(any(issue.severity == "CRITICAL" for issue in persisted_issues))
         self.assertGreaterEqual(self.db.query(AttributeObservation).count(), 9)
 
+    def test_registry_ratio_marks_partial_status_in_api_and_protocol_shape(self):
+        summary = [
+            {"doc_stage": "PD", "file_id": "PD-1", "file_name": "a.pdf"},
+            {"doc_stage": "PD", "file_id": "PD-2", "file_name": "b.pdf"},
+        ]
+        document = SimpleNamespace(
+            doc_stage="project", document_stage="project", dataset_stage="PD", dataset_split="BATCH_PACKAGE",
+            dataset_file_id="PD-1", dataset_metadata={"document_manifest": {
+                "registry_manifest_summary": summary,
+                "registry": {"file_id": "PD-1", "doc_stage": "PD", "file_name": "a.pdf"},
+            }},
+        )
+        unmatched = SimpleNamespace(
+            doc_stage="project", document_stage="project", dataset_stage="PD", dataset_split="BATCH_PACKAGE",
+            dataset_file_id="extra", dataset_metadata={"document_manifest": {"registry_manifest_summary": summary}},
+        )
+        second_package = SimpleNamespace(
+            doc_stage="project", document_stage="project", dataset_stage="PD", dataset_split="BATCH_PACKAGE",
+            dataset_file_id="PD-3", dataset_metadata={"document_manifest": {
+                "registry_manifest_summary": [{"doc_stage": "PD", "file_id": "PD-3", "file_name": "c.pdf"}],
+                "registry": {"file_id": "PD-3", "doc_stage": "PD", "file_name": "c.pdf"},
+            }},
+        )
+        documents = [document, unmatched, second_package]
+        completeness = document_completeness(documents, registry_aware=True)
+        self.assertEqual(completeness, {"PD_UPLOADED": "PD_PARTIAL", "RD_UPLOADED": "RD_MISSING", "ID_UPLOADED": "ID_MISSING"})
+        self.assertEqual(upload_scenario(completeness), "SINGLE_ONLY")
+        legacy = document_completeness(documents, registry_aware=False)
+        self.assertEqual(legacy, {"PD_UPLOADED": "PD_UPLOADED", "RD_UPLOADED": "RD_MISSING", "ID_UPLOADED": "ID_MISSING"})
+        annex = annex2_payload([], documents, object_info={"object_name": "x"}, matrix_size=132,
+                               completeness=completeness, include_registry_counts=True)
+        pd_upload = next(row for row in annex["section_1_document_upload"]["rows"] if row["stage"] == "PD")
+        self.assertEqual((pd_upload["status"], pd_upload["loaded_files"], pd_upload["expected_files"]), ("PD_PARTIAL", 2, 3))
+
+    def test_duplicate_registry_file_ids_do_not_hide_a_missing_record(self):
+        summary = [
+            {"doc_stage": "PD", "file_id": "DUP", "file_name": "a.pdf", "sha256": "a" * 64},
+            {"doc_stage": "PD", "file_id": "DUP", "file_name": "b.pdf", "sha256": "b" * 64},
+        ]
+        loaded = SimpleNamespace(
+            doc_stage="project", dataset_stage="PD", dataset_split="BATCH_PACKAGE",
+            dataset_metadata={"document_manifest": {
+                "registry_manifest_summary": summary,
+                "registry": {"file_id": "DUP", "doc_stage": "PD", "file_name": "a.pdf", "sha256": "a" * 64},
+            }},
+        )
+        completeness = document_completeness([loaded], registry_aware=True)
+        self.assertEqual(completeness["PD_UPLOADED"], "PD_PARTIAL")
 
 if __name__ == "__main__":
     unittest.main()

@@ -143,6 +143,10 @@ def _run_sqlite_migrations() -> None:
             _sqlite_ensure_column(conn, "evidence_groups", "needs_reverification", "BOOLEAN DEFAULT 0")
             _sqlite_ensure_column(conn, "evidence_groups", "basis_changed_at", "DATETIME")
             conn.execute("UPDATE evidence_groups SET needs_reverification = 0 WHERE needs_reverification IS NULL")
+        if conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='dispute_logs'").fetchone():
+            _sqlite_ensure_column(conn, "dispute_logs", "reason_code", "TEXT NOT NULL DEFAULT 'OTHER'")
+            _sqlite_ensure_column(conn, "dispute_logs", "ai_verdict", "TEXT NOT NULL DEFAULT 'PENDING_REVIEW'")
+            _sqlite_ensure_column(conn, "dispute_logs", "suggested_fix", "TEXT")
         conn.commit()
     finally:
         conn.close()
@@ -180,6 +184,9 @@ def _run_postgres_migrations() -> None:
         "ALTER TABLE evidence_groups ADD COLUMN IF NOT EXISTS basis_changed_at TIMESTAMP",
         "ALTER TABLE upload_jobs ADD COLUMN IF NOT EXISTS file_size INTEGER",
         "ALTER TABLE upload_jobs ADD COLUMN IF NOT EXISTS process_id VARCHAR(64)",
+        "ALTER TABLE dispute_logs ADD COLUMN IF NOT EXISTS reason_code VARCHAR(64) NOT NULL DEFAULT 'OTHER'",
+        "ALTER TABLE dispute_logs ADD COLUMN IF NOT EXISTS ai_verdict VARCHAR(32) NOT NULL DEFAULT 'PENDING_REVIEW'",
+        "ALTER TABLE dispute_logs ADD COLUMN IF NOT EXISTS suggested_fix TEXT",
     ]
     with engine.begin() as conn:
         for statement in statements:

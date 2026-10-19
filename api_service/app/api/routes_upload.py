@@ -4,6 +4,8 @@ import asyncio
 import hashlib
 import logging
 import os
+import xml.etree.ElementTree as ET
+import zipfile
 from datetime import datetime
 from pathlib import Path
 from pathlib import PurePath
@@ -314,6 +316,71 @@ def _ensure_xml_source_fragment(db: Session, doc_version, file_path: Path) -> So
     return fragment
 
 
+def _ensure_docx_source_fragment(db: Session, doc_version, file_path: Path) -> SourceFragment:
+    """Persist bounded DOCX paragraph text as a generic source fragment for V3 extractors."""
+    external_id = "docx:document"
+    existing = (
+        db.query(SourceFragment)
+        .filter(
+            SourceFragment.document_version_id == int(doc_version.id),
+            SourceFragment.source_system == "docx",
+            SourceFragment.external_id == external_id,
+        )
+        .first()
+    )
+    text_value = ""
+    try:
+        with zipfile.ZipFile(file_path) as archive:
+            info = archive.getinfo("word/document.xml")
+            if info.file_size <= 10 * 1024 * 1024 and not (info.flag_bits & 0x1):
+                xml = archive.read(info)
+                # DOCX does not need DTDs or entities; reject them before parsing untrusted uploads.
+                upper_xml = xml.upper()
+                if b"<!DOCTYPE" not in upper_xml and b"<!ENTITY" not in upper_xml:
+                    root = ET.fromstring(xml)
+                    ns = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+                    paragraphs: list[str] = []
+                    for paragraph in root.iter(f"{ns}p"):
+                        pieces: list[str] = []
+                        for node in paragraph.iter():
+                            if node.tag == f"{ns}t" and node.text:
+                                pieces.append(node.text)
+                            elif node.tag == f"{ns}tab":
+                                pieces.append("\t")
+                            elif node.tag == f"{ns}br":
+                                pieces.append("\n")
+                        value = "".join(pieces).strip()
+                        if value:
+                            paragraphs.append(value)
+                    text_value = "\n".join(paragraphs)[:6000]
+    except Exception:
+        text_value = ""
+
+    if existing:
+        existing.text = text_value
+        existing.page = 1
+        existing.bbox = None
+        existing.metadata_json = {"filename": doc_version.filename, "source_type": "docx"}
+        db.add(existing)
+        db.flush()
+        return existing
+    fragment = SourceFragment(
+        document_version_id=int(doc_version.id),
+        page=1,
+        bbox=None,
+        text=text_value,
+        fragment_type="text",
+        source_system="docx",
+        external_id=external_id,
+        metadata_json={"filename": doc_version.filename, "source_type": "docx"},
+        extractor="docx_text_reader",
+        confidence=0.8,
+    )
+    db.add(fragment)
+    db.flush()
+    return fragment
+
+
 async def _process_upload_job(job_id: int) -> None:
     db = SessionLocal()
     try:
@@ -401,6 +468,8 @@ async def _process_upload_job(job_id: int) -> None:
                                   f"{(doc_version.file_hash or doc_version.content_hash) if doc_version else '—'}; "
                                   f"статус реестра: {package_report.get('registry_status')}")
                 if package_documents:
+                    if settings.DOCX_TEXT_EXTRACTION_ENABLED and doc_version is not None and stored_path.suffix.lower() == ".docx":
+                        _ensure_docx_source_fragment(db, doc_version, stored_path)
                     case10_job = _recompute_case10_for_uploaded_documents(db, job, package_documents)
         else:
             client = RagClient(timeout=1800.0, retries=1)
@@ -431,6 +500,8 @@ async def _process_upload_job(job_id: int) -> None:
         if source_type != "xml" and not offline_package:
             doc_version, doc_changed = ensure_document_version_for_upload_job(db, job, temp_path)
             if doc_version is not None and doc_changed:
+                if settings.DOCX_TEXT_EXTRACTION_ENABLED and temp_path.suffix.lower() == ".docx":
+                    _ensure_docx_source_fragment(db, doc_version, temp_path)
                 case10_job = _recompute_case10_for_uploaded_document(db, job, doc_version)
             elif doc_version is not None and not doc_changed:
                 job.detail = f"{job.detail or ''} Файл идентичен текущей версии — пересчёт CASE10 не требуется.".strip()

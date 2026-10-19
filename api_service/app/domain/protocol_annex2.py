@@ -7,6 +7,7 @@ from io import BytesIO
 from evaluation.exporter import evidence_group_to_submission_check
 
 from . import evidence_tier as et
+from .registry_completeness import registry_stage_counts
 
 
 # Human-readable labels of statuses and reasons; shared by the PDF, DOCX and XML renderers (protocol_export.py).
@@ -26,6 +27,9 @@ PROTOCOL_LABELS = {
     "PD_UPLOADED": "ПД загружена",
     "RD_UPLOADED": "РД загружена",
     "ID_UPLOADED": "ИД загружена",
+    "PD_PARTIAL": "ПД загружена частично",
+    "RD_PARTIAL": "РД загружена частично",
+    "ID_PARTIAL": "ИД загружена частично",
     "PD_MISSING": "ПД отсутствует",
     "RD_MISSING": "РД отсутствует",
     "ID_MISSING": "ИД отсутствует",
@@ -59,7 +63,8 @@ PROTOCOL_LABELS = {
 }
 
 
-def annex2_payload(findings, docs, *, object_info, matrix_size, document_analysis=None):
+def annex2_payload(findings, docs, *, object_info, matrix_size, document_analysis=None, completeness=None, include_registry_counts=False):
+    docs = list(docs)
     confirmed = [row for row in findings if row["finding_status"] == "CONFIRMED_VIOLATION"]
     critical = [row for row in confirmed if row["review_priority"] == "HIGH"]
     substantial = [row for row in confirmed if row["review_priority"] != "HIGH"]
@@ -74,9 +79,21 @@ def annex2_payload(findings, docs, *, object_info, matrix_size, document_analysi
     missing = [row for row in findings if row["finding_status"] in {"MISSING_EVIDENCE", "NOT_COMPARABLE", "CLARIFICATION_REQUIRED"}]
     suspicions = [row for row in findings if row["finding_status"] == "SUSPICION" or (row.get("delta") or {}).get("matrix_scope") == "FREE_SEARCH"]
     stages = Counter(doc.dataset_stage or {"project": "PD", "working": "RD", "as_built": "ID"}.get(doc.doc_stage, "UNKNOWN") for doc in docs)
-    uploads = [{"stage": stage, "status": f"{stage}_UPLOADED" if stages[stage] else f"{stage}_MISSING",
-                "loaded_files": stages[stage], "expected_files": None,
-                "comment": "Ожидаемое количество файлов не задано"} for stage in ("PD", "RD", "ID")]
+    completeness = completeness or {}
+    if include_registry_counts:
+        has_registry_summary, expected_by_stage, loaded_by_stage = registry_stage_counts(docs)
+    else:
+        has_registry_summary, expected_by_stage, loaded_by_stage = False, Counter(), Counter()
+    uploads = []
+    for stage in ("PD", "RD", "ID"):
+        expected = expected_by_stage.get(stage, 0) if has_registry_summary else None
+        loaded = loaded_by_stage.get(stage, 0) if expected else stages[stage]
+        status = completeness.get(f"{stage}_UPLOADED") or (f"{stage}_UPLOADED" if stages[stage] else f"{stage}_MISSING")
+        comment = (f"Загружено {loaded} из {expected} записей реестра" if expected else
+                   "В реестре нет записей для стадии" if has_registry_summary else
+                   "Ожидаемое количество файлов не задано")
+        uploads.append({"stage": stage, "status": status, "loaded_files": loaded, "expected_files": expected,
+                        "comment": comment})
     checked = {row["parameter"]["code"] for row in findings if row["finding_status"] in {"NEGATIVE_VERIFIED", "CANDIDATE", "CONFIRMED_VIOLATION"}}
     # Комплектность / целостность (ТЗ 9.2, 10 баллов): files that were set aside (byte duplicates, unreadable or
     # service files) and the editions that compete for the same section are part of the completeness section.

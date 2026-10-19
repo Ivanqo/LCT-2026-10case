@@ -4,7 +4,8 @@ from pathlib import Path
 from time import perf_counter
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
+import zipfile
 
 from fastapi import FastAPI
 from fastapi import HTTPException
@@ -299,6 +300,59 @@ class Case10ApiTests(unittest.TestCase):
         status = self.client.get(f"/api/case10/processes/{upload_payload['process_id']}/status")
         self.assertEqual(status.status_code, 200, status.text)
         self.assertEqual(status.json()["status"], "READY")
+
+    def test_docx_upload_creates_text_fragment_for_v3_extraction(self):
+        import io
+
+        buffer = io.BytesIO()
+        xml = ('<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
+               '<w:body><w:p><w:r><w:t>Общая площадь 123 м2</w:t></w:r></w:p></w:body></w:document>')
+        with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr("word/document.xml", xml)
+
+        uploaded = self.client.post(
+            "/api/upload",
+            data={"project_id": str(self.project.id), "file_type": "docx"},
+            files={"file": ("floor.docx", buffer.getvalue(), "application/vnd.openxmlformats-officedocument.wordprocessingml.document")},
+        )
+        self.assertEqual(uploaded.status_code, 200, uploaded.text)
+        with patch.object(settings, "DOCX_TEXT_EXTRACTION_ENABLED", True), \
+             patch("app.api.routes_upload.SessionLocal", self.Session), \
+             patch("app.api.routes_upload.RagClient.ingest", new=AsyncMock(return_value={"document_id": 77, "chunks_created": 1})), \
+             patch("app.api.routes_upload._recompute_case10_for_uploaded_document", return_value=None):
+            processed = self.client.post(
+                f"/api/upload-jobs/{uploaded.json()['upload_id']}/process?project_id={self.project.id}"
+            )
+        self.assertEqual(processed.status_code, 200, processed.text)
+        doc = self.db.query(DocumentVersion).filter(DocumentVersion.filename == "floor.docx").one()
+        fragment = self.db.query(SourceFragment).filter(SourceFragment.document_version_id == doc.id).one()
+        self.assertEqual(fragment.source_system, "docx")
+        self.assertIn("Общая площадь 123 м2", fragment.text)
+
+    def test_docx_text_extraction_remains_disabled_by_default(self):
+        import io
+
+        buffer = io.BytesIO()
+        xml = ('<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
+               '<w:body><w:p><w:r><w:t>Текст 123</w:t></w:r></w:p></w:body></w:document>')
+        with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr("word/document.xml", xml)
+        uploaded = self.client.post(
+            "/api/upload",
+            data={"project_id": str(self.project.id), "file_type": "docx"},
+            files={"file": ("disabled.docx", buffer.getvalue(), "application/vnd.openxmlformats-officedocument.wordprocessingml.document")},
+        )
+        self.assertEqual(uploaded.status_code, 200, uploaded.text)
+        with patch.object(settings, "DOCX_TEXT_EXTRACTION_ENABLED", False), \
+             patch("app.api.routes_upload.SessionLocal", self.Session), \
+             patch("app.api.routes_upload.RagClient.ingest", new=AsyncMock(return_value={"document_id": 77, "chunks_created": 1})), \
+             patch("app.api.routes_upload._recompute_case10_for_uploaded_document", return_value=None):
+            processed = self.client.post(
+                f"/api/upload-jobs/{uploaded.json()['upload_id']}/process?project_id={self.project.id}"
+            )
+        self.assertEqual(processed.status_code, 200, processed.text)
+        doc = self.db.query(DocumentVersion).filter(DocumentVersion.filename == "disabled.docx").one()
+        self.assertEqual(self.db.query(SourceFragment).filter(SourceFragment.document_version_id == doc.id).count(), 0)
 
     def test_start_endpoint_returns_quickly_and_only_enqueues_worker_job(self):
         with patch("app.api.routes_case10.publish_job_message", return_value=True) as published:

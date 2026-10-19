@@ -120,7 +120,7 @@ class Case10Tz10TablesTests(unittest.TestCase):
     def test_rejection_log_is_written_when_a_finding_is_rejected(self):
         _, by_status = self._seed_process()
         candidate = by_status["CANDIDATE"][0]
-        response = self._decide(candidate["id"], "Reject", reason_code="OCR_ERROR", comment="misread digit")
+        response = self._decide(candidate["id"], "Reject", reason_code="DATA_ERROR", comment="misread digit")
         self.assertEqual(response.status_code, 200, response.text)
 
         rows = self.db.query(RejectionLog).filter_by(evidence_group_id=candidate["id"]).all()
@@ -128,7 +128,9 @@ class Case10Tz10TablesTests(unittest.TestCase):
         row = rows[0]
         self.assertEqual(row.rejection_reason, "misread digit")
         self.assertEqual(row.retraining_status, "PENDING")
-        self.assertIsNone(row.ai_verdict)  # Module 9.4 is not implemented -- honestly NULL, not fabricated
+        self.assertEqual(row.ai_verdict, "DISAGREE")
+        self.assertIn("Правило:", row.ai_verdict_comment)
+        self.assertIn("исходном листе", row.suggested_fix)
         self.assertIsNotNone(row.evidence_decision_id)
         self.assertEqual(row.project_id, self.project.id)
 
@@ -167,7 +169,10 @@ class Case10Tz10TablesTests(unittest.TestCase):
         body = response.json()
         self.assertEqual(body["resolution_status"], "OPEN")
         self.assertEqual(body["opened_by_user_id"], self.inspector.id)
-        self.assertIsNone(body["ai_comment"])
+        self.assertEqual(body["ai_verdict"], "PENDING_REVIEW")
+        self.assertIn("ручную", body["suggested_fix"])
+        self.assertIn("открыт", body["ai_comment"])
+        self.assertEqual(body["reason_code"], "OTHER")
 
         row = self.db.get(DisputeLog, body["id"])
         self.assertIsNotNone(row)

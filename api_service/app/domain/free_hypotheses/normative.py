@@ -11,7 +11,7 @@ a room 2.4 m high against 2.5 m -- needs a room-height value that no matrix mech
 """
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from sqlalchemy.orm import Session
@@ -43,7 +43,15 @@ def _param_names(param: Param) -> set[str]:
 
 
 def _in_force(entry: NormativeBaseEntry, now: datetime) -> bool:
-    return bool(entry.is_active) and (entry.effective_from is None or entry.effective_from <= now) and (entry.effective_to is None or entry.effective_to >= now)
+    def utc_naive(value: datetime | None) -> datetime | None:
+        if value is not None and value.utcoffset() is not None:
+            return value.astimezone(timezone.utc).replace(tzinfo=None)
+        return value
+
+    now = utc_naive(now) or datetime.utcnow()
+    effective_from = utc_naive(entry.effective_from)
+    effective_to = utc_naive(entry.effective_to)
+    return bool(entry.is_active) and (effective_from is None or effective_from <= now) and (effective_to is None or effective_to >= now)
 
 
 def detect(db: Session, process: InspectionProcess, params: list[Param], *, object_id: str | None, now: datetime | None = None) -> tuple[list[HypothesisCandidate], dict[str, Any]]:
