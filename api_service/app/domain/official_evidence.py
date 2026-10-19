@@ -522,8 +522,20 @@ def _image_stamp_over_text(page, word_rects, page_area: float, chunk: int = 128)
     rectangles on drawing sheets with thousands of identical tiles)."""
     import numpy as np
 
+    # Cheap pass first: placement boxes without the pixel digests `xrefs=True` computes (it decodes every placed
+    # image -- minutes for a drawing sheet with 150 000 tiles). The xref filter below can only REMOVE images, and the
+    # test is "any image covers >= 3 words", so a negative on the unfiltered set is the final answer.
+    placements = np.array([info["bbox"] for info in page.get_image_info()], dtype=np.float64).reshape(-1, 4)
+    if not _images_cover_words(placements, word_rects, page_area, chunk):
+        return False
     images = np.array([info["bbox"] for info in page.get_image_info(xrefs=True) if int(info.get("xref") or 0) > 0],
                       dtype=np.float64).reshape(-1, 4)
+    return _images_cover_words(images, word_rects, page_area, chunk)
+
+
+def _images_cover_words(images, word_rects, page_area: float, chunk: int) -> bool:
+    import numpy as np
+
     if not len(images):
         return False
     image_area = (images[:, 2] - images[:, 0]) * (images[:, 3] - images[:, 1])
@@ -539,10 +551,16 @@ def _image_stamp_over_text(page, word_rects, page_area: float, chunk: int = 128)
         return False
     for start in range(0, len(images), chunk):
         block = images[start:start + chunk, None, :]
-        width = np.minimum(block[..., 2], words[:, 2]) - np.maximum(block[..., 0], words[:, 0])
-        height = np.minimum(block[..., 3], words[:, 3]) - np.maximum(block[..., 1], words[:, 1])
+        # Words that touch none of the chunk's images cannot be covered by them: drop them before the pairwise test.
+        near = ((words[:, 2] > block[..., 0].min()) & (words[:, 0] < block[..., 2].max())
+                & (words[:, 3] > block[..., 1].min()) & (words[:, 1] < block[..., 3].max()))
+        if int(near.sum()) < 3:
+            continue
+        near_words, near_area = words[near], word_area[near]
+        width = np.minimum(block[..., 2], near_words[:, 2]) - np.maximum(block[..., 0], near_words[:, 0])
+        height = np.minimum(block[..., 3], near_words[:, 3]) - np.maximum(block[..., 1], near_words[:, 1])
         area = np.where((width > 0) & (height > 0), width * height, 0.0)
-        covered = (area > 0) & (area / word_area >= 0.3)
+        covered = (area > 0) & (area / near_area >= 0.3)
         if bool((covered.sum(axis=1) >= 3).any()):
             return True
     return False
