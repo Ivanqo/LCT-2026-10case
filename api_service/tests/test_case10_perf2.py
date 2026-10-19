@@ -123,5 +123,19 @@ class JsonGzipTests(unittest.TestCase):
         self.assertEqual(response.json(), self.big)
 
 
+class CompactJsonResponseTests(unittest.TestCase):
+    def test_body_equals_what_fastapi_would_send(self):
+        from datetime import datetime, date
+        from fastapi.encoders import jsonable_encoder
+
+        from app.api.routes_case10 import _compact_json_response
+
+        data = {"id": 7, "created_at": datetime(2026, 10, 19, 8, 30, 1, 123456), "day": date(2026, 10, 19), "none": None,
+                "payload": {"sections": [{"название": "Раздел «1»", "значения": [1, 2.5, True, None, "x y"]}], 3: "int key"},
+                "tuple": (1, 2), "set": {5}}
+        self.assertEqual(_compact_json_response(data).body, JSONResponse(jsonable_encoder(data)).body)
+        self.assertEqual(_compact_json_response(data).media_type, "application/json")
+
+
 if __name__ == "__main__":
     unittest.main()
