@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -41,6 +42,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# Opt-in (CASE10_API_GZIP=1): gzip for JSON responses of >= 100 KB (protocols/current is ~2.6 MB). Off by default
+# because the Node gateway re-sends the decoded body with the upstream Content-Encoding header (see json_gzip.py).
+if os.getenv("CASE10_API_GZIP", "0").strip().lower() in ("1", "true", "yes", "on"):
+    from .json_gzip import LargeJsonGzipMiddleware
+
+    app.add_middleware(LargeJsonGzipMiddleware, min_bytes=int(os.getenv("CASE10_API_GZIP_MIN_BYTES", str(100 * 1024))))
 # Added after CORS so it wraps outside it (Starlette prepends each new
 # middleware), meaning every request -- including ones CORS itself rejects --
 # still gets a request id.
