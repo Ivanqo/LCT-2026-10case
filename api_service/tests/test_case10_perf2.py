@@ -282,5 +282,69 @@ class AuxPoolSizeTests(unittest.TestCase):
         self.assertEqual(self._count(10, {"CASE10_LIVE_TAGGER_WORKERS": "x"}, "CASE10_EXPLICATION_WORKERS"), 3)
 
 
+class OcrCacheTests(unittest.TestCase):
+    def setUp(self):
+        import fitz
+
+        from app.domain import dataset_sources, ocr_cache
+
+        self.ds, self.cache = dataset_sources, ocr_cache
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self._tmp.name)
+        pdf = fitz.open()
+        pdf.new_page(width=595, height=842)
+        path = self.root / "scan.pdf"
+        pdf.save(str(path))
+        pdf.close()
+        self.sha = hashlib.sha256(path.read_bytes()).hexdigest()
+        self.env = mock.patch.dict(os.environ, {"CASE10_ORIGINALS_ROOT": str(self.root), "CASE10_OCR_CACHE_DIR": str(self.root / "ocr")})
+        self.env.start()
+        self.identity = mock.patch.object(ocr_cache, "_identity", return_value="test-identity")
+        self.identity.start()
+        self.ds._ocr_page_words.cache_clear()
+        self.ds._ocr_original_clip.cache_clear()
+
+    def tearDown(self):
+        self.identity.stop()
+        self.env.stop()
+        self.ds._ocr_page_words.cache_clear()
+        self.ds._ocr_original_clip.cache_clear()
+        self._tmp.cleanup()
+
+    def test_page_words_are_ocrd_once_then_served_from_disk_bit_for_bit(self):
+        fake = [{"text": "Площадь", "bbox": (10.0, 20.0, 110.0, 40.0), "confidence": 91.5},
+                {"text": "1.109", "bbox": (120.0, 20.0, 170.0, 40.0), "confidence": 88}]
+        with mock.patch.object(self.ds, "_ocr_words_pixel_space", return_value=fake) as engine:
+            first = self.ds._ocr_page_words("scan.pdf", self.sha, 1, "rus")
+        self.assertEqual(engine.call_count, 1)
+        self.ds._ocr_page_words.cache_clear()                        # another process
+        with mock.patch.object(self.ds, "_ocr_words_pixel_space", side_effect=AssertionError("OCR must not run")):
+            second = self.ds._ocr_page_words("scan.pdf", self.sha, 1, "rus")
+        self.assertEqual(first, second)
+        self.assertEqual(json.dumps(first), json.dumps(second))
+        self.assertEqual(len(first), 2)
+
+    def test_failures_are_not_stored_and_another_language_is_another_entry(self):
+        with mock.patch.object(self.ds, "_ocr_words_pixel_space", return_value=None):
+            self.assertIsNone(self.ds._ocr_page_words("scan.pdf", self.sha, 1, "rus"))
+        self.assertEqual(list((self.root / "ocr").rglob("*.json")), [])
+        self.cache.store_words(self.sha, 1, "rus", ({"text": "a", "bbox": [0, 0, 1, 1], "confidence": 1.0},))
+        self.assertIsNotNone(self.cache.load_words(self.sha, 1, "rus"))
+        self.assertIsNone(self.cache.load_words(self.sha, 1, "eng"))
+        self.assertIsNone(self.cache.load_words(self.sha, 2, "rus"))
+
+    def test_clip_text_roundtrip_and_empty_text_is_not_stored(self):
+        self.cache.store_clip(self.sha, 1, (1.0, 2.0, 3.0, 4.0), "rus", "")
+        self.assertIsNone(self.cache.load_clip(self.sha, 1, (1.0, 2.0, 3.0, 4.0), "rus"))
+        self.cache.store_clip(self.sha, 1, (1.0, 2.0, 3.0, 4.0), "rus", "Кабинет врача")
+        self.assertEqual(self.cache.load_clip(self.sha, 1, (1.0, 2.0, 3.0, 4.0), "rus"), "Кабинет врача")
+
+    def test_unidentifiable_ocr_build_means_no_cache(self):
+        with mock.patch.object(self.cache, "_identity", return_value=None):
+            self.cache.store_words(self.sha, 1, "rus", ({"text": "a", "bbox": [0, 0, 1, 1], "confidence": 1.0},))
+            self.assertIsNone(self.cache.load_words(self.sha, 1, "rus"))
+        self.assertEqual(list((self.root / "ocr").rglob("*.json")), [])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -400,6 +400,17 @@ def extract_original_pages(document, page_numbers) -> dict[int, dict]:
 
 @lru_cache(maxsize=256)
 def _ocr_original_clip(relative: str, sha256: str, page_number: int, clip_values: tuple[float, ...], lang: str) -> str:
+    from . import ocr_cache
+
+    cached_text = ocr_cache.load_clip(sha256, page_number, clip_values, lang)
+    if cached_text is not None:
+        return cached_text
+    text = _ocr_original_clip_uncached(relative, sha256, page_number, clip_values, lang)
+    ocr_cache.store_clip(sha256, page_number, clip_values, lang, text)
+    return text
+
+
+def _ocr_original_clip_uncached(relative: str, sha256: str, page_number: int, clip_values: tuple[float, ...], lang: str) -> str:
     import fitz
     from PIL import Image
 
@@ -514,6 +525,11 @@ def _ocr_page_words(relative: str, sha256: str, page_number: int, lang: str) -> 
     """Full-page OCR fallback used only when the text layer has no match. Returns
     word boxes already converted to PDF point space (same frame as text-layer
     `page.get_text('words')`), never a guessed or synthetic bbox."""
+    from . import ocr_cache
+
+    cached_words = ocr_cache.load_words(sha256, page_number, lang)
+    if cached_words is not None:
+        return cached_words
     import fitz
     from PIL import Image
 
@@ -548,6 +564,7 @@ def _ocr_page_words(relative: str, sha256: str, page_number: int, lang: str) -> 
             ],
             "confidence": word.get("confidence"),
         })
+    ocr_cache.store_words(sha256, page_number, lang, tuple(words))
     return tuple(words)
 
 
