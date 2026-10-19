@@ -2,7 +2,7 @@
 
     python evaluation/check_claims.py [FILE ...] [--json]
 
-Default files: README_GRADER.md, DEPLOYMENT.md, TZ_TRACEABILITY.md (repository root). Exit code 0 -- nothing to fix,
+Default files: README.md, README_GRADER.md, DEPLOYMENT.md, TZ_TRACEABILITY.md (repository root). Exit code 0 -- nothing to fix,
 1 -- at least one violation, 2 -- a file is missing. Two rules, both applied per "segment" (a table row, a list item with
 its continuation lines, or a paragraph; fenced code blocks are skipped):
 
@@ -28,7 +28,7 @@ import sys
 from typing import Iterator
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_FILES = ("README_GRADER.md", "DEPLOYMENT.md", "TZ_TRACEABILITY.md")
+DEFAULT_FILES = ("README.md", "README_GRADER.md", "DEPLOYMENT.md", "TZ_TRACEABILITY.md")
 
 ABSOLUTE = re.compile(
     r"(?<![\w])(?:100\s?%|100\s?процент\w*|готов(?:о|а|ы|ый|ая|ые)?(?![\w])|полностью|полноценн\w*|гарантир\w*|"
