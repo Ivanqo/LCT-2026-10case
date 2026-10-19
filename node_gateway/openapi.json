@@ -1587,6 +1587,20 @@
         }
       }
     },
+    "/api/case10/ml/reports/weekly/saved": {
+      "get": {"summary": "Saved weekly ML reports (ML_ENGINEER / ADMIN)", "responses": {"200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object"}}}}}}
+    },
+    "/api/case10/normative-base": {
+      "get": {"summary": "List normative base entries", "responses": {"200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object"}}}}}},
+      "post": {"summary": "Create normative base entry (admin)", "responses": {"200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object"}}}}}}
+    },
+    "/api/case10/normative-base/{entry_id}": {
+      "patch": {"summary": "Update or deactivate normative base entry (admin)", "responses": {"200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object"}}}}}},
+      "delete": {"summary": "Delete normative base entry (admin)", "responses": {"200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object"}}}}}}
+    },
+    "/api/case10/processes/{process_id}/iais-rin/pull-files": {
+      "post": {"summary": "Pull files from the external IS mock (emulation)", "responses": {"200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object"}}}}}}
+    },
     "/api/case10/ml/reports/weekly": {
       "get": {
         "summary": "Weekly ML report (ML_ENGINEER / ADMIN)",

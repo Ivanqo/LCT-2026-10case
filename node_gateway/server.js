@@ -58,6 +58,13 @@ const allowedRoutes = [
   // Final Z: inspector dashboard and weekly ML report
   ["GET", /^\/api\/case10\/dashboard$/],
   ["GET", /^\/api\/case10\/ml\/reports\/weekly$/],
+  ["GET", /^\/api\/case10\/ml\/reports\/weekly\/saved$/],
+  // Final Z2: normative base administration and mock IS pull
+  ["GET", /^\/api\/case10\/normative-base$/],
+  ["POST", /^\/api\/case10\/normative-base$/],
+  ["PATCH", /^\/api\/case10\/normative-base\/[^/]+$/],
+  ["DELETE", /^\/api\/case10\/normative-base\/[^/]+$/],
+  ["POST", /^\/api\/case10\/processes\/[^/]+\/iais-rin\/pull-files$/],
   ["POST", /^\/api\/case10\/protocols\/[^/]+\/finalize$/],
   ["POST", /^\/api\/case10\/protocols\/[^/]+\/unfinalize$/],
   ["GET", /^\/api\/case10\/processes\/[^/]+\/protocols$/],
@@ -98,7 +105,7 @@ function isAllowed(method, pathname) {
 
 function setCorsHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", CORS_ORIGINS);
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Authorization,Content-Type,X-API-Key");
   res.setHeader("Access-Control-Max-Age", "600");
 }
