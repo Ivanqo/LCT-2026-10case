@@ -82,6 +82,11 @@ def _approval(doc: DocumentVersion) -> str:
     return str(doc.approval_status or "UNKNOWN").strip().upper()
 
 
+def _approval_is_unverified(doc: DocumentVersion) -> bool:
+    """Return true only when the package omits approval status or marks it unknown."""
+    return _approval(doc) in {"", "UNKNOWN"}
+
+
 def _doc_summary(doc: DocumentVersion) -> dict[str, Any]:
     stage = str(doc.dataset_stage or "").upper()
     if stage not in _STAGES:
@@ -274,7 +279,8 @@ def revision_scopes(db: Session, process) -> list[dict[str, Any]]:
         if registry_enforced and approval not in APPROVED_STATUSES | FORBIDDEN_STATUSES:
             # A lone edition with an otherwise accepted registry can be compared only as an explicit assumption.
             # Any edition scope (chain or conflict), registry mismatch, or forbidden status keeps its normal block.
-            if (approval_unknown_policy() == "soft" and status == STATUS_ACCEPTED and not issues
+            if (approval_unknown_policy() == "soft" and _approval_is_unverified(doc)
+                    and status == STATUS_ACCEPTED and not issues
                     and int(doc.id) not in revision_scope_doc_ids):
                 continue
             stage = facts_by_id[int(doc.id)].stage
@@ -307,7 +313,7 @@ def selection_context(db: Session, process, docs: list[DocumentVersion] | None =
         issues = manifest.get("registry_issues") or []
         registry_enforced = str(doc.dataset_split or "").upper() == PACKAGE_SPLIT or bool(manifest.get("registry_required"))
         if (approval_unknown_policy() == "soft" and registry_enforced and status == STATUS_ACCEPTED and not issues
-                and _approval(doc) not in APPROVED_STATUSES | FORBIDDEN_STATUSES
+                and _approval_is_unverified(doc)
                 and int(doc.id) not in revision_scope_doc_ids):
             approval_unverified_document_ids.add(int(doc.id))
         if status == STATUS_CLARIFICATION_REQUIRED or issues:
@@ -553,10 +559,11 @@ def completeness_report(db: Session, process) -> dict[str, Any]:
         "excluded_files": len(selection["excluded_document_ids"]),
         "rows": rows,
     }
-    if approval_unknown_policy() == "soft":
+    approval_unverified_files = sorted(
+        str(doc.dataset_file_id) for doc in docs
+        if int(doc.id) in selection.get("approval_unverified_document_ids", set())
+    )
+    if approval_unverified_files:
         result["approval_policy"] = "soft"
-        result["approval_unverified_files"] = sorted(
-            str(doc.dataset_file_id) for doc in docs
-            if int(doc.id) in selection.get("approval_unverified_document_ids", set())
-        )
+        result["approval_unverified_files"] = approval_unverified_files
     return result
