@@ -503,7 +503,7 @@ def _page_text_and_words(page) -> tuple[str, list]:
     they do in PyMuPDF 1.24 -- otherwise the two plain calls."""
     import fitz
 
-    if fitz.TEXTFLAGS_TEXT != fitz.TEXTFLAGS_WORDS:
+    if fitz.TEXTFLAGS_TEXT != fitz.TEXTFLAGS_WORDS or not hasattr(page, "get_textpage"):
         return str(page.get_text("text") or ""), page.get_text("words") or []
     textpage = page.get_textpage(flags=fitz.TEXTFLAGS_TEXT)
     return str(page.get_text("text", textpage=textpage) or ""), page.get_text("words", textpage=textpage) or []
