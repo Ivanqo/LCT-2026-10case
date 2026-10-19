@@ -5,6 +5,7 @@ import Workbench from './Workbench.jsx';
 import RevisionsPanel from './RevisionsPanel.jsx';
 import CompletenessPanel from './CompletenessPanel.jsx';
 import ProgressPanel from './ProgressPanel.jsx';
+import SheetCompare from './SheetCompare.jsx';
 import VerificationTimer from './VerificationTimer.jsx';
 import { PROCESS_STATUS_LABELS, PROCESS_TONE, label } from '../labels.js';
 import { fmtDate } from '../utils.js';
@@ -17,6 +18,7 @@ const SECTIONS = [
   { key: 'completeness', label: 'Комплектность' },
 ];
 
+const SHEETS_SECTION = { key: 'sheets', label: 'Сравнение листов' };
 const SUPERVISOR_ROLES = new Set(['ADMIN', 'SUPERVISOR']);
 
 export default function ProcessPanel({ projectId, processId, onProcessIdChange, me }) {
@@ -34,7 +36,13 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
   const [section, setSection] = useState('workbench');
   const [timerKey, setTimerKey] = useState(0);
   const [ackNoId, setAckNoId] = useState(false);
+  const [sheetMode, setSheetMode] = useState(false);
   const canUnfinalize = Boolean(me?.is_admin || SUPERVISOR_ROLES.has(String(me?.role || '').toUpperCase()));
+
+  // the sheet comparison is a viewing aid behind a server flag: the tab exists only when the server says it is on and usable
+  useEffect(() => {
+    api.sheetCompareStatus().then((s) => setSheetMode(Boolean(s?.enabled && s?.available))).catch(() => setSheetMode(false));
+  }, []);
 
   const refreshHistory = useCallback(() => {
     if (!projectId) return;
@@ -367,7 +375,7 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
       {protocol && loaded && (
         <>
           <div className="subtabs">
-            {SECTIONS.map((item) => (
+            {(sheetMode ? [...SECTIONS, SHEETS_SECTION] : SECTIONS).map((item) => (
               <button key={item.key} type="button" className={`subtab${section === item.key ? ' active' : ''}`} onClick={() => setSection(item.key)}>
                 {item.label}
               </button>
@@ -378,6 +386,7 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
           )}
           {section === 'revisions' && <RevisionsPanel processId={process.process_id} locked={locked} />}
           {section === 'completeness' && <CompletenessPanel processId={process.process_id} />}
+          {section === 'sheets' && sheetMode && <SheetCompare processId={process.process_id} />}
         </>
       )}
     </div>

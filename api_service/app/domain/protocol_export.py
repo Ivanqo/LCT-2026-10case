@@ -39,6 +39,7 @@ HYPOTHESIS_METHOD_TITLES = {
     "LOGICAL_ANALYSIS": "логический анализ (правила Logical_Rules)",
     "CHANGE_SHEET": "лист изменений",
     "LAYER_COMPOSITION": "состав слоёв",
+    "GRAPHIC_DIFF": "растровое сравнение листов",
 }
 _CONTROL = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f￾￿]")
 

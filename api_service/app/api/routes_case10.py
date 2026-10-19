@@ -983,6 +983,78 @@ def case10_page_pdf(document_version_id: int, page: int, db: Session = Depends(g
                              "Content-Disposition": f'inline; filename="doc{int(document.id)}_p{int(page)}.pdf"'})
 
 
+# ---- sheet comparison ("Сравнение листов"): a viewing aid, behind CASE10_SHEET_COMPARE_ENABLED (default off) ----
+def _require_sheet_compare() -> None:
+    from ..domain.sheet_compare import config as sheet_config, raster as sheet_raster
+
+    if not sheet_config.sheet_compare_enabled():
+        raise HTTPException(status_code=404, detail="Sheet comparison is switched off (CASE10_SHEET_COMPARE_ENABLED)")
+    if not sheet_raster.available():
+        raise HTTPException(status_code=503, detail="Sheet comparison needs OpenCV, which is not installed")
+
+
+@router.get("/case10/sheet-compare/status")
+def case10_sheet_compare_status(user: User = Depends(get_current_user)):
+    from ..domain.sheet_compare import service as sheet_service
+
+    return sheet_service.status()
+
+
+@router.get("/case10/processes/{process_id}/sheet-pairs")
+def case10_sheet_pairs(process_id: str, left_document_id: int | None = Query(default=None), right_document_id: int | None = Query(default=None),
+                       kind: str = Query(default="all", pattern="^(all|stage|revision)$"), min_confidence: float | None = Query(default=None, ge=0, le=1),
+                       limit: int = Query(200, ge=1, le=1000), db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """Matched sheet pairs PD <-> RD (same discipline) and RD <-> RD (revisions of one series), with the pair confidence and its basis."""
+    _require_sheet_compare()
+    from ..domain.comparison_gate import GateContext
+    from ..domain.sheet_compare import service as sheet_service
+
+    from ..domain.v3_pipeline import _project_documents
+
+    process = _org_process(db, process_id, user)
+    documents = _project_documents(db, process)
+    kinds =("stage", "revision") if kind == "all" else (kind,)
+    return sheet_service.sheet_pairs(documents, GateContext(documents), left_id=left_document_id, right_id=right_document_id, kinds=kinds,
+                                     min_confidence=min_confidence, limit=limit)
+
+
+def _sheet_compare_args(db: Session, user: User, left_document_id: int, right_document_id: int):
+    return _org_document(db, left_document_id, user), _org_document(db, right_document_id, user)
+
+
+@router.get("/case10/sheet-compare")
+def case10_sheet_compare(left_document_id: int = Query(...), left_page: int = Query(..., ge=1), right_document_id: int = Query(...),
+                         right_page: int = Query(..., ge=1), same_series: bool = Query(default=False),
+                         db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """One sheet pair: pairing evidence (confidence), picture similarity, difference regions with boxes in PDF points of each sheet."""
+    _require_sheet_compare()
+    from ..domain.sheet_compare import service as sheet_service
+
+    left, right = _sheet_compare_args(db, user, left_document_id, right_document_id)
+    try:
+        result, _ = sheet_service.compare_sheets(left, left_page, right, right_page, same_series=same_series)
+    except (FileNotFoundError, ValueError, RuntimeError) as exc:
+        raise _document_error(exc) from exc
+    return result
+
+
+@router.get("/case10/sheet-compare/overlay.png")
+def case10_sheet_compare_overlay(left_document_id: int = Query(...), left_page: int = Query(..., ge=1), right_document_id: int = Query(...),
+                                 right_page: int = Query(..., ge=1), db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    """The difference overlay: strokes on both sheets grey, only on the left red, only on the right blue-green."""
+    _require_sheet_compare()
+    from ..domain.sheet_compare import service as sheet_service
+
+    left, right = _sheet_compare_args(db, user, left_document_id, right_document_id)
+    try:
+        result, overlay = sheet_service.compare_sheets(left, left_page, right, right_page, want_overlay=True)
+    except (FileNotFoundError, ValueError, RuntimeError) as exc:
+        raise _document_error(exc) from exc
+    if overlay is None:
+        raise HTTPException(status_code=404, detail=f"No overlay: {result['picture'].get('reason') or 'not comparable'}")
+    return Response(overlay, media_type="image/png", headers={"Cache-Control": "private, max-age=600"})
+
+
 @router.get("/case10/protocols/current")
 def case10_current_protocol(
     project_id: int = Query(...),
