@@ -31,17 +31,18 @@ INCLUDE = (
     "api_service/app/**", "api_service/alembic/**", "api_service/alembic.ini", "api_service/requirements.txt",
     "api_service/Dockerfile", "api_service/tests/**",
     "evaluation/__init__.py", "evaluation/metrics.py", "evaluation/exporter.py", "evaluation/errors.py",
-    "evaluation/candidate_coverage.py",
+    "evaluation/candidate_coverage.py", "evaluation/export_identity.py",
     "evaluation/phase12/example_submission_synthetic.json", "evaluation/phase12/submission_schema.json",
     "frontend_react/**", "node_gateway/**",
     "deploy/**",
-    "docker-compose.case10.yml", "docker-compose.case10.gpu.yml", ".dockerignore", ".gitignore",
+    "docker-compose.case10.yml", "docker-compose.case10.gpu.yml", "docker-compose.case10.hardened.yml", ".dockerignore", ".gitignore",
     "README_GRADER.md", "LICENSES_MODELS.md", "DEPLOYMENT.md",
 )
 EXCLUDE = (
     "**/__pycache__/**", "**/*.pyc", "frontend_react/node_modules/**", "frontend_react/dist/**",
     "deploy/nginx/templates/**",           # legacy DocuRAG site (landing + RAG app), not the CASE10 stand
     "deploy/bootstrap-ubuntu.sh",
+    "deploy/demo/**",                      # pitch/rehearsal tooling with recorded expected findings of real packages
 )
 # Anything matching these must not be in the bundle, whatever the whitelist says.
 FORBIDDEN_PATHS = (

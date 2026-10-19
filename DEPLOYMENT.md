@@ -89,6 +89,12 @@ docker compose -f docker-compose.case10.yml down -v       # полностью �
 версий tesseract/PyMuPDF/torch в образе нужно очистить (`docker volume rm case10_case10_data` или
 `CASE10_LIVE_TAGGER_CACHE_DIR`), см. `evaluation/LIVE_TAGGER_SCALE_DETERMINISM_REPORT.md` §3.
 
+**Флаги поставки.** По умолчанию включены `CASE10_EXPLICATION_COMPARE=1` (сравнение экспликаций, S1),
+`CASE10_ROOM_DRAWING_COMPARE_ENABLED=1` (сравнение вентиляции по помещениям, S2) и `CASE10_FREE_HYPOTHESES=1`
+(свободные гипотезы). Выключить любой из них: указать `0` в `.env` (шаблон — `deploy/case10/case10.env.example`) и
+перезапустить `api case10_worker`, либо `-e ИМЯ=0` у `docker run`. Таблица всех флагов — `README_GRADER.md`, §6.
+Необязательное ужесточение контейнеров: `docker compose -f docker-compose.case10.yml -f docker-compose.case10.hardened.yml up -d`.
+
 ## 5. Комплект сдачи
 
 `python deploy/make_delivery.py bundle` собирает из закоммиченных файлов только код, Dockerfile, compose, эту

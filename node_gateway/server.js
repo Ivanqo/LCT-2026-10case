@@ -53,6 +53,11 @@ const allowedRoutes = [
   ["GET", /^\/api\/case10\/protocols\/[^/]+\/evaluation-predictions$/],
   ["GET", /^\/api\/case10\/protocols\/[^/]+\/submission$/],
   ["GET", /^\/api\/case10\/protocols\/[^/]+\/pdf$/],
+  ["GET", /^\/api\/case10\/protocols\/[^/]+\/docx$/],
+  ["GET", /^\/api\/case10\/protocols\/[^/]+\/xml$/],
+  // Final Z: inspector dashboard and weekly ML report
+  ["GET", /^\/api\/case10\/dashboard$/],
+  ["GET", /^\/api\/case10\/ml\/reports\/weekly$/],
   ["POST", /^\/api\/case10\/protocols\/[^/]+\/finalize$/],
   ["POST", /^\/api\/case10\/protocols\/[^/]+\/unfinalize$/],
   ["GET", /^\/api\/case10\/processes\/[^/]+\/protocols$/],

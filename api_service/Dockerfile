@@ -102,7 +102,7 @@ COPY api_service/app ./app
 COPY api_service/alembic ./alembic
 COPY api_service/alembic.ini ./alembic.ini
 COPY evaluation/__init__.py evaluation/metrics.py evaluation/exporter.py evaluation/errors.py \
-     evaluation/candidate_coverage.py ./evaluation/
+     evaluation/candidate_coverage.py evaluation/export_identity.py ./evaluation/
 
 # Pre-bake the PaddleOCR det+rec models and prove the CPU inference path runs (a broken
 # build fails here instead of at the first request). `enable_mkldnn=False` in
@@ -122,7 +122,7 @@ COPY api_service/alembic.ini ./alembic.ini
 # Only the runtime part of `evaluation/` (the submission exporter and what it imports): the rest of that folder is
 # measurement code, internal reports and labels, which do not belong in the delivered image.
 COPY evaluation/__init__.py evaluation/metrics.py evaluation/exporter.py evaluation/errors.py \
-     evaluation/candidate_coverage.py ./evaluation/
+     evaluation/candidate_coverage.py evaluation/export_identity.py ./evaluation/
 
 # Offline profile (app/config.py): legacy chat/RAG routers are not mounted and RAG/IFC clients refuse to connect.
 # The parameter matrix and submission schema come from the reference data shipped with the code. Server-side
@@ -135,8 +135,9 @@ ENV CASE10_OFFLINE_DELIVERY=1 \
     CASE10_ORIGINALS_ROOT=/data/packages \
     CASE10_PARAMETER_CODE_STYLE=matrix11 \
     CASE10_LIVE_TAGGER_CACHE_DIR=/data/live_tagger_cache \
-    CASE10_EXPLICATION_COMPARE=0 \
-    CASE10_ROOM_DRAWING_COMPARE_ENABLED=0 \
+    CASE10_EXPLICATION_COMPARE=1 \
+    CASE10_ROOM_DRAWING_COMPARE_ENABLED=1 \
+    CASE10_FREE_HYPOTHESES=1 \
     CASE10_EXPLICATION_CACHE_DIR=/data/live_tagger_cache/explication \
     CASE10_LLM_VERIFIER_ENABLED=0 \
     API_DATA_DIR=/data \

@@ -9,8 +9,9 @@
 `PYTHONPATH="api_service;." venv/Scripts/python.exe -m pytest api_service/tests` (база шага Z — 1010 passed, 1 skipped, до новых тестов шага Z).
 
 **Флаги, меняющие поставку.** `CASE10_EXPLICATION_COMPARE` (S1), `CASE10_ROOM_DRAWING_COMPARE_ENABLED` (S2), `CASE10_FREE_HYPOTHESES` (гипотезы):
-гипотезы включены по умолчанию в коде; по решению от 18.10.2026 S1 и S2 включаются в поставке шагом E1. В `docker-compose.case10.yml` и
-`deploy/case10/case10.env.example` на момент составления этого файла значение по умолчанию у S1 и S2 — `0`. Перед сдачей сверить фактические значения.
+по решению от 18.10.2026 все три включены по умолчанию в поставке (`1` в `api_service/Dockerfile`, `docker-compose.case10.yml`,
+`deploy/case10/case10.env.example`, таблица флагов в `README_GRADER.md`); соответствие документов и compose проверяет `evaluation/check_claims.py`.
+Выключение — `0` в `.env`.
 
 ---
 

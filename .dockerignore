@@ -13,6 +13,7 @@
 !evaluation/exporter.py
 !evaluation/errors.py
 !evaluation/candidate_coverage.py
+!evaluation/export_identity.py
 
 # dev target / legacy services only (docker-compose.yml)
 !shared

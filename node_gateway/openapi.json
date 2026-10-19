@@ -568,6 +568,52 @@
         }
       }
     },
+    "/api/case10/protocols/{protocol_id}/docx": {
+      "get": {
+        "summary": "Export protocol as DOCX (same data as the PDF/JSON)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProtocolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DOCX file",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/case10/protocols/{protocol_id}/xml": {
+      "get": {
+        "summary": "Export protocol as XML (same data as the PDF/JSON)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProtocolId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "XML file",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/case10/protocols/{protocol_id}/finalize": {
       "post": {
         "summary": "Finalize protocol",
@@ -1520,6 +1566,40 @@
           },
           "404": {
             "$ref": "#/components/responses/PythonError"
+          }
+        }
+      }
+    },
+    "/api/case10/dashboard": {
+      "get": {
+        "summary": "Inspector dashboard: objects and checks with a colour indication (red/yellow/green/grey)",
+        "responses": {
+          "200": {
+            "description": "Dashboard items and the colour rule",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/case10/ml/reports/weekly": {
+      "get": {
+        "summary": "Weekly ML report (ML_ENGINEER / ADMIN)",
+        "responses": {
+          "200": {
+            "description": "Weekly report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         }
       }
