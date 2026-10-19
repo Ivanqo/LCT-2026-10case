@@ -199,5 +199,62 @@ class QualityPrefetchTests(unittest.TestCase):
             self.assertEqual(quality_prefetch.prefetch(self.pairs)["workers"], 0)
 
 
+class EmbeddingDiskCacheTests(unittest.TestCase):
+    def setUp(self):
+        from app.domain import semantic_similarity
+
+        self.mod = semantic_similarity
+        self._tmp = tempfile.TemporaryDirectory()
+        self.env = mock.patch.dict(os.environ, {"CASE10_EMBEDDING_CACHE_DIR": self._tmp.name})
+        self.env.start()
+        self.mod._embed_cached.cache_clear()
+
+    def tearDown(self):
+        self.env.stop()
+        self.mod._embed_cached.cache_clear()
+        self._tmp.cleanup()
+
+    def test_second_process_reads_the_stored_vector_without_a_model(self):
+        import numpy as np
+
+        calls = []
+
+        class FakeModel:
+            def encode(self, text, normalize_embeddings=True):
+                calls.append(text)
+                return np.array([0.1, 0.2, 0.3 + len(text) * 1e-7], dtype=np.float32)
+
+        with mock.patch.object(self.mod, "_get_model", return_value=FakeModel()):
+            first = self.mod.embed("Площадь участка")
+        self.assertEqual(calls, ["Площадь участка"])
+        self.mod._embed_cached.cache_clear()                      # a new process: empty in-memory cache
+        with mock.patch.object(self.mod, "_get_model", side_effect=AssertionError("model must not be needed")):
+            second = self.mod.embed("Площадь   участка")           # same text after whitespace normalisation
+        self.assertEqual(first.tobytes(), second.tobytes())
+        self.assertEqual(first.dtype, second.dtype)
+
+    def test_no_directory_means_no_files_and_a_missing_model_is_not_stored(self):
+        with mock.patch.dict(os.environ, {"CASE10_EMBEDDING_CACHE_DIR": "", "CASE10_LIVE_TAGGER_CACHE_DIR": ""}):
+            self.assertIsNone(self.mod._disk_cache_dir())
+        with mock.patch.object(self.mod, "_get_model", return_value=None):
+            self.assertIsNone(self.mod.embed("что-то"))
+        self.assertEqual(list(Path(self._tmp.name).rglob("*.npy")), [])
+
+    def test_corrupt_file_reads_as_a_miss(self):
+        import numpy as np
+
+        class FakeModel:
+            def encode(self, text, normalize_embeddings=True):
+                return np.ones(3, dtype=np.float32)
+
+        with mock.patch.object(self.mod, "_get_model", return_value=FakeModel()):
+            self.mod.embed("abc")
+        for path in Path(self._tmp.name).rglob("*.npy"):
+            path.write_bytes(b"garbage")
+        self.mod._embed_cached.cache_clear()
+        with mock.patch.object(self.mod, "_get_model", return_value=FakeModel()):
+            self.assertEqual(self.mod.embed("abc").tolist(), [1.0, 1.0, 1.0])
+
+
 if __name__ == "__main__":
     unittest.main()

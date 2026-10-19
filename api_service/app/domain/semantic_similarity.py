@@ -33,7 +33,10 @@ candidates (row-text vs. the parameter's own name + catalog source hint).
 from __future__ import annotations
 
 from functools import lru_cache
+import hashlib
+import json
 import os
+from pathlib import Path
 from typing import Any
 
 SEMANTIC_MODEL_NAME = os.getenv(
@@ -105,12 +108,85 @@ def _get_model() -> Any:
     return _model
 
 
+def _disk_cache_dir() -> Path | None:
+    explicit = os.getenv("CASE10_EMBEDDING_CACHE_DIR", "").strip()
+    if explicit:
+        return Path(explicit)
+    tagger = os.getenv("CASE10_LIVE_TAGGER_CACHE_DIR", "").strip()
+    return Path(tagger) / "embeddings" if tagger else None
+
+
+@lru_cache(maxsize=1)
+def _disk_identity() -> str:
+    """What the stored vectors depend on besides the text. A vector is bit-for-bit the same only for the same model,
+    library versions and (through the BLAS thread split) the same machine configuration, so all of that is in the key;
+    nothing here imports torch."""
+    import platform
+    import shutil
+    from importlib import metadata
+
+    def version(name: str) -> str:
+        try:
+            return metadata.version(name)
+        except metadata.PackageNotFoundError:
+            return "-"
+
+    return json.dumps([SEMANTIC_MODEL_NAME, version("torch"), version("sentence-transformers"), version("transformers"),
+                       version("numpy"), platform.machine(), platform.processor(), os.cpu_count(),
+                       os.getenv("OMP_NUM_THREADS", ""), os.getenv("MKL_NUM_THREADS", ""),
+                       bool(shutil.which("nvidia-smi")), os.getenv("NVIDIA_VISIBLE_DEVICES", ""),
+                       os.getenv("CUDA_VISIBLE_DEVICES", "")], ensure_ascii=False)
+
+
+def _disk_path(directory: Path, text: str) -> Path:
+    key = hashlib.sha256((_disk_identity() + "\n" + text).encode("utf-8")).hexdigest()
+    return directory / key[:2] / f"{key}.npy"
+
+
+def _disk_load(text: str):
+    directory = _disk_cache_dir()
+    if directory is None:
+        return None
+    try:
+        import numpy as np
+
+        vector = np.load(_disk_path(directory, text), allow_pickle=False)
+    except (OSError, ValueError):
+        return None
+    return vector if getattr(vector, "ndim", 0) == 1 and vector.size else None
+
+
+def _disk_store(text: str, vector) -> None:
+    directory = _disk_cache_dir()
+    if directory is None or vector is None:
+        return
+    path = _disk_path(directory, text)
+    tmp = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+    try:
+        import numpy as np
+
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with tmp.open("wb") as stream:
+            np.save(stream, vector, allow_pickle=False)
+        os.replace(tmp, path)
+    except (OSError, ValueError):       # a cache that cannot be written never fails a run
+        try:
+            tmp.unlink()
+        except OSError:
+            pass
+
+
 @lru_cache(maxsize=4096)
 def _embed_cached(text: str):
+    stored = _disk_load(text)
+    if stored is not None:
+        return stored
     model = _get_model()
     if model is None:
         return None
-    return model.encode(text, normalize_embeddings=True)
+    vector = model.encode(text, normalize_embeddings=True)
+    _disk_store(text, vector)
+    return vector
 
 
 def embed(text: str | None):
