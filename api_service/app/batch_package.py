@@ -673,6 +673,7 @@ def build_plan(
     registry_sha256: str | None = None,
     originals_prefix: str = "",
     scan_errors: list[dict[str, str]] | None = None,
+    stage_fallback: Any = None,
 ) -> PackagePlan:
     """Match registry rows to files and produce the manifest rows the pipeline imports.
 
@@ -683,7 +684,11 @@ def build_plan(
 
     `originals_prefix`: where the package root sits below CASE10_ORIGINALS_ROOT (the HTTP path keeps every package
     under one root; the CLI points the root at the package itself, prefix ""). Stage is always read from the
-    package-relative path, so the name of the folder a package was dropped into never decides a stage."""
+    package-relative path, so the name of the folder a package was dropped into never decides a stage.
+
+    `stage_fallback` (interface uploads only; the CLI and batch runs leave it None and are unchanged): a callable
+    `path -> StageGuess` consulted last, when neither the registry nor a stage folder names the stage; its answer is
+    recorded as `stage_source` FILENAME/FOLDER, and an ambiguous name leaves the stage UNKNOWN with a `stage_warning`."""
     from .domain.official_dataset import stage_from_package_path
 
     has_registry_headers = hasattr(registry, "unrecognized_columns")
@@ -754,8 +759,14 @@ def build_plan(
             file_issues.append("SHA256_MISMATCH")
         stage = (reg or {}).get("doc_stage") if (reg or {}).get("doc_stage") in ("PD", "RD", "ID") else None
         stage_source = "REGISTRY" if stage else "PACKAGE_PATH"
+        stage_warning = None
         if stage is None:
             stage = stage_from_package_path(item.relative_path)
+            if stage_fallback is not None and stage == "UNKNOWN":
+                guess = stage_fallback(item.relative_path)
+                if guess.stage:
+                    stage, stage_source = guess.stage, guess.source
+                stage_warning = guess.warning
         file_id = str((reg or {}).get("file_id") or f"F-{item.sha256[:16]}")
         if file_id in seen_ids:
             file_issues.append("DUPLICATE_FILE_ID" if reg and reg.get("file_id") else "DUPLICATE_CONTENT")
@@ -782,6 +793,8 @@ def build_plan(
             "registry_manifest_summary": (registry_manifest_summary or None) if not rows else None,
             "registry_issues": file_issues or None,
         }
+        if stage_warning:
+            row["stage_warning"] = stage_warning
         if reg and reg.get("discipline"):
             row["section"] = reg["discipline"]
         if reg and reg.get("approval_status"):

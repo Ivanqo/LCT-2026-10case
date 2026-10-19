@@ -42,8 +42,10 @@ from ..config import settings
 from ..db.session import get_db
 from ..domain.change_engine import ChangeEngine
 from ..domain.ifc_observation_sync import sync_ifc_observations
+from ..domain import protocol_body_cache
 from ..domain.portrait_builder import PortraitBuilder, stage_sort_key
 from ..domain.source_fragment_sync import sync_exported_source_fragments
+from ..domain.stage_from_name import SOURCE_LABELS as STAGE_SOURCE_LABELS
 from ..domain.synthetic_dataset import ensure_synthetic_case10_dataset
 from ..domain.official_dataset import (
     MATRIX_VERSION_OFFICIAL,
@@ -413,6 +415,9 @@ def case10_documents(
     groups: dict[str, list[dict[str, Any]]] = {}
     for doc in rows:
         stage = doc.doc_stage or doc.document_stage or "unknown"
+        manifest_row = (doc.dataset_metadata or {}).get("document_manifest") if isinstance(doc.dataset_metadata, dict) else None
+        manifest_row = manifest_row if isinstance(manifest_row, dict) else {}
+        stage_source = str(manifest_row.get("stage_source") or "") or None
         groups.setdefault(stage, []).append(
             {
                 "id": doc.id,
@@ -425,6 +430,9 @@ def case10_documents(
                 "dataset_split": doc.dataset_split,
                 "dataset_section": doc.dataset_section,
                 "stage_label": STAGE_LABELS.get(stage, stage),
+                "stage_source": stage_source,
+                "stage_source_label": STAGE_SOURCE_LABELS.get(stage_source) if stage_source and stage != "unknown" else None,
+                "stage_warning": manifest_row.get("stage_warning"),
                 "discipline": doc.discipline,
                 "document_code": doc.document_code,
                 "version": doc.version,
@@ -1074,10 +1082,17 @@ def case10_current_protocol(
 ):
     organization_id = _require_org(user)
     get_project_for_org(db, project_id, organization_id)
-    protocol = latest_protocol(db, project_id=project_id, organization_id=organization_id, process_id=process_id)
-    if not protocol:
+    key = protocol_body_cache.protocol_identity(db, project_id=project_id, organization_id=organization_id, process_id=process_id)
+    if key is None:
         return None
-    return _compact_json_response(protocol_to_dict(protocol))
+    body = protocol_body_cache.get(key)
+    if body is None:
+        protocol = latest_protocol(db, project_id=project_id, organization_id=organization_id, process_id=process_id)
+        if not protocol:
+            return None
+        body = _compact_json_response(protocol_to_dict(protocol)).body
+        protocol_body_cache.put(key, body)
+    return Response(content=body, media_type="application/json")
 
 
 @router.get("/case10/protocols/{protocol_id}/json")

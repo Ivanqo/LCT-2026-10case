@@ -36,6 +36,7 @@ from ..db.models import (
     RejectionLog,
     SourceFragment,
 )
+from ..db.session import release_write_lock
 from .official_dataset import DATASET_VERSION_OFFICIAL, MATRIX_VERSION_OFFICIAL, dataset_stage_for_internal, ensure_official_matrix, dataset_object_registry_id
 from .v3_extractors import ExtractionResult, _normalize_bbox, default_extractors
 from .v3_messaging import publish_process_event, redis_get_json, redis_set_json
@@ -610,6 +611,8 @@ def run_process(db: Session, *, process_id: str, user_id: int | None = None, aff
         if target_codes:
             params = [param for param in params if param.code in target_codes]
         _delete_existing_gold_fixture_groups(db, process, target_codes)
+        # Stage boundary: free SQLite's write lock before tagging/OCR so logins and decisions are not blocked.
+        release_write_lock(db)
         extraction_docs = current_document_versions(docs)
 
         cache_key = f"case10:v3:{process.input_manifest_hash}:{process.matrix_version}:{','.join(sorted(p.code for p in params))}"

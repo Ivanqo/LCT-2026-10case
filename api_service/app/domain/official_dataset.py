@@ -68,9 +68,11 @@ def _live_index_row(row: dict[str, Any], *, with_stage: bool = True) -> dict[str
     out = {key: value for key, value in row.items() if key not in ORGANIZER_INDEX_LABEL_FIELDS}
     if with_stage:
         registry_stage = str(row.get("stage") or "").upper()
-        if str(row.get("stage_source") or "").upper() == "REGISTRY" and registry_stage in {"PD", "RD", "ID"}:
+        stage_source = str(row.get("stage_source") or "").upper()
+        if stage_source in {"REGISTRY", "FILENAME", "FOLDER"} and registry_stage in {"PD", "RD", "ID"}:
+            # FILENAME/FOLDER: an interface upload's stage read from the file's own name (batch_package stage_fallback)
             out["stage"] = registry_stage
-            out["stage_source"] = "REGISTRY"
+            out["stage_source"] = stage_source
         else:
             out["stage"] = stage_from_package_path(row.get("relative_path") or row.get("source_relative_path"))
             out["stage_source"] = STAGE_SOURCE_PACKAGE_PATH

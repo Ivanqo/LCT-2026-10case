@@ -143,7 +143,7 @@ export default function DocumentsPanel({ projectId, onProcessStarted }) {
           />
         </div>
         <div className="upload-hint">
-          Совет: включите в имя файла «ПД», «РД» или «ИД» (project/working/as-built) — так система определяет стадию документа.
+          Совет: включите в имя файла «ПД», «РД» или «ИД» (project/working/as-built) — так система определяет стадию документа (источник показан у каждого файла: «по имени файла»). Стадия из реестра или папки имеет приоритет; если в имени указано несколько стадий («ПД_РД»), стадия не назначается.
         </div>
 
         {uploads.length > 0 && (
@@ -190,14 +190,16 @@ export default function DocumentsPanel({ projectId, onProcessStarted }) {
         {!loading && groups.map((group) => (
           <div className="doc-stage-group top-gap" key={group.stage}>
             <div className="doc-stage-title">
-              <span className="pill">{group.stage_label || label(STAGE_LABELS, group.stage)}</span>
+              <span className="pill">{label(STAGE_LABELS, group.stage)}</span>
               <span className="muted small">{group.documents.length} файл(ов)</span>
             </div>
             {group.documents.map((doc) => (
               <div className="doc-row" key={doc.id}>
                 <div>
                   <div className="name">{doc.filename}</div>
+                  {doc.stage_warning && <div className="small" style={{ color: 'var(--bad)' }} data-testid="stage-warning">{doc.stage_warning}</div>}
                   <div className="doc-meta">
+                    {doc.stage_source_label ? `Стадия ${doc.stage_source_label} • ` : ''}
                     {label(APPROVAL_STATUS_LABELS, doc.approval_status)}
                     {doc.revision ? ` • ред. ${doc.revision}` : ''}
                     {' • '}

@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 
 from ..robustness import robust_inputs_enabled
 from ..db.models import DocumentVersion, EvidenceDecision, EvidenceFragment, EvidenceGroup, InspectionProcess, Param, SourceFragment
+from ..db.session import release_write_lock
 from . import trigger_policy as tp
 from . import file_registry
 from . import page_quality_cache, quality_prefetch
@@ -116,6 +117,7 @@ def create_official_evidence_groups(
     by_id = {doc.id: doc for doc in candidate_docs}
     if by_id and params:
         tag_live_candidates(db, candidate_docs, _full_catalog_params(db, params), budget=new_live_tagger_budget())
+        release_write_lock(db)
     by_code = defaultdict(list)
     fragments = []
     low_quality_by_code: dict[str, list[dict]] = defaultdict(list)
@@ -142,6 +144,7 @@ def create_official_evidence_groups(
                                                                     quality, source_fragment=fragment))
                 else:
                     by_code[code].append(fragment)
+    release_write_lock(db)
     # Decision layer (Phase 10, prompt B): document facts (byte duplicates / unreadable / service files,
     # ordered-vs-conflicting revisions, section inventory) computed once from metadata. The rule-pack tier is
     # untouched: it keeps seeing every document and every fragment exactly as before.
@@ -177,6 +180,7 @@ def create_official_evidence_groups(
             else:
                 accepted.append(observation)
         rule_observations[code] = accepted
+    release_write_lock(db)
     fallback_budget = new_fallback_budget()
     fallback_diagnostics: list[dict] = []
     available_stages = {doc.doc_stage for doc in candidate_docs if doc.dataset_stage != "RD_ID_MIXED"}

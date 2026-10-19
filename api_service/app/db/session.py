@@ -4,7 +4,7 @@ import os
 import re
 import sqlite3
 
-from sqlalchemy import create_engine, select, text
+from sqlalchemy import create_engine, event, select, text
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 from ..config import settings
@@ -15,12 +15,55 @@ class Base(DeclarativeBase):
     pass
 
 
+_IS_SQLITE = settings.SQLALCHEMY_DATABASE_URL.startswith("sqlite")
+# The API process and the worker share one SQLite file: a login or an inspector decision (short write) must wait for
+# the worker's write transaction instead of failing with "database is locked" after the 5 s default.
+SQLITE_BUSY_TIMEOUT_MS = max(30000, int(os.getenv("API_SQLITE_BUSY_TIMEOUT_MS", "60000") or 60000))
+
 engine = create_engine(
     settings.SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False} if settings.SQLALCHEMY_DATABASE_URL.startswith("sqlite") else {},
+    connect_args={"check_same_thread": False, "timeout": SQLITE_BUSY_TIMEOUT_MS / 1000.0} if _IS_SQLITE else {},
 )
 
+
+def apply_sqlite_pragmas(dbapi_connection, _record=None) -> None:
+    """WAL (readers and the single writer no longer block each other), a long busy timeout and synchronous=NORMAL
+    (safe with WAL). WAL stays optional: on a filesystem that cannot map its shared memory the journal mode simply
+    remains as it was, and API_SQLITE_WAL=0 switches it off."""
+    cursor = dbapi_connection.cursor()
+    try:
+        cursor.execute(f"PRAGMA busy_timeout={SQLITE_BUSY_TIMEOUT_MS}")
+        if os.getenv("API_SQLITE_WAL", "1").strip().lower() not in ("0", "false", "no", "off"):
+            try:
+                cursor.execute("PRAGMA journal_mode=WAL")
+                cursor.execute("PRAGMA synchronous=NORMAL")
+            except sqlite3.Error:
+                pass
+    finally:
+        cursor.close()
+
+
+if _IS_SQLITE:
+    event.listen(engine, "connect", apply_sqlite_pragmas)
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+def release_write_lock(db) -> None:
+    """Commit the writes made so far so SQLite's single write lock is free again before a long CPU/OCR stage.
+
+    Only for SQLite (other dialects keep one transaction). The loaded objects are kept as they are
+    (expire_on_commit off for this commit): everything flushed is already what the session holds, so a stage
+    boundary does not trigger a reload of every document/fragment row. A retry re-runs the stages from the start
+    and every write is an upsert keyed by (process, parameter, group), so a partially committed run is harmless."""
+    if db.get_bind().dialect.name != "sqlite":
+        return
+    previous = db.expire_on_commit
+    db.expire_on_commit = False
+    try:
+        db.commit()
+    finally:
+        db.expire_on_commit = previous
 
 
 def _sqlite_has_column(conn: sqlite3.Connection, table: str, column: str) -> bool:
@@ -47,7 +90,7 @@ def _run_sqlite_migrations() -> None:
 
     path = str(settings.SQLITE_PATH)
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    conn = sqlite3.connect(path)
+    conn = sqlite3.connect(path, timeout=SQLITE_BUSY_TIMEOUT_MS / 1000.0)
     try:
         if conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='organizations'").fetchone():
             _sqlite_ensure_column(conn, "organizations", "slug", "TEXT")
