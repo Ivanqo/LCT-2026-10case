@@ -270,6 +270,13 @@ def _extract_original_page_snapshot(pdf, page_number: int) -> dict:
     rotation = int(page.rotation)
     raw_width, raw_height = float(page.cropbox.width), float(page.cropbox.height)
     width, height = _visible_page_dims(raw_width, raw_height, rotation)
+    # One text page for the words and the plain text below (each `get_text` call otherwise builds its own; the flags of
+    # the two options are the same in PyMuPDF 1.24). Otherwise, or for a page object without `get_textpage` (test
+    # doubles), each call builds its own, as before.
+    import fitz
+
+    shared = fitz.TEXTFLAGS_WORDS == fitz.TEXTFLAGS_TEXT and hasattr(page, "get_textpage")
+    textpage = {"textpage": page.get_textpage(flags=fitz.TEXTFLAGS_WORDS)} if shared else {}
     words = [
         {
             "bbox": _bbox_to_visible_frame(
@@ -278,7 +285,7 @@ def _extract_original_page_snapshot(pdf, page_number: int) -> dict:
             ),
             "text": _normalize_pua_glyphs(str(word[4])),
         }
-        for word in page.get_text("words", sort=True)
+        for word in page.get_text("words", sort=True, **textpage)
         if len(word) >= 5 and str(word[4]).strip()
     ]
     if rotation % 360 != 0:
@@ -287,7 +294,7 @@ def _extract_original_page_snapshot(pdf, page_number: int) -> dict:
         words = [word for row in cluster_rows(words) for word in row]
     # Check the plain text too: PyMuPDF's word tokenizer drops C0 glyphs that
     # `_looks_like_broken_cmap_text` uses to identify a broken text layer.
-    cmap_corrupted = _looks_like_broken_cmap_text(page.get_text("text"))
+    cmap_corrupted = _looks_like_broken_cmap_text(page.get_text("text", **textpage))
     return {
         "page": page_number,
         "width": width,
@@ -393,6 +400,17 @@ def extract_original_pages(document, page_numbers) -> dict[int, dict]:
 
 @lru_cache(maxsize=256)
 def _ocr_original_clip(relative: str, sha256: str, page_number: int, clip_values: tuple[float, ...], lang: str) -> str:
+    from . import ocr_cache
+
+    cached_text = ocr_cache.load_clip(sha256, page_number, clip_values, lang)
+    if cached_text is not None:
+        return cached_text
+    text = _ocr_original_clip_uncached(relative, sha256, page_number, clip_values, lang)
+    ocr_cache.store_clip(sha256, page_number, clip_values, lang, text)
+    return text
+
+
+def _ocr_original_clip_uncached(relative: str, sha256: str, page_number: int, clip_values: tuple[float, ...], lang: str) -> str:
     import fitz
     from PIL import Image
 
@@ -507,6 +525,11 @@ def _ocr_page_words(relative: str, sha256: str, page_number: int, lang: str) -> 
     """Full-page OCR fallback used only when the text layer has no match. Returns
     word boxes already converted to PDF point space (same frame as text-layer
     `page.get_text('words')`), never a guessed or synthetic bbox."""
+    from . import ocr_cache
+
+    cached_words = ocr_cache.load_words(sha256, page_number, lang)
+    if cached_words is not None:
+        return cached_words
     import fitz
     from PIL import Image
 
@@ -541,6 +564,7 @@ def _ocr_page_words(relative: str, sha256: str, page_number: int, lang: str) -> 
             ],
             "confidence": word.get("confidence"),
         })
+    ocr_cache.store_words(sha256, page_number, lang, tuple(words))
     return tuple(words)
 
 

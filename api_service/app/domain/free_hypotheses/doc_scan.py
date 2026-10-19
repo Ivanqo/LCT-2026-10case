@@ -211,11 +211,9 @@ def scan_documents(documents: list[Any], kinds: Iterable[str]) -> dict[int, dict
         else:
             pending.append((document, relative, sha256, missing))
     if pending:
-        requested = os.getenv("CASE10_FREE_HYPOTHESES_WORKERS") or os.getenv("CASE10_EXPLICATION_WORKERS") or os.getenv("CASE10_LIVE_TAGGER_WORKERS") or "3"
-        try:
-            workers = min(3, max(1, int(requested)), len(pending))
-        except ValueError:
-            workers = min(3, len(pending))
+        from ..aux_pool import worker_count as pool_worker_count
+
+        workers = pool_worker_count(len(pending), "CASE10_FREE_HYPOTHESES_WORKERS", "CASE10_EXPLICATION_WORKERS")
         scanned: dict[int, dict[str, Any]] = {}
         remaining = {int(d.id): (d, r, s, m) for d, r, s, m in pending}
         if workers > 1:

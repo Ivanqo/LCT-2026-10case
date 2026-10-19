@@ -9,6 +9,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, Response
+from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, Field
 from sqlalchemy import func
 from sqlalchemy.orm import Session, selectinload
@@ -983,6 +984,15 @@ def case10_page_pdf(document_version_id: int, page: int, db: Session = Depends(g
                              "Content-Disposition": f'inline; filename="doc{int(document.id)}_p{int(page)}.pdf"'})
 
 
+def _compact_json_response(data: Any) -> Response:
+    """The body FastAPI would send for `data`, without `jsonable_encoder`: that recursive pass over a 2.6 MB protocol
+    payload cost about two thirds of the request (the payload is plain JSON from the database; only the few datetime
+    fields need it, and `default=` gives them exactly its encoding)."""
+    body = json.dumps(data, default=jsonable_encoder, ensure_ascii=False, allow_nan=False, indent=None,
+                      separators=(",", ":")).encode("utf-8")
+    return Response(content=body, media_type="application/json")
+
+
 @router.get("/case10/protocols/current")
 def case10_current_protocol(
     project_id: int = Query(...),
@@ -995,7 +1005,7 @@ def case10_current_protocol(
     protocol = latest_protocol(db, project_id=project_id, organization_id=organization_id, process_id=process_id)
     if not protocol:
         return None
-    return protocol_to_dict(protocol)
+    return _compact_json_response(protocol_to_dict(protocol))
 
 
 @router.get("/case10/protocols/{protocol_id}/json")

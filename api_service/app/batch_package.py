@@ -340,7 +340,7 @@ def scan_package(root: Path, *, scan_errors: list[dict[str, str]] | None = None)
     else:
         found.sort(key=_path_sort_key)
     if not robust_inputs_enabled():
-        return [PackageFile(rel, (root / rel).stat().st_size, sha256_file(root / rel), pdf_page_count(root / rel))
+        return [PackageFile(rel, (root / rel).stat().st_size, _package_file_sha256(root / rel), pdf_page_count(root / rel))
                 for rel in found]
     result = []
     for relative in found:
@@ -349,11 +349,11 @@ def scan_package(root: Path, *, scan_errors: list[dict[str, str]] | None = None)
         size = 0
         try:
             size = path.stat().st_size
-            sha256 = sha256_file(path) if is_pdf else ""
+            sha256 = _package_file_sha256(path) if is_pdf else ""
         except OSError:
             result.append(PackageFile(relative, size, "", None, "FILE_READ_ERROR"))
             continue
-        pdf_pages, processing_issue = _pdf_scan_info(path) if is_pdf else (None, None)
+        pdf_pages, processing_issue = _package_pdf_info(path) if is_pdf else (None, None)
         result.append(PackageFile(
             relative, size, sha256,
             pdf_pages,
@@ -394,6 +394,26 @@ def sha256_file(path: Path) -> str:
         while chunk := stream.read(_HASH_CHUNK):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _package_file_sha256(path: Path) -> str:
+    """`sha256_file` for the package scan, served from the stat-keyed digest cache when one is configured."""
+    from .domain.file_hash_cache import cached_sha256
+
+    return cached_sha256(path, sha256_file)
+
+
+def _package_pdf_info(path: Path) -> tuple[int | None, str | None]:
+    """`_pdf_scan_info` for the package scan, served from the stat-keyed file-fact cache when one is configured (the
+    answer also depends on the PyMuPDF build and on the robust-input switch, so both are in the cache kind)."""
+    import fitz
+
+    from .domain.file_hash_cache import cached_fact
+
+    kind = f"pdf_info/{getattr(fitz, 'VersionBind', '')}/{int(robust_inputs_enabled())}"
+    value = cached_fact(path, kind, lambda p: list(_pdf_scan_info(p)),
+                        valid=lambda v: isinstance(v, list) and len(v) == 2)
+    return (value[0], value[1])
 
 
 def _path_sort_key(relative: str) -> str:
@@ -716,7 +736,11 @@ def build_plan(
             "relative_path": f"{originals_prefix.strip('/')}/{item.relative_path}".lstrip("/"),
             "package_path": item.relative_path,
             "registry": registry_view or None,
-            "registry_manifest_summary": registry_manifest_summary or None,
+            # The summary is one fact about the whole registry. Written into every row it made the manifest (and each
+            # document's JSON metadata) O(files^2): 450 KB per row, 584 MB for a 1 300-document package, decoded on every
+            # query of the documents. `registry_stage_counts` takes the union over the documents, so the first row
+            # carries it for all of them.
+            "registry_manifest_summary": (registry_manifest_summary or None) if not rows else None,
             "registry_issues": file_issues or None,
         }
         if reg and reg.get("discipline"):

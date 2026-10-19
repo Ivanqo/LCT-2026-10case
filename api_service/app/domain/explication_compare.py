@@ -739,14 +739,9 @@ def scan_documents_tables(documents: list[Any]) -> dict[int, dict[str, Any]]:
         else:
             pending.append((document, relative, sha256))
 
-    requested = os.getenv("CASE10_EXPLICATION_WORKERS")
-    if requested is None:
-        requested = os.getenv("CASE10_LIVE_TAGGER_WORKERS")
-    try:
-        requested_count = int(requested) if requested else 3
-    except (TypeError, ValueError):
-        requested_count = 3
-    worker_count = min(3, max(1, requested_count), len(pending))
+    from .aux_pool import worker_count as pool_worker_count
+
+    worker_count = pool_worker_count(len(pending), "CASE10_EXPLICATION_WORKERS")
     remaining = {int(document.id): (document, relative, sha256) for document, relative, sha256 in pending}
     if worker_count > 1:
         try:
