@@ -8,7 +8,19 @@ import time
 from sqlalchemy import create_engine, event, text
 from sqlalchemy.orm import sessionmaker
 
+import tempfile
+from pathlib import Path
+
+import pytest
+
 from app.db import session as session_module
+
+
+@pytest.fixture
+def tmp_path():
+    # own temp dir: pytest's shared base directory can be unreadable for the current user on a developer machine
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as directory:
+        yield Path(directory)
 
 
 def _engine(tmp_path, name="stand.db"):
