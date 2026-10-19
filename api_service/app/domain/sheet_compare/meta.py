@@ -86,6 +86,34 @@ def _is_label_line(text: str) -> bool:
 _NAME_RE = re.compile(r"^[А-ЯЁ][а-яё]+(?:\s+[А-ЯЁ]\.?\s?[А-ЯЁ]?\.?)?$")
 
 
+_KIND_WORD = re.compile(r"(?:план\w*|разрез\w*|сечени\w*|фасад\w*|схем\w*|аксонометр\w*|принципиальн\w*|узел|узлы|развертк\w*|детал\w*)")
+
+
+def _trim_prefix(text: str) -> str:
+    """Title-block rows are read across the stamp, so a title can start with the signatories of the neighbouring cells ("ГИП Ширинов
+    20.02.26 План главных балок"): up to twelve words before the first drawing-kind word are dropped."""
+    words = text.split()
+    for index, word in enumerate(words[:13]):
+        if _KIND_WORD.fullmatch(fold(word).strip(".,:;()")):
+            return " ".join(words[index:])
+    return text
+
+
+def _wrapped(first: tuple, lines: list[tuple]) -> str:
+    """The title line and, when the title wraps, the line right under it (same left edge, a gap below one line height)."""
+    text = first[2]
+    top = max(w[3] for w in first[3])
+    height = max(1.0, max(w[3] - w[1] for w in first[3]))
+    for line in lines:
+        if line is first or line[0] < first[0]:
+            continue
+        if 0 <= line[0] - top <= height * 0.9 and abs(line[1] - first[1]) <= height * 6 and len(line[2]) <= 40:
+            return f"{text} {line[2]}"
+        if line[0] - top > height * 0.9:
+            break
+    return text
+
+
 def _dedupe_words(text: str) -> str:
     """A CAD export often prints a caption twice in the same place ("Н. Н. контр. контр."): consecutive repeats collapse."""
     out: list[str] = []
@@ -102,15 +130,17 @@ def extract_title(words: list[tuple[float, float, float, float, str]], width: fl
     block_lines = [ln for ln in _lines(block) if not _is_label_line(ln[2]) and not _NAME_RE.match(ln[2].strip())]
     titled = [ln for ln in block_lines if sheet_kind(ln[2]) and len(ln[2]) <= 140]
     if titled:
-        text = " ".join(ln[2] for ln in titled[:3])
-        return {"title": _dedupe_words(text), "kind": sheet_kind(text), "source": "title_block"}
+        text = _wrapped(titled[0], block_lines)
+        text = _trim_prefix(_dedupe_words(text))
+        return {"title": text, "kind": sheet_kind(text), "source": "title_block"}
     # the big caption under the drawing ("План на отм. +3.000") sits outside the stamp
     rest = [w for w in words if not (w[0] > width * _TITLE_X and w[3] > height * _TITLE_Y)]
     captions = [ln for ln in _lines(rest) if _CAPTION_START.match(fold(ln[2])) and 6 <= len(ln[2]) <= 110 and len(ln[2].split()) <= 14]
     if captions:
         captions.sort(key=lambda ln: (-(ln[3][0][3] - ln[3][0][1]), ln[0], ln[1]))   # the biggest lettering first
         text = captions[0][2]
-        return {"title": _dedupe_words(text), "kind": sheet_kind(text), "source": "page_caption"}
+        text = _trim_prefix(_dedupe_words(text))
+        return {"title": text, "kind": sheet_kind(text), "source": "page_caption"}
     # no drawing-kind word anywhere: the sheet has no readable title (note lists / stamps are not titles); pairing then rests on
     # the cipher, rooms and labels, with the lower confidence that follows
     return {"title": None, "kind": None, "source": None}

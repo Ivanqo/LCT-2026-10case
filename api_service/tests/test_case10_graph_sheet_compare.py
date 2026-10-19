@@ -172,6 +172,11 @@ class StampTests(unittest.TestCase):
         self.assertFalse(sheet_meta.is_drawing(pm(kind=None, width=595, height=842)))
         self.assertFalse(sheet_meta.is_drawing({"error": "unreadable"}))
 
+    def test_signatories_before_the_title_are_dropped(self):
+        self.assertEqual(sheet_meta._trim_prefix("ГИП Ширинов 20.02.26 План главных балок"), "План главных балок")
+        self.assertEqual(sheet_meta._trim_prefix("Схема расположения колонн"), "Схема расположения колонн")
+        self.assertEqual(sheet_meta._trim_prefix("Общие данные"), "Общие данные")
+
     def test_a_repeated_caption_collapses(self):
         self.assertEqual(sheet_meta._dedupe_words("Н. Н. контр. контр. План"), "Н. контр. План")
 
