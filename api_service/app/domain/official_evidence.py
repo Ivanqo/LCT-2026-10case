@@ -459,8 +459,8 @@ def _quality_for_page(document, page_number: int) -> dict:
                 if rotation:
                     reasons.append("ROTATED_PAGE")
 
-                text = str(page.get_text("text") or "").strip()
-                words = page.get_text("words") or []
+                text, words = _page_text_and_words(page)
+                text = text.strip()
                 broken_text_layer = dataset_sources._looks_like_broken_cmap_text(text)
                 if broken_text_layer or (not text and not words):
                     try:
@@ -493,6 +493,18 @@ def _quality_for_page(document, page_number: int) -> dict:
     page_quality_cache.store(sha256, int(page_number), ocr_engine, ocr_lang, result)
     _QUALITY_PAGE_CACHE[cache_key] = result
     return result
+
+
+def _page_text_and_words(page) -> tuple[str, list]:
+    """`page.get_text("text")` and `page.get_text("words")` from ONE text page (each call otherwise builds its own;
+    the extraction was the largest single cost of the quality check). Only when both options use the same flags, which
+    they do in PyMuPDF 1.24 -- otherwise the two plain calls."""
+    import fitz
+
+    if fitz.TEXTFLAGS_TEXT != fitz.TEXTFLAGS_WORDS:
+        return str(page.get_text("text") or ""), page.get_text("words") or []
+    textpage = page.get_textpage(flags=fitz.TEXTFLAGS_TEXT)
+    return str(page.get_text("text", textpage=textpage) or ""), page.get_text("words", textpage=textpage) or []
 
 
 def _stamp_annotation_over_text(page, word_rects) -> bool:
