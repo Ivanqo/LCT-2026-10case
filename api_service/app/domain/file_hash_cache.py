@@ -15,11 +15,11 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Callable
+from typing import Any, Callable
 
 logger = logging.getLogger(__name__)
 
-_SCHEMA = 1
+_SCHEMA = 2
 
 
 def cache_dir() -> Path | None:
@@ -37,6 +37,12 @@ def _record_path(directory: Path, path: Path, size: int, mtime_ns: int) -> Path:
 
 def cached_sha256(path: Path, compute: Callable[[Path], str]) -> str:
     """SHA-256 of `path`: from the cache when the file is unchanged since it was last hashed, else `compute(path)`."""
+    return cached_fact(path, "sha256", compute, valid=lambda value: isinstance(value, str) and len(value) == 64)
+
+
+def cached_fact(path: Path, kind: str, compute: Callable[[Path], Any], valid: Callable[[Any], bool] = lambda value: True) -> Any:
+    """Any JSON-serialisable fact about the file's bytes (`kind` names it, e.g. "sha256", or "pdf_info/<library version>"
+    for a fact that also depends on the reading library), cached under the same (path, size, mtime_ns) record."""
     directory = cache_dir()
     if directory is None:
         return compute(path)
@@ -47,24 +53,26 @@ def cached_sha256(path: Path, compute: Callable[[Path], str]) -> str:
         record_path = _record_path(directory, resolved, size, mtime_ns)
     except (OSError, ValueError):
         return compute(path)
+    facts: dict[str, Any] = {}
     try:
         record = json.loads(record_path.read_text(encoding="utf-8"))
-        digest = record.get("sha256")
         if (isinstance(record, dict) and record.get("schema") == _SCHEMA and record.get("path") == str(resolved)
-                and record.get("size") == size and record.get("mtime_ns") == mtime_ns
-                and isinstance(digest, str) and len(digest) == 64):
-            return digest
+                and record.get("size") == size and record.get("mtime_ns") == mtime_ns and isinstance(record.get("facts"), dict)):
+            facts = dict(record["facts"])
+            if kind in facts and valid(facts[kind]):
+                return facts[kind]
     except (OSError, ValueError):
         pass
-    digest = compute(path)
+    value = compute(path)
     try:
         after = resolved.stat()
         if int(after.st_size) == size and int(after.st_mtime_ns) == mtime_ns:   # unchanged while we were reading it
+            facts[kind] = value
             record_path.parent.mkdir(parents=True, exist_ok=True)
             tmp = record_path.with_name(f"{record_path.name}.{os.getpid()}.tmp")
             tmp.write_text(json.dumps({"schema": _SCHEMA, "path": str(resolved), "size": size, "mtime_ns": mtime_ns,
-                                       "sha256": digest}, ensure_ascii=False), encoding="utf-8")
+                                       "facts": facts}, ensure_ascii=False), encoding="utf-8")
             os.replace(tmp, record_path)
-    except (OSError, ValueError) as exc:
-        logger.warning("file hash cache write failed: %s", exc)
-    return digest
+    except (OSError, ValueError, TypeError) as exc:
+        logger.warning("file fact cache write failed: %s", exc)
+    return value

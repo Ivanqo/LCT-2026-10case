@@ -51,6 +51,26 @@ class FileHashCacheTests(unittest.TestCase):
         self.assertEqual(file_hash_cache.cached_sha256(target, compute), hashlib.sha256(b"second, longer").hexdigest())
         self.assertEqual(len(calls), 3)
 
+    def test_facts_of_different_kinds_share_one_record_and_survive_each_other(self):
+        target = self.root / "d.pdf"
+        target.write_bytes(b"%PDF-1.4 body")
+        info_calls = []
+
+        def info(path):
+            info_calls.append(path)
+            return [12, None]
+
+        self.assertEqual(file_hash_cache.cached_fact(target, "pdf_info/x/1", info), [12, None])
+        self.assertEqual(file_hash_cache.cached_sha256(target, _digest), hashlib.sha256(b"%PDF-1.4 body").hexdigest())
+        self.assertEqual(file_hash_cache.cached_fact(target, "pdf_info/x/1", info), [12, None])
+        self.assertEqual(len(info_calls), 1)                                   # served from the record
+        self.assertEqual(len(list((self.root / "cache").rglob("*.json"))), 1)  # one record, two facts
+        file_hash_cache.cached_fact(target, "pdf_info/y/1", info)              # another library build: a miss
+        self.assertEqual(len(info_calls), 2)
+        target.write_bytes(b"%PDF-1.4 other body")
+        file_hash_cache.cached_fact(target, "pdf_info/x/1", info)              # changed file: a miss
+        self.assertEqual(len(info_calls), 3)
+
     def test_corrupt_record_reads_as_a_miss(self):
         target = self.root / "b.pdf"
         target.write_bytes(b"payload")
