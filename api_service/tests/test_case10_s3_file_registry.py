@@ -154,6 +154,14 @@ class FileRegistryPolicyTests(S3RegistryTestBase):
         with patch.dict(os.environ, {"CASE10_APPROVAL_UNKNOWN_POLICY": "block"}):
             blocked = file_registry.selection_context(self.db, self.process)
         self.assertEqual(blocked["blocked_by_document"][doc.id]["reason"], "revision_clarification_required")
+        with patch.dict(os.environ, {}, clear=True):
+            default_soft = file_registry.selection_context(self.db, self.process)
+        self.assertNotIn(doc.id, default_soft["blocked_by_document"])
+        self.assertEqual(default_soft["approval_unverified_document_ids"], {doc.id})
+        with patch.dict(os.environ, {}, clear=True):
+            unverified_report = file_registry.completeness_report(self.db, self.process)
+        self.assertEqual(unverified_report["approval_policy"], "soft")
+        self.assertIn(doc.dataset_file_id, unverified_report["approval_unverified_files"])
         with patch.dict(os.environ, {"CASE10_APPROVAL_UNKNOWN_POLICY": "soft"}):
             scopes = file_registry.revision_scopes(self.db, self.process)
             soft = file_registry.selection_context(self.db, self.process)

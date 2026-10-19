@@ -209,8 +209,10 @@ def _print_package_warnings(report: dict[str, Any]) -> None:
             "FILE_WITHOUT_REGISTRY_ROW": "package files without a registry row",
             "APPROVAL_UNVERIFIED": "files with missing or unknown approval status",
             "INVALID_REGISTRY_PATH": "registry rows with unsafe or malformed paths",
+            "UNRECOGNIZED_REGISTRY_COLUMNS": "unrecognized or noncanonical registry columns",
         }.get(code, str(code or "registry warning"))
-        examples = warning.get("files") or [row.get("file_name") for row in (warning.get("rows") or [])]
+        examples = (warning.get("files") or warning.get("columns")
+                    or [row.get("file_name") for row in (warning.get("rows") or [])])
         sample = ", ".join(str(value) for value in examples[:3] if value)
         suffix = f"; examples: {sample}" if sample else ""
         _say(f"warning: {count} {label}{suffix}")

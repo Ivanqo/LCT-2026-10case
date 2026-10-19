@@ -77,6 +77,7 @@ class RegistryInputFailureTests(unittest.TestCase):
                 {"code": "REGISTRY_ROW_WITHOUT_FILE", "count": 2,
                  "rows": [{"file_name": "missing-a.pdf"}, {"file_name": "missing-b.pdf"}]},
                 {"code": "FILE_WITHOUT_REGISTRY_ROW", "count": 1, "files": ["PD/unlisted.pdf"]},
+                {"code": "UNRECOGNIZED_REGISTRY_COLUMNS", "count": 1, "columns": ["legacy_status"]},
             ],
             "scan_errors": [{"file": "long-directory", "reason": "DIRECTORY_READ_ERROR"}],
         }
@@ -85,6 +86,7 @@ class RegistryInputFailureTests(unittest.TestCase):
         text = output.getvalue().lower()
         self.assertIn("2 registry rows without a matching file", text)
         self.assertIn("1 package files without a registry row", text)
+        self.assertIn("unrecognized or noncanonical registry columns", text)
         self.assertIn("directory_read_error", text)
 
     def test_cli_returns_a_valid_protocol_with_unsupported_file_reason(self):
@@ -357,6 +359,7 @@ class SyntheticMutationTests(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["doc_stage"], "PD")
         self.assertIn("extra_column", rows[0])
+        self.assertEqual(rows.unrecognized_columns, ("extra_column",))
 
     def test_registry_header_value_and_section_aliases(self):
         path = self._path("tz-registry.csv")
@@ -369,7 +372,7 @@ class SyntheticMutationTests(unittest.TestCase):
         self.assertEqual(row["file_name"], "PD/sample.pdf")
         self.assertEqual(row["sha256"], "a" * 64)
         self.assertEqual(row["doc_stage"], "PD")
-        self.assertEqual(row["discipline"], "ОВиК")
+        self.assertEqual(row["discipline"], "ОВ")
         self.assertEqual(row["approval_status"], "APPROVED")
         self.assertEqual(bp._header_key("Approval Status"), "approval_status")
         self.assertEqual(bp._header_key("Имя файла"), "file_name")
@@ -388,7 +391,7 @@ class SyntheticMutationTests(unittest.TestCase):
         row = bp.read_registry(path)[0]
         self.assertEqual(row["file_name"], "PD/sample.pdf")
         self.assertEqual(row["doc_stage"], "PD")
-        self.assertEqual(row["discipline"], "OV")
+        self.assertEqual(row["discipline"], "ОВ")
         self.assertEqual(row["approval_status"], "APPROVED")
 
     def test_absent_and_unknown_approval_are_reported_but_do_not_break_registry_matching(self):
@@ -404,26 +407,122 @@ class SyntheticMutationTests(unittest.TestCase):
                 self.assertEqual(plan.report["approval_unverified_files"], ["PD/sample.pdf"])
                 self.assertIn("APPROVAL_UNVERIFIED", {item["code"] for item in plan.report["registry_warnings"]})
 
-    def test_approval_unknown_policy_remains_block_by_default(self):
+    def test_clean_approved_registry_preserves_empty_robustness_metadata(self):
+        docs = self.rooted_package()
+        registry = rob_harness._write_json_registry(docs, self._path("approved-clean.json"))
+        plan = bp.build_plan(bp.scan_package(docs), bp.read_registry(registry), package_name="clean",
+                             registry_sha256=bp.sha256_file(registry))
+        self.assertEqual(plan.report["registry_status"], bp.STATUS_ACCEPTED)
+        self.assertEqual(plan.report["registry_rows_without_file"], [])
+        self.assertEqual(plan.report["unregistered_files"], [])
+        self.assertEqual(plan.report["approval_unverified_files"], [])
+        self.assertEqual(plan.report["invalid_registry_paths"], [])
+        self.assertEqual(plan.report["registry_warnings"], [])
+        self.assertNotIn("unrecognized_columns", plan.report)
+
+    def test_approval_unknown_policy_defaults_to_soft(self):
         from app.robustness import approval_unknown_policy
 
         with patch.dict(os.environ, {}, clear=True):
-            self.assertEqual(approval_unknown_policy(), "block")
+            self.assertEqual(approval_unknown_policy(), "soft")
 
     def test_registry_stage_and_approval_values_have_explicit_mappings(self):
-        for value in ("ПД", "Проектная документация", "P"):
+        for value in ("ПД", "Проектная документация", "Проект", "P"):
             self.assertEqual(bp.normalize_stage(value), "PD")
         for value in ("РД", "Рабочая документация", "W"):
             self.assertEqual(bp.normalize_stage(value), "RD")
         for value in ("ИД", "Исполнительная документация", "A"):
             self.assertEqual(bp.normalize_stage(value), "ID")
-        for value in ("Утверждён", "Согласовано", "Approved"):
+        self.assertIsNone(bp.normalize_stage("Стадия П/Р"))
+        for value in ("Утверждено", "Утверждён", "Согласовано", "Approved"):
             self.assertEqual(bp.normalize_approval_status(value), "APPROVED")
         self.assertEqual(bp.normalize_approval_status("Действует"), "FOR_CONSTRUCTION")
+        self.assertEqual(bp.normalize_approval_status("В производство работ"), "FOR_CONSTRUCTION")
+        self.assertEqual(bp.normalize_approval_status("Не утверждено"), "DRAFT")
         self.assertEqual(bp.normalize_approval_status(""), "UNKNOWN")
         self.assertEqual(bp.normalize_approval_status("неизвестно"), "UNKNOWN")
         self.assertEqual(bp.normalize_approval_status("Заменён"), "SUPERSEDED")
         self.assertEqual(bp.normalize_approval_status("Отменён"), "CANCELLED")
+        self.assertEqual(bp.normalize_approval_status("Аннулировано"), "CANCELLED")
+
+    def test_section_codes_normalize_mixed_alphabet_and_ios_subsections(self):
+        from app.domain import document_facts
+        from app.domain.document_facts import canonical_manifest_section
+        from app.domain.drawing_classifier import document_discovery_hints, is_ventilation_discipline, registry_excludes_ventilation
+
+        expected = {
+            "OV": "ОВ", "ов": "ОВ", "OВ": "ОВ", "ОВиК": "ОВ", "ОВК": "ОВ",
+            "IOS4": "ИОС4", "ИОС4": "ИОС4", "ИОС 4.1": "ИОС4", "IOS4.1": "ИОС4",
+            "AR": "АР", "КЖ": "КР", "EOM": "ЭОМ", "ВК": "ВК", "IOS1": "ИОС1",
+        }
+        for value, canonical in expected.items():
+            with self.subTest(value=value):
+                self.assertEqual(canonical_manifest_section(value), canonical)
+                if canonical in {"ОВ", "ИОС4"}:
+                    self.assertTrue(is_ventilation_discipline(value))
+        for token, canonical in document_facts._TOKEN_TAG.items():
+            with self.subTest(catalog_code=token):
+                self.assertEqual(canonical_manifest_section(token), canonical)
+        for alias, canonical in document_facts._MANIFEST_SECTION_ALIASES.items():
+            with self.subTest(registry_alias=alias):
+                self.assertEqual(canonical_manifest_section(alias), canonical)
+        registered_ov = SimpleNamespace(
+            dataset_metadata={"document_manifest": {"registry": {"discipline": "OV"}}},
+            dataset_section=None, filename="neutral.pdf", document_code=None,
+        )
+        self.assertFalse(registry_excludes_ventilation(registered_ov))
+        self.assertIn("registry_discipline", document_discovery_hints(registered_ov))
+        registered_other = SimpleNamespace(
+            dataset_metadata={"document_manifest": {"registry": {"discipline": "OTHER"}}},
+            dataset_section=None, filename="neutral.pdf", document_code=None,
+        )
+        self.assertTrue(registry_excludes_ventilation(registered_other))
+
+    def test_unknown_registry_columns_are_in_package_and_cli_warnings(self):
+        from app.cli import _print_package_warnings
+        from io import StringIO
+
+        docs = self.rooted_package()
+        registry = self._path("unknown-columns.csv")
+        registry.write_text(
+            "Файл;SHA-256;Стадия разработки;Код раздела проекта;Статус документа;Неизвестная пометка\n"
+            "PD/sample.pdf;" + "a" * 64 + ";П;ОВ;Утверждено;служебное\n",
+            encoding="utf-8-sig",
+        )
+        plan = bp.build_plan(bp.scan_package(docs), bp.read_registry(registry), package_name="unknown-columns",
+                             registry_sha256=bp.sha256_file(registry))
+        self.assertEqual(
+            set(plan.report["unrecognized_columns"]),
+            {"Стадия разработки", "Код раздела проекта", "Статус документа", "Неизвестная пометка"},
+        )
+        self.assertEqual(plan.rows[0]["stage"], "PD")
+        self.assertEqual(plan.rows[0]["section"], "ОВ")
+        self.assertEqual(plan.rows[0]["approval_status"], "APPROVED")
+        warning = next(item for item in plan.report["registry_warnings"]
+                       if item["code"] == "UNRECOGNIZED_REGISTRY_COLUMNS")
+        self.assertEqual(set(warning["columns"]), set(plan.report["unrecognized_columns"]))
+        output = StringIO()
+        with patch("app.cli._say", side_effect=lambda message: print(message, file=output)):
+            _print_package_warnings(plan.report)
+        self.assertIn("unrecognized or noncanonical registry columns", output.getvalue())
+        blank_registry = self._path("unknown-blank-column.csv")
+        blank_registry.write_text(
+            "Файл;SHA-256;Стадия;Неизвестная пометка\nPD/sample.pdf;" + "a" * 64 + ";P;\n",
+            encoding="utf-8-sig",
+        )
+        blank_rows = bp.read_registry(blank_registry)
+        self.assertEqual(blank_rows.unrecognized_columns, ("Неизвестная пометка",))
+        blank_plan = bp.build_plan(bp.scan_package(docs), blank_rows, package_name="unknown-blank-column",
+                                   registry_sha256=bp.sha256_file(blank_registry))
+        self.assertEqual(blank_plan.report["unrecognized_columns"], ["Неизвестная пометка"])
+        json_registry = self._path("unknown-column.json")
+        json_registry.write_text(json.dumps([{
+            "file_name": "PD/sample.pdf", "sha256": "a" * 64,
+            "Статус документа": "Утверждено", "legacy_status_note": "imported",
+        }], ensure_ascii=False), encoding="utf-8")
+        json_rows = bp.read_registry(json_registry)
+        self.assertEqual(json_rows[0]["approval_status"], "APPROVED")
+        self.assertEqual(set(json_rows.unrecognized_columns), {"Статус документа", "legacy_status_note"})
 
     def test_mixed_rd_id_folder_uses_registry_stage_and_missing_registry_warns(self):
         import fitz

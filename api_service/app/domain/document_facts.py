@@ -22,6 +22,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from collections import defaultdict
 import re
+import unicodedata
 from typing import Any, Iterable, Mapping
 
 # --------------------------------------------------------------------------------------------
@@ -94,11 +95,31 @@ def _cyr_upper(text: str) -> str:
 
 
 def canonical_manifest_section(section: object) -> str | None:
-    raw = str(section or "").strip().upper()
+    raw = unicodedata.normalize("NFKC", str(section or "")).strip().upper()
     if not raw or raw == "OTHER":
         return None
     raw = raw.replace("Ё", "Е")
-    return _MANIFEST_SECTION_ALIASES.get(raw) or _TOKEN_TAG.get(raw) or None
+    # Registry marks are often copied between Russian and English forms, and
+    # ИОС volumes commonly carry a decimal sub-section (e.g. ИОС 4.1). Normalize
+    # only recognizable section codes; leave explanatory prose unknown.
+    compact = re.sub(r"[^0-9A-ZА-Я]+", "", raw)
+    compact = compact.translate(_LATIN_TO_CYR).replace("V", "В")
+    aliases = {
+        re.sub(r"[^0-9A-ZА-Я]+", "", key.upper()).translate(_LATIN_TO_CYR).replace("V", "В"): value
+        for key, value in _MANIFEST_SECTION_ALIASES.items()
+    }
+    if compact in aliases:
+        return aliases[compact]
+    ios = re.match(r"^(?:I[OО][SС]|И[OО][SС])\s*([1-7])(?:[.\s-]*\d+(?:\.\d+)*)?$", raw)
+    if ios:
+        return f"ИОС{ios.group(1)}"
+    # Latin section codes in registries (AR, KR, OV, EOM, IOS4, ...) are
+    # canonicalized by the catalog vocabulary, including mixed Cyrillic/Latin.
+    for token, tag in sorted(_TOKEN_TAG.items(), key=lambda item: -len(item[0])):
+        normalized_token = token.translate(_LATIN_TO_CYR).replace("V", "В")
+        if compact == re.sub(r"[^0-9A-ZА-Я]+", "", normalized_token):
+            return tag
+    return None
 
 
 def expand_tags(primary: Iterable[str]) -> frozenset[str]:

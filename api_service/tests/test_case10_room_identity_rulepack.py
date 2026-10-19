@@ -44,6 +44,14 @@ def _run(pd_sheets, rd_sheets):
 
 
 class RulePackIdentityTests(unittest.TestCase):
+    def test_latin_registry_ov_reaches_pd_and_rd_sheet_selectors(self):
+        document = _doc(1, "RD")
+        document.dataset_metadata = {"document_manifest": {"registry": {"discipline": "OV"}}}
+        snapshot = _sheet(1, "План вентиляции", {"101": (200, 150, ["В1.1"])})
+
+        self.assertTrue(packs._is_relevant_pd_ventilation_sheet(CODE, snapshot, document))
+        self.assertTrue(packs._is_rd_ventilation_drawing_document(CODE, document, snapshot))
+
     def test_same_room_number_on_two_floors_gives_two_independent_pairs(self):
         pd = [_sheet(1, "План 1 этажа", {"101": (200, 150, ["В1.1"])}),
               _sheet(2, "План 2 этажа", {"101": (200, 150, ["В2.1"])})]

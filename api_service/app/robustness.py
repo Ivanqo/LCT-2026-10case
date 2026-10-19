@@ -15,8 +15,8 @@ def robust_inputs_enabled() -> bool:
 
 
 def approval_unknown_policy() -> str:
-    """Conservative by default; `soft` is opt-in and yields assumption-level comparisons only."""
-    value = os.getenv(APPROVAL_UNKNOWN_POLICY_ENV, "block").strip().lower()
+    """Allow only singleton, non-conflicting unverified editions as assumptions by default."""
+    value = os.getenv(APPROVAL_UNKNOWN_POLICY_ENV, "soft").strip().lower()
     return value if value in {"soft", "block"} else "block"
 
 

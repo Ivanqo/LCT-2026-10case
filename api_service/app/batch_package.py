@@ -64,6 +64,7 @@ _HEADER_ALIASES = {
     "section": "discipline", "section_code": "discipline", "discipline_code": "discipline",
     "discipline_name": "discipline", "project_section": "discipline", "section_mark": "discipline",
     "раздел": "discipline", "раздел_проекта": "discipline", "код_раздела": "discipline",
+    "код_раздела_проекта": "discipline", "обозначение_раздела_проекта": "discipline",
     "обозначение_раздела": "discipline", "марка": "discipline",
     "code": "document_code", "document_number": "document_code", "document_code": "document_code",
     "шифр": "document_code", "шифр_документа": "document_code", "код_документа": "document_code",
@@ -83,8 +84,13 @@ _HEADER_ALIASES = {
     "object": "object_id", "object_code": "object_id", "объект": "object_id", "идентификатор_объекта": "object_id",
     "id_объекта": "object_id", "file_id": "file_id", "идентификатор_файла": "file_id",
 }
+# These aliases are still parsed for compatibility, but are surfaced so callers can detect
+# registry schema drift in organizer files and fix the source rather than silently relying on it.
+_REGISTRY_HEADER_REVIEW_KEYS = frozenset({
+    "статус_документа", "стадия_разработки", "код_раздела_проекта",
+})
 _STAGE_WORDS = {
-    "PD": "PD", "P": "PD", "П": "PD", "ПД": "PD", "PROJECT": "PD", "ПРОЕКТНАЯ": "PD",
+    "PD": "PD", "P": "PD", "П": "PD", "ПД": "PD", "PROJECT": "PD", "ПРОЕКТ": "PD", "ПРОЕКТНАЯ": "PD",
     "RD": "RD", "W": "RD", "Р": "RD", "РД": "RD", "WORKING": "RD", "РАБОЧАЯ": "RD",
     "ID": "ID", "A": "ID", "ИД": "ID", "AS_BUILT": "ID", "ASBUILT": "ID",
     "EXECUTIVE": "ID", "ИСПОЛНИТЕЛЬНАЯ": "ID",
@@ -118,6 +124,14 @@ class PackagePlan:
     rows: list[dict[str, Any]]                      # manifest rows, import order
     report: dict[str, Any]                          # deterministic, goes into result.json
     links: list[tuple[str, str, str]] = field(default_factory=list)   # (file_id, "predecessor"/"successor", file_id)
+
+
+class RegistryRows(list[dict[str, Any]]):
+    """List-compatible registry data plus header names that are not in the supported schema."""
+
+    def __init__(self, rows=(), *, unrecognized_columns=()):
+        super().__init__(rows)
+        self.unrecognized_columns = tuple(sorted(set(unrecognized_columns)))
 
 
 # --------------------------------------------------------------------------------------------- package on disk
@@ -433,7 +447,12 @@ def read_registry(path: str | Path) -> list[dict[str, Any]]:
         if suffix in (".xlsx", ".xlsm"):
             table = _xlsx_first_sheet(path)
         elif suffix in (".json", ".jsonl"):
-            return [_normalize_row(row) for row in _json_rows(path)]
+            raw_rows = _json_rows(path)
+            unrecognized = {
+                str(key).strip() for row in raw_rows for key in row
+                if _header_key(key) not in REGISTRY_FIELDS or _raw_header_key(key) in _REGISTRY_HEADER_REVIEW_KEYS
+            }
+            return RegistryRows((_normalize_row(row) for row in raw_rows), unrecognized_columns=unrecognized)
         else:
             table = _csv_table(path)
     except PackageError:
@@ -445,20 +464,28 @@ def read_registry(path: str | Path) -> list[dict[str, Any]]:
         suffix = f": {detail}" if detail else ""
         raise PackageError(f"cannot read registry {path} ({type(exc).__name__}){suffix}") from exc
     if not table:
-        return []
+        return RegistryRows()
     header = [_header_key(cell) for cell in table[0]]
+    unrecognized = {
+        str(cell).strip() for cell, key in zip(table[0], header)
+        if key and (key not in REGISTRY_FIELDS or _raw_header_key(cell) in _REGISTRY_HEADER_REVIEW_KEYS)
+    }
     rows = []
     for raw in table[1:]:
         if not any(str(cell or "").strip() for cell in raw):
             continue
         rows.append(_normalize_row({header[i]: raw[i] if i < len(raw) else None for i in range(len(header)) if header[i]}))
-    return rows
+    return RegistryRows(rows, unrecognized_columns=unrecognized)
 
 
 def _header_key(value: Any) -> str:
-    text = unicodedata.normalize("NFKC", str(value or "")).strip().casefold().replace("ё", "е")
-    key = re.sub(r"[^0-9a-zа-я_]+", "_", text, flags=re.IGNORECASE).strip("_")
+    key = _raw_header_key(value)
     return _HEADER_ALIASES.get(key, key)
+
+
+def _raw_header_key(value: Any) -> str:
+    text = unicodedata.normalize("NFKC", str(value or "")).strip().casefold().replace("ё", "е")
+    return re.sub(r"[^0-9a-zа-я_]+", "_", text, flags=re.IGNORECASE).strip("_")
 
 
 def _normalize_row(row: dict[str, Any]) -> dict[str, Any]:
@@ -481,6 +508,10 @@ def _normalize_row(row: dict[str, Any]) -> dict[str, Any]:
     for key in ("file_id", "object_id", "predecessor_id", "successor_id", "document_code", "revision", "discipline"):
         if key in out:
             out[key] = _text(out[key])
+    if out.get("discipline"):
+        from .domain.document_facts import canonical_manifest_section
+
+        out["discipline"] = canonical_manifest_section(out["discipline"]) or out["discipline"]
     if "approval_date" in out:
         out["approval_date"] = _iso_date(out["approval_date"])
     return out
@@ -488,11 +519,10 @@ def _normalize_row(row: dict[str, Any]) -> dict[str, Any]:
 
 def normalize_stage(value: Any) -> str | None:
     words = re.findall(r"[0-9a-zа-яё_]+", str(value or "").upper(), flags=re.IGNORECASE)
-    for word in words:
-        stage = _STAGE_WORDS.get(word.upper())
-        if stage:
-            return stage
-    return None
+    stages = {_STAGE_WORDS[word.upper()] for word in words if word.upper() in _STAGE_WORDS}
+    # Labels such as "Стадия П/Р" describe a combined/ambiguous stage. Do not
+    # silently select whichever token happened to come first.
+    return next(iter(stages)) if len(stages) == 1 else None
 
 
 def normalize_approval_status(value: Any) -> str:
@@ -504,11 +534,13 @@ def normalize_approval_status(value: Any) -> str:
         "УТВЕРЖДЕНА": "APPROVED", "СОГЛАСОВАН": "APPROVED", "СОГЛАСОВАНО": "APPROVED",
         "SIGNED": "SIGNED", "ПОДПИСАН": "SIGNED", "ПОДПИСАНО": "SIGNED",
         "FOR_CONSTRUCTION": "FOR_CONSTRUCTION", "ДЕЙСТВУЕТ": "FOR_CONSTRUCTION", "ДЕЙСТВУЮЩИЙ": "FOR_CONSTRUCTION",
+        "В_ПРОИЗВОДСТВО_РАБОТ": "FOR_CONSTRUCTION",
         "SUPERSEDED": "SUPERSEDED", "ЗАМЕНЕН": "SUPERSEDED", "ЗАМЕНЕНА": "SUPERSEDED",
         "УТРАТИЛ_СИЛУ": "SUPERSEDED",
         "CANCELLED": "CANCELLED", "CANCELED": "CANCELLED", "ОТМЕНЕН": "CANCELLED",
         "ОТМЕНЕНО": "CANCELLED", "АННУЛИРОВАН": "CANCELLED", "АННУЛИРОВАНО": "CANCELLED",
-        "DRAFT": "DRAFT", "ЧЕРНОВИК": "DRAFT", "НЕИЗВЕСТНО": "UNKNOWN", "НЕИЗВЕСТЕН": "UNKNOWN",
+        "DRAFT": "DRAFT", "ЧЕРНОВИК": "DRAFT", "НЕ_УТВЕРЖДЕНО": "DRAFT",
+        "НЕИЗВЕСТНО": "UNKNOWN", "НЕИЗВЕСТЕН": "UNKNOWN",
         "UNKNOWN": "UNKNOWN",
     }
     return aliases.get(key, "UNKNOWN")
@@ -654,6 +686,8 @@ def build_plan(
     package-relative path, so the name of the folder a package was dropped into never decides a stage."""
     from .domain.official_dataset import stage_from_package_path
 
+    has_registry_headers = hasattr(registry, "unrecognized_columns")
+    unrecognized_columns = set(getattr(registry, "unrecognized_columns", ()))
     registry = list(registry or [])
     issues: list[dict[str, Any]] = []
     object_ids = sorted({str(row["object_id"]) for row in registry if row.get("object_id")})
@@ -664,6 +698,11 @@ def build_plan(
     if registry and object_ids and object_id not in object_ids:
         raise PackageError(f"--object-id {object_id!r} is not in the registry (it names {object_ids})")
     registry = [row for row in registry if not row.get("object_id") or row.get("object_id") == object_id]
+    if not has_registry_headers:
+        unrecognized_columns.update(
+            {str(key) for row in registry for key in row if key not in REGISTRY_FIELDS},
+        )
+    unrecognized_columns = sorted(unrecognized_columns, key=lambda value: (_path_sort_key(value), value))
     registry_manifest_summary = [
         {
             "doc_stage": str(row.get("doc_stage") or "").upper(),
@@ -848,6 +887,11 @@ def build_plan(
             report["file_statuses"] = sorted(file_statuses, key=lambda item: item["file"])
         if scan_errors:
             report["scan_errors"] = sorted(scan_errors, key=lambda item: (item.get("file", ""), item.get("reason", "")))
+    if unrecognized_columns:
+        report["unrecognized_columns"] = unrecognized_columns
+        warnings = report.setdefault("registry_warnings", [])
+        warnings.append({"code": "UNRECOGNIZED_REGISTRY_COLUMNS", "count": len(unrecognized_columns),
+                         "columns": unrecognized_columns})
     return PackagePlan(object_id=object_id, rows=rows, report=report, links=sorted(links))
 
 

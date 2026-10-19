@@ -91,8 +91,11 @@ docker compose -f docker-compose.case10.yml down -v       # полностью �
 
 **Флаги поставки.** По умолчанию включены `CASE10_EXPLICATION_COMPARE=1` (сравнение экспликаций, S1),
 `CASE10_ROOM_DRAWING_COMPARE_ENABLED=1` (сравнение вентиляции по помещениям, S2) и `CASE10_FREE_HYPOTHESES=1`
-(свободные гипотезы). Выключить любой из них: указать `0` в `.env` (шаблон — `deploy/case10/case10.env.example`) и
-перезапустить `api case10_worker`, либо `-e ИМЯ=0` у `docker run`. Таблица всех флагов — `README_GRADER.md`, §6.
+(свободные гипотезы). `CASE10_APPROVAL_UNKNOWN_POLICY=soft` по умолчанию разрешает сравнение единственной редакции
+с неизвестным статусом утверждения только как предположение; `block` требует разъяснения. Выключить флаг: указать
+`0` в `.env` (шаблон — `deploy/case10/case10.env.example`) и перезапустить `api case10_worker`, либо `-e ИМЯ=0`
+у `docker run`; для политики передайте `-e CASE10_APPROVAL_UNKNOWN_POLICY=block`. Таблица всех флагов —
+`README_GRADER.md`, §6.
 Необязательное ужесточение контейнеров: `docker compose -f docker-compose.case10.yml -f docker-compose.case10.hardened.yml up -d`.
 
 ## 5. Комплект сдачи

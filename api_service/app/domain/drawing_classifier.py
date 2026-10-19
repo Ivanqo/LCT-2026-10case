@@ -64,8 +64,12 @@ def _fold(value: Any) -> str:
 def is_ventilation_discipline(value: Any) -> bool:
     folded = _fold(value)
     compact = re.sub(r"[^a-zа-я0-9]+", "", folded)
+    from .document_facts import canonical_manifest_section
+
+    section = canonical_manifest_section(value)
     return (
-        compact in {"ов", "ов1", "ов2", "hvac", "heatingventilation"}
+        section in {"ОВ", "ИОС4"}
+        or compact in {"ов", "ов1", "ов2", "hvac", "heatingventilation"}
         or "отоплениеивентиляц" in compact
         or "вентиляция" == folded
         or "ventilation" in folded

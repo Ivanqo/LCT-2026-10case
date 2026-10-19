@@ -194,6 +194,61 @@ class PackageOnDiskTests(unittest.TestCase):
         self.assertEqual(plan.report["pdf_pages_total"], 75)
         self.assertEqual(plan.report["pdf_unreadable"], ["broken.pdf"])
 
+    def test_batch_and_host_manifest_import_have_identical_document_fields(self):
+        """The package route must pass its manifest through the host dataset importer unchanged."""
+        import fitz
+        from sqlalchemy import create_engine
+        from sqlalchemy.orm import sessionmaker
+
+        from app.db.models import Base, DocumentVersion
+        from app.domain.official_dataset import _import_document_manifest
+        from app.domain.official_rule_packs import effective_dataset_stage
+
+        root = self.tmp / "parity-pkg"
+        folder = root / "Рабочая и исполнительная документация"
+        folder.mkdir(parents=True)
+        pdf = fitz.open()
+        pdf.new_page()
+        pdf.save(folder / "01-АР.pdf")
+        pdf.close()
+        registry = [{
+            "file_name": "Рабочая и исполнительная документация/01-АР.pdf",
+            "sha256": bp.sha256_file(folder / "01-АР.pdf"),
+            "file_id": "F-PARITY", "doc_stage": "RD", "discipline": "OV", "approval_status": "APPROVED",
+        }]
+        plan = bp.build_plan(bp.scan_package(root), registry, package_name="parity", registry_sha256="registry-hash")
+        manifest_dir = self.tmp / "manifests"
+        manifest_dir.mkdir()
+
+        def load(batch: bool):
+            engine = create_engine("sqlite+pysqlite:///:memory:")
+            Base.metadata.create_all(engine)
+            db = sessionmaker(bind=engine)()
+            path = manifest_dir / ("batch.jsonl" if batch else "host.jsonl")
+            if batch:
+                bp.import_plan(db, plan, project_id=1, organization_id=1, manifest_path=path)
+            else:
+                with path.open("w", encoding="utf-8") as stream:
+                    for row in plan.rows:
+                        stream.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+                _import_document_manifest(db, path, project_id=1, organization_id=1, object_ids={plan.object_id})
+            doc = db.query(DocumentVersion).one()
+            fields = {
+                "filename": doc.filename, "dataset_file_id": doc.dataset_file_id, "object_id": doc.object_id,
+                "doc_stage": doc.doc_stage, "document_stage": doc.document_stage, "dataset_stage": doc.dataset_stage,
+                "dataset_section": doc.dataset_section, "discipline": doc.discipline,
+                "dataset_split": doc.dataset_split, "document_code": doc.document_code, "revision": doc.revision,
+                "approval_status": doc.approval_status, "file_path": doc.file_path,
+                "content_hash": doc.content_hash, "file_hash": doc.file_hash,
+                "dataset_metadata": doc.dataset_metadata,
+                "effective_dataset_stage": effective_dataset_stage(doc),
+            }
+            db.close()
+            engine.dispose()
+            return fields
+
+        self.assertEqual(load(batch=True), load(batch=False))
+
     def test_zip_slip_members_are_dropped_and_unpack_is_reused(self):
         archive_path = self.tmp / "p.zip"
         with zipfile.ZipFile(archive_path, "w") as archive:
