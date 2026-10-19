@@ -723,7 +723,11 @@ def build_plan(
             "relative_path": f"{originals_prefix.strip('/')}/{item.relative_path}".lstrip("/"),
             "package_path": item.relative_path,
             "registry": registry_view or None,
-            "registry_manifest_summary": registry_manifest_summary or None,
+            # The summary is one fact about the whole registry. Written into every row it made the manifest (and each
+            # document's JSON metadata) O(files^2): 450 KB per row, 584 MB for a 1 300-document package, decoded on every
+            # query of the documents. `registry_stage_counts` takes the union over the documents, so the first row
+            # carries it for all of them.
+            "registry_manifest_summary": (registry_manifest_summary or None) if not rows else None,
             "registry_issues": file_issues or None,
         }
         if reg and reg.get("discipline"):
