@@ -137,5 +137,67 @@ class CompactJsonResponseTests(unittest.TestCase):
         self.assertEqual(_compact_json_response(data).media_type, "application/json")
 
 
+class QualityPrefetchTests(unittest.TestCase):
+    """The pool only warms the on-disk cache; what the parent then reads is what it would have computed itself."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self._tmp.name)
+        self.docs = []
+        import fitz
+        from types import SimpleNamespace
+
+        for index in range(2):
+            pdf = fitz.open()
+            for number in range(14):
+                page = pdf.new_page(width=595, height=842)
+                page.insert_text((72, 72), f"Лист {number + 1} помещение 1.10{index}", fontsize=12)
+                if number == 3:
+                    page.set_rotation(90)
+            path = self.root / f"vol{index}.pdf"
+            pdf.save(str(path))
+            pdf.close()
+            sha = hashlib.sha256(path.read_bytes()).hexdigest()
+            self.docs.append(SimpleNamespace(dataset_metadata={"document_manifest": {"relative_path": path.name}},
+                                             file_hash=sha, content_hash=sha))
+        self.pairs = [(doc, page) for doc in self.docs for page in range(1, 15)]
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _results(self, cache: Path):
+        from app.domain import official_evidence
+
+        official_evidence._QUALITY_PAGE_CACHE.clear()
+        with mock.patch.dict(os.environ, {"CASE10_ORIGINALS_ROOT": str(self.root), "CASE10_QUALITY_CACHE_DIR": str(cache)}):
+            return [dict(official_evidence._quality_for_page(doc, page)) for doc, page in self.pairs]
+
+    def test_prefetched_results_equal_serial_results_and_come_from_the_pool(self):
+        from app.domain import official_evidence, quality_prefetch
+
+        serial = self._results(self.root / "serial_cache")
+        official_evidence._QUALITY_PAGE_CACHE.clear()
+        cache = self.root / "pool_cache"
+        with mock.patch.dict(os.environ, {"CASE10_ORIGINALS_ROOT": str(self.root), "CASE10_QUALITY_CACHE_DIR": str(cache)}),                 mock.patch("app.domain.live_candidate_tagger.settings.LIVE_TAGGER_WORKERS", 2):
+            report = quality_prefetch.prefetch(self.pairs)
+            self.assertEqual(report["missing"], 28)
+            self.assertEqual(report["workers"], 2)
+            self.assertNotIn("pool_error", report)
+            self.assertEqual(len(list(cache.rglob("*.json"))), 28)       # written by the workers
+        pooled = self._results(cache)                                    # served from the files the pool wrote
+        self.assertEqual(pooled, serial)
+        self.assertTrue(any(row["reasons"] for row in serial))           # the rotated page is flagged: not all-empty
+
+    def test_off_switch_and_missing_cache_dir_do_nothing(self):
+        from app.domain import quality_prefetch
+
+        with mock.patch.dict(os.environ, {"CASE10_ORIGINALS_ROOT": str(self.root), "CASE10_QUALITY_CACHE_DIR": str(self.root / "c"),
+                                          "CASE10_QUALITY_PREFETCH": "0"}):
+            self.assertEqual(quality_prefetch.prefetch(self.pairs)["workers"], 0)
+        with mock.patch.dict(os.environ, {"CASE10_ORIGINALS_ROOT": str(self.root), "CASE10_QUALITY_CACHE_DIR": "",
+                                          "CASE10_LIVE_TAGGER_CACHE_DIR": ""}):
+            self.assertEqual(quality_prefetch.prefetch(self.pairs)["workers"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()

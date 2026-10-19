@@ -13,7 +13,7 @@ from ..robustness import robust_inputs_enabled
 from ..db.models import DocumentVersion, EvidenceDecision, EvidenceFragment, EvidenceGroup, InspectionProcess, Param, SourceFragment
 from . import trigger_policy as tp
 from . import file_registry
-from . import page_quality_cache
+from . import page_quality_cache, quality_prefetch
 from .anchor_search import GENERIC_SITE_LOCATION
 from . import evidence_tier as et
 from .comparison_gate import REASON_MISSING_DISCIPLINE, GateContext, GateDecision
@@ -123,9 +123,11 @@ def create_official_evidence_groups(
         fragments = db.query(SourceFragment).filter(SourceFragment.document_version_id.in_(by_id)).all()
         # Assess the candidate pages document by document so each large PDF is read once (the original-bytes
         # cache holds only a few documents); the page assessment is a pure function of (document, page).
-        for doc_id, page in sorted({(int(f.document_version_id), int(f.page)) for f in fragments
-                                    if f.page and int(f.document_version_id) in by_id and inference_annotation(f)
-                                    and (f.metadata_json or {}).get("code")}):
+        candidate_pages = sorted({(int(f.document_version_id), int(f.page)) for f in fragments
+                                  if f.page and int(f.document_version_id) in by_id and inference_annotation(f)
+                                  and (f.metadata_json or {}).get("code")})
+        quality_prefetch.prefetch((by_id[doc_id], page) for doc_id, page in candidate_pages)
+        for doc_id, page in candidate_pages:
             _quality_for_page(by_id[doc_id], page)
         for fragment in fragments:
             if inference_annotation(fragment):
