@@ -1,3 +1,5 @@
+import { humanizeScenario } from './labels.js';
+
 /** Backend timestamps are naive UTC ("2026-09-25T12:31:18"); read them as UTC, not as local time. */
 export function parseUtc(value) {
   if (!value) return null;
@@ -92,7 +94,7 @@ export function buildExplanation(group) {
   }
 
   if (group.comparison_scenario) {
-    parts.push(`Сценарий сопоставления: ${group.comparison_scenario}.`);
+    parts.push(`Сценарий сопоставления: ${humanizeScenario(group.comparison_scenario)}.`);
   }
   const context = (group.fragments || []).find((f) => f.context)?.context;
   if (context) {
@@ -100,4 +102,10 @@ export function buildExplanation(group) {
     parts.push(`Контекст источника: «${clipped}»`);
   }
   return parts.join(' ');
+}
+
+/** "2026-10-19" -> "19.10.2026" (dates of report periods come from the server as ISO strings). */
+export function fmtIsoDate(value) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(value || ''));
+  return m ? `${m[3]}.${m[2]}.${m[1]}` : value || '—';
 }

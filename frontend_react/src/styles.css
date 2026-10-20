@@ -539,3 +539,30 @@ kbd {
   .sheet-panes { grid-template-columns: 1fr; }
   .sheet-figures { grid-template-columns: 1fr; }
 }
+
+/* --- Final UI polish: focus, truncation, readable labels, compact status header --- */
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.input:focus-visible, .select:focus-visible, .textarea:focus-visible { outline-offset: 0; }
+.upload-drop:focus-visible { outline-offset: -2px; }
+.nowrap { white-space: nowrap; }
+.process-select { width: auto; min-width: 300px; max-width: 100%; }
+.status-grid { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; }
+.stat-tile { padding: 8px 10px; }
+.stat-tile .n.scenario { font-size: 14px; line-height: 1.3; padding: 3px 0; }
+.status-header { gap: 16px; }
+.doc-row > div:first-child, .upload-row > div { min-width: 0; flex: 1; }
+.doc-row .name, .file-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.expected-cell { max-width: 520px; word-break: break-word; }
+.queue-meta { font-size: 11.5px; }
+.flag { font-size: 11px; }
+.stage-chip.mini { font-size: 11px; }
+.meta-grid { font-size: 12px; }
+.bbox-label { font-size: 12px; line-height: 16px; max-width: 420px; }
+.bbox-label.right { left: auto; right: -2px; }
+.stage-title { flex-wrap: wrap; }
+.info-banner[role="status"] { margin-top: 10px; }
+.file-input { color: var(--text); max-width: 100%; }
+.file-input::file-selector-button { border: 1px solid var(--line); background: var(--panel2); color: var(--text); border-radius: 8px; padding: 6px 12px; margin-right: 10px; cursor: pointer; font: inherit; }
+.file-input::file-selector-button:hover { border-color: var(--brand); }
+.project-picker { min-width: 0; }
+.project-picker .select { max-width: 560px; text-overflow: ellipsis; }

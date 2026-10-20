@@ -7,7 +7,7 @@ import EvidenceEditor from './EvidenceEditor.jsx';
 import PartsPanel from './PartsPanel.jsx';
 import StagePanels, { ZOOM_MAX, ZOOM_MIN } from './StagePanels.jsx';
 import SupplementDialog from './SupplementDialog.jsx';
-import { CLARIFY_KINDS, DECIDABLE_STATUSES, DECISION_OPTIONS, FINDING_STATUS_LABELS, INSPECTOR_STATUS_LABELS, REJECT_REASON_CODES, label } from '../labels.js';
+import { CLARIFY_KINDS, DECIDABLE_STATUSES, DECISION_OPTIONS, FINDING_STATUS_LABELS, INSPECTOR_STATUS_LABELS, REJECT_REASON_CODES, label, rejectReasonText } from '../labels.js';
 import { fmtDate, isTypingTarget } from '../utils.js';
 
 /** File identity for a panel in draw mode: the refined fragment's own, or the chosen document's (add). */
@@ -507,7 +507,7 @@ export default function Workbench({ projectId, processId, locked, onChanged, onO
                   {[...decisions].reverse().map((d) => (
                     <div key={d.id} className="small">
                       {fmtDate(d.created_at)} — <b>{label(INSPECTOR_STATUS_LABELS, INSPECTOR_BY_DECISION[d.decision])}</b>
-                      {d.reason_code ? ` • ${d.reason_code}` : ''}{d.comment ? `: «${d.comment}»` : ''}
+                      {d.reason_code ? ` • ${rejectReasonText(d.reason_code)}` : ''}{d.comment ? `: «${d.comment}»` : ''}
                       <span className="muted"> • user #{d.user_id}</span>
                     </div>
                   ))}

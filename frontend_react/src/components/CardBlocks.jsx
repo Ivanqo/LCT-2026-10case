@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api, downloadProtectedFile, protocolPdfUrl } from '../api.js';
 import Badge from './Badge.jsx';
-import { FINDING_STATUS_LABELS, INSPECTOR_STATUS_LABELS, NO_RESULT_TONE, STAGE_TITLES, label } from '../labels.js';
+import { FINDING_STATUS_LABELS, INSPECTOR_STATUS_LABELS, NO_RESULT_TONE, HYPOTHESIS_METHOD_LABELS, PROTOCOL_STATUS_LABELS, STAGE_TITLES, cleanRevision, label, rejectReasonText } from '../labels.js';
 
 const HYPOTHESIS_ACTIONS = [
   { status: 'CONFIRMED', label: 'Принять гипотезу' },
@@ -90,7 +90,7 @@ function refText(ref) {
   if (!ref) return NOT_COMPUTED;
   if (typeof ref === 'string') return ref;
   const file = ref.file || ref.file_id;
-  const parts = [file, ref.page ? `стр. ${ref.page}` : null, ref.document_code ? `шифр ${ref.document_code}` : null, ref.revision ? `ред. ${ref.revision}` : null].filter(Boolean);
+  const parts = [file, ref.page ? `стр. ${ref.page}` : null, ref.document_code ? `шифр ${ref.document_code}` : null, ref.revision ? `ред. ${cleanRevision(ref.revision)}` : null].filter(Boolean);
   return parts.length ? parts.join(' • ') : JSON.stringify(ref);
 }
 
@@ -134,7 +134,7 @@ export function HypothesisCard({ hypothesis, groupId, locked, onReviewed }) {
         <span className="muted small">{hypothesis.note}</span>
       </div>
       <dl className="card-grid">
-        <dt>Метод обнаружения</dt><dd>{computed(hypothesis.method)}{hypothesis.method_detail ? <span className="muted"> • {hypothesis.method_detail}</span> : null}</dd>
+        <dt>Метод обнаружения</dt><dd title={hypothesis.method ? `Код метода: ${hypothesis.method}` : undefined}>{hypothesis.method ? label(HYPOTHESIS_METHOD_LABELS, hypothesis.method) : NOT_COMPUTED}{hypothesis.method_detail ? <span className="muted"> • {hypothesis.method_detail}</span> : null}</dd>
         <dt>Уверенность</dt><dd>{fmtConfidence(hypothesis.confidence)}</dd>
         <dt>Описание</dt><dd>{computed(hypothesis.description)}</dd>
         <dt>Ссылка на ПД</dt><dd>{refText(hypothesis.pd_reference)}</dd>
@@ -164,7 +164,7 @@ export function HypothesisCard({ hypothesis, groupId, locked, onReviewed }) {
         {history.length > 0 && (
           <ul className="small history-list">
             {[...history].reverse().map((h) => (
-              <li key={h.id}>{fmtDate(h.created_at)} — <b>{label(INSPECTOR_STATUS_LABELS, h.new_value?.status)}</b>{h.reason ? `: «${h.reason}»` : ''} <span className="muted">• {h.user_login || `user #${h.user_id}`}, было: {label(INSPECTOR_STATUS_LABELS, h.previous_value?.status)}</span></li>
+              <li key={h.id}>{fmtDate(h.created_at)} — <b>{label(INSPECTOR_STATUS_LABELS, h.new_value?.status)}</b>{h.reason ? `: «${h.reason}»` : ''} <span className="muted">• {h.user_login || `пользователь №${h.user_id}`}, было: {label(INSPECTOR_STATUS_LABELS, h.previous_value?.status)}</span></li>
             ))}
           </ul>
         )}
@@ -240,11 +240,11 @@ export function ProtocolEntryPanel({ groupId, refreshKey }) {
       {open && entry && (
         <dl className="card-grid top-gap">
           <dt>Раздел протокола</dt><dd>{entry.section?.title}</dd>
-          <dt>Протокол</dt><dd>{entry.protocol ? `версия ${entry.protocol.version} • ${entry.protocol.status}` : 'версия ещё не сформирована'}</dd>
-          <dt>ID находки</dt><dd className="mono">{formatValue(entry.finding_id)}</dd>
+          <dt>Протокол</dt><dd>{entry.protocol ? `версия ${entry.protocol.version} • ${label(PROTOCOL_STATUS_LABELS, entry.protocol.status)}` : 'версия ещё не сформирована'}</dd>
+          <dt>Идентификатор находки</dt><dd className="mono">{formatValue(entry.finding_id)}</dd>
           <dt>Статус</dt><dd>{label(FINDING_STATUS_LABELS, entry.status?.finding_status)} <span className="muted">• решение инспектора: {label(INSPECTOR_STATUS_LABELS, entry.status?.inspector_status)}</span></dd>
           <dt>Решение</dt>
-          <dd>{entry.decision ? <>{fmtDate(entry.decision.created_at)} — {entry.decision.decision}{entry.decision.reason_code ? ` • ${entry.decision.reason_code}` : ''}</> : <span className="muted">решения ещё нет</span>}</dd>
+          <dd>{entry.decision ? <>{fmtDate(entry.decision.created_at)} — {entry.decision.decision}{entry.decision.reason_code ? ` • ${rejectReasonText(entry.decision.reason_code)}` : ''}</> : <span className="muted">решения ещё нет</span>}</dd>
           <dt>Обоснование</dt><dd>{computed(entry.decision_rationale)}</dd>
           <dt>Источники</dt><dd>{(entry.sources?.fragments || []).filter((f) => f.status === 'ACTIVE').map((f) => `${STAGE_TITLES[f.stage] || f.stage}: ${f.file_id || f.file}, стр. ${f.page}${f.sheet ? `, ${f.sheet}` : ''}`).join('; ') || '—'}</dd>
         </dl>

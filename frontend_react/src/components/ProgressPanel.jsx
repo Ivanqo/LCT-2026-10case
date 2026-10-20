@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api.js';
-import { STAGE_TITLES } from '../labels.js';
+import { SKIP_REASON_LABELS, STAGE_TITLES } from '../labels.js';
+
+const UNSPECIFIED = 'причина не указана';
+/** The server sends no text for some reasons: show a Russian explanation, keep the code in the tooltip. */
+const reasonText = (item) => (item.label && item.label !== UNSPECIFIED ? item.label : SKIP_REASON_LABELS[item.reason] || item.label || item.reason);
+const russianStages = (text) => String(text || '').replace(/\bPD\b/g, 'ПД').replace(/\bRD\b/g, 'РД').replace(/\bID\b/g, 'ИД');
+const stripLead = (text) => { const rest = String(text || '').replace(/^\s*Частичный результат[.:]?\s*/i, ''); return rest ? rest.charAt(0).toUpperCase() + rest.slice(1) : rest; };
 
 /**
  * Progress of the check (checklist 10): documents and pages processed per stage, skips with reasons, candidates found
@@ -32,7 +38,7 @@ export default function ProgressPanel({ processId, refreshKey }) {
           <div className="progress-bar" style={{ width: `${pct}%` }} />
         </div>
         {data.stages.map((s) => (
-          <span key={s.stage} className="small" title={s.skips.map((k) => `${k.label}: ${k.count}`).join('\n') || 'пропусков нет'}>
+          <span key={s.stage} className="small" title={s.skips.map((k) => `${reasonText(k)}: ${k.count}`).join('\n') || 'пропусков нет'}>
             <span className={`stage-chip mini stage-${s.stage}`}>{STAGE_TITLES[s.stage]}</span>{' '}
             {s.uploaded
               ? <>документов {s.documents_scanned}/{s.documents_scannable || s.documents_total}{s.pages_total ? `, листов ${s.pages_scanned}/${s.pages_total}` : ''}</>
@@ -48,17 +54,17 @@ export default function ProgressPanel({ processId, refreshKey }) {
         <div className="small top-gap">
           {data.incomplete && (
             <div className="progress-incomplete">
-              <b>Частичный результат.</b> {data.note}
+              <b>Частичный результат.</b> {stripLead(data.note)}
               <ul>{data.incomplete_reasons.map((r) => <li key={r}>{r}</li>)}</ul>
             </div>
           )}
-          {data.coverage_summary && <div className="muted">{data.coverage_summary}</div>}
-          <div className="top-gap"><b>Параметры без результата:</b> {data.parameters_without_result} из {data.parameters_total}</div>
+          {data.coverage_summary && <div className="muted">{russianStages(data.coverage_summary)}</div>}
+          <div className="top-gap"><b>Параметры без результата:</b> {data.parameters_without_result} из {data.parameters_total}<span className="muted"> — по причинам:</span></div>
           {data.skipped_parameters.length > 0 && (
-            <ul>{data.skipped_parameters.map((s) => <li key={s.reason}>{s.label} — {s.count}</li>)}</ul>
+            <ul>{data.skipped_parameters.map((s) => <li key={s.reason} title={`Код причины: ${s.reason}`}>{reasonText(s)} — {s.count}</li>)}</ul>
           )}
           {data.stages.some((s) => s.skips.length) && (
-            <ul>{data.stages.flatMap((s) => s.skips.map((k) => <li key={`${s.stage}${k.reason}`}>{STAGE_TITLES[s.stage]}: {k.label} — {k.count}</li>))}</ul>
+            <ul>{data.stages.flatMap((s) => s.skips.map((k) => <li key={`${s.stage}${k.reason}`}>{STAGE_TITLES[s.stage]}: {reasonText(k)} — {k.count}</li>))}</ul>
           )}
         </div>
       )}

@@ -10,6 +10,17 @@ import { api, getToken, setToken } from './api.js';
 
 const PROJECT_KEY = 'case10_react_project_id';
 const PROCESS_MAP_KEY = 'case10_react_process_map';
+const VIEW_KEY = 'case10_react_view';
+const VIEWS = new Set(['dashboard', 'documents', 'process', 'ml', 'normative']);
+
+function loadView() {
+  try {
+    const stored = sessionStorage.getItem(VIEW_KEY);
+    return VIEWS.has(stored) ? stored : 'documents';
+  } catch {
+    return 'documents';
+  }
+}
 
 function loadProcessMap() {
   try {
@@ -33,27 +44,50 @@ export default function App() {
   const [projects, setProjects] = useState([]);
   const [projectId, setProjectId] = useState(null);
   const [processId, setProcessId] = useState(null);
-  const [view, setView] = useState('documents');
+  const [view, setViewState] = useState(loadView);
+  const setView = (next) => {
+    setViewState(next);
+    try { sessionStorage.setItem(VIEW_KEY, next); } catch { /* storage unavailable: the tab is simply not remembered */ }
+  };
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [bootError, setBootError] = useState('');
+
+  async function boot() {
+    setBootError('');
+    if (!getToken()) {
+      setBooting(false);
+      return;
+    }
+    setBooting(true);
+    try {
+      const user = await api.me();
+      setMe(user);
+      await loadProjects();
+    } catch (err) {
+      // an unreachable server must not log the inspector out: keep the token and offer a retry
+      if (err.status === 0 || err.status >= 500) setBootError(err.message || 'Сервер недоступен');
+      else setToken('');
+    } finally {
+      setBooting(false);
+    }
+  }
 
   useEffect(() => {
-    async function boot() {
-      if (!getToken()) {
-        setBooting(false);
-        return;
-      }
-      try {
-        const user = await api.me();
-        setMe(user);
-        await loadProjects();
-      } catch {
-        setToken('');
-      } finally {
-        setBooting(false);
-      }
-    }
     boot();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    function onExpired() {
+      setMe(null);
+      setProjects([]);
+      setProjectId(null);
+      setProcessId(null);
+      setNotice('Сессия истекла — войдите снова. Выбранная проверка сохранена.');
+    }
+    window.addEventListener('case10:auth-expired', onExpired);
+    return () => window.removeEventListener('case10:auth-expired', onExpired);
   }, []);
 
   async function loadProjects(preferredId) {
@@ -65,15 +99,15 @@ export default function App() {
     }
     const stored = preferredId || Number(localStorage.getItem(PROJECT_KEY));
     const resolved = rows.some((p) => p.id === stored) ? stored : rows[0].id;
-    selectProject(resolved);
+    selectProject(resolved, true);
   }
 
-  function selectProject(id) {
+  function selectProject(id, keepView = false) {
     setProjectId(id);
     localStorage.setItem(PROJECT_KEY, String(id));
     const map = loadProcessMap();
     setProcessId(map[id] || null);
-    setView('documents');
+    if (!keepView) setView('documents');
   }
 
   function handleProcessIdChange(id) {
@@ -114,6 +148,7 @@ export default function App() {
 
   async function handleLoggedIn(user) {
     setMe(user);
+    setNotice('');
     setError('');
     try {
       await loadProjects();
@@ -138,8 +173,20 @@ export default function App() {
     return <div className="auth-shell"><span className="spinner" /></div>;
   }
 
+  if (bootError) {
+    return (
+      <div className="auth-shell">
+        <div className="auth-card">
+          <h1>Сервер недоступен</h1>
+          <div className="error-banner" role="alert"><span>{bootError}</span></div>
+          <button className="btn primary block" type="button" onClick={boot}>Повторить</button>
+        </div>
+      </div>
+    );
+  }
+
   if (!me) {
-    return <Login onLoggedIn={handleLoggedIn} />;
+    return <Login onLoggedIn={handleLoggedIn} notice={notice} />;
   }
 
   return (
@@ -148,7 +195,7 @@ export default function App() {
         me={me}
         projects={projects}
         currentProjectId={projectId}
-        onSelectProject={selectProject}
+        onSelectProject={(id) => selectProject(id)}
         onCreateProject={handleCreateProject}
         onLogout={handleLogout}
       />

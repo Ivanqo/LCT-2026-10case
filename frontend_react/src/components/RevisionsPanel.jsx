@@ -3,6 +3,7 @@ import { api } from '../api.js';
 import Badge from './Badge.jsx';
 import { APPROVAL_STATUS_LABELS, REVISION_SCOPE_TYPES, REVISION_STATUS_LABELS, STAGE_TITLES, label } from '../labels.js';
 import { fmtDate, formatValue } from '../utils.js';
+import { useEscape } from '../hooks.js';
 
 const STATUS_TONE = { CLARIFICATION_REQUIRED: 'warn', RESOLVED: 'ok', RESOLVED_BY_INSPECTOR: 'review' };
 
@@ -17,6 +18,7 @@ export default function RevisionsPanel({ processId, locked }) {
   const [pending, setPending] = useState(null);
   const [justification, setJustification] = useState('');
   const [busy, setBusy] = useState(false);
+  useEscape(() => setPending(null), Boolean(pending) && !busy);
   const [effect, setEffect] = useState(null);
 
   const load = useCallback(() => {
@@ -111,7 +113,7 @@ export default function RevisionsPanel({ processId, locked }) {
               <ol className="history-list">
                 {[...scope.history].reverse().map((h) => (
                   <li key={h.id}>
-                    <b>v{h.version}</b> • {h.new_value?.chosen?.file_id || h.new_value?.chosen?.file} <span className="muted small">• {h.user_login || `user #${h.user_id}`} • {fmtDate(h.created_at)}</span>
+                    <b>v{h.version}</b> • {h.new_value?.chosen?.file_id || h.new_value?.chosen?.file} <span className="muted small">• {h.user_login || `пользователь №${h.user_id}`} • {fmtDate(h.created_at)}</span>
                     <div className="small">Обоснование: «{h.reason}»</div>
                     <div className="muted small">Было: {h.previous_value?.chosen ? h.previous_value.chosen.file_id : label(REVISION_STATUS_LABELS, h.previous_value?.system_status, 'не определено системой')}</div>
                   </li>

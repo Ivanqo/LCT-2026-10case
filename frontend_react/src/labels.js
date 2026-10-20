@@ -176,3 +176,77 @@ export const NO_RESULT_SHORT = {
 };
 
 export const PART_DECISION_LABELS = { Confirm: 'Подтверждено', Reject: 'Отклонено', 'Clarification Required': 'Уточнить' };
+
+/** Stage codes inside machine identifiers ("PD_RD_ONLY", "RD_ID") read in Russian; unknown words are kept as they are. */
+const SCENARIO_WORDS = { PD: 'ПД', RD: 'РД', ID: 'ИД', ONLY: 'только', PAIRWISE: 'попарно', FULL: 'ПД + РД + ИД', SINGLE: 'один документ', VS: '↔' };
+
+export function humanizeScenario(value) {
+  if (value === null || value === undefined || value === '') return '—';
+  const words = String(value).split('_').filter(Boolean);
+  if (!words.length) return String(value);
+  if (words.length === 1 && words[0] === 'FULL') return SCENARIO_WORDS.FULL;
+  if (words.every((w) => w in SCENARIO_WORDS)) {
+    const stages = words.filter((w) => ['PD', 'RD', 'ID'].includes(w)).map((w) => SCENARIO_WORDS[w]);
+    const only = words.includes('ONLY');
+    const rest = words.filter((w) => !['PD', 'RD', 'ID', 'ONLY'].includes(w)).map((w) => SCENARIO_WORDS[w]);
+    const absent = ['PD', 'RD', 'ID'].filter((w) => !words.includes(w)).map((w) => SCENARIO_WORDS[w]);
+    if (stages.length) return [stages.join(' + '), only && absent.length ? `(без ${absent.join(', ')})` : '', ...rest].filter(Boolean).join(' ');
+    return [...(only ? ['только'] : []), ...rest].join(' ');
+  }
+  return String(value);
+}
+
+/** Labels of the finding card service block; the original code stays available as a tooltip. */
+export const VIOLATION_LABELS = {
+  VIOLATION_PRESENT: 'нарушение есть',
+  NO_VIOLATION: 'нарушения нет',
+  AMBIGUOUS: 'неоднозначно',
+  NOT_APPLICABLE: 'неприменимо',
+  UNKNOWN: 'не определено',
+  MISSING_DOCUMENT: 'нет документа для сравнения',
+  MISSING_EVIDENCE: 'недостаточно доказательств',
+  NOT_COMPARABLE: 'сравнение невозможно',
+  CLARIFICATION_REQUIRED: 'нужно уточнение',
+  COMPARISON_IMPOSSIBLE: 'сравнение невозможно',
+};
+export const PROTOCOL_STATUS_LABELS = { COMPARISON_IMPOSSIBLE: 'сравнение невозможно', ID_MISSING: 'нет ИД', PD_MISSING: 'нет ПД', RD_MISSING: 'нет РД', CRITICAL: 'критично', WARNING: 'предупреждение', INFO: 'информационно', DRAFT: 'черновик', FINALIZED: 'финализирован', NONE: 'не включается' };
+/** Detection method of a free-search hypothesis (the code stays in the tooltip). */
+export const HYPOTHESIS_METHOD_LABELS = {
+  UNMATCHED_DIFF: 'расхождение вне Матрицы',
+  SEMANTIC_DISSONANCE: 'смысловое расхождение',
+  LOGICAL_ANALYSIS: 'логический анализ',
+  NORMATIVE_ANALYSIS: 'нормативная проверка',
+  ML_PATTERN_STAT: 'статистика по образцам (ML)',
+  FREE_SEARCH: 'свободный поиск',
+};
+export const COMPARABILITY_LABELS = { COMPARABLE: 'сопоставимо', NOT_COMPARABLE: 'несопоставимо', LOW_QUALITY: 'низкое качество страницы', NOT_APPLICABLE: 'неприменимо' };
+
+/** Reasons for "parameter without result" when the server sends no text (progress panel). */
+export const SKIP_REASON_LABELS = {
+  no_relevant_evidence: 'в документах не найдено значения для сравнения',
+  values_not_extracted: 'значения не удалось извлечь',
+  LOW_QUALITY: 'страница нечитаема или низкого качества',
+  CLARIFICATION_REQUIRED: 'нужно уточнение инспектора',
+  documents_partial: 'прочитаны только первые страницы',
+  NOT_COMPARABLE: 'сравнение невозможно',
+  MISSING_EVIDENCE: 'недостаточно доказательств',
+};
+
+/** Revision as the inspector reads it: the file extension is not part of a revision ("3_в1.pdf" -> "3_в1"). */
+export function cleanRevision(value) {
+  if (value === null || value === undefined) return '';
+  const text = String(value).trim().replace(/\.(pdf|docx?|xml|ifc|xlsx?|dwg|png|jpe?g)$/i, '');
+  return /^(pdf|docx?|xml|ifc|xlsx?|dwg|png|jpe?g)$/i.test(text) ? '' : text; // a bare extension is not a revision
+}
+
+/** Cut a long text to `max` characters for a table cell; the full text stays in the title. */
+export function clip(text, max = 140) {
+  const value = String(text ?? '');
+  return value.length > max ? `${value.slice(0, max).trim()}…` : value;
+}
+
+/** Rejection reason code -> its text (the code itself goes to the tooltip). */
+export function rejectReasonText(code) {
+  if (!code) return '';
+  return REJECT_REASON_CODES.find((r) => r.value === code)?.label || code;
+}

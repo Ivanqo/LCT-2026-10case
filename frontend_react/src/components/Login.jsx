@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { api, setToken } from '../api.js';
 
-export default function Login({ onLoggedIn }) {
+export default function Login({ onLoggedIn, notice }) {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -45,7 +45,8 @@ export default function Login({ onLoggedIn }) {
             autoComplete="current-password"
           />
         </label>
-        {error && <div className="error-banner"><span>{error}</span></div>}
+        {notice && !error && <div className="info-banner small" role="status"><span>{notice}</span></div>}
+        {error && <div className="error-banner" role="alert"><span>{error}</span></div>}
         <button className="btn primary block" type="submit" disabled={busy}>
           {busy ? 'Выполняется вход…' : 'Войти'}
         </button>

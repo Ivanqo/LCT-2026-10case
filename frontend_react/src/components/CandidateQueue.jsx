@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { useEscape } from '../hooks.js';
 import { FINDING_STATUS_LABELS, FINDING_TONE, INSPECTOR_STATUS_LABELS, NO_RESULT_SHORT, REJECT_REASON_CODES, STAGE_TITLES, label } from '../labels.js';
 import { fmtConfidence, formatValue } from '../utils.js';
 
 export const QUEUE_MODES = [
   { key: 'candidates', label: 'Кандидаты', test: (i) => i.finding_status === 'CANDIDATE' },
-  { key: 'lowconf', label: 'Низкая уверенность / LOW_QUALITY', test: (i, t) => i.low_quality || (i.min_confidence !== null && i.min_confidence !== undefined && i.min_confidence < t) },
+  { key: 'lowconf', label: 'Низкая уверенность / плохое качество', test: (i, t) => i.low_quality || (i.min_confidence !== null && i.min_confidence !== undefined && i.min_confidence < t) },
   { key: 'clarify', label: 'Уточнение', test: (i) => i.finding_status === 'CLARIFICATION_REQUIRED' },
   { key: 'decided', label: 'Решённые', test: (i) => i.inspector_status !== 'PENDING' },
   { key: 'suspicion', label: 'Гипотезы (подозрения ИИ)', test: (i) => i.is_suspicion },
@@ -74,7 +75,7 @@ export default function CandidateQueue({ summary, rows, filters, onFilters, sele
         </div>
         {filters.mode === 'lowconf' && (
           <label className="row small muted" style={{ gap: 6 }}>
-            Порог confidence
+            Порог уверенности
             <input className="input thin" type="number" step="0.05" min="0" max="1" value={filters.threshold} onChange={(e) => onFilters({ threshold: Number(e.target.value) })} />
             <span>(по умолчанию {summary?.low_confidence_threshold})</span>
           </label>
@@ -106,6 +107,13 @@ export default function CandidateQueue({ summary, rows, filters, onFilters, sele
             aria-selected={i.id === selectedId}
             className={`queue-row${i.id === selectedId ? ' selected' : ''}${i.inspector_status !== 'PENDING' ? ' decided' : ''}`}
             onClick={() => onSelect(i.id)}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                onSelect(i.id);
+              }
+            }}
           >
             <input
               type="checkbox"
@@ -123,8 +131,8 @@ export default function CandidateQueue({ summary, rows, filters, onFilters, sele
               <div className="queue-name">{i.name}</div>
               <div className="queue-meta">
                 {(i.stages || []).map((s) => <span key={s} className={`stage-chip mini stage-${s}`}>{STAGE_TITLES[s]}</span>)}
-                <span className="muted">conf {fmtConfidence(i.min_confidence ?? i.confidence)}</span>
-                {i.low_quality && <span className="flag lq" title={(i.low_quality_reasons || []).join('; ')}>LQ</span>}
+                <span className="muted" title="Уверенность (минимум по цепочке: распознавание, привязка, правило)">увер. {fmtConfidence(i.min_confidence ?? i.confidence)}</span>
+                {i.low_quality && <span className="flag lq" title={(i.low_quality_reasons || []).join('; ') || 'Низкое качество страницы'}>плохое качество</span>}
                 {i.min_confidence !== null && i.min_confidence !== undefined && i.min_confidence < filters.threshold && <span className="flag lc">низк.</span>}
                 {i.hypothesis && <span className="flag hy" title="Гипотеза свободного поиска: не нарушение матрицы">гипотеза</span>}
                 {i.no_result && <span className="flag nr" title="Состояние без результата сравнения">{NO_RESULT_SHORT[i.no_result] || i.no_result}</span>}
@@ -153,6 +161,7 @@ export function BulkDialog({ decision, rows, onCancel, onSubmit }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const isReject = decision === 'Reject';
+  useEscape(onCancel, !busy);
   const title = { Confirm: 'Подтвердить нарушения', Reject: 'Отклонить кандидатов', 'Clarification Required': 'Запросить уточнение' }[decision];
   const canSubmit = comment.trim().length >= 3 && (!isReject || confirmed) && !busy;
 
@@ -176,7 +185,7 @@ export function BulkDialog({ decision, rows, onCancel, onSubmit }) {
         </div>
         {isReject && (
           <label className="field">
-            <span>Общая причина (reason_code)</span>
+            <span>Общая причина отклонения</span>
             <select className="select" value={reasonCode} onChange={(e) => setReasonCode(e.target.value)}>
               {REJECT_REASON_CODES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
             </select>

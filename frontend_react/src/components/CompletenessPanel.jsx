@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api.js';
 import Badge from './Badge.jsx';
-import { COMPLETENESS_STATUS_LABELS, COMPLETENESS_TONE, STAGE_TITLES, label } from '../labels.js';
+import { COMPLETENESS_STATUS_LABELS, COMPLETENESS_TONE, STAGE_TITLES, clip, label } from '../labels.js';
 
 /**
  * Completeness against the EXPECTED manifest, not the number of files (expert session §19): what was uploaded,
@@ -33,7 +33,7 @@ export default function CompletenessPanel({ processId }) {
           <h2>Комплектность</h2>
           <div className="row" style={{ gap: 8 }}>
             <Badge tone={COMPLETENESS_TONE[data.status] || 'neutral'}>{label(COMPLETENESS_STATUS_LABELS, data.status)}</Badge>
-            <span className="muted small mono">{data.source}</span>
+            <span className="muted small" title={`Источник: ${data.source}`}>{data.source === 'file_registry' ? 'по реестру файлов' : data.source}</span>
           </div>
         </div>
         <div className="info-banner small">Основание: {data.basis}</div>
@@ -42,7 +42,7 @@ export default function CompletenessPanel({ processId }) {
             {['PD', 'RD', 'ID'].map((code) => {
               const status = uploadStatus[`${code}_UPLOADED`];
               const title = status === `${code}_PARTIAL` ? 'загружена частично' : status === `${code}_UPLOADED` ? 'загружена' : 'отсутствует';
-              return <Badge key={code} tone={status === `${code}_PARTIAL` ? 'warn' : status === `${code}_UPLOADED` ? 'ok' : 'warn'}>{code}: {title}</Badge>;
+              return <Badge key={code} tone={status === `${code}_PARTIAL` ? 'warn' : status === `${code}_UPLOADED` ? 'ok' : 'warn'}>{STAGE_TITLES[code]}: {title}</Badge>;
             })}
           </div>
         )}
@@ -78,14 +78,14 @@ export default function CompletenessPanel({ processId }) {
         </div>
         <table className="plain-table">
           <thead>
-            <tr><th>Стадия</th><th>Раздел</th><th>Ожидалось (основание)</th><th>Загружено</th><th>Статус</th><th>Неопределённость</th></tr>
+            <tr><th>Стадия</th><th>Раздел</th><th>Ожидание (основание)</th><th>Загружено</th><th>Статус</th><th>Неопределённость</th></tr>
           </thead>
           <tbody>
             {rows.map((r) => (
               <tr key={`${r.stage}-${r.section}`}>
                 <td><span className={`stage-chip stage-${r.stage}`}>{STAGE_TITLES[r.stage]}</span></td>
                 <td>{r.section}</td>
-                <td className="small">{r.expected ? 'да' : 'нет'} <span className="muted">— {r.expected_basis}</span></td>
+                <td className="small expected-cell" title={r.expected_basis || undefined}>{r.expected ? 'ожидается' : 'не ожидается'} <span className="muted">— {clip(r.expected_basis, 110)}</span></td>
                 <td>
                   {r.uploaded}
                   {r.files?.length > 0 && (

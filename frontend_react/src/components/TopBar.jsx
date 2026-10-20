@@ -35,7 +35,7 @@ export default function TopBar({ me, projects, currentProjectId, onSelectProject
           </select>
         )}
         {!creating && (
-          <button className="btn small" type="button" onClick={() => setCreating(true)}>
+          <button className="btn small nowrap" type="button" onClick={() => setCreating(true)}>
             + Проект
           </button>
         )}

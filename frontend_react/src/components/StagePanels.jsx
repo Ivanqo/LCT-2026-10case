@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { api, fetchPageImage, openSourcePage } from '../api.js';
-import { APPROVAL_STATUS_LABELS, ROLE_LABELS, STAGE_FULL, STAGE_GENITIVE, STAGE_TITLES, label } from '../labels.js';
+import { APPROVAL_STATUS_LABELS, ROLE_LABELS, STAGE_FULL, STAGE_GENITIVE, STAGE_TITLES, cleanRevision, label } from '../labels.js';
 import { formatValue } from '../utils.js';
 
 export const ZOOM_MIN = 0.5;
@@ -349,7 +349,7 @@ function StagePanel({ stage, items, zoom, onZoom, sync, activeKey, onActiveKey, 
             <div className="meta-grid">
               <span>ID файла</span><b className="mono">{formatValue(current.file_id)}</b>
               <span>Шифр</span><b className="mono">{formatValue(current.document_code)}</b>
-              <span>Редакция</span><b>{formatValue(current.revision)}</b>
+              <span>Редакция</span><b>{formatValue(cleanRevision(current.revision) || null)}</b>
               <span>Статус</span><b>{label(APPROVAL_STATUS_LABELS, current.approval_status, 'не указан')}</b>
               <span>Страница</span><b>{formatValue(fragmentPage)}{pages ? ` из ${pages}` : ''}</b>
               <span>Лист</span>
@@ -357,7 +357,7 @@ function StagePanel({ stage, items, zoom, onZoom, sync, activeKey, onActiveKey, 
                 {sheet?.label || '—'}
               </b>
               <span>SHA-256</span><b className="mono" title={current.file_sha256 || ''}>{current.file_sha256 ? `${current.file_sha256.slice(0, 12)}…` : '—'}</b>
-              <span>Стадия по</span>
+              <span title="Откуда определена стадия документа: реестр файлов, имя файла, классификация по содержанию">Стадия (источник)</span>
               <b title={(stageInfo?.sources || []).map((s) => `${s.basis}: ${s.stage_label || STAGE_TITLES[s.stage] || 'не определена'}`).join('\n')}>
                 {(stageInfo?.sources || []).map((s) => `${s.basis.split(' ')[0]} ${s.stage_label || STAGE_TITLES[s.stage] || '—'}`).join(' · ') || '—'}
               </b>
@@ -500,13 +500,39 @@ function StagePanel({ stage, items, zoom, onZoom, sync, activeKey, onActiveKey, 
 
 function BoxOverlay({ box, kind, title, text, approx }) {
   const [x1, y1, x2, y2] = box;
+  const labelRef = useRef(null);
+  const [rightSide, setRightSide] = useState(false);
+  const [maxWidth, setMaxWidth] = useState(null);
+  const shown = text ? String(text).slice(0, 48) : '';
+  // The label sits above the frame's left edge; when it would run past the right edge of the page viewport it is
+  // anchored to the frame's right edge instead (and shortened if it fits neither way) so the text is never cut off.
+  useLayoutEffect(() => {
+    const el = labelRef.current;
+    const viewport = el?.closest('.stage-viewport');
+    if (!el || !viewport) return undefined;
+    const measure = () => {
+      const frame = el.parentElement.getBoundingClientRect();
+      const view = viewport.getBoundingClientRect();
+      const width = Math.min(el.scrollWidth, 420);
+      const overflowsRight = frame.left - 2 + width > view.right - 4;
+      const fitsRight = frame.right + 2 - width >= view.left + 2;
+      setRightSide(overflowsRight && fitsRight);
+      setMaxWidth(overflowsRight && !fitsRight ? Math.max(80, Math.round(view.right - frame.left - 6)) : null);
+    };
+    measure();
+    // the page image loads after the frame is drawn and the panel can be resized: measure again then
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null;
+    observer?.observe(el.parentElement);
+    observer?.observe(viewport);
+    return () => observer?.disconnect();
+  }, [shown, x1, x2, y1, y2]);
   return (
     <div
       className={`bbox-overlay ${kind}${approx ? ' approx' : ''}`}
       title={title}
       style={{ left: `${x1 * 100}%`, top: `${y1 * 100}%`, width: `${(x2 - x1) * 100}%`, height: `${(y2 - y1) * 100}%` }}
     >
-      {text && <span className={`bbox-label${y1 < 0.04 ? ' below' : ''}`}>{String(text).slice(0, 48)}</span>}
+      {text && <span ref={labelRef} style={maxWidth ? { maxWidth } : undefined} className={`bbox-label${y1 < 0.04 ? ' below' : ''}${rightSide ? ' right' : ''}`}>{shown}</span>}
     </div>
   );
 }

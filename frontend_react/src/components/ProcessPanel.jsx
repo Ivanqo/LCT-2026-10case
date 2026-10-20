@@ -7,8 +7,9 @@ import CompletenessPanel from './CompletenessPanel.jsx';
 import ProgressPanel from './ProgressPanel.jsx';
 import SheetCompare from './SheetCompare.jsx';
 import VerificationTimer from './VerificationTimer.jsx';
-import { PROCESS_STATUS_LABELS, PROCESS_TONE, label } from '../labels.js';
+import { PROCESS_STATUS_LABELS, PROCESS_TONE, humanizeScenario, label } from '../labels.js';
 import { fmtDate } from '../utils.js';
+import { useEscape } from '../hooks.js';
 
 const POLL_STATUSES = new Set(['QUEUED', 'PROCESSING', 'PARSING']);
 const LOADED_STATUSES = new Set(['READY', 'VERIFYING', 'COMPLETED', 'FINALIZED']);
@@ -17,6 +18,16 @@ const SECTIONS = [
   { key: 'revisions', label: 'Редакции' },
   { key: 'completeness', label: 'Комплектность' },
 ];
+
+const SECTION_KEY = 'case10_react_section';
+function loadSection() {
+  try {
+    const stored = sessionStorage.getItem(SECTION_KEY);
+    return ['workbench', 'revisions', 'completeness', 'sheets'].includes(stored) ? stored : 'workbench';
+  } catch {
+    return 'workbench';
+  }
+}
 
 const SHEETS_SECTION = { key: 'sheets', label: 'Сравнение листов' };
 const SUPERVISOR_ROLES = new Set(['ADMIN', 'SUPERVISOR']);
@@ -33,10 +44,15 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
   const [unfinalizing, setUnfinalizing] = useState(false);
   const [showUnfinalizeConfirm, setShowUnfinalizeConfirm] = useState(false);
   const [unfinalizeReason, setUnfinalizeReason] = useState('');
-  const [section, setSection] = useState('workbench');
+  const [section, setSectionState] = useState(loadSection);
+  const setSection = (next) => {
+    setSectionState(next);
+    try { sessionStorage.setItem(SECTION_KEY, next); } catch { /* storage unavailable: the sub-tab is simply not remembered */ }
+  };
   const [timerKey, setTimerKey] = useState(0);
   const [ackNoId, setAckNoId] = useState(false);
   const [sheetMode, setSheetMode] = useState(false);
+  useEscape(() => { setShowFinalizeConfirm(false); setShowUnfinalizeConfirm(false); }, (showFinalizeConfirm && !finalizing) || (showUnfinalizeConfirm && !unfinalizing));
   const canUnfinalize = Boolean(me?.is_admin || SUPERVISOR_ROLES.has(String(me?.role || '').toUpperCase()));
 
   // the sheet comparison is a viewing aid behind a server flag: the tab exists only when the server says it is on and usable
@@ -182,14 +198,15 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
           <div className="row wrap">
             <span className="muted small">Проверка:</span>
             <select
-              className="select"
+              className="select process-select"
+              aria-label="Выбор проверки"
               value={processId || ''}
               onChange={(e) => onProcessIdChange(e.target.value || null)}
             >
               {!processId && <option value="">— выбрать проверку —</option>}
               {history.map((p) => (
                 <option key={p.process_id} value={p.process_id}>
-                  {p.process_id.slice(0, 8)} • {label(PROCESS_STATUS_LABELS, p.status)} • {fmtDate(p.created_at)}
+                  № {p.process_id.slice(0, 8)} • {label(PROCESS_STATUS_LABELS, p.status)} • {fmtDate(p.created_at)}
                 </option>
               ))}
             </select>
@@ -206,7 +223,7 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
         <section className="card">
           <div className="status-header">
             <div className="main-status">
-              <div className="mono small muted">process_id: {process.process_id}</div>
+              <div className="mono small muted" title={`Идентификатор проверки (process_id): ${process.process_id}`}>Проверка № {process.process_id.slice(0, 8)}</div>
               <Badge tone={PROCESS_TONE[process.status] || 'neutral'}>{label(PROCESS_STATUS_LABELS, process.status)}</Badge>
               {POLL_STATUSES.has(process.status) && (
                 <div className="row small muted top-gap"><span className="spinner" /> Опрашиваем статус…</div>
@@ -217,11 +234,11 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
             </div>
             <div className="status-grid">
               <div className="stat-tile wide-tile"><div className="n obj">{process.object_id || '—'}</div><div className="l">Объект</div></div>
-              <div className="stat-tile"><div className="n">{process.upload_scenario || '—'}</div><div className="l">Сценарий загрузки</div></div>
+              <div className="stat-tile" title={process.upload_scenario ? `Код сценария: ${process.upload_scenario}` : undefined}><div className="n scenario">{humanizeScenario(process.upload_scenario)}</div><div className="l">Состав комплекта</div></div>
               {protocol && <div className="stat-tile"><div className="n">v{protocol.version}</div><div className="l">Версия протокола</div></div>}
               <div className="stat-tile"><div className="n">{sections.candidates ?? process.pending_candidates ?? 0}</div><div className="l">Кандидатов без решения</div></div>
-              <div className="stat-tile"><div className="n">{sections.confirmed_violations || 0}</div><div className="l">Подтверждено</div></div>
-              <div className="stat-tile"><div className="n">{sections.negative_verified || 0}</div><div className="l">Нарушения нет</div></div>
+              <div className="stat-tile"><div className="n">{sections.confirmed_violations || 0}</div><div className="l" title="Нарушения, подтверждённые инспектором">Подтверждено</div></div>
+              <div className="stat-tile"><div className="n">{sections.negative_verified || 0}</div><div className="l" title="Кандидаты, по которым инспектор не подтвердил нарушение (отклонены)">Нарушения нет</div></div>
             </div>
             {loaded && <VerificationTimer processId={process.process_id} status={process.status} refreshKey={timerKey} />}
           </div>
@@ -278,17 +295,17 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
 
           {protocol && (
             <div className="row wrap top-gap" style={{ gap: 10 }}>
-              <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolPdfUrl(protocol.id), `protocol_${protocol.id}.pdf`)}>
+              <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolPdfUrl(protocol.id), `protocol_${protocol.id}.pdf`).catch((e) => setStatusError(e.message || 'Не удалось скачать протокол (PDF)'))}>
                 Скачать протокол (PDF)
               </button>
-              <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolDocxUrl(protocol.id), `protocol_${protocol.id}.docx`).catch((e) => setStatusError(e.message))}>
+              <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolDocxUrl(protocol.id), `protocol_${protocol.id}.docx`).catch((e) => setStatusError(e.message || 'Не удалось скачать протокол (DOCX)'))}>
                 Скачать протокол (DOCX)
               </button>
-              <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolXmlUrl(protocol.id), `protocol_${protocol.id}.xml`).catch((e) => setStatusError(e.message))}>
+              <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolXmlUrl(protocol.id), `protocol_${protocol.id}.xml`).catch((e) => setStatusError(e.message || 'Не удалось скачать протокол (XML)'))}>
                 Скачать протокол (XML)
               </button>
-              <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolSubmissionUrl(protocol.id), `submission_${protocol.id}.json`)}>
-                Экспорт submission (JSON)
+              <button className="btn small" type="button" onClick={() => downloadProtectedFile(protocolSubmissionUrl(protocol.id), `submission_${protocol.id}.json`).catch((e) => setStatusError(e.message || 'Не удалось выгрузить результат (JSON)'))} title="Результаты проверки в машиночитаемом виде (JSON)">
+                Экспорт результата (JSON)
               </button>
               <button className="btn small primary" type="button" disabled={locked || finalizing} onClick={() => setShowFinalizeConfirm(true)}>
                 {finalizing ? 'Финализация…' : 'Финализировать протокол'}
