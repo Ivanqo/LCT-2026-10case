@@ -235,7 +235,7 @@ docker run --rm --network none case10-api python -m app.cli selftest
 - Загрузить пакет: через интерфейс (PDF и реестр; лимиты 50 МБ на файл и 200 МБ на пакет) либо серверным путём
   `POST /api/case10/batch-runs` (пакет в `./packages`, без лимитов) — [DEPLOYMENT.md](DEPLOYMENT.md), раздел 3.
 - Публичный стенд на Ubuntu с HTTPS — [DEPLOYMENT.md](DEPLOYMENT.md), раздел 2.
-- Демо-сценарий показа на реальных пакетах — [deploy/demo/README_DEMO.md](deploy/demo/README_DEMO.md); пакеты организатора в
+- Демо-стенд с готовыми проверками двух пакетов одной командой: `python deploy/demo/stand.py up` (памятка — [deploy/demo/README_DEMO.md](deploy/demo/README_DEMO.md), раздел 0). Сценарий показа на реальных пакетах — там же; пакеты организатора в
   репозиторий не входят.
 - Стенд проверен в браузере и в Docker: [FINAL_ACCEPTANCE_E2_REPORT.md](evaluation/phase12/FINAL_ACCEPTANCE_E2_REPORT.md),
   [FINAL_STAND_REPORT.md](evaluation/phase12/FINAL_STAND_REPORT.md).
@@ -410,7 +410,7 @@ PYTHONPATH="api_service:." python -m pytest api_service/tests -q
 $env:PYTHONPATH = "api_service;."; python -m pytest api_service/tests -q
 ```
 
-На хосте задайте `CASE10_DATASET_ROOT=api_service/app/reference_data/case_data` (в образе она уже задана): без неё около 34 тестов падают из-за каталога параметров. Около 10 тестов требуют данных организатора (`learning_data`, `matrix_v11.xlsx`), которых нет в репозитории.
+Переменные окружения для тестов не нужны: каталог параметров берётся из `api_service/app/reference_data/case_data` (внешний каталог через `CASE10_DATASET_ROOT`, как в образе, имеет приоритет). Тесты, которым нужны данные организатора (`learning_data`, матрица `.xlsx`), которых нет в репозитории, пропускаются с указанием причины (`pytest -rs`); на чистом клоне 1249 прошли, 21 пропущен, 0 упали (хост, Python 3.12).
 
 Часть тестов требует установленного Tesseract с языком `rus` и модели MiniLM; без них такие тесты пропускаются или
 падают на этапе окружения. Интерфейс: `cd frontend_react && npm ci && npm run lint && npm run build`.

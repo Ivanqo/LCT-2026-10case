@@ -555,6 +555,9 @@ def _candidate_roots(dataset_root: str | Path | None) -> list[Path]:
         candidates.append(Path(env_root))
     candidates.append(Path.cwd())
     candidates.extend(Path(__file__).resolve().parents)
+    # Last resort: the reference files shipped with the code (parameter catalog, submission schema). An external dataset
+    # found above (or CASE10_DATASET_ROOT, as set in the delivery image) always wins; only the first root is used.
+    candidates.append(Path(__file__).resolve().parents[1] / "reference_data" / "case_data")
 
     out: list[Path] = []
     seen: set[str] = set()

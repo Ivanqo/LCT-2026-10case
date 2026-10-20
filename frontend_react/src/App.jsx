@@ -110,6 +110,18 @@ export default function App() {
     if (!keepView) setView('documents');
   }
 
+  // A browser that has no remembered check for this project still lands on its latest one, so the tab does not claim
+  // "not started" before the check list has been opened.
+  useEffect(() => {
+    if (!projectId || processId) return undefined;
+    let active = true;
+    api.listProcesses(projectId)
+      .then((rows) => { if (active && rows.length) handleProcessIdChange(rows[0].process_id); })
+      .catch(() => {});
+    return () => { active = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectId, processId]);
+
   function handleProcessIdChange(id) {
     setProcessId(id);
     if (projectId) {

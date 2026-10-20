@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { api, protocolPdfUrl, protocolDocxUrl, protocolXmlUrl, protocolSubmissionUrl, downloadProtectedFile } from '../api.js';
 import Badge from './Badge.jsx';
 import Workbench from './Workbench.jsx';
@@ -34,6 +34,9 @@ const SUPERVISOR_ROLES = new Set(['ADMIN', 'SUPERVISOR']);
 
 export default function ProcessPanel({ projectId, processId, onProcessIdChange, me }) {
   const [history, setHistory] = useState([]);
+  const [historyLoaded, setHistoryLoaded] = useState(false);
+  const onProcessIdChangeRef = useRef(onProcessIdChange);
+  onProcessIdChangeRef.current = onProcessIdChange;
   const [process, setProcess] = useState(null);
   const [protocol, setProtocol] = useState(null);
   const [statusError, setStatusError] = useState('');
@@ -62,8 +65,13 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
 
   const refreshHistory = useCallback(() => {
     if (!projectId) return;
-    api.listProcesses(projectId).then(setHistory).catch(() => {});
+    api.listProcesses(projectId)
+      .then((rows) => { setHistory(rows); setHistoryLoaded(true); })
+      .catch(() => setHistoryLoaded(true));
   }, [projectId]);
+
+  // another project: its list is not known yet, so do not claim "no checks" until it arrives
+  useEffect(() => { setHistoryLoaded(false); }, [projectId]);
 
   useEffect(() => { refreshHistory(); }, [refreshHistory, processId]);
 
@@ -108,6 +116,11 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
         }
       } catch (err) {
         if (!active) return;
+        if (err.status === 404) {
+          // the remembered check no longer exists (the stand was reset): forget it, the latest one is opened instead
+          onProcessIdChangeRef.current(null);
+          return;
+        }
         setStatusError(err.message || 'Не удалось получить статус проверки');
         timer = setTimeout(tick, 4000);
       }
@@ -215,7 +228,11 @@ export default function ProcessPanel({ projectId, processId, onProcessIdChange, 
         </div>
       </section>
 
-      {!processId && (
+      {!processId && !historyLoaded && (
+        <div className="empty-state card"><span className="spinner" /> Загружаю список проверок…</div>
+      )}
+
+      {!processId && historyLoaded && !history.length && (
         <div className="empty-state card">Проверки для этого проекта ещё не запускались. Начните новую проверку или загрузите документы на вкладке «Документы».</div>
       )}
 
