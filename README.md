@@ -74,6 +74,8 @@ docker compose -f docker-compose.case10.yml up -d --build
 Сеть нужна только при сборке образов (базовые образы, зависимости, веса MiniLM); работающему сервису она не нужна.
 Пакетный запуск без стенда и без сети (`python -m app.cli run`) — в [разделе 3.4](#34-инструкция-запуска).
 
+Compose-файл фиксирует имя проекта `case10`: `up`/`down -v` затронут существующие контейнеры и тома `case10_*`; другое имя — `docker compose -p <имя> ...`. Чтобы не перезаписать `case10-api:latest`, задайте `CASE10_IMAGE_TAG=<тег>`.
+
 Если порты 8000, 8080 или 3100 на машине заняты, задайте другие: `API_HOST_PORT`, `GATEWAY_HOST_PORT`, `UI_HOST_PORT`. Интерфейс по умолчанию обращается к шлюзу на порту 8080 того же хоста; при другом порте шлюза укажите его адрес при сборке интерфейса: `REACT_FRONTEND_API_BASE=http://127.0.0.1:<порт шлюза>`.
 
 ---
@@ -120,7 +122,7 @@ docker compose -f docker-compose.case10.yml build
 docker build -f api_service/Dockerfile --target delivery -t case10-api .
 ```
 
-Сборка стенда из чистого clone (слои ОС и torch из кэша, слой `pip install -r requirements.txt` собирался со скачиванием) заняла 1 149 с — [FINAL_README_REPORT.md](evaluation/phase12/FINAL_README_REPORT.md). Холодная сборка без кэша слоёв не выполнялась; время зависит от канала. Для сборки нужна сеть
+Сборка стенда из чистого clone (слои ОС и torch из кэша, слой `pip install -r requirements.txt` собирался со скачиванием) заняла 1 149 с — [FINAL_README_REPORT.md](evaluation/phase12/FINAL_README_REPORT.md). Холодная сборка без кэша слоёв из GitHub-клона выполнена (около 30 мин при параллельной нагрузке); время зависит от канала. Если сборка оборвалась на загрузке (например `apt-get update`: `Connection refused` сразу после запуска Docker Desktop), повторите команду: слои кэшируются. Для сборки нужна сеть
 (перечень источников — отчёт E2, раздел 7); после сборки сервис запускается с `--network none`.
 
 ### 3.4 Инструкция запуска
@@ -289,19 +291,6 @@ docker run --rm --network none case10-api python -m app.cli selftest
 | 11 | Мониторинг и логирование | `logging_setup.py`, `metrics.py` | `GET /metrics`, `test_logging_json.py` |
 | 12 | Обработка ошибок | `batch_package.py`, `domain/document_versions.py`, `domain/v3_jobs.py` | `test_case10_ocr_hardening.py`, `test_upload_security.py` |
 
----|---|---|---|
-| 1 | Загрузка и парсинг | `domain/batch_package.py`, `file_registry.py`, `live_candidate_tagger.py`, `routes_upload.py` | `test_case10_s3_file_registry.py`, `python -m app.cli run` |
-| 2 | Сравнение и протокол | `domain/comparison_gate.py`, `official_evidence.py`, `protocol_annex2.py` | `test_case10_comparison_gate.py`, экспорт протокола |
-| 3 | Верификация инспектором | `domain/inspector_card.py`, `inspector_workbench.py`, `frontend_react/` | `test_case10_final_card.py`, `test_case10_s5_workbench.py`, интерфейс |
-| 4 | Обратная связь и дообучение | `domain/training_release.py` | `test_case10_training_release.py` |
-| 5 | Свободный поиск гипотез | `domain/free_hypotheses/`, `logical_analysis.py` | `test_case10_free_hypotheses.py` |
-| 6 | Интеграция с внешней ИС | `domain/iais_rin_sync.py` (эмуляция) | `test_case10_iais_rin_sync.py` |
-| 7 | Дашборд инспектора | `domain/inspector_dashboard.py`, `Dashboard.jsx` | `test_case10_final_z_modules.py`, вкладка «Панель объектов» |
-| 8 | Нормативная база | `/api/case10/normative-base`, `NormativeBase.jsx` | `test_case10_tz10_tables.py`, вкладка «Нормативная база» |
-| 9 | Журнал аудита | `AuditLog`, `v3_pipeline.add_audit` | `test_upload_security.py`, `GET …/processes/{id}/audit` |
-| 10 | Еженедельный отчёт ML | `domain/ml_weekly_report.py`, `ml_weekly_scheduler.py` | `test_case10_final_z_weekly.py`, `python -m app.cli weekly-report` |
-| 11 | Мониторинг и логирование | `logging_setup.py`, `app/metrics.py` | `GET /metrics`, `test_logging_json.py` |
-| 12 | Обработка ошибок | `batch_package.py`, `document_versions.py`, `v3_jobs.py` | `test_case10_ocr_hardening.py`, `test_upload_security.py` |
 
 ---
 
@@ -409,7 +398,7 @@ docs/legacy_services.md  описание исторических сервис�
 
 ## 10. Как запустить тесты
 
-Из корня репозитория, в окружении Python 3.11 с зависимостями из `api_service/requirements.txt` и `pytest`:
+Из корня репозитория, в окружении Python 3.11 или 3.12 с зависимостями из `api_service/requirements.txt` и `pytest`:
 
 ```bash
 PYTHONPATH="api_service:." python -m pytest api_service/tests -q
@@ -420,6 +409,8 @@ PYTHONPATH="api_service:." python -m pytest api_service/tests -q
 ```powershell
 $env:PYTHONPATH = "api_service;."; python -m pytest api_service/tests -q
 ```
+
+На хосте задайте `CASE10_DATASET_ROOT=api_service/app/reference_data/case_data` (в образе она уже задана): без неё около 34 тестов падают из-за каталога параметров. Около 10 тестов требуют данных организатора (`learning_data`, `matrix_v11.xlsx`), которых нет в репозитории.
 
 Часть тестов требует установленного Tesseract с языком `rus` и модели MiniLM; без них такие тесты пропускаются или
 падают на этапе окружения. Интерфейс: `cd frontend_react && npm ci && npm run lint && npm run build`.
