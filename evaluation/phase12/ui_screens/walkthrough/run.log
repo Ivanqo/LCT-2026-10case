@@ -1,0 +1,43 @@
+09:57:42 check tyu_tiers {"SUGGESTION":1,"VIOLATION_CANDIDATE":12}
+09:57:44 shot 01_01_overview.png
+09:57:46 check check1_panels [{"cls":"stage-panel stage-PD","frames":1,"labels":["Системы: V2.4, V2.5, V2.6 · ПД"]},{"cls":"stage-panel stage-RD","frames":1,"labels":["Вытяжная система не распознана в зоне помещения "]},{"cls":"stage-panel stage-ID missing","frames":0,"labels":[]}]
+09:57:46 check check3_identity "Объект: OBJ-TYUMENSKAYA-5-GOLD-SEED Элемент: 142 Документы сопоставлены по объекту и элементу (помещению) из записи; сравнение по совпадению числа или марки не используется."
+09:57:46 check check3_stage_source ["ID файла F0171 Шифр F0171 Редакция — Статус Утверждён Страница 88 из 177 Лист Лист 10 · АНО/150321/1-П-ИОС5.4.2 SHA-256 a9070055b75a… Стадия (источник) реестр ПД · классификация ПД","ID файла F0202 Шифр F0202 Редакция 3_в1 Статус Утверждён Страница 16 из 36 Лист — SHA-256 632379a0e541… Стадия (источник) реестр РД · классификация РД · имя РД"]
+09:57:47 shot 02_02_panels_stage_sources.png
+09:57:49 check check2_zoom ["×8.0","авто ×6.0"]
+09:57:49 check check2_frames_after_zoom 1
+09:57:50 shot 03_03_zoomed.png
+09:57:51 shot 04_04_back_to_fragment.png
+09:57:52 check check2_frames_hidden 0
+09:57:52 check check2_frames_shown 2
+09:57:54 shot 05_05_explanation.png
+09:57:54 check explanation_text "Основание расхождения\nУровень выдачи\nНарушение-кандидат\nПараметр\nСечения и геометрия воздуховодов общеобменной вентиляции • M-078\nОбъект сравнения\n142 (OBJ-TYUMENSKAYA-5-GOLD-SEED)\nЗначения по стадиям\nПД Системы: V2.4, V2.5, V2.6РД Вытяжная система не распознана в зоне помещения\nОтклонение\nне вычислялось\nПравило оценки\nв РД исчезла система вытяжки помещения (добавление нарушением не с
+09:57:54 check check5_reject_save_disabled_without_comment true
+09:57:55 check check5_api_reject_without_comment {"status":422}
+09:57:56 shot 06_06_confirm_form.png
+09:57:59 check check5_status_consistency {"list_item":"CONFIRMED_VIOLATION/CONFIRMED","queue_row":"","protocol_entry":"{\"protocol\":{\"id\":5,\"version\":2,\"status\":\"DRAFT\"},\"section\":{\"key\":\"section_4_critical_violations\",\"title\":\"Раздел 4. Критические нарушения\"},\"finding_id\":\"F-09d21fc8cd03dff1\",\"evidence_group_id\":\"EG-40c50456bd6ab925\",\"check\":{\"parameter_code\":\"M-078\",\"location\":\"142\",\"pd_value\":\"
+09:58:01 check check5_after_reload {"before":{"title":"Сечения и геометрия воздуховодов общеобменной вентиляции — 142","row":"M-078 142 Сечения и геометрия воздуховодов общеобменной вентиляции ПД РД увер. 0.50 низк. Подтверждено инспектором"},"after":{"title":"Сечения и геометрия воздуховодов общеобменной вентиляции — 142","row":"M-078 142 Сечения и геометрия воздуховодов общеобменной вентиляции ПД РД увер. 0.50 низк. Подтверждено 
+09:58:02 shot 07_07_after_reload.png
+09:58:04 check hyp_before {"CLARIFICATION_REQUIRED":109,"MISSING_EVIDENCE":23,"NOT_COMPARABLE":12,"hypothesis":21}
+09:58:05 check hypothesis_card_text "Гипотеза свободного поиска\nГипотеза не является найденным нарушением; она проходит рассмотрение отдельно от кандидатов матрицы.\nМетод обнаружения\nрасхождение вне Матрицы • Расхождение вне Матрицы (экспликация ПД ↔ РД)\nУверенность\n0.63\nОписание\nпомещение 1 (антресоль): площадь в экспликации ПД — 11.33 м², в РД — 11.68 м² (отклонение 0.35 м² (3.1 %)). Параметр Матрицы не определён: порог отк
+09:58:05 shot 08_08_hypothesis_card.png
+09:58:07 shot 09_09_hypothesis_to_candidate_form.png
+09:58:09 check hyp_after {"CLARIFICATION_REQUIRED":109,"MISSING_EVIDENCE":23,"NOT_COMPARABLE":12,"hypothesis":20,"VIOLATION_CANDIDATE":1}
+09:58:09 shot 10_10_hypothesis_converted.png
+09:58:11 check check4_no_result_state {"code":"M-040","state":"NO_DOCUMENTS","reason":"missing_stage"}
+09:58:12 check check4_reason_text "Нет документов\nнет документов одной из сравниваемых стадий (стадия ИД, есть: —)\nЧто можно сделать:\nДозагрузить документы стадии ИД"
+09:58:13 shot 11_11_incomplete_reason.png
+09:58:14 shot 12_12_supplement_file_chosen.png
+09:59:19 check check4_supplement_log "Загружаю ИД_AOSR_supplement.pdf…\nИД_AOSR_supplement.pdf: принят сервером\nЖду появления файлов в реестре документов…\nФайлы в реестре. Жду пересчёта затронутых параметров…"
+09:59:19 check check4_supplement_seconds 65
+09:59:21 shot 13_13_supplement_result.png
+09:59:22 check check4_cards_before_after {"before":140,"after":140,"changed":0,"new":0,"removed":0,"changed_ids_sample":[]}
+09:59:22 shot 14_14_after_supplement_queue.png
+10:01:09 shot 15_15_finalize_warning.png
+10:01:17 shot 16_16_finalized_view_mode.png
+10:01:18 check check6_decision_after_finalize_status 409
+10:01:18 check check6_unfinalize_without_reason_status 422
+10:01:18 check check6_history_entry {"status":200,"keys":["protocol","section","finding_id","evidence_group_id","check","status","decision","decision_rationale","decisions","parts","explanation","no_result","hypothesis","sources"],"text":"{\"protocol\":{\"id\":45,\"version\":40,\"status\":\"FINALIZED\"},\"section\":{\"key\":\"section_4_critical_violations\",\"title\":\"Раздел 4. Критические нарушения\"},\"finding_id\":\"F-797d5f4bd5
+10:01:19 check protocol_pdf {"status":200,"type":"application/pdf","bytes":287825}
+10:01:20 check protocol_submission {"status":200,"checks":192,"duplicate_code_location_pairs":[]}
+10:01:20 done 16 screenshots -> D:\Proga\LCT-hack-2026\.claude\worktrees\ui-polish-260bb7\evaluation\phase12\ui_screens\walkthrough

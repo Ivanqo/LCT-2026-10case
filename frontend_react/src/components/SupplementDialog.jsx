@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { api, uploadFile } from '../api.js';
 import { STAGE_GENITIVE, STAGE_TITLES } from '../labels.js';
+import { useEscape } from '../hooks.js';
 
 const RUNNING = new Set(['QUEUED', 'PROCESSING', 'PARSING']);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -17,6 +18,7 @@ export default function SupplementDialog({ projectId, processId, stage, section,
   const [error, setError] = useState('');
   const input = useRef(null);
   const title = STAGE_TITLES[stage] || 'документы';
+  useEscape(onClose, !busy);
 
   const log = (text) => setLines((l) => [...l, text]);
 
@@ -65,7 +67,7 @@ export default function SupplementDialog({ projectId, processId, stage, section,
           Включите в имя файла «ПД», «РД» или «ИД» — так система определяет стадию. Решения инспектора сохраняются, пересчитываются только затронутые параметры,
           изменившиеся карточки будут отмечены в очереди.
         </p>
-        <input ref={input} type="file" multiple accept=".pdf,.docx,.xml,.ifc" onChange={(e) => setFiles(Array.from(e.target.files || []))} disabled={busy} aria-label="Файлы для дозагрузки" />
+        <input ref={input} type="file" multiple accept=".pdf,.docx,.xml,.ifc" onChange={(e) => setFiles(Array.from(e.target.files || []))} disabled={busy} aria-label="Файлы для дозагрузки" className="file-input" />
         {files.length > 0 && <ul className="small">{files.map((f) => <li key={f.name}>{f.name} <span className="muted">({Math.round(f.size / 1024)} КБ)</span></li>)}</ul>}
         {lines.length > 0 && <div className="supplement-log small">{lines.map((l, i) => <div key={i}>{l}</div>)}</div>}
         {error && <div className="error-banner"><span>{error}</span></div>}

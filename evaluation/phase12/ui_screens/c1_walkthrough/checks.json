@@ -1,0 +1,78 @@
+{
+ "explanation_text": "Основание расхождения\nУровень выдачи\nне вычислялось\nПараметр\nСечения и геометрия воздуховодов общеобменной вентиляции • M-078\nОбъект сравнения\n140 (OBJ-TYUMENSKAYA-5-GOLD-SEED)\nЗначения по стадиям\nПД Системы: V2.7, V2.8, V2.9РД Вытяжная система не распознана в зоне помещения\nОтклонение\nне вычислялось\nПравило оценки\nofficial_rule_pack/official-rule-packs-v2\nУсловие\nУменьшение площади сечения воздуховода в РД (падение объема воздуха, рост шума).\nПорог\nне вычислялось\nОснование порога\nКаталог параметров, триггер: «Уменьшение площади сечения воздуховода в РД (падение объема воздуха, рост шума).»\nУВЕРЕННОСТЬ РАСПОЗНАВАНИЯ ТЕКСТА\nне вычислялось\nУВЕРЕННОСТЬ ПРИВЯЗКИ\nне вычислялось\nСХОДСТВО ЛИСТОВ\nне вычислялось\nОБЩАЯ (МИНИМУМ ПО ЦЕПОЧКЕ)\n0.72\nВероятность нарушения не заявляется: способа её расчёта в системе нет.",
+ "panel_meta_pd": "ID файла\nF0171\nШифр\nF0171\nРедакция\n—\nСтатус\nСтатус не указан\nСтраница\n88 из 177\nЛист\nЛист 10 · АНО/150321/1-П-ИОС5.4.2\nSHA-256\na9070055b75a…\nСтадия (источник)\nреестр ПД · классификация ПД",
+ "panel_meta_rd": "ID файла\nF0201\nШифр\nF0201\nРедакция\n4_в1\nСтатус\nСтатус не указан\nСтраница\n18 из 676\nЛист\n—\nSHA-256\n0c398d7bca35…\nСтадия (источник)\nклассификация РД · имя РД",
+ "independent_zoom": [
+  "×8.0",
+  "авто ×3.0"
+ ],
+ "bbox_labels": [
+  "Системы: V2.7, V2.8, V2.9 · ПД",
+  "Вытяжная система не распознана в зоне помещения "
+ ],
+ "frames_hidden_count": 0,
+ "frames_shown_count": 2,
+ "pd_page_after_switch": "89",
+ "fullscreen_state": {
+  "native": true,
+  "pseudo": true
+ },
+ "snapshot_button_enabled": true,
+ "reject_save_disabled_without_comment": true,
+ "api_reject_without_comment": {
+  "status": 422,
+  "detail": "Reject requires a comment"
+ },
+ "queue_partial_flag": [
+  "по частям 2/3"
+ ],
+ "parts_overall_decision": {
+  "id": 25,
+  "finding_status": "CONFIRMED_VIOLATION",
+  "inspector_status": "CONFIRMED",
+  "parts": "3/3"
+ },
+ "reload_keeps_selection": {
+  "before": "Сечения и геометрия воздуховодов общеобменной вентиляции — 142",
+  "after": "Сечения и геометрия воздуховодов общеобменной вентиляции — 142",
+  "same": true
+ },
+ "no_result_states_in_demo": {
+  "NO_DOCUMENTS": "M-040 MISSING_EVIDENCE",
+  "NOT_COMPARABLE": "M-023 NOT_COMPARABLE"
+ },
+ "no_result_NO_DOCUMENTS": "Нет документов\nнет документов одной из сравниваемых стадий (стадия ИД, есть: —)\nЧто можно сделать:\nДозагрузить документы стадии ИД",
+ "no_result_NOT_COMPARABLE": "Сравнение невозможно\nв стадии несколько конкурирующих редакций документа — выберите актуальную на вкладке «Редакции»\nЧто можно сделать:\nВыбрать актуальную редакцию на вкладке «Редакции»",
+ "finalize_disabled_before_ack": true,
+ "finalize_disabled_after_ack": false,
+ "after_finalize_decision_status": 409,
+ "after_finalize_partial_status": 409,
+ "protocol_pdf": {
+  "status": 200,
+  "type": "application/pdf",
+  "bytes": 218154
+ },
+ "protocol_submission": {
+  "status": 200,
+  "keys": [
+   "submission",
+   "schema",
+   "validation_errors"
+  ]
+ },
+ "protocol_entry_of_split_finding": {
+  "status": 200,
+  "section": {
+   "key": "section_4_critical_violations",
+   "title": "Раздел 4. Критические нарушения"
+  },
+  "decision": "Confirm",
+  "rationale": "Составное замечание, решение по частям: отклонено: V2.8; подтверждено: V2.7, V2.9",
+  "parts": [
+   "V2.7:Confirm",
+   "V2.8:Reject",
+   "V2.9:Confirm"
+  ]
+ },
+ "unfinalize_without_reason_status": 422
+}

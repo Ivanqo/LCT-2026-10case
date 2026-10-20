@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { api, uploadFile } from '../api.js';
-import { STAGE_LABELS, APPROVAL_STATUS_LABELS, label } from '../labels.js';
+import { STAGE_LABELS, APPROVAL_STATUS_LABELS, cleanRevision, label } from '../labels.js';
 import { fmtDate } from '../utils.js';
 
 const UPLOAD_STATUS_LABELS = {
@@ -132,6 +132,13 @@ export default function DocumentsPanel({ projectId, onProcessStarted }) {
           onClick={() => fileInputRef.current?.click()}
           role="button"
           tabIndex={0}
+          aria-label="Выбрать файлы для загрузки"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              fileInputRef.current?.click();
+            }
+          }}
         >
           <div>Перетащите файлы ПД / РД / ИД сюда или нажмите, чтобы выбрать (PDF, DOCX, XML, IFC)</div>
           <input
@@ -143,7 +150,7 @@ export default function DocumentsPanel({ projectId, onProcessStarted }) {
           />
         </div>
         <div className="upload-hint">
-          Совет: включите в имя файла «ПД», «РД» или «ИД» (project/working/as-built) — так система определяет стадию документа (источник показан у каждого файла: «по имени файла»). Стадия из реестра или папки имеет приоритет; если в имени указано несколько стадий («ПД_РД»), стадия не назначается.
+          Совет: если в имени файла есть «ПД», «РД» или «ИД» (например, «ПД_Том5.pdf»), стадия документа определяется по имени — источник показан у каждого файла («по имени файла»). Стадия из реестра файлов или папки имеет приоритет; если в имени указано несколько стадий («ПД_РД»), стадия не назначается — уточните её в реестре.
         </div>
 
         {uploads.length > 0 && (
@@ -151,7 +158,7 @@ export default function DocumentsPanel({ projectId, onProcessStarted }) {
             {uploads.map((u) => (
               <div className="upload-row" key={u.key}>
                 <div style={{ flex: 1 }}>
-                  <div>{u.name}</div>
+                  <div className="file-name" title={u.name}>{u.name}</div>
                   <div className="progress-track">
                     <div
                       className="progress-bar"
@@ -196,12 +203,12 @@ export default function DocumentsPanel({ projectId, onProcessStarted }) {
             {group.documents.map((doc) => (
               <div className="doc-row" key={doc.id}>
                 <div>
-                  <div className="name">{doc.filename}</div>
+                  <div className="name" title={doc.filename}>{doc.filename}</div>
                   {doc.stage_warning && <div className="small" style={{ color: 'var(--bad)' }} data-testid="stage-warning">{doc.stage_warning}</div>}
                   <div className="doc-meta">
                     {doc.stage_source_label ? `Стадия ${doc.stage_source_label} • ` : ''}
                     {label(APPROVAL_STATUS_LABELS, doc.approval_status)}
-                    {doc.revision ? ` • ред. ${doc.revision}` : ''}
+                    {cleanRevision(doc.revision) ? ` • ред. ${cleanRevision(doc.revision)}` : ''}
                     {' • '}
                     {fmtDate(doc.uploaded_at || doc.created_at)}
                     {doc.is_current_approved ? ' • действующая утверждённая версия' : ''}

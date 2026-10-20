@@ -7,7 +7,13 @@ import {
   INSPECTOR_STATUS_LABELS,
   REVIEW_PRIORITY_LABELS,
   STAGE_TITLES,
+  COMPARABILITY_LABELS,
+  PROTOCOL_STATUS_LABELS,
+  VIOLATION_LABELS,
+  cleanRevision,
+  humanizeScenario,
   label,
+  rejectReasonText,
 } from '../labels.js';
 import { buildExplanation, fmtConfidence, fmtDate, formatBBox, formatValue } from '../utils.js';
 
@@ -29,11 +35,11 @@ function SourceLine({ title, source, stage, sheet }) {
         <span className={`stage-chip stage-${stage}`}>{STAGE_TITLES[stage] || stage}</span>{' '}
         <b className="mono">{source.file_id}</b>
         {source.code && source.code !== source.file_id ? <> • шифр <b className="mono">{source.code}</b></> : null}
-        {' • ред. '}<b>{formatValue(source.revision)}</b>
+        {' • ред. '}<b>{formatValue(cleanRevision(source.revision) || null)}</b>
         {' • '}{label(APPROVAL_STATUS_LABELS, source.approval, 'статус не указан')}
         {' • стр. '}<b>{formatValue(source.page)}</b>
         {' • лист '}<b title={sheet ? sheet.basis : 'В основной надписи страницы обозначение листа не найдено'}>{sheet?.label || '—'}</b>
-        {source.bbox_polygon ? <span className="muted mono small"> • bbox [{formatBBox(source.bbox_polygon)}]</span> : null}
+        {source.bbox_polygon ? <span className="muted mono small" title="Координаты рамки на странице (доли страницы: левый верхний и правый нижний углы)"> • рамка [{formatBBox(source.bbox_polygon)}]</span> : null}
       </span>
     </div>
   );
@@ -58,7 +64,7 @@ export default function EvidenceCardFields({ detail, locked, onNoResultAction, o
             {card.legacy_code && card.legacy_code !== card.matrix_code && <span className="pill mono small" title="Прежний код (public_train)">{card.legacy_code}</span>}
             <Badge tone={FINDING_TONE[card.finding_status] || 'neutral'}>{label(FINDING_STATUS_LABELS, card.finding_status)}</Badge>
             {card.review_priority && <span className="pill">{label(REVIEW_PRIORITY_LABELS, card.review_priority)}</span>}
-            {quality.low_quality && <span className="pill warn-pill" title={(quality.low_quality_reasons || []).join('; ')}>LOW_QUALITY</span>}
+            {quality.low_quality && <span className="pill warn-pill" title={(quality.low_quality_reasons || []).join('; ') || 'LOW_QUALITY'}>низкое качество страницы</span>}
             {quality.low_confidence && <span className="pill warn-pill">низкая уверенность</span>}
             {card.needs_reverification && <span className="pill warn-pill">доказательства изменились — перепроверить</span>}
           </div>
@@ -70,7 +76,7 @@ export default function EvidenceCardFields({ detail, locked, onNoResultAction, o
           <div className={`decision-value tone-${DECISION_TO_INSPECTOR[lastDecision?.decision] || 'PENDING'}`}>
             {label(INSPECTOR_STATUS_LABELS, card.inspector_status || 'PENDING')}
           </div>
-          {lastDecision && <div className="muted small">{fmtDate(lastDecision.created_at)}{lastDecision.reason_code ? ` • ${lastDecision.reason_code}` : ''}</div>}
+          {lastDecision && <div className="muted small" title={lastDecision.reason_code || undefined}>{fmtDate(lastDecision.created_at)}{lastDecision.reason_code ? ` • ${rejectReasonText(lastDecision.reason_code)}` : ''}</div>}
         </div>
       </div>
 
@@ -98,16 +104,19 @@ export default function EvidenceCardFields({ detail, locked, onNoResultAction, o
       <ExplanationBlock card={card} />
 
       <dl className="card-grid">
-        <dt>ID находки</dt><dd className="mono">{formatValue(card.finding_id)} <span className="muted">/ {formatValue(card.evidence_group_id)} / #{card.id}</span></dd>
-        <dt>object_id</dt><dd className="mono">{formatValue(card.object_id)}</dd>
-        <dt>Правило</dt>
+        <dt>Идентификатор находки</dt><dd className="mono">{formatValue(card.finding_id)} <span className="muted">/ {formatValue(card.evidence_group_id)} / #{card.id}</span></dd>
+        <dt>Объект (object_id)</dt><dd className="mono">{formatValue(card.object_id)}</dd>
+        <dt>Правило проверки</dt>
         <dd>
           <span className="mono">{formatValue(rule.rule_version || rule.source)}</span>
-          {rule.comparison_scenario ? <span className="muted"> • {rule.comparison_scenario}</span> : null}
+          {rule.comparison_scenario ? <span className="muted" title={`Код сценария: ${rule.comparison_scenario}`}> • сопоставление {humanizeScenario(rule.comparison_scenario)}</span> : null}
           {rule.extractors?.length ? <div className="muted small mono">{rule.extractors.join(', ')}</div> : null}
           {rule.trigger_logic ? <div className="muted small">Триггер: {String(rule.trigger_logic).split('trigger=').pop()}</div> : null}
         </dd>
-        <dt>Метка / статус</dt><dd>{formatValue(card.violation_label)} <span className="muted">• протокол: {formatValue(card.protocol_status)} • сопоставимость: {formatValue(card.comparability_status)}</span></dd>
+        <dt>Метка / статус</dt>
+        <dd title={[card.violation_label, card.protocol_status, card.comparability_status].filter(Boolean).join(' / ')}>
+          {label(VIOLATION_LABELS, card.violation_label)} <span className="muted">• в протоколе: {label(PROTOCOL_STATUS_LABELS, card.protocol_status)} • сопоставимость: {label(COMPARABILITY_LABELS, card.comparability_status)}</span>
+        </dd>
       </dl>
 
       <div className="sources">

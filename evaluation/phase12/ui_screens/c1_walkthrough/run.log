@@ -1,0 +1,46 @@
+10:04:00 shot 01_workbench_overview.png
+10:04:02 shot 02_progress_incomplete.png
+10:04:03 shot 03_explanation_protocol_entry.png
+10:04:03 check explanation_text "Основание расхождения\nУровень выдачи\nне вычислялось\nПараметр\nСечения и геометрия воздуховодов общеобменной вентиляции • M-078\nОбъект сравнения\n140 (OBJ-TYUMENSKAYA-5-GOLD-SEED)\nЗначения по стадиям\nПД Системы: V2.7, V2.8, V2.9РД Вытяжная система не распознана в зоне помещения\nОтклонение\nне вычислялось\nПравило оценки\nofficial_rule_pack/official-rule-packs-v2\nУсловие\nУменьшение площади сечения воздуховода в РД (падение объема воздуха, рост шума).\nПорог\nне вычислялось\nОснование порога\nКаталог параметров, триггер: «Уменьшение площади сечения воздуховода в РД (падение объема воздуха, рост шума).»\nУВЕРЕННОСТЬ РАСПОЗНАВАНИЯ ТЕКСТА\nне вычислялось\nУВЕРЕННОСТЬ ПРИВЯЗКИ\nне вычислялось\nСХОДСТВО ЛИСТОВ\nне вычислялось\nОБЩАЯ (МИНИМУМ ПО ЦЕПОЧКЕ)\n0.72\nВероятность нарушения не заявляется: способа её расчёта в системе нет."
+10:04:04 shot 04_panels_pair_missing_id.png
+10:04:04 check panel_meta_pd "ID файла\nF0171\nШифр\nF0171\nРедакция\n—\nСтатус\nСтатус не указан\nСтраница\n88 из 177\nЛист\nЛист 10 · АНО/150321/1-П-ИОС5.4.2\nSHA-256\na9070055b75a…\nСтадия (источник)\nреестр ПД · классификация ПД"
+10:04:04 check panel_meta_rd "ID файла\nF0201\nШифр\nF0201\nРедакция\n4_в1\nСтатус\nСтатус не указан\nСтраница\n18 из 676\nЛист\n—\nSHA-256\n0c398d7bca35…\nСтадия (источник)\nклассификация РД · имя РД"
+10:04:05 shot 05_supplement_dialog.png
+10:04:07 shot 06_pair_pd_rd.png
+10:04:08 check independent_zoom ["×8.0","авто ×3.0"]
+10:04:09 shot 07_independent_panels.png
+10:04:09 check bbox_labels ["Системы: V2.7, V2.8, V2.9 · ПД","Вытяжная система не распознана в зоне помещения "]
+10:04:10 check frames_hidden_count 0
+10:04:10 shot 08_frames_hidden.png
+10:04:11 check frames_shown_count 2
+10:04:12 shot 09_page_switch.png
+10:04:12 check pd_page_after_switch "89"
+10:04:14 check fullscreen_state {"native":true,"pseudo":true}
+10:04:15 shot 10_fullscreen.png
+10:04:16 check snapshot_button_enabled true
+10:04:16 check reject_save_disabled_without_comment true
+10:04:17 shot 11_clarify_kind.png
+10:04:18 check api_reject_without_comment {"status":422,"detail":"Reject requires a comment"}
+10:04:19 shot 12_parts_selected.png
+10:04:21 shot 13_parts_partial.png
+10:04:21 check queue_partial_flag ["по частям 2/3"]
+10:04:23 check parts_overall_decision {"id":25,"finding_status":"CONFIRMED_VIOLATION","inspector_status":"CONFIRMED","parts":"3/3"}
+10:04:24 shot 14_parts_complete.png
+10:04:25 check reload_keeps_selection {"before":"Сечения и геометрия воздуховодов общеобменной вентиляции — 142","after":"Сечения и геометрия воздуховодов общеобменной вентиляции — 142","same":true}
+10:04:26 shot 15_after_reload.png
+10:04:28 check no_result_states_in_demo {"NO_DOCUMENTS":"M-040 MISSING_EVIDENCE","NOT_COMPARABLE":"M-023 NOT_COMPARABLE"}
+10:04:30 shot 16_no_result_no_documents.png
+10:04:30 check no_result_NO_DOCUMENTS "Нет документов\nнет документов одной из сравниваемых стадий (стадия ИД, есть: —)\nЧто можно сделать:\nДозагрузить документы стадии ИД"
+10:04:32 shot 17_no_result_not_comparable.png
+10:04:32 check no_result_NOT_COMPARABLE "Сравнение невозможно\nв стадии несколько конкурирующих редакций документа — выберите актуальную на вкладке «Редакции»\nЧто можно сделать:\nВыбрать актуальную редакцию на вкладке «Редакции»"
+10:04:40 check finalize_disabled_before_ack true
+10:04:40 shot 18_finalize_warning_no_id.png
+10:04:41 check finalize_disabled_after_ack false
+10:04:43 shot 19_finalized_view_mode.png
+10:04:43 check after_finalize_decision_status 409
+10:04:43 check after_finalize_partial_status 409
+10:04:44 check protocol_pdf {"status":200,"type":"application/pdf","bytes":218154}
+10:04:44 check protocol_submission {"status":200,"keys":["submission","schema","validation_errors"]}
+10:04:44 check protocol_entry_of_split_finding {"status":200,"section":{"key":"section_4_critical_violations","title":"Раздел 4. Критические нарушения"},"decision":"Confirm","rationale":"Составное замечание, решение по частям: отклонено: V2.8; подтверждено: V2.7, V2.9","parts":["V2.7:Confirm","V2.8:Reject","V2.9:Confirm"]}
+10:04:44 check unfinalize_without_reason_status 422
+10:04:44 done 19 screenshots -> D:\Proga\LCT-hack-2026\.claude\worktrees\ui-polish-260bb7\evaluation\phase12\ui_screens\c1_walkthrough

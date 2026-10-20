@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { api, downloadProtectedFile, weeklyMlReportHtmlUrl } from '../api.js';
+import { fmtDate, fmtIsoDate } from '../utils.js';
+
+const SEVERITY_LABELS = { HIGH: 'важно', MEDIUM: 'средне', LOW: 'низкий приоритет', INFO: 'справка', WARNING: 'внимание' };
 
 function pct(value) {
   return value === null || value === undefined ? '—' : `${Math.round(value * 100)} %`;
@@ -96,7 +99,7 @@ export default function MlReport({ projectId = null }) {
           <thead><tr><th>Период</th><th>Сохранён</th><th>Решений</th><th>Действие</th></tr></thead>
           <tbody>{savedReports.map((item) => (
             <tr key={item.id}>
-              <td>{item.period?.from} — {item.period?.to}</td><td>{item.saved_at}</td>
+              <td>{fmtIsoDate(item.period?.from)} — {fmtIsoDate(item.period?.to)}</td><td>{fmtDate(item.saved_at)}</td>
               <td>{item.report?.totals?.decisions ?? '—'}</td>
               <td><button className="btn small" type="button" onClick={() => setReport(item.report)}>Открыть</button></td>
             </tr>
@@ -106,7 +109,7 @@ export default function MlReport({ projectId = null }) {
       {report && (
         <>
           <p className="muted small">
-            Период: {report.period.from} — {report.period.to}; прошлая неделя: {report.period.previous_from} — {report.period.previous_to}.
+            Период: {fmtIsoDate(report.period.from)} — {fmtIsoDate(report.period.to)}; прошлая неделя: {fmtIsoDate(report.period.previous_from)} — {fmtIsoDate(report.period.previous_to)}.
           </p>
           {report.data_sufficiency.note && <div className="notice" role="status">{report.data_sufficiency.note}</div>}
 
@@ -136,7 +139,7 @@ export default function MlReport({ projectId = null }) {
               <tbody>
                 {report.top_reject_reasons.map((row) => (
                   <tr key={row.reason_code}>
-                    <td>{row.reason_code} — {row.title}</td><td>{row.count}</td><td>{pct(row.share)}</td><td>{row.previous_week}</td>
+                    <td title={`Код причины: ${row.reason_code}`}>{row.title || row.reason_code}</td><td>{row.count}</td><td>{pct(row.share)}</td><td>{row.previous_week}</td>
                     <td><Delta value={row.change} goodWhenUp={false} /></td>
                   </tr>
                 ))}
@@ -150,7 +153,7 @@ export default function MlReport({ projectId = null }) {
           ) : (
             <ul>
               {report.recommendations.map((item, index) => (
-                <li key={`${item.rule}-${index}`}><b>[{item.severity}]</b> {item.text} <span className="muted small">({item.rule})</span></li>
+                <li key={`${item.rule}-${index}`}><b>[{SEVERITY_LABELS[item.severity] || item.severity}]</b> {item.text} <span className="muted small">({item.rule})</span></li>
               ))}
             </ul>
           )}
@@ -162,7 +165,7 @@ export default function MlReport({ projectId = null }) {
               <tbody>
                 {report.retraining.recent.map((row) => (
                   <tr key={row.id}>
-                    <td className="small">{row.created_at}</td><td>{row.dataset_version}</td><td>{row.candidate_model_version || '—'}</td>
+                    <td className="small">{fmtDate(row.created_at)}</td><td>{row.dataset_version}</td><td>{row.candidate_model_version || '—'}</td>
                     <td>{row.gate_status}</td><td>{row.approval_status}</td><td className="small">{(row.gate_reasons || []).join('; ') || '—'}</td>
                   </tr>
                 ))}

@@ -45,7 +45,7 @@ async function request(path, opts = {}) {
       cache: 'no-store',
     });
   } catch (err) {
-    throw new ApiError(`Нет соединения с сервером (${API_BASE}). ${err.message || err}`, 0);
+    throw new ApiError(`Нет соединения с сервером (${API_BASE}). Проверьте, что сервер запущен, и повторите действие.`, 0);
   }
   const text = await res.text();
   let data = null;
@@ -55,6 +55,12 @@ async function request(path, opts = {}) {
     /* not JSON */
   }
   if (!res.ok) {
+    if (res.status === 401 && path !== '/api/auth/login' && getToken()) {
+      // the token expired or was revoked: the app returns to the login screen with an explanation
+      setToken('');
+      window.dispatchEvent(new Event('case10:auth-expired'));
+      throw new ApiError('Сессия истекла — войдите снова', 401);
+    }
     const detail = (data && (data.detail || data.error?.message)) || text || `HTTP ${res.status}`;
     throw new ApiError(typeof detail === 'string' ? detail : JSON.stringify(detail), res.status);
   }
@@ -288,7 +294,12 @@ export function protocolSubmissionUrl(protocolId) {
 }
 
 export async function downloadProtectedFile(url, filename) {
-  const res = await fetch(url, { headers: authHeaders(), cache: 'no-store' });
+  let res;
+  try {
+    res = await fetch(url, { headers: authHeaders(), cache: 'no-store' });
+  } catch {
+    throw new ApiError('Нет соединения с сервером: файл не скачан. Проверьте подключение и повторите.', 0);
+  }
   if (!res.ok) throw new ApiError(`Не удалось скачать файл (HTTP ${res.status})`, res.status);
   const blob = await res.blob();
   const objectUrl = URL.createObjectURL(blob);

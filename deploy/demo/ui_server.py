@@ -20,11 +20,12 @@ GO_PAGE = """<!doctype html><meta charset="utf-8"><title>CASE10 demo</title>
                                                   body: JSON.stringify({login, password})});
     const token = (await r.json()).access_token;
     localStorage.setItem('case10_react_token', token);
+    sessionStorage.removeItem('case10_react_view');
     const project = q.get('project'), process = q.get('process');
     if (project) {
       localStorage.setItem('case10_react_project_id', project);
       const map = JSON.parse(localStorage.getItem('case10_react_process_map') || '{}');
-      if (process) map[project] = process;
+      if (process) { map[project] = process; sessionStorage.setItem('case10_react_view', 'process'); }
       localStorage.setItem('case10_react_process_map', JSON.stringify(map));
     }
   } catch (e) { document.body.append(' не удалось войти автоматически: ' + e); return; }

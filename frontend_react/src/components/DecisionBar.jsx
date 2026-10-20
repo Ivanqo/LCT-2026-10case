@@ -53,7 +53,7 @@ export default function DecisionBar({ disabledReason, choice, reasonCode, clarif
         <div className="decision-form">
           {choice === 'Reject' && (
             <label className="field inline">
-              <span>Причина (reason_code)</span>
+              <span>Причина отклонения</span>
               <select className="select" value={reasonCode} onChange={(e) => onReason(e.target.value)}>
                 {REJECT_REASON_CODES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
               </select>
